@@ -15,31 +15,35 @@ using System.Windows.Shapes;
 namespace DrugAlarm.Form
 {
     /// <summary>
-    /// List.xaml の相互作用ロジック
+    /// Setting.xaml の相互作用ロジック
     /// </summary>
-    public partial class List : Window
+    public partial class Setting : Window
     {
-
-        /// <summary>
-        /// new
-        /// </summary>
-        public List()
+        public Setting()
         {
             InitializeComponent();
         }
 
         /// <summary>
-        /// 設定ボタンクリック
+        /// 戻るボタンクリック
         /// </summary>
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Cancel_Click(object sender, RoutedEventArgs e)
         {
 
-            Setting form = new Setting();
-            form.Owner = this;
-            form.ShowDialog();
+            this.Close();
+
+        }
+
+        /// <summary>
+        /// 保存ボタンクリック
+        /// </summary>
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+
+            MessageBox.Show("保存します");
+            this.Close();
 
         }
 
     }
-
 }

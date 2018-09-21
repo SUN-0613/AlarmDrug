@@ -77,5 +77,140 @@ namespace DrugAlarm.Properties {
                 return ResourceManager.GetString("List_Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   食後 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Setting_AfterMeals {
+            get {
+                return ResourceManager.GetString("Setting_AfterMeals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   分後 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Setting_AfterMinute {
+            get {
+                return ResourceManager.GetString("Setting_AfterMinute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   食前 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Setting_BeforeMeals {
+            get {
+                return ResourceManager.GetString("Setting_BeforeMeals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   分前 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Setting_BeforeMinute {
+            get {
+                return ResourceManager.GetString("Setting_BeforeMinute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   就寝前 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Setting_BeforeSleep {
+            get {
+                return ResourceManager.GetString("Setting_BeforeSleep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   朝食時間 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Setting_Breakfast {
+            get {
+                return ResourceManager.GetString("Setting_Breakfast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   夕食時間 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Setting_Dinner {
+            get {
+                return ResourceManager.GetString("Setting_Dinner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   アラーム設定 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Setting_InputAlarm {
+            get {
+                return ResourceManager.GetString("Setting_InputAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   昼食時間 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Setting_Lunch {
+            get {
+                return ResourceManager.GetString("Setting_Lunch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   薬残量お知らせ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Setting_Prescript {
+            get {
+                return ResourceManager.GetString("Setting_Prescript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   再通知 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Setting_Realarm {
+            get {
+                return ResourceManager.GetString("Setting_Realarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   残り に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Setting_Remaining {
+            get {
+                return ResourceManager.GetString("Setting_Remaining", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   就寝時間 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Setting_Sleep {
+            get {
+                return ResourceManager.GetString("Setting_Sleep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   設定 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Setting_Title {
+            get {
+                return ResourceManager.GetString("Setting_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   錠 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Setting_Unit {
+            get {
+                return ResourceManager.GetString("Setting_Unit", resourceCulture);
+            }
+        }
     }
 }

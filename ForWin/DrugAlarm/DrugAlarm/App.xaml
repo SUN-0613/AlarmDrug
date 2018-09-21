@@ -5,6 +5,16 @@
              Startup="App_Startup">
     <Application.Resources>
 
+        <!--ウィンドウ統一設定-->
+        <Style x:Key="WindowCustomStyle" TargetType="{x:Type Window}">
+            <Setter Property="FontFamily" Value="Meiryo" />
+            <Setter Property="Height" Value="480" />
+            <Setter Property="Width" Value="410" />
+            <Setter Property="WindowStyle" Value="ToolWindow" />
+            <Setter Property="FontFamily" Value="Meiryo UI" />
+            <Setter Property="FontSize" Value="18" />
+        </Style>
+        
         <!--リソース使用-->
         <properties:Resources x:Key="resources" />
         
@@ -28,6 +38,9 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!--タイトル背景-->
+        <SolidColorBrush x:Key="TitleColor" Color="#FF333333" />
 
     </Application.Resources>
 </Application>

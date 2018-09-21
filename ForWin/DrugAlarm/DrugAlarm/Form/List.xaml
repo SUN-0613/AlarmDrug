@@ -3,18 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DrugAlarm.Form"
         mc:Ignorable="d"
-        Title="{Binding List_Title, Source={StaticResource resources}}" Height="450" Width="350" 
-        WindowStyle="ToolWindow" FontFamily="Meiryo UI" FontSize="18" >
+        Style="{Binding Mode=OneWay, Source={StaticResource WindowCustomStyle}}"
+        Title="{Binding List_Title, Source={StaticResource resources}}" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
-            <RowDefinition Height="350" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="370" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="330" />
+            <ColumnDefinition Width="390" />
             <ColumnDefinition Width="5" />
         </Grid.ColumnDefinitions>
 
@@ -24,16 +24,16 @@
                 <RowDefinition Height="40" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <!--340-->
-                <ColumnDefinition Width="280" />
+                <!--400-->
+                <ColumnDefinition Width="340" />
                 <ColumnDefinition Width="60" />
             </Grid.ColumnDefinitions>
-            <Rectangle Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="3" IsHitTestVisible="False" Fill="#FF333333" />
+            <Rectangle Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="3" IsHitTestVisible="False" Fill="{StaticResource TitleColor}" />
             <TextBlock Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="3" IsHitTestVisible="False" Foreground="White" Text="{Binding List_Title, Source={StaticResource resources}}" FontWeight="Bold" VerticalAlignment="Center" TextAlignment="Center" />
             <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" Foreground="White" Background="Transparent" BorderBrush="Transparent" Content="{Binding List_Setting, Source={StaticResource resources}}" FontSize="15" Style="{StaticResource ButtonCustomStyle}" Click="Button_Click" />
         </Grid>
 
-        <ListBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="3" SelectionMode="Single" BorderBrush="Transparent" Background="Transparent" >
+        <ListBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" SelectionMode="Single" BorderBrush="Transparent" Background="Transparent" >
             <ListBoxItem>
                 <TextBlock Text="AAA : 朝昼夜 食後" />
             </ListBoxItem>
