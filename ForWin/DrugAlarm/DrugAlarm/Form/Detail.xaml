@@ -1,0 +1,196 @@
+﻿<Window x:Class="DrugAlarm.Form.Detail"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DrugAlarm.Form"
+        mc:Ignorable="d"
+        Style="{Binding Mode=OneWay, Source={StaticResource WindowCustomStyle}}"
+        Title="{Binding Setting_Title, Source={StaticResource resources}}" 
+        WindowStartupLocation="CenterOwner"
+        >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="400" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="390" />
+            <ColumnDefinition Width="10" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="3" >
+            <Grid.RowDefinitions>
+                <!--40-->
+                <RowDefinition Height="40" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <!--380-->
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="322" />
+                <ColumnDefinition Width="40" />
+            </Grid.ColumnDefinitions>
+            <Rectangle Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="3" IsHitTestVisible="False" Fill="{StaticResource TitleColor}" />
+            <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" Foreground="White" Background="Transparent" BorderBrush="Transparent" Content="&lt;" FontSize="15" Style="{StaticResource ButtonCustomStyle}" Click="Cancel_Click" />
+            <TextBlock Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="3" IsHitTestVisible="False" Foreground="White" Text="{Binding Detail_Title, Source={StaticResource resources}}" FontWeight="Bold" VerticalAlignment="Center" TextAlignment="Center" />
+            <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" Foreground="White" Background="Transparent" BorderBrush="Transparent" Content="✓" FontSize="15" Style="{StaticResource ButtonCustomStyle}" Click="Save_Click" />
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" >
+            <Grid.RowDefinitions>
+                <!--380-->
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="10" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <!--380-->
+                <ColumnDefinition Width="80" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="20" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" Text="{Binding Detail_Name, Source={StaticResource resources}}" VerticalAlignment="Center" TextAlignment="Left" />
+            <TextBlock Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" Text="{Binding Detail_Timing, Source={StaticResource resources}}" VerticalAlignment="Center" TextAlignment="Left" />
+            <TextBlock Grid.Row="1" Grid.RowSpan="1" Grid.Column="3" Grid.ColumnSpan="1" Text="{Binding Detail_Unit, Source={StaticResource resources}}" VerticalAlignment="Center" TextAlignment="Left" />
+            <TextBlock Grid.Row="1" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="1" Text="{Binding Detail_Unit, Source={StaticResource resources}}" VerticalAlignment="Center" TextAlignment="Left" />
+            <TextBlock Grid.Row="1" Grid.RowSpan="1" Grid.Column="9" Grid.ColumnSpan="1" Text="{Binding Detail_Unit, Source={StaticResource resources}}" VerticalAlignment="Center" TextAlignment="Left" />
+            <TextBlock Grid.Row="3" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="1" Text="{Binding Detail_Unit, Source={StaticResource resources}}" VerticalAlignment="Center" TextAlignment="Left" />
+            <TextBlock Grid.Row="4" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="1" Text="{Binding Detail_Unit, Source={StaticResource resources}}" VerticalAlignment="Center" TextAlignment="Left" />
+            <TextBlock Grid.Row="5" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="1" Text="{Binding Detail_Unit, Source={StaticResource resources}}" VerticalAlignment="Center" TextAlignment="Left" />
+            <TextBlock Grid.Row="7" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="1" Text="{Binding Detail_Unit, Source={StaticResource resources}}" VerticalAlignment="Center" TextAlignment="Left" />
+            <TextBlock Grid.Row="8" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="2" Text="{Binding Detail_Time, Source={StaticResource resources}}" VerticalAlignment="Center" TextAlignment="Left" />
+            <TextBlock Grid.Row="9" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" Text="{Binding Detail_Volume, Source={StaticResource resources}}" VerticalAlignment="Center" TextAlignment="Left" />
+            <TextBlock Grid.Row="9" Grid.RowSpan="1" Grid.Column="3" Grid.ColumnSpan="1" Text="{Binding Detail_Unit, Source={StaticResource resources}}" VerticalAlignment="Center" TextAlignment="Left" />
+            <TextBlock Grid.Row="10" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" Text="{Binding Detail_Remarks, Source={StaticResource resources}}" VerticalAlignment="Center" TextAlignment="Left" />
+
+            <CheckBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" Content="{Binding Detail_Morning, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" />
+            <CheckBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" Content="{Binding Detail_Lunch, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" />
+            <CheckBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="7" Grid.ColumnSpan="1" Content="{Binding Detail_Dinner, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" />
+            <CheckBox Grid.Row="3" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="3" Content="{Binding Detail_Sleep, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" />
+            <CheckBox Grid.Row="4" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="3" Content="{Binding Detail_Potions, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" />
+            <CheckBox Grid.Row="5" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="3" Content="{Binding Detail_DateSpecified, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" />
+            <CheckBox Grid.Row="7" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="3" Content="{Binding Detail_TimeSpecified, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" />
+
+            <RadioButton Grid.Row="2" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="3" Content="{Binding Detail_BeforeMeals, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" GroupName="Meals" />
+            <RadioButton Grid.Row="2" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="3" Content="{Binding Detail_BetweenMeals, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" GroupName="Meals" />
+            <RadioButton Grid.Row="2" Grid.RowSpan="1" Grid.Column="7" Grid.ColumnSpan="3" Content="{Binding Detail_AfterMeals, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" GroupName="Meals" IsChecked="True" />
+
+            <TextBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="9" Text="薬A" TextAlignment="Left" VerticalContentAlignment="Center" AcceptsReturn="False" />
+            <TextBox Grid.Row="9" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="2" Text="10" TextAlignment="Right" VerticalContentAlignment="Center" AcceptsReturn="False" />
+            <TextBox Grid.Row="10" Grid.RowSpan="3" Grid.Column="1" Grid.ColumnSpan="9" Text="備考入力" TextAlignment="Left" AcceptsReturn="True" />
+
+            <ComboBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" SelectedIndex="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" >
+                <ComboBoxItem >
+                    <TextBlock Text="00" />
+                </ComboBoxItem>
+            </ComboBox>
+            <ComboBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="1" SelectedIndex="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" >
+                <ComboBoxItem >
+                    <TextBlock Text="00" />
+                </ComboBoxItem>
+            </ComboBox>
+            <ComboBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="8" Grid.ColumnSpan="1" SelectedIndex="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" >
+                <ComboBoxItem >
+                    <TextBlock Text="00" />
+                </ComboBoxItem>
+            </ComboBox>
+            <ComboBox Grid.Row="3" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" SelectedIndex="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" >
+                <ComboBoxItem >
+                    <TextBlock Text="00" />
+                </ComboBoxItem>
+            </ComboBox>
+            <ComboBox Grid.Row="4" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" SelectedIndex="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" >
+                <ComboBoxItem >
+                    <TextBlock Text="00" />
+                </ComboBoxItem>
+            </ComboBox>
+            <ComboBox Grid.Row="5" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" SelectedIndex="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" >
+                <ComboBoxItem >
+                    <TextBlock Text="00" />
+                </ComboBoxItem>
+            </ComboBox>
+            <ComboBox Grid.Row="7" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" SelectedIndex="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" >
+                <ComboBoxItem >
+                    <TextBlock Text="00" />
+                </ComboBoxItem>
+            </ComboBox>
+            <ComboBox Grid.Row="8" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" SelectedIndex="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" >
+                <ComboBoxItem >
+                    <TextBlock Text="00" />
+                </ComboBoxItem>
+            </ComboBox>
+
+            <Grid Grid.Row="6" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="8" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <!--260-->
+                    <ColumnDefinition Width="60" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="15" />
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="5" />
+                </Grid.ColumnDefinitions>
+
+                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" SelectedIndex="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" >
+                    <ComboBoxItem >
+                        <TextBlock Text="2018" />
+                    </ComboBoxItem>
+                </ComboBox>
+                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" SelectedIndex="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" >
+                    <ComboBoxItem >
+                        <TextBlock Text="00" />
+                    </ComboBoxItem>
+                </ComboBox>
+                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" SelectedIndex="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" >
+                    <ComboBoxItem >
+                        <TextBlock Text="00" />
+                    </ComboBoxItem>
+                </ComboBox>
+                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="1" SelectedIndex="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" >
+                    <ComboBoxItem >
+                        <TextBlock Text="00" />
+                    </ComboBoxItem>
+                </ComboBox>
+                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="8" Grid.ColumnSpan="1" SelectedIndex="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" >
+                    <ComboBoxItem >
+                        <TextBlock Text="00" />
+                    </ComboBoxItem>
+                </ComboBox>
+
+                <TextBlock Grid.Row="0" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" Text="/" VerticalAlignment="Center" TextAlignment="Center" />
+                <TextBlock Grid.Row="0" Grid.RowSpan="1" Grid.Column="3" Grid.ColumnSpan="1" Text="/" VerticalAlignment="Center" TextAlignment="Center" />
+                <TextBlock Grid.Row="0" Grid.RowSpan="1" Grid.Column="7" Grid.ColumnSpan="1" Text=":" VerticalAlignment="Center" TextAlignment="Center" />
+
+            </Grid>
+
+        </Grid>
+
+    </Grid>
+</Window>

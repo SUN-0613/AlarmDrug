@@ -61,6 +61,159 @@ namespace DrugAlarm.Properties {
         }
         
         /// <summary>
+        ///   食後 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_AfterMeals {
+            get {
+                return ResourceManager.GetString("Detail_AfterMeals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   食前 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_BeforeMeals {
+            get {
+                return ResourceManager.GetString("Detail_BeforeMeals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   食間 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_BetweenMeals {
+            get {
+                return ResourceManager.GetString("Detail_BetweenMeals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   日時指定 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_DateSpecified {
+            get {
+                return ResourceManager.GetString("Detail_DateSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   夕 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_Dinner {
+            get {
+                return ResourceManager.GetString("Detail_Dinner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   昼 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_Lunch {
+            get {
+                return ResourceManager.GetString("Detail_Lunch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   朝 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_Morning {
+            get {
+                return ResourceManager.GetString("Detail_Morning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   名前 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_Name {
+            get {
+                return ResourceManager.GetString("Detail_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   頓服 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_Potions {
+            get {
+                return ResourceManager.GetString("Detail_Potions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   備考 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_Remarks {
+            get {
+                return ResourceManager.GetString("Detail_Remarks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   就寝前 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_Sleep {
+            get {
+                return ResourceManager.GetString("Detail_Sleep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   時間毎 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_Time {
+            get {
+                return ResourceManager.GetString("Detail_Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   時間指定 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_TimeSpecified {
+            get {
+                return ResourceManager.GetString("Detail_TimeSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   服用時間 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_Timing {
+            get {
+                return ResourceManager.GetString("Detail_Timing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   お薬の内容 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_Title {
+            get {
+                return ResourceManager.GetString("Detail_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   錠 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_Unit {
+            get {
+                return ResourceManager.GetString("Detail_Unit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   処方量 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_Volume {
+            get {
+                return ResourceManager.GetString("Detail_Volume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   設定 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string List_Setting {

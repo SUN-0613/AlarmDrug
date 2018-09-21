@@ -117,6 +117,74 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Detail_AfterMeals" xml:space="preserve">
+    <value>食後</value>
+    <comment>詳細：食後</comment>
+  </data>
+  <data name="Detail_BeforeMeals" xml:space="preserve">
+    <value>食前</value>
+    <comment>詳細：食前</comment>
+  </data>
+  <data name="Detail_BetweenMeals" xml:space="preserve">
+    <value>食間</value>
+    <comment>詳細：食間</comment>
+  </data>
+  <data name="Detail_DateSpecified" xml:space="preserve">
+    <value>日時指定</value>
+    <comment>詳細：日時指定</comment>
+  </data>
+  <data name="Detail_Dinner" xml:space="preserve">
+    <value>夕</value>
+    <comment>詳細：夕</comment>
+  </data>
+  <data name="Detail_Lunch" xml:space="preserve">
+    <value>昼</value>
+    <comment>詳細：昼</comment>
+  </data>
+  <data name="Detail_Morning" xml:space="preserve">
+    <value>朝</value>
+    <comment>詳細：朝</comment>
+  </data>
+  <data name="Detail_Name" xml:space="preserve">
+    <value>名前</value>
+    <comment>詳細：薬品名</comment>
+  </data>
+  <data name="Detail_Potions" xml:space="preserve">
+    <value>頓服</value>
+    <comment>詳細：頓服</comment>
+  </data>
+  <data name="Detail_Remarks" xml:space="preserve">
+    <value>備考</value>
+    <comment>詳細：備考</comment>
+  </data>
+  <data name="Detail_Sleep" xml:space="preserve">
+    <value>就寝前</value>
+    <comment>詳細：就寝前</comment>
+  </data>
+  <data name="Detail_Time" xml:space="preserve">
+    <value>時間毎</value>
+    <comment>詳細：時間毎</comment>
+  </data>
+  <data name="Detail_TimeSpecified" xml:space="preserve">
+    <value>時間指定</value>
+    <comment>詳細：時間指定</comment>
+  </data>
+  <data name="Detail_Timing" xml:space="preserve">
+    <value>服用時間</value>
+    <comment>詳細：服用時間</comment>
+  </data>
+  <data name="Detail_Title" xml:space="preserve">
+    <value>お薬の内容</value>
+    <comment>詳細：お薬の内容</comment>
+  </data>
+  <data name="Detail_Unit" xml:space="preserve">
+    <value>錠</value>
+    <comment>詳細：錠</comment>
+  </data>
+  <data name="Detail_Volume" xml:space="preserve">
+    <value>処方量</value>
+    <comment>詳細：処方量</comment>
+  </data>
   <data name="List_Setting" xml:space="preserve">
     <value>設定</value>
     <comment>一覧：設定ボタン</comment>

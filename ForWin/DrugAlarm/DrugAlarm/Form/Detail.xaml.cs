@@ -15,14 +15,14 @@ using System.Windows.Shapes;
 namespace DrugAlarm.Form
 {
     /// <summary>
-    /// Setting.xaml の相互作用ロジック
+    /// Detail.xaml の相互作用ロジック
     /// </summary>
-    public partial class Setting : Window
+    public partial class Detail : Window
     {
         /// <summary>
         /// new
         /// </summary>
-        public Setting()
+        public Detail()
         {
             InitializeComponent();
         }
