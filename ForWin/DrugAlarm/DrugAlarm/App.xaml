@@ -1,9 +1,33 @@
 ﻿<Application x:Class="DrugAlarm.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:DrugAlarm"
+             xmlns:properties="clr-namespace:DrugAlarm.Properties"
              Startup="App_Startup">
     <Application.Resources>
-         
+
+        <!--リソース使用-->
+        <properties:Resources x:Key="resources" />
+        
+        <!--MouseOver時に光らないボタンのStyle-->
+        <Style x:Key="ButtonCustomStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                >
+                            <ContentPresenter 
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </Application.Resources>
 </Application>
