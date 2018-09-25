@@ -61,6 +61,33 @@ namespace DrugAlarm.Properties {
         }
         
         /// <summary>
+        ///   完了 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Alarm_Button_OK {
+            get {
+                return ResourceManager.GetString("Alarm_Button_OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   あとで に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Alarm_Button_Realarm {
+            get {
+                return ResourceManager.GetString("Alarm_Button_Realarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   お薬の時間です に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Alarm_Title {
+            get {
+                return ResourceManager.GetString("Alarm_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   食後 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Detail_AfterMeals {
@@ -210,6 +237,15 @@ namespace DrugAlarm.Properties {
         public static string Detail_Volume {
             get {
                 return ResourceManager.GetString("Detail_Volume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   + 新規追加 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string List_AddList {
+            get {
+                return ResourceManager.GetString("List_AddList", resourceCulture);
             }
         }
         

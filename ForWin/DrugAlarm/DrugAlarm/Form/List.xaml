@@ -44,10 +44,9 @@
                 <TextBlock Text="CCC : 頓服" Foreground="Red" />
             </ListBoxItem>
             <ListBoxItem>
-                <TextBlock Text="+ 新規追加" Foreground="Gray" />
+                <TextBlock Text="{Binding List_AddList, Source={StaticResource resources}}" Foreground="Gray" />
             </ListBoxItem>
         </ListBox>
-        
         
     </Grid>
 </Window>

@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Alarm_Button_OK" xml:space="preserve">
+    <value>完了</value>
+    <comment>アラーム：完了ボタン</comment>
+  </data>
+  <data name="Alarm_Button_Realarm" xml:space="preserve">
+    <value>あとで</value>
+    <comment>アラーム：再通知ボタン</comment>
+  </data>
+  <data name="Alarm_Title" xml:space="preserve">
+    <value>お薬の時間です</value>
+    <comment>アラーム：タイトル</comment>
+  </data>
   <data name="Detail_AfterMeals" xml:space="preserve">
     <value>食後</value>
     <comment>詳細：食後</comment>
@@ -184,6 +196,10 @@
   <data name="Detail_Volume" xml:space="preserve">
     <value>処方量</value>
     <comment>詳細：処方量</comment>
+  </data>
+  <data name="List_AddList" xml:space="preserve">
+    <value>+ 新規追加</value>
+    <comment>一覧：新規追加行</comment>
   </data>
   <data name="List_Setting" xml:space="preserve">
     <value>設定</value>
