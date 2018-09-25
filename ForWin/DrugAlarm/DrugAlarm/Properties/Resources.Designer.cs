@@ -268,6 +268,33 @@ namespace DrugAlarm.Properties {
         }
         
         /// <summary>
+        ///   設定 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Realarm_Button_OK {
+            get {
+                return ResourceManager.GetString("Realarm_Button_OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   分後に通知 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Realarm_Message {
+            get {
+                return ResourceManager.GetString("Realarm_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   再通知 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Realarm_Title {
+            get {
+                return ResourceManager.GetString("Realarm_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   食後 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Setting_AfterMeals {

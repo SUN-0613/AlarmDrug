@@ -209,6 +209,18 @@
     <value>お薬一覧</value>
     <comment>一覧：タイトル</comment>
   </data>
+  <data name="Realarm_Button_OK" xml:space="preserve">
+    <value>設定</value>
+    <comment>再通知：ボタン</comment>
+  </data>
+  <data name="Realarm_Message" xml:space="preserve">
+    <value>分後に通知</value>
+    <comment>再通知：メッセージ</comment>
+  </data>
+  <data name="Realarm_Title" xml:space="preserve">
+    <value>再通知</value>
+    <comment>再通知：タイトル</comment>
+  </data>
   <data name="Setting_AfterMeals" xml:space="preserve">
     <value>食後</value>
     <comment>設定：食後</comment>
