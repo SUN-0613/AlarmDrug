@@ -8,6 +8,7 @@
         Style="{Binding Mode=OneWay, Source={StaticResource WindowCustomStyle}}"
         Title="{Binding Alarm_Title, Source={StaticResource resources}}" 
         WindowStartupLocation="CenterOwner"
+        Topmost="True"
         >
     <Grid>
         <Grid.RowDefinitions>

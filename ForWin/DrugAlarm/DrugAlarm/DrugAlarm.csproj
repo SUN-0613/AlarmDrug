@@ -99,6 +99,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Form\Information.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Form\List.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -112,6 +116,9 @@
     </Compile>
     <Compile Include="Form\Detail.xaml.cs">
       <DependentUpon>Detail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Form\Information.xaml.cs">
+      <DependentUpon>Information.xaml</DependentUpon>
     </Compile>
     <Compile Include="Form\List.xaml.cs">
       <DependentUpon>List.xaml</DependentUpon>

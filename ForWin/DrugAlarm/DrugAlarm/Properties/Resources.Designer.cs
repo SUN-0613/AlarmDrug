@@ -241,6 +241,15 @@ namespace DrugAlarm.Properties {
         }
         
         /// <summary>
+        ///   お薬が切れそうです に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Information_Title {
+            get {
+                return ResourceManager.GetString("Information_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   + 新規追加 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string List_AddList {
