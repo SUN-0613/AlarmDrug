@@ -241,6 +241,15 @@ namespace DrugAlarm.Properties {
         }
         
         /// <summary>
+        ///   パラメータファイルを保存するフォルダを指定してください に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string FolderDialog_Title {
+            get {
+                return ResourceManager.GetString("FolderDialog_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   お薬が切れそうです に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Information_Title {

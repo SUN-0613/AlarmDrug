@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Windows.Forms;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DrugAlarm.Class
 {
@@ -10,6 +9,23 @@ namespace DrugAlarm.Class
     /// <summary>
     /// 設定パラメータ
     /// </summary>
+    /// <remarks>
+    /// 
+    /// パラメータはファイルに保存する
+    /// 保存場所は初回起動時にフォルダ選択を行う。
+    /// フォルダ、ファイル名はSettings.settingsにて管理
+    /// 
+    /// パラメータファイルでは設定データと薬データ郡を管理
+    /// パラメータ値は改行区切で管理
+    /// 
+    /// 設定データはSettingStart,SettingEndで囲む
+    /// 薬データはDrugStart,DrugEndで囲む
+    /// 各々のパラメータ名称はclass NAMEに記載
+    /// ファイルへの記入方法は「パラメータ名称=パラメータ値」
+    /// パラメータ値が時間範囲の場合は開始時間,終了時間とカンマで区切る
+    /// 備考欄は改行入力を許可し、ファイル保存時は_CRLF_に置換
+    /// 
+    /// </remarks>
     public class Parameter
     {
 
@@ -36,9 +52,33 @@ namespace DrugAlarm.Class
         /// </summary>
         /// <param name="Hour">時</param>
         /// <param name="Minute">分</param>
-        /// <returns></returns>
+        /// <returns>今日日付のDateTime型</returns>
         private static DateTime GetTodayTime(Int32 Hour, Int32 Minute)
         {
+            return new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, Hour, Minute, 0);
+        }
+
+        /// <summary>
+        /// 指定時間を今日日付のDateTime型に変換
+        /// </summary>
+        /// <param name="Time">HH:mm</param>
+        /// <returns>今日日付のDateTime型</returns>
+        private static DateTime GetTodayTime(string Time)
+        {
+
+            string[] Values = Time.Split(':');
+            Int32 Hour;
+            Int32 Minute;
+
+            if (!Int32.TryParse(Values[0], out Hour))
+            {
+                Hour = 0;
+            }
+            if (!Int32.TryParse(Values[1], out Minute))
+            {
+                Minute = 0;
+            }
+
             return new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, Hour, Minute, 0);
         }
 
@@ -62,20 +102,169 @@ namespace DrugAlarm.Class
         }
 
         /// <summary>
+        /// パラメータ名称一覧
+        /// </summary>
+        private static class NAME
+        {
+
+            /// <summary>
+            /// 設定
+            /// </summary>
+            public static class SETTING
+            {
+
+                /// <summary>
+                /// パラメータ名：設定データ開始
+                /// </summary>
+                public const string START = "SettingStart";
+
+                /// <summary>
+                /// パラメータ名：設定データ終了
+                /// </summary>
+                public const string END = "SettingEnd";
+
+                /// <summary>
+                /// 朝食
+                /// </summary>
+                public const string BREAKFAST = "Breakfast";
+
+                /// <summary>
+                /// 昼食
+                /// </summary>
+                public const string LUNCH = "Lunch";
+
+                /// <summary>
+                /// 夕食
+                /// </summary>
+                public const string DINNER = "Dinner";
+
+                /// <summary>
+                /// 就寝
+                /// </summary>
+                public const string SLEEP = "Sleep";
+
+                /// <summary>
+                /// 残量アラーム(錠)
+                /// </summary>
+                public const string PRESCRIPTIOIN = "PrescriptionAlarm";
+
+                /// <summary>
+                /// 食前アラーム(分)
+                /// </summary>
+                public const string BEFOREMEALS = "BeforeMeals";
+
+                /// <summary>
+                /// 食間アラーム(分)
+                /// </summary>
+                public const string BETWEENMEALS = "BetweenMeals";
+
+                /// <summary>
+                /// 食後アラーム(分)
+                /// </summary>
+                public const string AFTERMEALS = "AfterMeals";
+
+                /// <summary>
+                /// 就寝前アラーム(分)
+                /// </summary>
+                public const string BEFORESLEEP = "BeforeSleep";
+
+                /// <summary>
+                /// 再通知
+                /// </summary>
+                public const string REALARM = "ReAlarm";
+
+            }
+
+            /// <summary>
+            /// 薬
+            /// </summary>
+            public static class DRUG
+            {
+
+                /// <summary>
+                /// パラメータ名：設定データ開始
+                /// </summary>
+                public const string START = "DrugStart";
+
+                /// <summary>
+                /// パラメータ名：設定データ終了
+                /// </summary>
+                public const string END = "DrugEnd";
+
+                /// <summary>
+                /// 改行(\r\n)の置換文字
+                /// </summary>
+                public const string CRLF = "_CRLF_";
+
+                /// <summary>
+                /// 薬名称
+                /// </summary>
+                public const string NAME = "Name";
+
+                /// <summary>
+                /// 食前
+                /// </summary>
+                public const string BEFOREMEALS = "BeforeMeals";
+
+                /// <summary>
+                /// 食間
+                /// </summary>
+                public const string BETWEENMEALS = "BetweenMeals";
+
+                /// <summary>
+                /// 食後
+                /// </summary>
+                public const string AFTERMEALS = "AfterMeals";
+
+                /// <summary>
+                /// 朝食
+                /// </summary>
+                public const string BREAKFAST = "BreakFast";
+
+                /// <summary>
+                /// 昼食
+                /// </summary>
+                public const string LUNCH = "Lunch";
+
+                /// <summary>
+                /// 夕食
+                /// </summary>
+                public const string DINNER = "Dinner";
+
+                /// <summary>
+                /// 頓服
+                /// </summary>
+                public const string TOBETAKEN = "ToBeTaken";
+
+                /// <summary>
+                /// 指定時間
+                /// </summary>
+                public const string APPOINTTIME = "AppointTime";
+
+                /// <summary>
+                /// 時間毎(時)
+                /// </summary>
+                public const string HOUREACH = "HourEach";
+
+                /// <summary>
+                /// 処方量
+                /// </summary>
+                public const string TOTALVOLUME = "TotalVolume";
+
+                /// <summary>
+                /// 備考
+                /// </summary>
+                public const string REMARKS = "Remarks";
+
+            }
+
+        }
+
+        /// <summary>
         /// 設定クラス
         /// </summary>
         public class SettingParameter
         {
-
-            /// <summary>
-            /// パラメータ名：設定データ開始
-            /// </summary>
-            public const string SETTING_START = "SettingStart";
-
-            /// <summary>
-            /// パラメータ名：設定データ終了
-            /// </summary>
-            public const string SETTING_END = "SettingEnd";
 
             /// <summary>
             /// 設定データ読込・書込中
@@ -162,21 +351,6 @@ namespace DrugAlarm.Class
         /// </summary>
         public class DrugParameter
         {
-
-            /// <summary>
-            /// パラメータ名：設定データ開始
-            /// </summary>
-            public const string DRUG_START = "DrugStart";
-
-            /// <summary>
-            /// パラメータ名：設定データ終了
-            /// </summary>
-            public const string DRUG_END = "DrugEnd";
-
-            /// <summary>
-            /// 改行(\r\n)の置換文字
-            /// </summary>
-            public const string CRLF = "_CRLF_";
 
             /// <summary>
             /// 服用時間
@@ -344,9 +518,261 @@ namespace DrugAlarm.Class
 
         }
 
+        /// <summary>
+        /// ファイル読込
+        /// </summary>
+        public void Load()
+        {
 
+            //前回パスの取得
+            string Path = Properties.Settings.Default.ParameterFullPath;
 
+            //前回パスが未記入、またはファイルがなければ新規に作成する
+            if (Path.Length == 0 || !System.IO.File.Exists(Path))
+            {
+                Properties.Settings.Default.ParameterFullPath = SelectDirectory();
+            }
+            else
+            {
 
+                //ファイル読込開始
+                using (System.IO.StreamReader file = new System.IO.StreamReader(Path, Encoding.Unicode))
+                {
+
+                    StringBuilder NewLine = new StringBuilder();
+                    Int32 Index = 0;
+
+                    try
+                    {
+
+                        while (!NewLine.Append(file.ReadLine()).Equals(null))
+                        {
+
+                            try
+                            {
+
+                                if (!NewLine.ToString().Contains("="))
+                                {
+
+                                    //パラメータ種類の選別
+                                    switch (NewLine.ToString())
+                                    {
+                                        case NAME.SETTING.START:
+
+                                            Setting.IsAccess = true;
+
+                                            if (DrugList.Count > 0)
+                                            {
+                                                DrugList[DrugList.Count - 1].IsAccess = false;
+                                            }
+
+                                            break;
+
+                                        case NAME.SETTING.END:
+                                            Setting.IsAccess = false;
+                                            break;
+
+                                        case NAME.DRUG.START:
+
+                                            Setting.IsAccess = false;
+
+                                            DrugList.Add(new DrugParameter());
+                                            Index = DrugList.Count - 1;
+                                            DrugList[Index].IsAccess = true;
+
+                                            break;
+
+                                        case NAME.DRUG.END:
+                                            DrugList[Index].IsAccess = false;
+                                            break;
+
+                                        default:
+                                            break;
+                                    }
+
+                                }
+                                else
+                                {
+
+                                    string[] Str = NewLine.ToString().Split('=');
+                                    string[] Values = Str[1].Split(',');
+
+                                    if (Setting.IsAccess)
+                                    {
+                                        //設定パラメータ
+                                        switch (Str[0])
+                                        {
+                                            case NAME.SETTING.BREAKFAST:
+                                                Setting.Breakfast.Start = GetTodayTime(Values[0]);
+                                                Setting.Breakfast.Finish = GetTodayTime(Values[1]);
+                                                break;
+
+                                            case NAME.SETTING.LUNCH:
+                                                Setting.Lunch.Start = GetTodayTime(Values[0]);
+                                                Setting.Lunch.Finish = GetTodayTime(Values[1]);
+                                                break;
+
+                                            case NAME.SETTING.DINNER:
+                                                Setting.Dinner.Start = GetTodayTime(Values[0]);
+                                                Setting.Dinner.Finish = GetTodayTime(Values[1]);
+                                                break;
+
+                                            case NAME.SETTING.SLEEP:
+                                                Setting.Sleep = GetTodayTime(Str[1]);
+                                                break;
+
+                                            case NAME.SETTING.PRESCRIPTIOIN:
+                                                Setting.PrescriptionAlarmVolume = Int32.Parse(Str[1]);
+                                                break;
+
+                                            case NAME.SETTING.BEFOREMEALS:
+                                                Setting.MinuteBeforeMeals = Int32.Parse(Str[1]);
+                                                break;
+
+                                            case NAME.SETTING.BETWEENMEALS:
+                                                Setting.MinuteBetweenMeals = Int32.Parse(Str[1]);
+                                                break;
+
+                                            case NAME.SETTING.AFTERMEALS:
+                                                Setting.MinuteAfterMeals = Int32.Parse(Str[1]);
+                                                break;
+
+                                            case NAME.SETTING.BEFORESLEEP:
+                                                Setting.MinuteBeforeSleep = Int32.Parse(Str[1]);
+                                                break;
+
+                                            case NAME.SETTING.REALARM:
+                                                Setting.MinuteReAlarm = Int32.Parse(Str[1]);
+                                                break;
+
+                                            default:
+                                                break;
+
+                                        }
+
+                                    }
+                                    else if (DrugList[Index].IsAccess)
+                                    {
+
+                                        //薬パラメータ
+                                        switch (Str[0])
+                                        {
+                                            case NAME.DRUG.NAME:
+                                                DrugList[Index].Name = Str[1];
+                                                break;
+
+                                            case NAME.DRUG.BEFOREMEALS:
+                                                break;
+
+                                            case NAME.DRUG.BETWEENMEALS:
+                                                break;
+
+                                            case NAME.DRUG.AFTERMEALS:
+                                                break;
+
+                                            case NAME.DRUG.BREAKFAST:
+                                                break;
+
+                                            case NAME.DRUG.LUNCH:
+                                                break;
+
+                                            case NAME.DRUG.DINNER:
+                                                break;
+
+                                            case NAME.DRUG.TOBETAKEN:
+                                                break;
+
+                                            case NAME.DRUG.APPOINTTIME:
+                                                break;
+
+                                            case NAME.DRUG.HOUREACH:
+                                                break;
+
+                                            case NAME.DRUG.TOTALVOLUME:
+                                                break;
+
+                                            case NAME.DRUG.REMARKS:
+                                                break;
+
+                                            default:
+                                                break;
+
+                                        }
+
+                                    }
+
+                                }
+
+                            }
+                            catch (Exception ex)
+                            {
+
+                            }
+                            finally
+                            {
+                                NewLine.Clear();
+                            }
+
+                        }
+
+                    }
+                    catch (Exception Ex)
+                    {
+
+                    }
+                    finally
+                    {
+                        //メモリ解放
+                        NewLine.Clear();
+                        NewLine = null;
+                    }
+
+                }
+
+            }
+
+        }
+
+        /// <summary>
+        /// パラメータファイルを保存するフォルダを選択し、フルパスを返す
+        /// </summary>
+        /// <returns>パラメータファイルフルパス</returns>
+        private string SelectDirectory()
+        {
+
+            string Ret = "";
+
+            //フォルダ選択ダイアログ
+            using (FolderBrowserDialog Dialog = new FolderBrowserDialog())
+            {
+
+                Dialog.Description = Properties.Resources.FolderDialog_Title;
+                Dialog.RootFolder = Environment.SpecialFolder.MyDocuments;
+                Dialog.ShowNewFolderButton = true;
+
+                if (Dialog.ShowDialog() == DialogResult.OK)
+                {
+                    //選択されたフォルダ内にパラメータファイルを保存
+                    Ret = System.IO.Path.Combine(Dialog.SelectedPath, Properties.Settings.Default.ParameterFile);
+
+                }
+
+            }
+
+            return Ret;
+
+        }
+
+        /// <summary>
+        /// ファイル書込
+        /// </summary>
+        public void Save()
+        {
+
+            //前回パスの取得
+            string Path = Properties.Settings.Default.ParameterFullPath;
+
+        }
 
     }
 

@@ -22,5 +22,29 @@ namespace DrugAlarm.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ParameterFullPath {
+            get {
+                return ((string)(this["ParameterFullPath"]));
+            }
+            set {
+                this["ParameterFullPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DrugAlarm.Prm")]
+        public string ParameterFile {
+            get {
+                return ((string)(this["ParameterFile"]));
+            }
+            set {
+                this["ParameterFile"] = value;
+            }
+        }
     }
 }
