@@ -30,6 +30,11 @@ namespace DrugAlarm.Class
     {
 
         /// <summary>
+        /// パラメータ時間フォーマット
+        /// </summary>
+        private const string TimeFormat = "HH:mm";
+
+        /// <summary>
         /// 範囲時間
         /// </summary>
         public struct BetweenTime
@@ -99,6 +104,75 @@ namespace DrugAlarm.Class
 
             return Return;
 
+        }
+
+        /// <summary>
+        /// 文字列を整数値に変換
+        /// 変換できない場合は引数値を返す
+        /// </summary>
+        /// <param name="Value">変換文字列</param>
+        /// <param name="DefaultValue">デフォルト値</param>
+        /// <returns>変換後数値</returns>
+        private static Int32 ConvertToInt32(string Value, Int32 DefaultValue)
+        {
+            Int32 Return;
+
+            if (!Int32.TryParse(Value, out Return))
+            {
+                Return = DefaultValue;
+            }
+
+            return Return;
+
+        }
+
+        /// <summary>
+        /// 文字列を日付型に変換
+        /// 変換できない場合は引数値を返す
+        /// </summary>
+        /// <param name="Value">変換文字列</param>
+        /// <param name="DefaultValue">デフォルト値</param>
+        /// <returns>変換後日付型</returns>
+        private static DateTime ConvertDateTime(string Value, DateTime DefaultValue)
+        {
+
+            DateTime Return;
+
+            if (Value.Split(':').Length != 2)
+            {
+                Value += ":00";
+            }
+
+            if (!DateTime.TryParse(Value, out Return))
+            {
+                Return = DefaultValue;
+            }
+
+            return Return;
+
+        }
+
+        /// <summary>
+        /// 改行変換
+        /// CRLF→"_CRLF_"
+        /// または"_CRLF_"→CRLF
+        /// </summary>
+        /// <param name="Str">対象文字列</param>
+        /// <returns>変換後文字列</returns>
+        private static string ConvertCRLF(string Str)
+        {
+
+            const string CRLF = "\r\n";
+            const string _CRLF_ = "_CRLF_";
+
+            if (Str.Contains(CRLF))
+            {
+                return Str.Replace(CRLF, _CRLF_);
+            }
+            else
+            {
+                return Str.Replace(_CRLF_, CRLF);
+            }
         }
 
         /// <summary>
@@ -190,11 +264,6 @@ namespace DrugAlarm.Class
                 /// パラメータ名：設定データ終了
                 /// </summary>
                 public const string END = "DrugEnd";
-
-                /// <summary>
-                /// 改行(\r\n)の置換文字
-                /// </summary>
-                public const string CRLF = "_CRLF_";
 
                 /// <summary>
                 /// 薬名称
@@ -392,17 +461,17 @@ namespace DrugAlarm.Class
                 /// <summary>
                 /// 服用するか
                 /// </summary>
-                bool IsDrug;
+                public bool IsDrug;
 
                 /// <summary>
                 /// 服用時間
                 /// </summary>
-                KindTiming Kind;
+                public KindTiming Kind;
 
                 /// <summary>
                 /// 何錠
                 /// </summary>
-                Int32 Volume;
+                public Int32 Volume;
 
                 /// <summary>
                 /// 初期値設定
@@ -458,12 +527,22 @@ namespace DrugAlarm.Class
             /// <summary>
             /// 指定時間
             /// </summary>
+            public Timing Appoint;
+
+            /// <summary>
+            /// 指定時間
+            /// </summary>
             public DateTime AppointTime;
 
             /// <summary>
             /// 時間毎(時)
             /// </summary>
-            public Int32 HourEach;
+            public Timing HourEach;
+
+            /// <summary>
+            /// 時間毎(時)
+            /// </summary>
+            public Int32 HourEachTime;
 
             /// <summary>
             /// 処方量
@@ -488,8 +567,10 @@ namespace DrugAlarm.Class
                 Dinner.Initialize(false, KindTiming.None, 0);
                 Sleep.Initialize(false, KindTiming.Before, 0);
                 ToBeTaken.Initialize(false, KindTiming.None, 0);
+                Appoint.Initialize(false, KindTiming.Appoint, 0);
                 AppointTime = new DateTime(1900, 1, 1, 0, 0, 0);
-                HourEach = 0;
+                HourEach.Initialize(false, KindTiming.TimeEach, 0);
+                HourEachTime = 2;
                 TotalVolume = 0;
                 Remarks = "";
 
@@ -622,27 +703,27 @@ namespace DrugAlarm.Class
                                                 break;
 
                                             case NAME.SETTING.PRESCRIPTIOIN:
-                                                Setting.PrescriptionAlarmVolume = Int32.Parse(Str[1]);
+                                                Setting.PrescriptionAlarmVolume = ConvertToInt32(Str[1], Setting.PrescriptionAlarmVolume);
                                                 break;
 
                                             case NAME.SETTING.BEFOREMEALS:
-                                                Setting.MinuteBeforeMeals = Int32.Parse(Str[1]);
+                                                Setting.MinuteBeforeMeals = ConvertToInt32(Str[1], Setting.MinuteBeforeMeals);
                                                 break;
 
                                             case NAME.SETTING.BETWEENMEALS:
-                                                Setting.MinuteBetweenMeals = Int32.Parse(Str[1]);
+                                                Setting.MinuteBetweenMeals = ConvertToInt32(Str[1], Setting.MinuteBetweenMeals);
                                                 break;
 
                                             case NAME.SETTING.AFTERMEALS:
-                                                Setting.MinuteAfterMeals = Int32.Parse(Str[1]);
+                                                Setting.MinuteAfterMeals = ConvertToInt32(Str[1], Setting.MinuteAfterMeals);
                                                 break;
 
                                             case NAME.SETTING.BEFORESLEEP:
-                                                Setting.MinuteBeforeSleep = Int32.Parse(Str[1]);
+                                                Setting.MinuteBeforeSleep = ConvertToInt32(Str[1], Setting.MinuteBeforeSleep);
                                                 break;
 
                                             case NAME.SETTING.REALARM:
-                                                Setting.MinuteReAlarm = Int32.Parse(Str[1]);
+                                                Setting.MinuteReAlarm = ConvertToInt32(Str[1], Setting.MinuteReAlarm);
                                                 break;
 
                                             default:
@@ -662,36 +743,61 @@ namespace DrugAlarm.Class
                                                 break;
 
                                             case NAME.DRUG.BEFOREMEALS:
+                                                DrugList[Index].Breakfast.Kind = DrugParameter.KindTiming.Before;
+                                                DrugList[Index].Lunch.Kind = DrugParameter.KindTiming.Before;
+                                                DrugList[Index].Dinner.Kind = DrugParameter.KindTiming.Before;
                                                 break;
 
                                             case NAME.DRUG.BETWEENMEALS:
+                                                DrugList[Index].Breakfast.Kind = DrugParameter.KindTiming.Between;
+                                                DrugList[Index].Lunch.Kind = DrugParameter.KindTiming.Between;
+                                                DrugList[Index].Dinner.Kind = DrugParameter.KindTiming.Between;
                                                 break;
 
                                             case NAME.DRUG.AFTERMEALS:
+                                                DrugList[Index].Breakfast.Kind = DrugParameter.KindTiming.After;
+                                                DrugList[Index].Lunch.Kind = DrugParameter.KindTiming.After;
+                                                DrugList[Index].Dinner.Kind = DrugParameter.KindTiming.After;
                                                 break;
 
                                             case NAME.DRUG.BREAKFAST:
+                                                DrugList[Index].Breakfast.IsDrug = true;
+                                                DrugList[Index].Breakfast.Volume = ConvertToInt32(Str[1], DrugList[Index].Breakfast.Volume);
                                                 break;
 
                                             case NAME.DRUG.LUNCH:
+                                                DrugList[Index].Lunch.IsDrug = true;
+                                                DrugList[Index].Lunch.Volume = ConvertToInt32(Str[1], DrugList[Index].Lunch.Volume);
                                                 break;
 
                                             case NAME.DRUG.DINNER:
+                                                DrugList[Index].Dinner.IsDrug = true;
+                                                DrugList[Index].Dinner.Volume = ConvertToInt32(Str[1], DrugList[Index].Dinner.Volume);
                                                 break;
 
                                             case NAME.DRUG.TOBETAKEN:
+                                                DrugList[Index].ToBeTaken.IsDrug = true;
+                                                DrugList[Index].ToBeTaken.Volume = ConvertToInt32(Str[1], DrugList[Index].ToBeTaken.Volume);
                                                 break;
 
                                             case NAME.DRUG.APPOINTTIME:
+                                                DrugList[Index].Appoint.IsDrug = true;
+                                                DrugList[Index].Appoint.Volume = ConvertToInt32(Str[1], DrugList[Index].Appoint.Volume);
+                                                DrugList[Index].AppointTime = ConvertDateTime(Str[2], DrugList[Index].AppointTime);
                                                 break;
 
                                             case NAME.DRUG.HOUREACH:
+                                                DrugList[Index].HourEach.IsDrug = true;
+                                                DrugList[Index].HourEach.Volume = ConvertToInt32(Str[1], DrugList[Index].HourEach.Volume);
+                                                DrugList[Index].HourEachTime = ConvertToInt32(Str[2], DrugList[Index].HourEachTime);
                                                 break;
 
                                             case NAME.DRUG.TOTALVOLUME:
+                                                DrugList[Index].TotalVolume = ConvertToInt32(Str[1], DrugList[Index].TotalVolume);
                                                 break;
 
                                             case NAME.DRUG.REMARKS:
+                                                DrugList[Index].Name = ConvertCRLF(Str[1]);
                                                 break;
 
                                             default:
@@ -769,8 +875,339 @@ namespace DrugAlarm.Class
         public void Save()
         {
 
-            //前回パスの取得
+            //前回パスの取得 : this.Load()でパス作成済みなのでエラー対策はしない
             string Path = Properties.Settings.Default.ParameterFullPath;
+
+            //書込用ファイルパスの取得
+            string TmpPath = Path.Replace(".Prm", ".Tmp");
+
+            StringBuilder Str = new StringBuilder();
+
+            //ファイル書込開始
+            try
+            {
+                
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(TmpPath, false, Encoding.Unicode))
+                {
+
+                    #region 設定パラメータ
+                    file.WriteLine(NAME.SETTING.START);
+                    file.WriteLine(MakeParameter(NAME.SETTING.BREAKFAST, Setting.Breakfast.Start, Setting.Breakfast.Finish));
+                    file.WriteLine(MakeParameter(NAME.SETTING.LUNCH, Setting.Lunch.Start, Setting.Lunch.Finish));
+                    file.WriteLine(MakeParameter(NAME.SETTING.DINNER, Setting.Dinner.Start, Setting.Dinner.Finish));
+                    file.WriteLine(MakeParameter(NAME.SETTING.SLEEP, Setting.Sleep));
+                    file.WriteLine(MakeParameter(NAME.SETTING.PRESCRIPTIOIN, Setting.PrescriptionAlarmVolume));
+                    file.WriteLine(MakeParameter(NAME.SETTING.BEFOREMEALS, Setting.MinuteBeforeMeals));
+                    file.WriteLine(MakeParameter(NAME.SETTING.BETWEENMEALS, Setting.MinuteBetweenMeals));
+                    file.WriteLine(MakeParameter(NAME.SETTING.AFTERMEALS, Setting.MinuteAfterMeals));
+                    file.WriteLine(MakeParameter(NAME.SETTING.BEFORESLEEP, Setting.MinuteBeforeSleep));
+                    file.WriteLine(MakeParameter(NAME.SETTING.REALARM, Setting.MinuteReAlarm));
+                    file.WriteLine(NAME.SETTING.END);
+                    #endregion
+
+                    #region 薬パラメータ
+                    for (Int32 iLoop = 0; iLoop < DrugList.Count; iLoop++)
+                    {
+                        file.WriteLine(NAME.DRUG.START);
+
+                        file.WriteLine(MakeParameter(NAME.DRUG.NAME, DrugList[iLoop].Name, false));
+
+                        //朝昼夕ともに同設定のため、朝のみで判断
+                        switch (DrugList[iLoop].Breakfast.Kind)
+                        {
+
+                            case DrugParameter.KindTiming.Before:
+                                file.WriteLine(NAME.DRUG.BEFOREMEALS);
+                                break;
+
+                            case DrugParameter.KindTiming.Between:
+                                file.WriteLine(NAME.DRUG.BETWEENMEALS);
+                                break;
+
+                            case DrugParameter.KindTiming.After:
+                                file.WriteLine(NAME.DRUG.AFTERMEALS);
+                                break;
+
+                            default:
+                                file.WriteLine(NAME.DRUG.BEFOREMEALS);
+                                break;
+
+                        }
+
+                        if (DrugList[iLoop].Breakfast.IsDrug)
+                        {
+                            file.WriteLine(MakeParameter(NAME.DRUG.BREAKFAST, DrugList[iLoop].Breakfast.Volume));
+                        }
+
+                        if (DrugList[iLoop].Lunch.IsDrug)
+                        {
+                            file.WriteLine(MakeParameter(NAME.DRUG.LUNCH, DrugList[iLoop].Lunch.Volume));
+                        }
+
+                        if (DrugList[iLoop].Dinner.IsDrug)
+                        {
+                            file.WriteLine(MakeParameter(NAME.DRUG.DINNER, DrugList[iLoop].Dinner.Volume));
+                        }
+
+                        if (DrugList[iLoop].ToBeTaken.IsDrug)
+                        {
+                            file.WriteLine(MakeParameter(NAME.DRUG.TOBETAKEN, DrugList[iLoop].ToBeTaken.Volume));
+                        }
+
+                        if (DrugList[iLoop].Appoint.IsDrug)
+                        {
+                            file.WriteLine(MakeParameter(NAME.DRUG.APPOINTTIME, DrugList[iLoop].AppointTime, DrugList[iLoop].Appoint.Volume));
+                        }
+
+                        if (DrugList[iLoop].HourEach.IsDrug)
+                        {
+                            file.WriteLine(MakeParameter(NAME.DRUG.HOUREACH, DrugList[iLoop].HourEachTime, DrugList[iLoop].HourEach.Volume));
+                        }
+
+                        file.WriteLine(MakeParameter(NAME.DRUG.TOTALVOLUME, DrugList[iLoop].TotalVolume));
+                        file.WriteLine(MakeParameter(NAME.DRUG.REMARKS, DrugList[iLoop].Remarks, true));
+
+                        file.WriteLine(NAME.DRUG.END);
+
+                    }
+                    #endregion
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                Str.Clear();
+                Str = null;
+            }
+
+        }
+
+        /// <summary>
+        /// パラメータ文字列形式作成
+        /// </summary>
+        /// <param name="Parameter">パラメータ名</param>
+        /// <param name="Value">文字列</param>
+        /// <param name="IsAllowLine">改行有無</param>
+        /// <returns>パラメータ出力値</returns>
+        private string MakeParameter(string Parameter, string Value, bool IsAllowLine)
+        {
+
+            StringBuilder Str = new StringBuilder(Parameter.Length + Value.Length + 1);
+
+            try
+            {
+
+                Str.Clear();
+                Str.Append(Parameter);
+                Str.Append("=");
+
+                if (IsAllowLine)
+                {
+                    Str.Append(ConvertCRLF(Value));
+                }
+                else
+                {
+                    Str.Append(Value);
+                }
+
+                return Str.ToString();
+
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+            finally
+            {
+                Str.Clear();
+                Str = null;
+            }
+
+        }
+
+        /// <summary>
+        /// パラメータ数値形式作成
+        /// </summary>
+        /// <param name="Parameter">パラメータ名</param>
+        /// <param name="Value">数値</param>
+        /// <returns>パラメータ出力値</returns>
+        private string MakeParameter(string Parameter, Int32 Value)
+        {
+
+            StringBuilder Str = new StringBuilder(Parameter.Length + TimeFormat.Length + 1);
+
+            try
+            {
+
+                Str.Clear();
+                Str.Append(Parameter);
+                Str.Append("=");
+                Str.Append(Value.ToString());
+
+                return Str.ToString();
+
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+            finally
+            {
+                Str.Clear();
+                Str = null;
+            }
+
+        }
+
+        /// <summary>
+        /// パラメータ時間形式作成
+        /// </summary>
+        /// <param name="Parameter">パラメータ名</param>
+        /// <param name="Value">時間</param>
+        /// <returns>パラメータ出力値</returns>
+        private string MakeParameter(string Parameter, DateTime Value)
+        {
+
+            StringBuilder Str = new StringBuilder(Parameter.Length + TimeFormat.Length + 1);
+
+            try
+            {
+
+                Str.Clear();
+                Str.Append(Parameter);
+                Str.Append("=");
+                Str.Append(Value.ToString(TimeFormat));
+
+                return Str.ToString();
+
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+            finally
+            {
+                Str.Clear();
+                Str = null;
+            }
+
+        }
+
+        /// <summary>
+        /// パラメータ時間範囲形式作成
+        /// </summary>
+        /// <param name="Parameter">パラメータ名</param>
+        /// <param name="Start">開始時間</param>
+        /// <param name="Finish">終了時間</param>
+        /// <returns>パラメータ出力値</returns>
+        private string MakeParameter(string Parameter, DateTime Start, DateTime Finish)
+        {
+
+            StringBuilder Str = new StringBuilder(Parameter.Length + TimeFormat.Length * 2 + 2);
+
+            try
+            {
+
+                Str.Clear();
+                Str.Append(Parameter);
+                Str.Append("=");
+                Str.Append(Start.ToString(TimeFormat));
+                Str.Append(",");
+                Str.Append(Finish.ToString(TimeFormat));
+
+                return Str.ToString();
+
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+            finally
+            {
+                Str.Clear();
+                Str = null;
+            }
+
+        }
+
+        /// <summary>
+        /// パラメータ指定日時形式作成
+        /// </summary>
+        /// <param name="Parameter">パラメータ名</param>
+        /// <param name="AppointTime">指定日時</param>
+        /// <param name="Volume">錠</param>
+        /// <returns>パラメータ出力値</returns>
+        private string MakeParameter(string Parameter, DateTime AppointTime, Int32 Volume)
+        {
+
+            const string AppointFormat = "yyyy/MM/dd HH:mm";
+
+            StringBuilder Str = new StringBuilder(Parameter.Length + AppointFormat.Length + Volume.ToString().Length + 2);
+
+            try
+            {
+
+                Str.Clear();
+                Str.Append(Parameter);
+                Str.Append("=");
+                Str.Append(AppointTime.ToString(AppointFormat));
+                Str.Append(",");
+                Str.Append(Volume.ToString());
+
+                return Str.ToString();
+
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+            finally
+            {
+                Str.Clear();
+                Str = null;
+            }
+
+        }
+
+        /// <summary>
+        /// パラメータ時間毎形式作成
+        /// </summary>
+        /// <param name="Parameter">パラメータ名</param>
+        /// <param name="HourEach">時間毎</param>
+        /// <param name="Volume">錠</param>
+        /// <returns>パラメータ出力値</returns>
+        private string MakeParameter(string Parameter, Int32 HourEach, Int32 Volume)
+        {
+
+            StringBuilder Str = new StringBuilder(Parameter.Length + HourEach.ToString().Length + Volume.ToString().Length + 2);
+
+            try
+            {
+
+                Str.Clear();
+                Str.Append(Parameter);
+                Str.Append("=");
+                Str.Append(HourEach.ToString());
+                Str.Append(",");
+                Str.Append(Volume.ToString());
+
+                return Str.ToString();
+
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+            finally
+            {
+                Str.Clear();
+                Str = null;
+            }
 
         }
 
