@@ -73,6 +73,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -112,6 +113,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Base\TaskTray.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Base\TaskTray.Designer.cs">
+      <DependentUpon>TaskTray.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Class\AlarmTimer.cs" />
     <Compile Include="Class\Parameter.cs" />
     <Compile Include="Form\Alarm.xaml.cs">
       <DependentUpon>Alarm.xaml</DependentUpon>
@@ -154,6 +162,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Base\TaskTray.resx">
+      <DependentUpon>TaskTray.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -179,7 +190,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Base\" />
+    <Resource Include="Picture\SampleIcon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -286,6 +286,24 @@ namespace DrugAlarm.Properties {
         }
         
         /// <summary>
+        ///   終了 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Menu_Exit {
+            get {
+                return ResourceManager.GetString("Menu_Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   一覧表示 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Menu_ShowList {
+            get {
+                return ResourceManager.GetString("Menu_ShowList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   設定 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Realarm_Button_OK {

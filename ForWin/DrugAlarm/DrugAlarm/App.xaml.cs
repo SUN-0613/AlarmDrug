@@ -1,7 +1,8 @@
 ﻿using System.Windows;
 using System.Threading;
 using System.Reflection;
-using DrugAlarm.Form;
+using System.Windows;
+using DrugAlarm.Base;
 
 namespace DrugAlarm
 {
@@ -13,9 +14,14 @@ namespace DrugAlarm
     {
 
         /// <summary>
+        /// タスクトレイ表示
+        /// </summary>
+        private TaskTray _TaskTray;
+
+        /// <summary>
         /// 初回起動
         /// </summary>
-        private void App_Startup(object sender, StartupEventArgs e)
+        protected override void OnStartup(StartupEventArgs e)
         {
 
             string AppName = Assembly.GetExecutingAssembly().Location;      //実行パス取得
@@ -26,9 +32,12 @@ namespace DrugAlarm
             if (mutex.WaitOne(0, false))
             {
 
-                //画面表示
-                List MainForm = new List();
-                MainForm.ShowDialog();
+                //基本処理
+                base.OnStartup(e);
+
+                //タスクトレイ表示
+                ShutdownMode = ShutdownMode.OnExplicitShutdown;
+                _TaskTray = new TaskTray();
 
             }
             else
@@ -38,6 +47,20 @@ namespace DrugAlarm
                 Shutdown();
 
             }
+
+        }
+
+        /// <summary>
+        /// 終了処理
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnExit(ExitEventArgs e)
+        {
+
+            //基本処理
+            base.OnExit(e);
+
+            //タスクトレイから削除
 
         }
 

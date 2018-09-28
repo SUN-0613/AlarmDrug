@@ -217,6 +217,14 @@
     <value>お薬一覧</value>
     <comment>一覧：タイトル</comment>
   </data>
+  <data name="Menu_Exit" xml:space="preserve">
+    <value>終了</value>
+    <comment>タスクメニュー：終了</comment>
+  </data>
+  <data name="Menu_ShowList" xml:space="preserve">
+    <value>一覧表示</value>
+    <comment>タスクメニュー：一覧表示</comment>
+  </data>
   <data name="Realarm_Button_OK" xml:space="preserve">
     <value>設定</value>
     <comment>再通知：ボタン</comment>

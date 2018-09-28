@@ -1,8 +1,7 @@
 ﻿<Application x:Class="DrugAlarm.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:properties="clr-namespace:DrugAlarm.Properties"
-             Startup="App_Startup">
+             xmlns:properties="clr-namespace:DrugAlarm.Properties">
     <Application.Resources>
 
         <!--ウィンドウ統一設定-->
