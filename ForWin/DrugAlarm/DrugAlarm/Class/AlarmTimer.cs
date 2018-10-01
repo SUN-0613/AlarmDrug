@@ -27,9 +27,6 @@ namespace DrugAlarm.Class
         public AlarmTimer()
         {
 
-            //次回アラーム情報取得
-            _Parameter.SetNextAlarm(ref NextAlarm);
-
             //タイマ処理
             _Timer = new DispatcherTimer
             {
@@ -70,9 +67,9 @@ namespace DrugAlarm.Class
             try
             {
 
-                //次回アラーム情報取得
-
                 //次回アラーム時刻を超過していればアラーム表示
+
+                //アラーム表示後、次回アラーム情報の再設定
 
             }
             catch (Exception ex)

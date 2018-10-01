@@ -55,7 +55,7 @@ namespace DrugAlarm.Class
         /// <summary>
         /// 次回アラーム情報
         /// </summary>
-        public struct NextAlarmInfo
+        private struct NextAlarmInfo
         {
 
             /// <summary>
@@ -68,12 +68,26 @@ namespace DrugAlarm.Class
             /// </summary>
             public List<Int32> Index;
 
+            /// <summary>
+            /// 初期化
+            /// </summary>
+            public void Initialize()
+            {
+                Timer = DateTime.MaxValue;
+                Index = new List<Int32>();
+            }
+
         }
 
         /// <summary>
         /// 次回アラーム
         /// </summary>
-        public NextAlarmInfo NextAlarm;
+        private NextAlarmInfo NextAlarm;
+
+        /// <summary>
+        /// 再通知
+        /// </summary>
+        private NextAlarmInfo ReAlarm;
 
         /// <summary>
         /// 指定時間を今日日付のDateTime型に変換
@@ -197,11 +211,6 @@ namespace DrugAlarm.Class
                 return Str.Replace(_CRLF_, CRLF);
             }
         }
-
-        /// <summary>
-        /// 編集FLG
-        /// </summary>
-        private bool IsEdit = true;
 
         /// <summary>
         /// パラメータ名称一覧
@@ -625,6 +634,9 @@ namespace DrugAlarm.Class
             Setting = new SettingParameter();
             DrugList = new List<DrugParameter>();
 
+            NextAlarm.Initialize();
+            ReAlarm.Initialize();
+
             this.Load();
 
         }
@@ -881,6 +893,9 @@ namespace DrugAlarm.Class
 
                 }
 
+                //次回アラーム取得
+                SetNextAlarm();
+
             }
 
         }
@@ -1031,7 +1046,8 @@ namespace DrugAlarm.Class
                 Str.Clear();
                 Str = null;
 
-                IsEdit = true;
+                //次回アラーム取得
+                SetNextAlarm();
 
             }
 
@@ -1262,32 +1278,135 @@ namespace DrugAlarm.Class
         }
 
         /// <summary>
-        /// 次回アラーム情報の取得
+        /// 次回アラーム情報の設定
         /// </summary>
         private void SetNextAlarm()
         {
 
+            DateTime Time;
+
+            //初期値
+            NextAlarm.Timer = DateTime.MaxValue;
+            NextAlarm.Index.Clear();
+
+            //再通知
+            if (NextAlarm.Timer <= ReAlarm.Timer)  
+            {
+
+                //同時刻ならば追加、現在設定値より前時刻なら新規に登録
+                if (NextAlarm.Timer != ReAlarm.Timer)
+                {
+                    NextAlarm.Index.Clear();
+                }
+
+                //DrugListのIndexを登録
+                for (Int32 iLoop = 0; iLoop < ReAlarm.Index.Count; iLoop++)
+                {
+                    NextAlarm.Index.Add(ReAlarm.Index[iLoop]);
+                }
+
+                //アラーム時刻の更新
+                NextAlarm.Timer = ReAlarm.Timer;
+
+            }
+
+            //毎時・指定日時
+            for (Int32 iLoop = 0; iLoop < DrugList.Count; iLoop++)
+            {
+
+                //毎時
+                if (DrugList[iLoop].HourEach.IsDrug)
+                {
+                    CompareToTime(GetNextDateTime(GetTodayTime(DrugList[iLoop].HourEachTime, 0)), iLoop);
+                }
+
+                //指定日時
+                if (DrugList[iLoop].Appoint.IsDrug)
+                {
+                    CompareToTime(DrugList[iLoop].AppointTime, iLoop);
+                }
+
+                //朝食
+                if (DrugList[iLoop].Breakfast.IsDrug)
+                {
+                    Time = CalcMealsTime(Setting.Breakfast.Start, Setting.Breakfast.Finish, DrugList[iLoop].Breakfast.Kind);
+                    CompareToTime(Time, iLoop);
+                }
+
+                //昼食
+                if (DrugList[iLoop].Lunch.IsDrug)
+                {
+                    Time = CalcMealsTime(Setting.Lunch.Start, Setting.Lunch.Finish, DrugList[iLoop].Lunch.Kind);
+                    CompareToTime(Time, iLoop);
+                }
+
+                //夕食
+                if (DrugList[iLoop].Dinner.IsDrug)
+                {
+                    Time = CalcMealsTime(Setting.Dinner.Start, Setting.Dinner.Finish, DrugList[iLoop].Dinner.Kind);
+                    CompareToTime(Time, iLoop);
+                }
+
+                //就寝前
+                if (DrugList[iLoop].Sleep.IsDrug)
+                {
+                    Time = Setting.Sleep.AddMinutes((-1) * Setting.MinuteBeforeSleep);
+                    CompareToTime(Time, iLoop);
+                }
+
+            }
+
         }
 
         /// <summary>
-        /// 次回アラーム情報の取得
+        /// 次回アラームとなるか比較、Indexを登録する
         /// </summary>
-        /// <param name="Return">アラーム情報リスト</param>
-        public void GetNextAlarm(ref NextAlarmInfo Return)
+        /// <param name="Timer">アラーム候補時刻</param>
+        /// <param name="DrugIndex">薬Index</param>
+        private void CompareToTime(DateTime Time, Int32 DrugIndex)
         {
 
-            //アラーム時刻超過、または編集後にデータを再取得
-            if (Return.Timer > DateTime.Now || IsEdit)
+            //同時刻ならば追加、現在設定値より前時刻なら新規に登録
+            if (NextAlarm.Timer != Time)
+            {
+                NextAlarm.Index.Clear();
+            }
+
+            //DrugListのIndexを登録
+            if (NextAlarm.Index.IndexOf(DrugIndex) == -1)
+            {
+                NextAlarm.Index.Add(DrugIndex);
+            }
+
+            //アラーム時刻の更新
+            NextAlarm.Timer = Time;
+
+        }
+
+        /// <summary>
+        /// 食事時の服用時間の計算
+        /// </summary>
+        /// <param name="StartTime">開始時間</param>
+        /// <param name="FinishTime">終了時間</param>
+        /// <param name="Kind">服用タイミング</param>
+        /// <returns>服用時間</returns>
+        private DateTime CalcMealsTime(DateTime StartTime, DateTime FinishTime, DrugParameter.KindTiming Kind)
+        {
+
+            switch (Kind)
             {
 
-                //次回アラーム時刻を検索
+                case DrugParameter.KindTiming.Before:   //食前
+                    return StartTime.AddMinutes((-1) * Setting.MinuteBeforeMeals);
 
+                case DrugParameter.KindTiming.Between:  //食間
+                    return StartTime.AddMinutes(Setting.MinuteBetweenMeals);
 
-                //次回アラームの薬Index一覧を取得
+                case DrugParameter.KindTiming.After:    //食後
+                    return FinishTime.AddMinutes(Setting.MinuteAfterMeals);
 
-
-                //編集FLGリセット
-                IsEdit = false;
+                default:    //ここにはこない
+                    return StartTime;
 
             }
 
