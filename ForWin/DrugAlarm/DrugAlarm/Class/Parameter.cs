@@ -26,7 +26,7 @@ namespace DrugAlarm.Class
     /// 備考欄は改行入力を許可し、ファイル保存時は_CRLF_に置換
     /// 
     /// </remarks>
-    public class Parameter
+    public class Parameter : IDisposable
     {
 
         /// <summary>
@@ -51,6 +51,29 @@ namespace DrugAlarm.Class
             public DateTime Finish;
 
         }
+
+        /// <summary>
+        /// 次回アラーム情報
+        /// </summary>
+        public struct NextAlarmInfo
+        {
+
+            /// <summary>
+            /// アラーム時間
+            /// </summary>
+            public DateTime Timer;
+
+            /// <summary>
+            /// Parameter.DrugList[Index]
+            /// </summary>
+            public List<Int32> Index;
+
+        }
+
+        /// <summary>
+        /// 次回アラーム
+        /// </summary>
+        public NextAlarmInfo NextAlarm;
 
         /// <summary>
         /// 指定時間を今日日付のDateTime型に変換
@@ -174,6 +197,11 @@ namespace DrugAlarm.Class
                 return Str.Replace(_CRLF_, CRLF);
             }
         }
+
+        /// <summary>
+        /// 編集FLG
+        /// </summary>
+        private bool IsEdit = true;
 
         /// <summary>
         /// パラメータ名称一覧
@@ -597,12 +625,30 @@ namespace DrugAlarm.Class
             Setting = new SettingParameter();
             DrugList = new List<DrugParameter>();
 
+            this.Load();
+
+        }
+
+        /// <summary>
+        /// 終了処理
+        /// </summary>
+        public void Dispose()
+        {
+            Setting = null;
+
+            DrugList.ForEach(Drug =>
+                {
+                    Drug = null;
+                });
+            DrugList.Clear();
+            DrugList = null;
+
         }
 
         /// <summary>
         /// ファイル読込
         /// </summary>
-        public void Load()
+        private void Load()
         {
 
             //前回パスの取得
@@ -981,8 +1027,12 @@ namespace DrugAlarm.Class
             }
             finally
             {
+
                 Str.Clear();
                 Str = null;
+
+                IsEdit = true;
+
             }
 
         }
@@ -1207,6 +1257,38 @@ namespace DrugAlarm.Class
             {
                 Str.Clear();
                 Str = null;
+            }
+
+        }
+
+        /// <summary>
+        /// 次回アラーム情報の取得
+        /// </summary>
+        private void SetNextAlarm()
+        {
+
+        }
+
+        /// <summary>
+        /// 次回アラーム情報の取得
+        /// </summary>
+        /// <param name="Return">アラーム情報リスト</param>
+        public void GetNextAlarm(ref NextAlarmInfo Return)
+        {
+
+            //アラーム時刻超過、または編集後にデータを再取得
+            if (Return.Timer > DateTime.Now || IsEdit)
+            {
+
+                //次回アラーム時刻を検索
+
+
+                //次回アラームの薬Index一覧を取得
+
+
+                //編集FLGリセット
+                IsEdit = false;
+
             }
 
         }

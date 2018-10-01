@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Forms;
-using System.Reflection;
+using DrugAlarm.Class;
 
 namespace DrugAlarm.Base
 {
@@ -19,6 +13,16 @@ namespace DrugAlarm.Base
     {
 
         /// <summary>
+        /// パラメータ
+        /// </summary>
+        private Parameter _Parameter = (App.Current as App).Parameter;
+
+        /// <summary>
+        /// タイマ処理
+        /// </summary>
+        private AlarmTimer _Timer;
+
+        /// <summary>
         /// new
         /// </summary>
         public TaskTray()
@@ -26,7 +30,7 @@ namespace DrugAlarm.Base
 
             InitializeComponent();
 
-            AddMenuItem();
+            Initialize();
 
         }
 
@@ -41,7 +45,21 @@ namespace DrugAlarm.Base
 
             InitializeComponent();
 
+            Initialize();
+
+        }
+
+        /// <summary>
+        /// 初期処理
+        /// </summary>
+        private void Initialize()
+        {
+
+            //右クリックメニュー追加
             AddMenuItem();
+
+            //タイマ処理開始
+            _Timer = new AlarmTimer();
 
         }
 
@@ -53,19 +71,27 @@ namespace DrugAlarm.Base
 
             ToolStripMenuItem AddMenuItem;
 
-            AddMenuItem = new ToolStripMenuItem();
-            AddMenuItem.Name = "ShowList";
-            AddMenuItem.Text = Properties.Resources.Menu_ShowList;
+            #region 一覧表示
+            AddMenuItem = new ToolStripMenuItem
+            {
+                Name = "ShowList",
+                Text = Properties.Resources.Menu_ShowList
+            };
             AddMenuItem.Click += new EventHandler(MenuItem_ShowList_Click);
 
             Menu.Items.Add(AddMenuItem);
+            #endregion
 
-            AddMenuItem = new ToolStripMenuItem();
-            AddMenuItem.Name = "Exit";
-            AddMenuItem.Text = Properties.Resources.Menu_Exit;
+            #region 終了
+            AddMenuItem = new ToolStripMenuItem
+            {
+                Name = "Exit",
+                Text = Properties.Resources.Menu_Exit
+            };
             AddMenuItem.Click += new EventHandler(MenuItem_Exit_Click);
 
             Menu.Items.Add(AddMenuItem);
+            #endregion
 
         }
 
@@ -85,7 +111,14 @@ namespace DrugAlarm.Base
         /// </summary>
         private void MenuItem_Exit_Click(object sender, EventArgs e)
         {
+
+            //タイマ処理終了
+            _Timer.Dispose();
+            _Timer = null;
+
+            //プログラム終了
             System.Windows.Application.Current.Shutdown();
+
         }
 
     }

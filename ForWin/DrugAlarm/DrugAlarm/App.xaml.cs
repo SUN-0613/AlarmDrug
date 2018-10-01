@@ -1,8 +1,8 @@
 ﻿using System.Windows;
 using System.Threading;
 using System.Reflection;
-using System.Windows;
 using DrugAlarm.Base;
+using DrugAlarm.Class;
 
 namespace DrugAlarm
 {
@@ -12,6 +12,11 @@ namespace DrugAlarm
     /// </summary>
     public partial class App : Application
     {
+
+        /// <summary>
+        /// パラメータプロパティ
+        /// </summary>
+        public Parameter Parameter { get; set; }
 
         /// <summary>
         /// タスクトレイ表示
@@ -34,6 +39,9 @@ namespace DrugAlarm
 
                 //基本処理
                 base.OnStartup(e);
+
+                //パラメータ処理
+                Parameter = new Parameter();
 
                 //タスクトレイ表示
                 ShutdownMode = ShutdownMode.OnExplicitShutdown;
@@ -59,6 +67,9 @@ namespace DrugAlarm
 
             //基本処理
             base.OnExit(e);
+
+            //パラメータ終了処理
+            Parameter.Dispose();
 
             //タスクトレイから削除
             _TaskTray.Dispose();
