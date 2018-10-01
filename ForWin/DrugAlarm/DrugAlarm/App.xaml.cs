@@ -61,6 +61,7 @@ namespace DrugAlarm
             base.OnExit(e);
 
             //タスクトレイから削除
+            _TaskTray.Dispose();
 
         }
 

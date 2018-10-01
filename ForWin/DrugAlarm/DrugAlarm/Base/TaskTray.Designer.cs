@@ -35,6 +35,7 @@
             // 
             // Task
             // 
+            this.Task.ContextMenuStrip = this.Menu;
             this.Task.Icon = ((System.Drawing.Icon)(resources.GetObject("Task.Icon")));
             this.Task.Text = "DrugAlarm";
             this.Task.Visible = true;
@@ -42,7 +43,7 @@
             // Menu
             // 
             this.Menu.Name = "Menu";
-            this.Menu.Size = new System.Drawing.Size(180, 48);
+            this.Menu.Size = new System.Drawing.Size(61, 4);
 
         }
 

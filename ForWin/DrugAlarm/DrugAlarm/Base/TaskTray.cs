@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace DrugAlarm.Base
 {
@@ -73,7 +74,10 @@ namespace DrugAlarm.Base
         /// </summary>
         private void MenuItem_ShowList_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("");
+
+            var ListForm = new DrugAlarm.Form.List();
+            ListForm.Show();
+
         }
 
         /// <summary>
@@ -81,7 +85,7 @@ namespace DrugAlarm.Base
         /// </summary>
         private void MenuItem_Exit_Click(object sender, EventArgs e)
         {
-            
+            System.Windows.Application.Current.Shutdown();
         }
 
     }
