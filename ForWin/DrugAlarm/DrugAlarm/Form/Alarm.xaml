@@ -3,13 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DrugAlarm.Form"
+        xmlns:prm="clr-namespace:DrugAlarm.Class"
         mc:Ignorable="d"
         Style="{Binding Mode=OneWay, Source={StaticResource WindowCustomStyle}}"
         Title="{Binding Alarm_Title, Source={StaticResource resources}}" 
         WindowStartupLocation="CenterOwner"
         Topmost="True"
         >
+    <Window.DataContext>
+        <prm:Parameter/>
+    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />

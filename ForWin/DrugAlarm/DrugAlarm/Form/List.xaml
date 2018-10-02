@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DrugAlarm.Form"
         mc:Ignorable="d"
         Style="{Binding Mode=OneWay, Source={StaticResource WindowCustomStyle}}"
         Title="{Binding List_Title, Source={StaticResource resources}}" >
@@ -33,20 +32,13 @@
             <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" Foreground="White" Background="Transparent" BorderBrush="Transparent" Content="{Binding List_Setting, Source={StaticResource resources}}" FontSize="15" Style="{StaticResource ButtonCustomStyle}" Click="Button_Click" />
         </Grid>
 
-        <ListBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" SelectionMode="Single" BorderBrush="Transparent" Background="Transparent" >
-            <ListBoxItem>
-                <TextBlock Text="AAA : 朝昼夜 食後" />
-            </ListBoxItem>
-            <ListBoxItem>
-                <TextBlock Text="BBB : 寝る前" />
-            </ListBoxItem>
-            <ListBoxItem>
-                <TextBlock Text="CCC : 頓服" Foreground="Red" />
-            </ListBoxItem>
-            <ListBoxItem>
-                <TextBlock Text="{Binding List_AddList, Source={StaticResource resources}}" Foreground="Gray" />
-            </ListBoxItem>
+        <ListBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" SelectionMode="Single" BorderBrush="Transparent" Background="Transparent" ItemsSource="{Binding}" >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" Foreground="Black" FontSize="21" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
         </ListBox>
-        
+
     </Grid>
 </Window>

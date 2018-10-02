@@ -88,6 +88,15 @@ namespace DrugAlarm.Properties {
         }
         
         /// <summary>
+        ///   多重起動防止 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string App_MutexMessage {
+            get {
+                return ResourceManager.GetString("App_MutexMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   食後 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Detail_AfterMeals {

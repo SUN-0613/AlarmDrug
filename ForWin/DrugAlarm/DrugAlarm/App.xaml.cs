@@ -39,19 +39,19 @@ namespace DrugAlarm
 
                 //基本処理
                 base.OnStartup(e);
+                ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
                 //パラメータ処理
                 Parameter = new Parameter();
 
                 //タスクトレイ表示
-                ShutdownMode = ShutdownMode.OnExplicitShutdown;
                 _TaskTray = new TaskTray();
 
             }
             else
             {
 
-                MessageBox.Show("多重起動防止", AppName, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(DrugAlarm.Properties.Resources.App_MutexMessage, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
                 Shutdown();
 
             }

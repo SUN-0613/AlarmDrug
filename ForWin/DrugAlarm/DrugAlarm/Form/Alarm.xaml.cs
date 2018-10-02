@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DrugAlarm.Class;
 
 namespace DrugAlarm.Form
 {
@@ -19,6 +20,12 @@ namespace DrugAlarm.Form
     /// </summary>
     public partial class Alarm : Window
     {
+
+        /// <summary>
+        /// パラメータ
+        /// </summary>
+        private Parameter _Parameter = (System.Windows.Application.Current as App).Parameter;
+
         /// <summary>
         /// new
         /// </summary>

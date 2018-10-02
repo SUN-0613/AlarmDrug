@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Text;
+using System.Collections.ObjectModel;
 
 namespace DrugAlarm.Class
 {
@@ -43,12 +44,12 @@ namespace DrugAlarm.Class
             /// <summary>
             /// 開始時間
             /// </summary>
-            public DateTime Start;
+            public DateTime Start { get; set; }
 
             /// <summary>
             /// 終了時間
             /// </summary>
-            public DateTime Finish;
+            public DateTime Finish { get; set; }
 
         }
 
@@ -385,13 +386,13 @@ namespace DrugAlarm.Class
         /// <summary>
         /// 設定クラス
         /// </summary>
-        public class SettingParameter
+        private class SettingParameter
         {
 
             /// <summary>
             /// 設定データ読込・書込中
             /// </summary>
-            public bool IsAccess;
+            public bool IsAccess { get; set; }
 
             /// <summary>
             /// 朝食時間範囲
@@ -411,37 +412,37 @@ namespace DrugAlarm.Class
             /// <summary>
             /// 就寝時間
             /// </summary>
-            public DateTime Sleep;
+            public DateTime Sleep { get; set; }
 
             /// <summary>
             /// お知らせを表示する薬残量
             /// </summary>
-            public Int32 PrescriptionAlarmVolume;
+            public Int32 PrescriptionAlarmVolume { get; set; }
 
             /// <summary>
             /// 食前時間(分)
             /// </summary>
-            public Int32 MinuteBeforeMeals;
+            public Int32 MinuteBeforeMeals { get; set; }
 
             /// <summary>
             /// 食間時間(分)
             /// </summary>
-            public Int32 MinuteBetweenMeals;
+            public Int32 MinuteBetweenMeals { get; set; }
 
             /// <summary>
             /// 食後時間(分)
             /// </summary>
-            public Int32 MinuteAfterMeals;
+            public Int32 MinuteAfterMeals { get; set; }
 
             /// <summary>
             /// 就寝前時間(分)
             /// </summary>
-            public Int32 MinuteBeforeSleep;
-            
+            public Int32 MinuteBeforeSleep { get; set; }
+
             /// <summary>
             /// 再通知時間(分)
             /// </summary>
-            public Int32 MinuteReAlarm;
+            public Int32 MinuteReAlarm { get; set; }
 
             /// <summary>
             /// 初期値設定
@@ -545,12 +546,12 @@ namespace DrugAlarm.Class
             /// <summary>
             /// 設定データ読込・書込中
             /// </summary>
-            public bool IsAccess;
+            public bool IsAccess { get; set; }
 
             /// <summary>
             /// 名称
             /// </summary>
-            public string Name;
+            public string Name { get; set; }
 
             /// <summary>
             /// 朝食
@@ -585,7 +586,7 @@ namespace DrugAlarm.Class
             /// <summary>
             /// 指定時間
             /// </summary>
-            public DateTime AppointTime;
+            public DateTime AppointTime { get; set; }
 
             /// <summary>
             /// 時間毎(時)
@@ -595,17 +596,17 @@ namespace DrugAlarm.Class
             /// <summary>
             /// 時間毎(時)
             /// </summary>
-            public Int32 HourEachTime;
+            public Int32 HourEachTime { get; set; }
 
             /// <summary>
             /// 処方量
             /// </summary>
-            public Int32 TotalVolume;
+            public Int32 TotalVolume { get; set; }
 
             /// <summary>
             /// 備考
             /// </summary>
-            public string Remarks;
+            public string Remarks { get; set; }
 
             /// <summary>
             /// 初期値設定
@@ -634,12 +635,12 @@ namespace DrugAlarm.Class
         /// <summary>
         /// 設定データ
         /// </summary>
-        public SettingParameter Setting;
+        private SettingParameter Setting;
 
         /// <summary>
         /// 薬リスト
         /// </summary>
-        public List<DrugParameter> DrugList;
+        public ObservableCollection<DrugParameter> DrugList;
 
         /// <summary>
         /// new
@@ -648,10 +649,10 @@ namespace DrugAlarm.Class
         {
 
             Setting = new SettingParameter();
-            DrugList = new List<DrugParameter>();
+            DrugList = new ObservableCollection<DrugParameter>();
             ShortageIndex = new List<Int32>();
 
-            NextAlarm.Initialize();
+            _NextAlarm.Initialize();
             ReAlarm.Initialize();
 
             this.Load();
@@ -665,10 +666,10 @@ namespace DrugAlarm.Class
         {
             Setting = null;
 
-            DrugList.ForEach(Drug =>
-                {
-                    Drug = null;
-                });
+            for (Int32 iLoop = 0; iLoop < DrugList.Count; iLoop++)
+            {
+                DrugList[iLoop] = null;
+            }
             DrugList.Clear();
             DrugList = null;
 
@@ -689,234 +690,228 @@ namespace DrugAlarm.Class
             //前回パスが未記入、またはファイルがなければ新規に作成する
             if (Path.Length == 0 || !System.IO.File.Exists(Path))
             {
-                Properties.Settings.Default.ParameterFullPath = SelectDirectory();
+
+                Path = SelectDirectory();
+
+                Properties.Settings.Default.ParameterFullPath = Path;
+                Properties.Settings.Default.Save();
+
+                this.Save();
+
             }
-            else
+
+            //ファイル読込開始
+            using (System.IO.StreamReader file = new System.IO.StreamReader(Path, Encoding.Unicode))
             {
 
-                //ファイル読込開始
-                using (System.IO.StreamReader file = new System.IO.StreamReader(Path, Encoding.Unicode))
-                {
+                StringBuilder NewLine = new StringBuilder();
+                Int32 Index = 0;
 
-                    StringBuilder NewLine = new StringBuilder();
-                    Int32 Index = 0;
+                while (!file.EndOfStream)
+                {
 
                     try
                     {
 
-                        while (!NewLine.Append(file.ReadLine()).Equals(null))
+                        NewLine.Append(file.ReadLine());
+
+                        if (!NewLine.ToString().Contains("="))
                         {
 
-                            try
+                            //パラメータ種類の選別
+                            switch (NewLine.ToString())
                             {
+                                case NAME.SETTING.START:
 
-                                if (!NewLine.ToString().Contains("="))
+                                    Setting.IsAccess = true;
+
+                                    if (DrugList.Count > 0)
+                                    {
+                                        DrugList[DrugList.Count - 1].IsAccess = false;
+                                    }
+
+                                    break;
+
+                                case NAME.SETTING.END:
+                                    Setting.IsAccess = false;
+                                    break;
+
+                                case NAME.DRUG.START:
+
+                                    Setting.IsAccess = false;
+
+                                    DrugList.Add(new DrugParameter());
+                                    Index = DrugList.Count - 1;
+                                    DrugList[Index].IsAccess = true;
+
+                                    break;
+
+                                case NAME.DRUG.END:
+                                    DrugList[Index].IsAccess = false;
+                                    break;
+
+                                default:
+                                    break;
+                            }
+
+                        }
+                        else
+                        {
+
+                            string[] Str = NewLine.ToString().Split('=');
+                            string[] Values = Str[1].Split(',');
+
+                            if (Setting.IsAccess)
+                            {
+                                //設定パラメータ
+                                switch (Str[0])
                                 {
+                                    case NAME.SETTING.BREAKFAST:
+                                        Setting.Breakfast.Start = GetTodayTime(Values[0]);
+                                        Setting.Breakfast.Finish = GetTodayTime(Values[1]);
+                                        break;
 
-                                    //パラメータ種類の選別
-                                    switch (NewLine.ToString())
-                                    {
-                                        case NAME.SETTING.START:
+                                    case NAME.SETTING.LUNCH:
+                                        Setting.Lunch.Start = GetTodayTime(Values[0]);
+                                        Setting.Lunch.Finish = GetTodayTime(Values[1]);
+                                        break;
 
-                                            Setting.IsAccess = true;
+                                    case NAME.SETTING.DINNER:
+                                        Setting.Dinner.Start = GetTodayTime(Values[0]);
+                                        Setting.Dinner.Finish = GetTodayTime(Values[1]);
+                                        break;
 
-                                            if (DrugList.Count > 0)
-                                            {
-                                                DrugList[DrugList.Count - 1].IsAccess = false;
-                                            }
+                                    case NAME.SETTING.SLEEP:
+                                        Setting.Sleep = GetTodayTime(Str[1]);
+                                        break;
 
-                                            break;
+                                    case NAME.SETTING.PRESCRIPTIOIN:
+                                        Setting.PrescriptionAlarmVolume = ConvertToInt32(Str[1], Setting.PrescriptionAlarmVolume);
+                                        break;
 
-                                        case NAME.SETTING.END:
-                                            Setting.IsAccess = false;
-                                            break;
+                                    case NAME.SETTING.BEFOREMEALS:
+                                        Setting.MinuteBeforeMeals = ConvertToInt32(Str[1], Setting.MinuteBeforeMeals);
+                                        break;
 
-                                        case NAME.DRUG.START:
+                                    case NAME.SETTING.BETWEENMEALS:
+                                        Setting.MinuteBetweenMeals = ConvertToInt32(Str[1], Setting.MinuteBetweenMeals);
+                                        break;
 
-                                            Setting.IsAccess = false;
+                                    case NAME.SETTING.AFTERMEALS:
+                                        Setting.MinuteAfterMeals = ConvertToInt32(Str[1], Setting.MinuteAfterMeals);
+                                        break;
 
-                                            DrugList.Add(new DrugParameter());
-                                            Index = DrugList.Count - 1;
-                                            DrugList[Index].IsAccess = true;
+                                    case NAME.SETTING.BEFORESLEEP:
+                                        Setting.MinuteBeforeSleep = ConvertToInt32(Str[1], Setting.MinuteBeforeSleep);
+                                        break;
 
-                                            break;
+                                    case NAME.SETTING.REALARM:
+                                        Setting.MinuteReAlarm = ConvertToInt32(Str[1], Setting.MinuteReAlarm);
+                                        break;
 
-                                        case NAME.DRUG.END:
-                                            DrugList[Index].IsAccess = false;
-                                            break;
-
-                                        default:
-                                            break;
-                                    }
-
-                                }
-                                else
-                                {
-
-                                    string[] Str = NewLine.ToString().Split('=');
-                                    string[] Values = Str[1].Split(',');
-
-                                    if (Setting.IsAccess)
-                                    {
-                                        //設定パラメータ
-                                        switch (Str[0])
-                                        {
-                                            case NAME.SETTING.BREAKFAST:
-                                                Setting.Breakfast.Start = GetTodayTime(Values[0]);
-                                                Setting.Breakfast.Finish = GetTodayTime(Values[1]);
-                                                break;
-
-                                            case NAME.SETTING.LUNCH:
-                                                Setting.Lunch.Start = GetTodayTime(Values[0]);
-                                                Setting.Lunch.Finish = GetTodayTime(Values[1]);
-                                                break;
-
-                                            case NAME.SETTING.DINNER:
-                                                Setting.Dinner.Start = GetTodayTime(Values[0]);
-                                                Setting.Dinner.Finish = GetTodayTime(Values[1]);
-                                                break;
-
-                                            case NAME.SETTING.SLEEP:
-                                                Setting.Sleep = GetTodayTime(Str[1]);
-                                                break;
-
-                                            case NAME.SETTING.PRESCRIPTIOIN:
-                                                Setting.PrescriptionAlarmVolume = ConvertToInt32(Str[1], Setting.PrescriptionAlarmVolume);
-                                                break;
-
-                                            case NAME.SETTING.BEFOREMEALS:
-                                                Setting.MinuteBeforeMeals = ConvertToInt32(Str[1], Setting.MinuteBeforeMeals);
-                                                break;
-
-                                            case NAME.SETTING.BETWEENMEALS:
-                                                Setting.MinuteBetweenMeals = ConvertToInt32(Str[1], Setting.MinuteBetweenMeals);
-                                                break;
-
-                                            case NAME.SETTING.AFTERMEALS:
-                                                Setting.MinuteAfterMeals = ConvertToInt32(Str[1], Setting.MinuteAfterMeals);
-                                                break;
-
-                                            case NAME.SETTING.BEFORESLEEP:
-                                                Setting.MinuteBeforeSleep = ConvertToInt32(Str[1], Setting.MinuteBeforeSleep);
-                                                break;
-
-                                            case NAME.SETTING.REALARM:
-                                                Setting.MinuteReAlarm = ConvertToInt32(Str[1], Setting.MinuteReAlarm);
-                                                break;
-
-                                            default:
-                                                break;
-
-                                        }
-
-                                    }
-                                    else if (DrugList[Index].IsAccess)
-                                    {
-
-                                        //薬パラメータ
-                                        switch (Str[0])
-                                        {
-                                            case NAME.DRUG.NAME:
-                                                DrugList[Index].Name = Str[1];
-                                                break;
-
-                                            case NAME.DRUG.BEFOREMEALS:
-                                                DrugList[Index].Breakfast.Kind = DrugParameter.KindTiming.Before;
-                                                DrugList[Index].Lunch.Kind = DrugParameter.KindTiming.Before;
-                                                DrugList[Index].Dinner.Kind = DrugParameter.KindTiming.Before;
-                                                break;
-
-                                            case NAME.DRUG.BETWEENMEALS:
-                                                DrugList[Index].Breakfast.Kind = DrugParameter.KindTiming.Between;
-                                                DrugList[Index].Lunch.Kind = DrugParameter.KindTiming.Between;
-                                                DrugList[Index].Dinner.Kind = DrugParameter.KindTiming.Between;
-                                                break;
-
-                                            case NAME.DRUG.AFTERMEALS:
-                                                DrugList[Index].Breakfast.Kind = DrugParameter.KindTiming.After;
-                                                DrugList[Index].Lunch.Kind = DrugParameter.KindTiming.After;
-                                                DrugList[Index].Dinner.Kind = DrugParameter.KindTiming.After;
-                                                break;
-
-                                            case NAME.DRUG.BREAKFAST:
-                                                DrugList[Index].Breakfast.IsDrug = true;
-                                                DrugList[Index].Breakfast.Volume = ConvertToInt32(Str[1], DrugList[Index].Breakfast.Volume);
-                                                break;
-
-                                            case NAME.DRUG.LUNCH:
-                                                DrugList[Index].Lunch.IsDrug = true;
-                                                DrugList[Index].Lunch.Volume = ConvertToInt32(Str[1], DrugList[Index].Lunch.Volume);
-                                                break;
-
-                                            case NAME.DRUG.DINNER:
-                                                DrugList[Index].Dinner.IsDrug = true;
-                                                DrugList[Index].Dinner.Volume = ConvertToInt32(Str[1], DrugList[Index].Dinner.Volume);
-                                                break;
-
-                                            case NAME.DRUG.TOBETAKEN:
-                                                DrugList[Index].ToBeTaken.IsDrug = true;
-                                                DrugList[Index].ToBeTaken.Volume = ConvertToInt32(Str[1], DrugList[Index].ToBeTaken.Volume);
-                                                break;
-
-                                            case NAME.DRUG.APPOINTTIME:
-                                                DrugList[Index].Appoint.IsDrug = true;
-                                                DrugList[Index].Appoint.Volume = ConvertToInt32(Str[1], DrugList[Index].Appoint.Volume);
-                                                DrugList[Index].AppointTime = ConvertDateTime(Str[2], DrugList[Index].AppointTime);
-                                                break;
-
-                                            case NAME.DRUG.HOUREACH:
-                                                DrugList[Index].HourEach.IsDrug = true;
-                                                DrugList[Index].HourEach.Volume = ConvertToInt32(Str[1], DrugList[Index].HourEach.Volume);
-                                                DrugList[Index].HourEachTime = ConvertToInt32(Str[2], DrugList[Index].HourEachTime);
-                                                break;
-
-                                            case NAME.DRUG.TOTALVOLUME:
-                                                DrugList[Index].TotalVolume = ConvertToInt32(Str[1], DrugList[Index].TotalVolume);
-                                                break;
-
-                                            case NAME.DRUG.REMARKS:
-                                                DrugList[Index].Name = ConvertCRLF(Str[1]);
-                                                break;
-
-                                            default:
-                                                break;
-
-                                        }
-
-                                    }
+                                    default:
+                                        break;
 
                                 }
 
                             }
-                            catch (Exception ex)
+                            else if (DrugList[Index].IsAccess)
                             {
 
-                            }
-                            finally
-                            {
-                                NewLine.Clear();
+                                //薬パラメータ
+                                switch (Str[0])
+                                {
+                                    case NAME.DRUG.NAME:
+                                        DrugList[Index].Name = Str[1];
+                                        break;
+
+                                    case NAME.DRUG.BEFOREMEALS:
+                                        DrugList[Index].Breakfast.Kind = DrugParameter.KindTiming.Before;
+                                        DrugList[Index].Lunch.Kind = DrugParameter.KindTiming.Before;
+                                        DrugList[Index].Dinner.Kind = DrugParameter.KindTiming.Before;
+                                        break;
+
+                                    case NAME.DRUG.BETWEENMEALS:
+                                        DrugList[Index].Breakfast.Kind = DrugParameter.KindTiming.Between;
+                                        DrugList[Index].Lunch.Kind = DrugParameter.KindTiming.Between;
+                                        DrugList[Index].Dinner.Kind = DrugParameter.KindTiming.Between;
+                                        break;
+
+                                    case NAME.DRUG.AFTERMEALS:
+                                        DrugList[Index].Breakfast.Kind = DrugParameter.KindTiming.After;
+                                        DrugList[Index].Lunch.Kind = DrugParameter.KindTiming.After;
+                                        DrugList[Index].Dinner.Kind = DrugParameter.KindTiming.After;
+                                        break;
+
+                                    case NAME.DRUG.BREAKFAST:
+                                        DrugList[Index].Breakfast.IsDrug = true;
+                                        DrugList[Index].Breakfast.Volume = ConvertToInt32(Str[1], DrugList[Index].Breakfast.Volume);
+                                        break;
+
+                                    case NAME.DRUG.LUNCH:
+                                        DrugList[Index].Lunch.IsDrug = true;
+                                        DrugList[Index].Lunch.Volume = ConvertToInt32(Str[1], DrugList[Index].Lunch.Volume);
+                                        break;
+
+                                    case NAME.DRUG.DINNER:
+                                        DrugList[Index].Dinner.IsDrug = true;
+                                        DrugList[Index].Dinner.Volume = ConvertToInt32(Str[1], DrugList[Index].Dinner.Volume);
+                                        break;
+
+                                    case NAME.DRUG.TOBETAKEN:
+                                        DrugList[Index].ToBeTaken.IsDrug = true;
+                                        DrugList[Index].ToBeTaken.Volume = ConvertToInt32(Str[1], DrugList[Index].ToBeTaken.Volume);
+                                        break;
+
+                                    case NAME.DRUG.APPOINTTIME:
+                                        DrugList[Index].Appoint.IsDrug = true;
+                                        DrugList[Index].Appoint.Volume = ConvertToInt32(Str[1], DrugList[Index].Appoint.Volume);
+                                        DrugList[Index].AppointTime = ConvertDateTime(Str[2], DrugList[Index].AppointTime);
+                                        break;
+
+                                    case NAME.DRUG.HOUREACH:
+                                        DrugList[Index].HourEach.IsDrug = true;
+                                        DrugList[Index].HourEach.Volume = ConvertToInt32(Str[1], DrugList[Index].HourEach.Volume);
+                                        DrugList[Index].HourEachTime = ConvertToInt32(Str[2], DrugList[Index].HourEachTime);
+                                        break;
+
+                                    case NAME.DRUG.TOTALVOLUME:
+                                        DrugList[Index].TotalVolume = ConvertToInt32(Str[1], DrugList[Index].TotalVolume);
+                                        break;
+
+                                    case NAME.DRUG.REMARKS:
+                                        DrugList[Index].Name = ConvertCRLF(Str[1]);
+                                        break;
+
+                                    default:
+                                        break;
+
+                                }
+
                             }
 
                         }
 
                     }
-                    catch (Exception Ex)
+                    catch (Exception ex)
                     {
 
                     }
                     finally
                     {
-                        //メモリ解放
                         NewLine.Clear();
-                        NewLine = null;
                     }
 
                 }
 
-                //次回アラーム取得
-                SetNextAlarm();
+                //メモリ解放
+                NewLine.Clear();
+                NewLine = null;
 
             }
+
+            //次回アラーム取得
+            SetNextAlarm();
 
         }
 
@@ -934,7 +929,7 @@ namespace DrugAlarm.Class
             {
 
                 Dialog.Description = Properties.Resources.FolderDialog_Title;
-                Dialog.RootFolder = Environment.SpecialFolder.MyDocuments;
+                Dialog.RootFolder = Environment.SpecialFolder.MyComputer;
                 Dialog.ShowNewFolderButton = true;
 
                 if (Dialog.ShowDialog() == DialogResult.OK)
@@ -942,6 +937,10 @@ namespace DrugAlarm.Class
                     //選択されたフォルダ内にパラメータファイルを保存
                     Ret = System.IO.Path.Combine(Dialog.SelectedPath, Properties.Settings.Default.ParameterFile);
 
+                }
+                else
+                {
+                    System.Windows.Application.Current.Shutdown();
                 }
 
             }
@@ -1054,6 +1053,8 @@ namespace DrugAlarm.Class
                     #endregion
 
                 }
+
+                System.IO.File.Copy(TmpPath, Path, true);
 
             }
             catch (Exception ex)
@@ -1461,6 +1462,21 @@ namespace DrugAlarm.Class
                     return StartTime;
 
             }
+
+        }
+
+        /// <summary>
+        /// デバッグ用:薬の追加
+        /// </summary>
+        public void DebugTest_AddDrug(string DrugName)
+        {
+
+            var AddDrug = new DrugParameter
+            {
+                Name = DrugName
+            };
+
+            DrugList.Insert(DrugList.Count, AddDrug);
 
         }
 

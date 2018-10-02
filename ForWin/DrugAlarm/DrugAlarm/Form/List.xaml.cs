@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using DrugAlarm.Class;
+
+using System.Collections.ObjectModel;
 
 namespace DrugAlarm.Form
 {
+
+    public class Person
+    {
+        public string Name { get; set; }
+        public int Age { get; set; }
+    }
+
     /// <summary>
     /// List.xaml の相互作用ロジック
     /// </summary>
@@ -21,11 +19,29 @@ namespace DrugAlarm.Form
     {
 
         /// <summary>
+        /// パラメータ
+        /// </summary>
+        private Parameter _Parameter = (System.Windows.Application.Current as App).Parameter;
+
+        private ObservableCollection<Person> TEST = new ObservableCollection<Person>();
+
+        /// <summary>
         /// new
         /// </summary>
         public List()
         {
+
             InitializeComponent();
+
+            /*
+            TEST.Add(new Person { Name = "AAA" });
+            TEST.Add(new Person { Name = "BBB" });
+
+            this.DataContext = TEST;
+            */
+
+            this.DataContext = _Parameter.DrugList;
+
         }
 
         /// <summary>
@@ -34,8 +50,14 @@ namespace DrugAlarm.Form
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
-            Setting form = new Setting();
-            form.Owner = this;
+            _Parameter.DebugTest_AddDrug("TEST");
+            //TEST.Add(new Person { Name = "CCC" });
+            return;
+
+            var form = new Setting
+            {
+                Owner = this
+            };
             form.ShowDialog();
 
         }

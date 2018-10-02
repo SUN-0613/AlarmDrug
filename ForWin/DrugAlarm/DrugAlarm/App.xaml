@@ -12,6 +12,9 @@
             <Setter Property="WindowStyle" Value="ToolWindow" />
             <Setter Property="FontFamily" Value="Meiryo UI" />
             <Setter Property="FontSize" Value="15" />
+            <Setter Property="Icon" Value="/DrugAlarm;component/Picture/SampleIcon.ico" />
+            <Setter Property="ResizeMode" Value="NoResize" />
+            <Setter Property="ShowInTaskbar" Value="True" />
         </Style>
         
         <!--リソース使用-->

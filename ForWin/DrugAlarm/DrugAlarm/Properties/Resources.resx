@@ -129,6 +129,10 @@
     <value>お薬の時間です</value>
     <comment>アラーム：タイトル</comment>
   </data>
+  <data name="App_MutexMessage" xml:space="preserve">
+    <value>多重起動防止</value>
+    <comment>アプリ：多重起動防止</comment>
+  </data>
   <data name="Detail_AfterMeals" xml:space="preserve">
     <value>食後</value>
     <comment>詳細：食後</comment>
