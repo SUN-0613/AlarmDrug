@@ -55,7 +55,7 @@ namespace DrugAlarm.Class
         /// <summary>
         /// 次回アラーム情報
         /// </summary>
-        private struct NextAlarmInfo
+        public struct NextAlarmInfo
         {
 
             /// <summary>
@@ -69,20 +69,36 @@ namespace DrugAlarm.Class
             public List<Int32> Index;
 
             /// <summary>
+            /// 服用錠
+            /// </summary>
+            public List<Int32> Volume;
+
+            /// <summary>
             /// 初期化
             /// </summary>
             public void Initialize()
             {
                 Timer = DateTime.MaxValue;
                 Index = new List<Int32>();
+                Volume = new List<Int32>();
             }
 
         }
 
         /// <summary>
-        /// 次回アラーム
+        /// 次回アラームプロパティ
         /// </summary>
-        private NextAlarmInfo NextAlarm;
+        public NextAlarmInfo NextAlarm { get { return _NextAlarm; } }
+
+        /// <summary>
+        /// 薬切れ
+        /// </summary>
+        public List<Int32> ShortageIndex;
+
+        /// <summary>
+        /// 次回アラームプロパティ
+        /// </summary>
+        private NextAlarmInfo _NextAlarm;
 
         /// <summary>
         /// 再通知
@@ -633,6 +649,7 @@ namespace DrugAlarm.Class
 
             Setting = new SettingParameter();
             DrugList = new List<DrugParameter>();
+            ShortageIndex = new List<Int32>();
 
             NextAlarm.Initialize();
             ReAlarm.Initialize();
@@ -654,6 +671,9 @@ namespace DrugAlarm.Class
                 });
             DrugList.Clear();
             DrugList = null;
+
+            ShortageIndex.Clear();
+            ShortageIndex = null;
 
         }
 
@@ -1278,6 +1298,34 @@ namespace DrugAlarm.Class
         }
 
         /// <summary>
+        /// 薬服用時の処理
+        /// </summary>
+        public void TakeMedicine()
+        {
+
+            //総量から服用錠を減算
+            for (Int32 iLoop = 0; iLoop < _NextAlarm.Index.Count; iLoop++)
+            {
+
+                Int32 Index = _NextAlarm.Index[iLoop];
+                Int32 Volume = _NextAlarm.Volume[iLoop];
+
+                DrugList[Index].TotalVolume -= Volume;
+
+                //薬切れアラームセット
+                if (DrugList[Index].TotalVolume <= Setting.PrescriptionAlarmVolume)
+                {
+                    ShortageIndex.Add(Index);
+                }
+
+            }
+
+            //次回アラームの設定
+            SetNextAlarm();
+
+        }
+
+        /// <summary>
         /// 次回アラーム情報の設定
         /// </summary>
         private void SetNextAlarm()
@@ -1286,27 +1334,29 @@ namespace DrugAlarm.Class
             DateTime Time;
 
             //初期値
-            NextAlarm.Timer = DateTime.MaxValue;
-            NextAlarm.Index.Clear();
+            _NextAlarm.Timer = DateTime.MaxValue;
+            _NextAlarm.Index.Clear();
+            _NextAlarm.Volume.Clear();
 
             //再通知
-            if (NextAlarm.Timer <= ReAlarm.Timer)  
+            if (_NextAlarm.Timer <= ReAlarm.Timer)  
             {
 
                 //同時刻ならば追加、現在設定値より前時刻なら新規に登録
-                if (NextAlarm.Timer != ReAlarm.Timer)
+                if (_NextAlarm.Timer != ReAlarm.Timer)
                 {
-                    NextAlarm.Index.Clear();
+                    _NextAlarm.Index.Clear();
                 }
 
                 //DrugListのIndexを登録
                 for (Int32 iLoop = 0; iLoop < ReAlarm.Index.Count; iLoop++)
                 {
-                    NextAlarm.Index.Add(ReAlarm.Index[iLoop]);
+                    _NextAlarm.Index.Add(ReAlarm.Index[iLoop]);
+                    _NextAlarm.Volume.Add(ReAlarm.Volume[iLoop]);
                 }
 
                 //アラーム時刻の更新
-                NextAlarm.Timer = ReAlarm.Timer;
+                _NextAlarm.Timer = ReAlarm.Timer;
 
             }
 
@@ -1317,41 +1367,41 @@ namespace DrugAlarm.Class
                 //毎時
                 if (DrugList[iLoop].HourEach.IsDrug)
                 {
-                    CompareToTime(GetNextDateTime(GetTodayTime(DrugList[iLoop].HourEachTime, 0)), iLoop);
+                    CompareToTime(GetNextDateTime(GetTodayTime(DrugList[iLoop].HourEachTime, 0)), iLoop, DrugList[iLoop].HourEach.Volume);
                 }
 
                 //指定日時
                 if (DrugList[iLoop].Appoint.IsDrug)
                 {
-                    CompareToTime(DrugList[iLoop].AppointTime, iLoop);
+                    CompareToTime(DrugList[iLoop].AppointTime, iLoop, DrugList[iLoop].Appoint.Volume);
                 }
 
                 //朝食
                 if (DrugList[iLoop].Breakfast.IsDrug)
                 {
                     Time = CalcMealsTime(Setting.Breakfast.Start, Setting.Breakfast.Finish, DrugList[iLoop].Breakfast.Kind);
-                    CompareToTime(Time, iLoop);
+                    CompareToTime(Time, iLoop, DrugList[iLoop].Breakfast.Volume);
                 }
 
                 //昼食
                 if (DrugList[iLoop].Lunch.IsDrug)
                 {
                     Time = CalcMealsTime(Setting.Lunch.Start, Setting.Lunch.Finish, DrugList[iLoop].Lunch.Kind);
-                    CompareToTime(Time, iLoop);
+                    CompareToTime(Time, iLoop, DrugList[iLoop].Lunch.Volume);
                 }
 
                 //夕食
                 if (DrugList[iLoop].Dinner.IsDrug)
                 {
                     Time = CalcMealsTime(Setting.Dinner.Start, Setting.Dinner.Finish, DrugList[iLoop].Dinner.Kind);
-                    CompareToTime(Time, iLoop);
+                    CompareToTime(Time, iLoop, DrugList[iLoop].Dinner.Volume);
                 }
 
                 //就寝前
                 if (DrugList[iLoop].Sleep.IsDrug)
                 {
                     Time = Setting.Sleep.AddMinutes((-1) * Setting.MinuteBeforeSleep);
-                    CompareToTime(Time, iLoop);
+                    CompareToTime(Time, iLoop, DrugList[iLoop].Sleep.Volume);
                 }
 
             }
@@ -1361,25 +1411,27 @@ namespace DrugAlarm.Class
         /// <summary>
         /// 次回アラームとなるか比較、Indexを登録する
         /// </summary>
-        /// <param name="Timer">アラーム候補時刻</param>
+        /// <param name="Time">アラーム候補時刻</param>
         /// <param name="DrugIndex">薬Index</param>
-        private void CompareToTime(DateTime Time, Int32 DrugIndex)
+        /// <param name="Volume">服用錠</param>
+        private void CompareToTime(DateTime Time, Int32 DrugIndex, Int32 Volume)
         {
 
             //同時刻ならば追加、現在設定値より前時刻なら新規に登録
-            if (NextAlarm.Timer != Time)
+            if (_NextAlarm.Timer != Time)
             {
-                NextAlarm.Index.Clear();
+                _NextAlarm.Index.Clear();
             }
 
             //DrugListのIndexを登録
-            if (NextAlarm.Index.IndexOf(DrugIndex) == -1)
+            if (_NextAlarm.Index.IndexOf(DrugIndex) == -1)
             {
-                NextAlarm.Index.Add(DrugIndex);
+                _NextAlarm.Index.Add(DrugIndex);
+                _NextAlarm.Volume.Add(Volume);
             }
 
             //アラーム時刻の更新
-            NextAlarm.Timer = Time;
+            _NextAlarm.Timer = Time;
 
         }
 

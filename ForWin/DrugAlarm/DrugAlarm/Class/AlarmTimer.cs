@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Threading;
-using System.Collections.Generic;
+using DrugAlarm.Form;
 
 namespace DrugAlarm.Class
 {
@@ -68,8 +68,24 @@ namespace DrugAlarm.Class
             {
 
                 //次回アラーム時刻を超過していればアラーム表示
+                if (DateTime.Now >= _Parameter.NextAlarm.Timer)
+                {
 
-                //アラーム表示後、次回アラーム情報の再設定
+                    //アラーム表示
+                    var Alarm = new Alarm();
+                    if (Alarm.ShowDialog() == true)
+                    {
+
+                        //残り錠の計算、次回アラーム設定
+                        _Parameter.TakeMedicine();
+
+                        //薬切れアラーム表示
+                        var Information = new Information();
+                        Information.ShowDialog();
+
+                    }
+
+                }
 
             }
             catch (Exception ex)
@@ -84,7 +100,6 @@ namespace DrugAlarm.Class
             }
 
         }
-
 
     }
 
