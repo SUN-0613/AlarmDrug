@@ -618,6 +618,11 @@ namespace DrugAlarm.Class
             public string Remarks { get; set; }
 
             /// <summary>
+            /// 服用タイミングを一覧に表示
+            /// </summary>
+            public string DrugTiming { get; set; }
+
+            /// <summary>
             /// 初期値設定
             /// </summary>
             public DrugParameter()
@@ -791,7 +796,10 @@ namespace DrugAlarm.Class
                                     break;
 
                                 case NAME.DRUG.END:
+
+                                    DrugList[Index].DrugTiming = MakeTimingMessage(Index);
                                     DrugList[Index].IsAccess = false;
+
                                     break;
 
                                 default:
@@ -990,6 +998,130 @@ namespace DrugAlarm.Class
             }
 
             return Ret;
+
+        }
+
+        /// <summary>
+        /// 一覧表示する服用タイミングメッセージの作成
+        /// </summary>
+        /// <param name="Index">薬パラメータIndex</param>
+        /// <returns>メッセージ</returns>
+        private string MakeTimingMessage(Int32 Index)
+        {
+
+            string Return;
+            StringBuilder Message = new StringBuilder();
+            bool IsAlways = false;
+            bool IsMeals = false;
+
+            Message.Clear();
+
+            if (DrugList[Index].Breakfast.IsDrug
+                && DrugList[Index].Lunch.IsDrug
+                && DrugList[Index].Dinner.IsDrug)
+            {
+                Message.Append(DrugAlarm.Properties.Resources.Parameter_Timing_Always);
+                IsAlways = true;
+                IsMeals = true;
+            }
+
+            if (!IsAlways && DrugList[Index].Breakfast.IsDrug)
+            {
+                Message.Append(DrugAlarm.Properties.Resources.Parameter_Timing_Breakfast);
+                IsMeals = true;
+            }
+
+            if (!IsAlways && DrugList[Index].Lunch.IsDrug)
+            {
+                Message.Append(DrugAlarm.Properties.Resources.Parameter_Timing_Lunch);
+                IsMeals = true;
+            }
+
+            if (!IsAlways && DrugList[Index].Dinner.IsDrug)
+            {
+                Message.Append(DrugAlarm.Properties.Resources.Parameter_Timing_Dinner);
+                IsMeals = true;
+            }
+
+            if (IsMeals)
+            {
+                switch (DrugList[Index].Breakfast.Kind)
+                {
+
+                    case DrugParameter.KindTiming.Before:
+                        Message.Append(DrugAlarm.Properties.Resources.Parameter_Timing_Before);
+                        break;
+
+                    case DrugParameter.KindTiming.Between:
+                        Message.Append(DrugAlarm.Properties.Resources.Parameter_Timing_Between);
+                        break;
+
+                    case DrugParameter.KindTiming.After:
+                        Message.Append(DrugAlarm.Properties.Resources.Parameter_Timing_After);
+                        break;
+
+                    default:
+                        break;
+
+                }
+            }
+
+            if (DrugList[Index].Sleep.IsDrug)
+            {
+
+                if (Message.Length > 0)
+                {
+                    Message.Append(",");
+                }
+
+                Message.Append(DrugAlarm.Properties.Resources.Parameter_Timing_Sleep);
+
+            }
+
+            if (DrugList[Index].ToBeTaken.IsDrug)
+            {
+
+                if (Message.Length > 0)
+                {
+                    Message.Append(",");
+                }
+
+                Message.Append(DrugAlarm.Properties.Resources.Parameter_Timing_ToBeTaken);
+
+            }
+
+            if (DrugList[Index].Appoint.IsDrug)
+            {
+
+                string Format = DrugAlarm.Properties.Resources.Parameter_Timing_Appoint.Replace("_", "");
+
+                if (Message.Length > 0)
+                {
+                    Message.Append(",");
+                }
+
+                Message.Append(DrugList[Index].AppointTime.ToString(Format));
+
+            }
+
+            if (DrugList[Index].HourEach.IsDrug)
+            {
+
+                if (Message.Length > 0)
+                {
+                    Message.Append(",");
+                }
+
+                Message.Append(DrugAlarm.Properties.Resources.Parameter_Timing_Each.Replace("_n_", DrugList[Index].HourEachTime.ToString()));
+
+            }
+
+            Return = Message.ToString();
+
+            Message.Clear();
+            Message = null;
+
+            return Return;
 
         }
 

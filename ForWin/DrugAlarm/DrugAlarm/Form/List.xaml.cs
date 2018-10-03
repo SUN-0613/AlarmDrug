@@ -35,10 +35,24 @@ namespace DrugAlarm.Form
         /// <summary>
         /// 設定ボタンクリック
         /// </summary>
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Setting_Click(object sender, RoutedEventArgs e)
         {
 
             var form = new Setting
+            {
+                Owner = this
+            };
+            form.ShowDialog();
+
+        }
+
+        /// <summary>
+        /// 新規追加ボタンクリック
+        /// </summary>
+        private void Add_Click(object sender, RoutedEventArgs e)
+        {
+
+            var form = new Detail
             {
                 Owner = this
             };

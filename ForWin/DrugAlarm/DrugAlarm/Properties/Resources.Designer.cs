@@ -313,6 +313,105 @@ namespace DrugAlarm.Properties {
         }
         
         /// <summary>
+        ///   食後 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Parameter_Timing_After {
+            get {
+                return ResourceManager.GetString("Parameter_Timing_After", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   毎 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Parameter_Timing_Always {
+            get {
+                return ResourceManager.GetString("Parameter_Timing_Always", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   _yy/MM/dd HH:mm_ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Parameter_Timing_Appoint {
+            get {
+                return ResourceManager.GetString("Parameter_Timing_Appoint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   食前 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Parameter_Timing_Before {
+            get {
+                return ResourceManager.GetString("Parameter_Timing_Before", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   食間 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Parameter_Timing_Between {
+            get {
+                return ResourceManager.GetString("Parameter_Timing_Between", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   朝 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Parameter_Timing_Breakfast {
+            get {
+                return ResourceManager.GetString("Parameter_Timing_Breakfast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   夕 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Parameter_Timing_Dinner {
+            get {
+                return ResourceManager.GetString("Parameter_Timing_Dinner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   _n_時間毎 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Parameter_Timing_Each {
+            get {
+                return ResourceManager.GetString("Parameter_Timing_Each", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   昼 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Parameter_Timing_Lunch {
+            get {
+                return ResourceManager.GetString("Parameter_Timing_Lunch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   就寝前 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Parameter_Timing_Sleep {
+            get {
+                return ResourceManager.GetString("Parameter_Timing_Sleep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   頓服 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Parameter_Timing_ToBeTaken {
+            get {
+                return ResourceManager.GetString("Parameter_Timing_ToBeTaken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   設定 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Realarm_Button_OK {

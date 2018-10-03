@@ -229,6 +229,50 @@
     <value>一覧表示</value>
     <comment>タスクメニュー：一覧表示</comment>
   </data>
+  <data name="Parameter_Timing_After" xml:space="preserve">
+    <value>食後</value>
+    <comment>パラメータ：一覧表示：後</comment>
+  </data>
+  <data name="Parameter_Timing_Always" xml:space="preserve">
+    <value>毎</value>
+    <comment>パラメータ：一覧表示：毎食</comment>
+  </data>
+  <data name="Parameter_Timing_Appoint" xml:space="preserve">
+    <value>_yy/MM/dd HH:mm_</value>
+    <comment>パラメータ：一覧表示：指定日時</comment>
+  </data>
+  <data name="Parameter_Timing_Before" xml:space="preserve">
+    <value>食前</value>
+    <comment>パラメータ：一覧表示：前</comment>
+  </data>
+  <data name="Parameter_Timing_Between" xml:space="preserve">
+    <value>食間</value>
+    <comment>パラメータ：一覧表示：間</comment>
+  </data>
+  <data name="Parameter_Timing_Breakfast" xml:space="preserve">
+    <value>朝</value>
+    <comment>パラメータ：一覧表示：朝食</comment>
+  </data>
+  <data name="Parameter_Timing_Dinner" xml:space="preserve">
+    <value>夕</value>
+    <comment>パラメータ：一覧表示：夕食</comment>
+  </data>
+  <data name="Parameter_Timing_Each" xml:space="preserve">
+    <value>_n_時間毎</value>
+    <comment>パラメータ：一覧表示：毎時</comment>
+  </data>
+  <data name="Parameter_Timing_Lunch" xml:space="preserve">
+    <value>昼</value>
+    <comment>パラメータ：一覧表示：昼食</comment>
+  </data>
+  <data name="Parameter_Timing_Sleep" xml:space="preserve">
+    <value>就寝前</value>
+    <comment>パラメータ：一覧表示：就寝</comment>
+  </data>
+  <data name="Parameter_Timing_ToBeTaken" xml:space="preserve">
+    <value>頓服</value>
+    <comment>パラメータ：一覧表示：頓服</comment>
+  </data>
   <data name="Realarm_Button_OK" xml:space="preserve">
     <value>設定</value>
     <comment>再通知：ボタン</comment>
