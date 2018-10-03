@@ -1,16 +1,8 @@
 ﻿using System.Windows;
 using DrugAlarm.Class;
 
-using System.Collections.ObjectModel;
-
 namespace DrugAlarm.Form
 {
-
-    public class Person
-    {
-        public string Name { get; set; }
-        public int Age { get; set; }
-    }
 
     /// <summary>
     /// List.xaml の相互作用ロジック
@@ -23,8 +15,6 @@ namespace DrugAlarm.Form
         /// </summary>
         private Parameter _Parameter = (System.Windows.Application.Current as App).Parameter;
 
-        private ObservableCollection<Person> TEST = new ObservableCollection<Person>();
-
         /// <summary>
         /// new
         /// </summary>
@@ -33,14 +23,12 @@ namespace DrugAlarm.Form
 
             InitializeComponent();
 
-            /*
-            TEST.Add(new Person { Name = "AAA" });
-            TEST.Add(new Person { Name = "BBB" });
-
-            this.DataContext = TEST;
-            */
-
+            //binding
             this.DataContext = _Parameter.DrugList;
+
+#if DEBUG
+            _Parameter.DebugTest_AddDrug("TEST");
+#endif
 
         }
 
@@ -49,10 +37,6 @@ namespace DrugAlarm.Form
         /// </summary>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
-            _Parameter.DebugTest_AddDrug("TEST");
-            //TEST.Add(new Person { Name = "CCC" });
-            return;
 
             var form = new Setting
             {

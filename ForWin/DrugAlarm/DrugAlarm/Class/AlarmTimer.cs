@@ -77,11 +77,12 @@ namespace DrugAlarm.Class
                     {
 
                         //残り錠の計算、次回アラーム設定
-                        _Parameter.TakeMedicine();
-
-                        //薬切れアラーム表示
-                        var Information = new Information();
-                        Information.ShowDialog();
+                        if (_Parameter.TakeMedicine())
+                        {
+                            //薬切れアラーム表示
+                            var Information = new Information();
+                            Information.ShowDialog();
+                        }
 
                     }
 

@@ -38,7 +38,7 @@ namespace DrugAlarm.Class
         /// <summary>
         /// 範囲時間
         /// </summary>
-        public struct BetweenTime
+        public class BetweenTime
         {
 
             /// <summary>
@@ -51,12 +51,21 @@ namespace DrugAlarm.Class
             /// </summary>
             public DateTime Finish { get; set; }
 
+            /// <summary>
+            /// new
+            /// </summary>
+            public BetweenTime()
+            {
+                Start = DateTime.MaxValue;
+                Finish = DateTime.MaxValue;
+            }
+
         }
 
         /// <summary>
         /// 次回アラーム情報
         /// </summary>
-        public struct NextAlarmInfo
+        public class AlarmInfo
         {
 
             /// <summary>
@@ -75,9 +84,9 @@ namespace DrugAlarm.Class
             public List<Int32> Volume;
 
             /// <summary>
-            /// 初期化
+            /// new
             /// </summary>
-            public void Initialize()
+            public AlarmInfo()
             {
                 Timer = DateTime.MaxValue;
                 Index = new List<Int32>();
@@ -89,7 +98,7 @@ namespace DrugAlarm.Class
         /// <summary>
         /// 次回アラームプロパティ
         /// </summary>
-        public NextAlarmInfo NextAlarm { get { return _NextAlarm; } }
+        public AlarmInfo NextAlarm { get; private set; }
 
         /// <summary>
         /// 薬切れ
@@ -97,14 +106,9 @@ namespace DrugAlarm.Class
         public List<Int32> ShortageIndex;
 
         /// <summary>
-        /// 次回アラームプロパティ
-        /// </summary>
-        private NextAlarmInfo _NextAlarm;
-
-        /// <summary>
         /// 再通知
         /// </summary>
-        private NextAlarmInfo ReAlarm;
+        private AlarmInfo ReAlarm;
 
         /// <summary>
         /// 指定時間を今日日付のDateTime型に変換
@@ -451,12 +455,21 @@ namespace DrugAlarm.Class
             {
 
                 IsAccess = false;
-                Breakfast.Start = GetTodayTime(6, 0);
-                Breakfast.Finish = GetTodayTime(6, 30);
-                Lunch.Start = GetTodayTime(12, 0);
-                Lunch.Finish = GetTodayTime(12, 30);
-                Dinner.Start = GetTodayTime(18, 0);
-                Dinner.Finish = GetTodayTime(18, 30);
+                Breakfast = new BetweenTime
+                {
+                    Start = GetTodayTime(6, 0),
+                    Finish = GetTodayTime(6, 30)
+                };
+                Lunch = new BetweenTime
+                {
+                    Start = GetTodayTime(12, 0),
+                    Finish = GetTodayTime(12, 30)
+                };
+                Dinner = new BetweenTime
+                {
+                    Start = GetTodayTime(18, 0),
+                    Finish = GetTodayTime(18, 30)
+                };
                 Sleep = GetTodayTime(23, 0);
                 PrescriptionAlarmVolume = 0;
                 MinuteBeforeMeals = 30;
@@ -509,37 +522,33 @@ namespace DrugAlarm.Class
             /// <summary>
             /// 服用情報
             /// </summary>
-            public struct Timing
+            public class Timing
             {
 
                 /// <summary>
                 /// 服用するか
                 /// </summary>
-                public bool IsDrug;
+                public bool IsDrug { get; set; }
 
                 /// <summary>
                 /// 服用時間
                 /// </summary>
-                public KindTiming Kind;
+                public KindTiming Kind { get; set; }
 
                 /// <summary>
                 /// 何錠
                 /// </summary>
-                public Int32 Volume;
+                public Int32 Volume { get; set; }
 
                 /// <summary>
-                /// 初期値設定
+                /// new
                 /// </summary>
-                /// <param name="IsDrug">服用するか</param>
-                /// <param name="Kind">服用時間</param>
-                /// <param name="Volume">何錠</param>
-                public void Initialize(bool IsDrug, KindTiming Kind, Int32 Volume)
+                public Timing()
                 {
-                    this.IsDrug = IsDrug;
-                    this.Kind = Kind;
-                    this.Volume = Volume;
+                    this.IsDrug = false;
+                    this.Kind = KindTiming.None;
+                    this.Volume = 0;
                 }
-
 
             }
 
@@ -616,14 +625,49 @@ namespace DrugAlarm.Class
 
                 IsAccess = false;
                 Name = "";
-                Breakfast.Initialize(false, KindTiming.None, 0);
-                Lunch.Initialize(false, KindTiming.None, 0);
-                Dinner.Initialize(false, KindTiming.None, 0);
-                Sleep.Initialize(false, KindTiming.Before, 0);
-                ToBeTaken.Initialize(false, KindTiming.None, 0);
-                Appoint.Initialize(false, KindTiming.Appoint, 0);
-                AppointTime = new DateTime(1900, 1, 1, 0, 0, 0);
-                HourEach.Initialize(false, KindTiming.TimeEach, 0);
+                Breakfast = new Timing
+                {
+                    IsDrug = false,
+                    Kind = KindTiming.None,
+                    Volume = 0
+                };
+                Lunch = new Timing
+                {
+                    IsDrug = false,
+                    Kind = KindTiming.None,
+                    Volume = 0
+                };
+                Dinner = new Timing
+                {
+                    IsDrug = false,
+                    Kind = KindTiming.None,
+                    Volume = 0
+                };
+                Sleep = new Timing
+                {
+                    IsDrug = false,
+                    Kind = KindTiming.Before,
+                    Volume = 0
+                };
+                ToBeTaken = new Timing
+                {
+                    IsDrug = false,
+                    Kind = KindTiming.None,
+                    Volume = 0
+                };
+                Appoint = new Timing
+                {
+                    IsDrug = false,
+                    Kind = KindTiming.Appoint,
+                    Volume = 0
+                };
+                AppointTime = DateTime.Now;
+                HourEach = new Timing
+                {
+                    IsDrug = false,
+                    Kind = KindTiming.TimeEach,
+                    Volume = 0
+                };
                 HourEachTime = 2;
                 TotalVolume = 0;
                 Remarks = "";
@@ -652,8 +696,8 @@ namespace DrugAlarm.Class
             DrugList = new ObservableCollection<DrugParameter>();
             ShortageIndex = new List<Int32>();
 
-            _NextAlarm.Initialize();
-            ReAlarm.Initialize();
+            NextAlarm = new AlarmInfo();
+            ReAlarm = new AlarmInfo();
 
             this.Load();
 
@@ -1301,15 +1345,18 @@ namespace DrugAlarm.Class
         /// <summary>
         /// 薬服用時の処理
         /// </summary>
-        public void TakeMedicine()
+        /// <returns>True:薬切れ有、False:在庫十分</returns>
+        public bool TakeMedicine()
         {
 
+            bool Return = false;
+
             //総量から服用錠を減算
-            for (Int32 iLoop = 0; iLoop < _NextAlarm.Index.Count; iLoop++)
+            for (Int32 iLoop = 0; iLoop < NextAlarm.Index.Count; iLoop++)
             {
 
-                Int32 Index = _NextAlarm.Index[iLoop];
-                Int32 Volume = _NextAlarm.Volume[iLoop];
+                Int32 Index = NextAlarm.Index[iLoop];
+                Int32 Volume = NextAlarm.Volume[iLoop];
 
                 DrugList[Index].TotalVolume -= Volume;
 
@@ -1317,12 +1364,18 @@ namespace DrugAlarm.Class
                 if (DrugList[Index].TotalVolume <= Setting.PrescriptionAlarmVolume)
                 {
                     ShortageIndex.Add(Index);
+                    Return = true;
                 }
 
             }
 
+            //パラメータ更新
+            Save();
+
             //次回アラームの設定
             SetNextAlarm();
+
+            return Return;
 
         }
 
@@ -1335,29 +1388,29 @@ namespace DrugAlarm.Class
             DateTime Time;
 
             //初期値
-            _NextAlarm.Timer = DateTime.MaxValue;
-            _NextAlarm.Index.Clear();
-            _NextAlarm.Volume.Clear();
+            NextAlarm.Timer = DateTime.MaxValue;
+            NextAlarm.Index.Clear();
+            NextAlarm.Volume.Clear();
 
             //再通知
-            if (_NextAlarm.Timer <= ReAlarm.Timer)  
+            if (NextAlarm.Timer <= ReAlarm.Timer)  
             {
 
                 //同時刻ならば追加、現在設定値より前時刻なら新規に登録
-                if (_NextAlarm.Timer != ReAlarm.Timer)
+                if (NextAlarm.Timer != ReAlarm.Timer)
                 {
-                    _NextAlarm.Index.Clear();
+                    NextAlarm.Index.Clear();
                 }
 
                 //DrugListのIndexを登録
                 for (Int32 iLoop = 0; iLoop < ReAlarm.Index.Count; iLoop++)
                 {
-                    _NextAlarm.Index.Add(ReAlarm.Index[iLoop]);
-                    _NextAlarm.Volume.Add(ReAlarm.Volume[iLoop]);
+                    NextAlarm.Index.Add(ReAlarm.Index[iLoop]);
+                    NextAlarm.Volume.Add(ReAlarm.Volume[iLoop]);
                 }
 
                 //アラーム時刻の更新
-                _NextAlarm.Timer = ReAlarm.Timer;
+                NextAlarm.Timer = ReAlarm.Timer;
 
             }
 
@@ -1419,20 +1472,20 @@ namespace DrugAlarm.Class
         {
 
             //同時刻ならば追加、現在設定値より前時刻なら新規に登録
-            if (_NextAlarm.Timer != Time)
+            if (NextAlarm.Timer != Time)
             {
-                _NextAlarm.Index.Clear();
+                NextAlarm.Index.Clear();
             }
 
             //DrugListのIndexを登録
-            if (_NextAlarm.Index.IndexOf(DrugIndex) == -1)
+            if (NextAlarm.Index.IndexOf(DrugIndex) == -1)
             {
-                _NextAlarm.Index.Add(DrugIndex);
-                _NextAlarm.Volume.Add(Volume);
+                NextAlarm.Index.Add(DrugIndex);
+                NextAlarm.Volume.Add(Volume);
             }
 
             //アラーム時刻の更新
-            _NextAlarm.Timer = Time;
+            NextAlarm.Timer = Time;
 
         }
 
