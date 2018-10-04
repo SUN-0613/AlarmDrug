@@ -213,6 +213,22 @@
     <value>+ 新規追加</value>
     <comment>一覧：新規追加行</comment>
   </data>
+  <data name="List_DeleteMessage" xml:space="preserve">
+    <value>_DRUG_を削除しますか？</value>
+    <comment>一覧：削除確認メッセージ</comment>
+  </data>
+  <data name="List_Menu_Delete" xml:space="preserve">
+    <value>削除</value>
+    <comment>一覧：メニュー：削除</comment>
+  </data>
+  <data name="List_Menu_Drug" xml:space="preserve">
+    <value>頓服服用</value>
+    <comment>一覧：メニュー：頓服服用</comment>
+  </data>
+  <data name="List_Menu_Edit" xml:space="preserve">
+    <value>編集</value>
+    <comment>一覧：メニュー：編集</comment>
+  </data>
   <data name="List_Setting" xml:space="preserve">
     <value>設定</value>
     <comment>一覧：設定ボタン</comment>

@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:base="clr-namespace:DrugAlarm.Base"
         mc:Ignorable="d"
         Style="{Binding Mode=OneWay, Source={StaticResource WindowCustomStyle}}"
         Title="{Binding List_Title, Source={StaticResource resources}}" >
@@ -35,7 +34,7 @@
             <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" Foreground="White" Background="Transparent" BorderBrush="Transparent" Content="{Binding List_Setting, Source={StaticResource resources}}" FontSize="15" Style="{StaticResource ButtonCustomStyle}" Click="Setting_Click" />
         </Grid>
 
-        <ListBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" SelectionMode="Single" BorderBrush="Transparent" Background="Transparent" ItemsSource="{Binding}" >
+        <ListBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" SelectionMode="Single" BorderBrush="Transparent" Background="Transparent" ItemsSource="{Binding List}" SelectedIndex="{Binding SelectedIndex}" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid ToolTip="{Binding Remarks}">
@@ -50,6 +49,13 @@
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{Binding List_Menu_Edit, Source={StaticResource resources}}" Click="Menu_Edit_Click" />
+                    <MenuItem Header="{Binding List_Menu_Delete, Source={StaticResource resources}}" Click="Menu_Delete_Click" />
+                    <MenuItem Header="{Binding List_Menu_Drug, Source={StaticResource resources}}" Click="Menu_Drug_Click" />
+                </ContextMenu>
+            </ListBox.ContextMenu>
         </ListBox>
 
         <Button Grid.Row="2" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" Foreground="LightGray" Background="Transparent" BorderBrush="Transparent" Content="{Binding List_AddList, Source={StaticResource resources}}" FontSize="15" Style="{StaticResource ButtonCustomStyle}" Click="Add_Click" HorizontalContentAlignment="Left" />

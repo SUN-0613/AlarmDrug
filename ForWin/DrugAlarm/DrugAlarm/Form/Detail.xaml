@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DrugAlarm.Form"
         mc:Ignorable="d"
         Style="{Binding Mode=OneWay, Source={StaticResource WindowCustomStyle}}"
-        Title="{Binding Setting_Title, Source={StaticResource resources}}" 
+        Title="{Binding Detail_Title, Source={StaticResource resources}}" 
         WindowStartupLocation="CenterOwner"
         >
     <Grid>

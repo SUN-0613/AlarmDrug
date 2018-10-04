@@ -22,7 +22,9 @@ namespace DrugAlarm.Form
         /// <summary>
         /// new
         /// </summary>
-        public Detail()
+        /// <param name="DrugIndex">薬Index
+        /// -1の場合は新規追加</param>
+        public Detail(Int32 DrugIndex)
         {
             InitializeComponent();
         }

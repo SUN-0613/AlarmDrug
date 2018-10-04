@@ -29,9 +29,9 @@ namespace DrugAlarm
         protected override void OnStartup(StartupEventArgs e)
         {
 
-            string AppName = Assembly.GetExecutingAssembly().Location;      //実行パス取得
-            AppName = System.IO.Path.GetFileNameWithoutExtension(AppName);  //実行ファイル名取得
-            Mutex mutex = new Mutex(false, AppName);                        //多重起動情報取得
+            string AppName = Assembly.GetExecutingAssembly().GetName().Name;    //実行パス取得
+            AppName = System.IO.Path.GetFileNameWithoutExtension(AppName);      //実行ファイル名取得
+            Mutex mutex = new Mutex(false, AppName);                            //多重起動情報取得
 
             //多重起動確認
             if (mutex.WaitOne(0, false))

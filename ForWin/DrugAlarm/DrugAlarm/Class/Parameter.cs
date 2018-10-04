@@ -745,7 +745,10 @@ namespace DrugAlarm.Class
                 Properties.Settings.Default.ParameterFullPath = Path;
                 Properties.Settings.Default.Save();
 
-                this.Save();
+                if (!System.IO.File.Exists(Path))
+                {
+                    this.Save();
+                }
 
             }
 
@@ -1495,8 +1498,13 @@ namespace DrugAlarm.Class
                 //薬切れアラームセット
                 if (DrugList[Index].TotalVolume <= Setting.PrescriptionAlarmVolume)
                 {
-                    ShortageIndex.Add(Index);
-                    Return = true;
+
+                    if (ShortageIndex.IndexOf(Index) == -1)
+                    {
+                        ShortageIndex.Add(Index);
+                        Return = true;
+                    }
+
                 }
 
             }

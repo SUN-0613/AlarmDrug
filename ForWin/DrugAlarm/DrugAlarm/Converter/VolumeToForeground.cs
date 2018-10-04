@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace DrugAlarm.Base
+namespace DrugAlarm.Converter
 {
     class VolumeToForeground : IMultiValueConverter
     {

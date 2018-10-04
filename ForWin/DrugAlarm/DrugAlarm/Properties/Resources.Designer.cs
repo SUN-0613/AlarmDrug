@@ -277,6 +277,42 @@ namespace DrugAlarm.Properties {
         }
         
         /// <summary>
+        ///   _DRUG_を削除しますか？ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string List_DeleteMessage {
+            get {
+                return ResourceManager.GetString("List_DeleteMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   削除 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string List_Menu_Delete {
+            get {
+                return ResourceManager.GetString("List_Menu_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   頓服服用 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string List_Menu_Drug {
+            get {
+                return ResourceManager.GetString("List_Menu_Drug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   編集 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string List_Menu_Edit {
+            get {
+                return ResourceManager.GetString("List_Menu_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   設定 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string List_Setting {

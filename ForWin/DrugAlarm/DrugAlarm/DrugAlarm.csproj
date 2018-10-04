@@ -119,9 +119,10 @@
     <Compile Include="Base\TaskTray.Designer.cs">
       <DependentUpon>TaskTray.cs</DependentUpon>
     </Compile>
-    <Compile Include="Base\VolumeToForeground.cs" />
+    <Compile Include="Base\ViewModelBase.cs" />
     <Compile Include="Class\AlarmTimer.cs" />
     <Compile Include="Class\Parameter.cs" />
+    <Compile Include="Converter\VolumeToForeground.cs" />
     <Compile Include="Form\Alarm.xaml.cs">
       <DependentUpon>Alarm.xaml</DependentUpon>
     </Compile>
@@ -144,6 +145,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Form\ListViewModel.cs" />
     <Compile Include="Form\Realarm.xaml.cs">
       <DependentUpon>Realarm.xaml</DependentUpon>
     </Compile>

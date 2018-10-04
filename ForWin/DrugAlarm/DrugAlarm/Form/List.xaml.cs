@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using DrugAlarm.Class;
 
 namespace DrugAlarm.Form
 {
@@ -10,10 +9,7 @@ namespace DrugAlarm.Form
     public partial class List : Window
     {
 
-        /// <summary>
-        /// パラメータ
-        /// </summary>
-        private Parameter _Parameter = (System.Windows.Application.Current as App).Parameter;
+        private ListViewModel ViewModel;
 
         /// <summary>
         /// new
@@ -23,12 +19,8 @@ namespace DrugAlarm.Form
 
             InitializeComponent();
 
-            //binding
-            this.DataContext = _Parameter.DrugList;
-
-#if DEBUG
-            _Parameter.DebugTest_AddDrug("TEST");
-#endif
+            ViewModel = new ListViewModel();
+            this.DataContext = ViewModel;
 
         }
 
@@ -38,11 +30,7 @@ namespace DrugAlarm.Form
         private void Setting_Click(object sender, RoutedEventArgs e)
         {
 
-            var form = new Setting
-            {
-                Owner = this
-            };
-            form.ShowDialog();
+            ViewModel.CallSetting(this);
 
         }
 
@@ -52,11 +40,37 @@ namespace DrugAlarm.Form
         private void Add_Click(object sender, RoutedEventArgs e)
         {
 
-            var form = new Detail
-            {
-                Owner = this
-            };
-            form.ShowDialog();
+            ViewModel.CallDetailForm(this, true);
+
+        }
+
+        /// <summary>
+        /// メニュー：編集クリック
+        /// </summary>
+        private void Menu_Edit_Click(object sender, RoutedEventArgs e)
+        {
+
+            ViewModel.CallDetailForm(this, false);
+
+        }
+
+        /// <summary>
+        /// メニュー：削除クリック
+        /// </summary>
+        private void Menu_Delete_Click(object sender, RoutedEventArgs e)
+        {
+
+            ViewModel.DeleteDrug();
+
+        }
+
+        /// <summary>
+        /// メニュー：頓服服用クリック
+        /// </summary>
+        private void Menu_Drug_Click(object sender, RoutedEventArgs e)
+        {
+
+            ViewModel.DrugMedicine();
 
         }
 
