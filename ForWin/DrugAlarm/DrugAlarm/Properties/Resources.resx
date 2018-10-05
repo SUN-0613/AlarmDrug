@@ -169,6 +169,14 @@
     <value>頓服</value>
     <comment>詳細：頓服</comment>
   </data>
+  <data name="Detail_Prescript" xml:space="preserve">
+    <value>薬残量お知らせ</value>
+    <comment>詳細：薬残量お知らせ</comment>
+  </data>
+  <data name="Detail_Remaining" xml:space="preserve">
+    <value>残り</value>
+    <comment>設定：残り</comment>
+  </data>
   <data name="Detail_Remarks" xml:space="preserve">
     <value>備考</value>
     <comment>詳細：備考</comment>
@@ -337,17 +345,9 @@
     <value>昼食時間</value>
     <comment>設定：昼食時間</comment>
   </data>
-  <data name="Setting_Prescript" xml:space="preserve">
-    <value>薬残量お知らせ</value>
-    <comment>設定：薬残量お知らせ</comment>
-  </data>
   <data name="Setting_Realarm" xml:space="preserve">
     <value>再通知</value>
     <comment>設定：再通知</comment>
-  </data>
-  <data name="Setting_Remaining" xml:space="preserve">
-    <value>残り</value>
-    <comment>設定：残り</comment>
   </data>
   <data name="Setting_Sleep" xml:space="preserve">
     <value>就寝時間</value>

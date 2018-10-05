@@ -80,7 +80,22 @@ namespace DrugAlarm.Form
         public void CallDetailForm(List View, bool IsNewDrug)
         {
 
-            var form = new Detail(IsNewDrug ? -1 : _SelectedIndex)
+            Int32 Index;
+
+            if (IsNewDrug)
+            {
+                Index = -1;
+            }
+            else if (-1 < _SelectedIndex && _SelectedIndex < List.Count)
+            {
+                Index = _SelectedIndex;
+            }
+            else
+            {
+                return;
+            }
+
+            var form = new Detail(Index)
             {
                 Owner = View
             };
@@ -117,11 +132,13 @@ namespace DrugAlarm.Form
         public void DrugMedicine()
         {
 
+            Parameter.DrugParameter Drug = List[_SelectedIndex];
+
             if (-1 < _SelectedIndex && _SelectedIndex < List.Count)
             {
-                if (List[_SelectedIndex].ToBeTaken.IsDrug)
+                if (Drug.ToBeTaken.IsDrug)
                 {
-                    List[_SelectedIndex].TotalVolume -= List[_SelectedIndex].ToBeTaken.Volume;
+                    Drug.TotalVolume -= Drug.ToBeTaken.Volume;
                     Parameter.Save();
                 }
             }

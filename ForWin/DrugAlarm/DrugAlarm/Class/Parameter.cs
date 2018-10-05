@@ -101,11 +101,6 @@ namespace DrugAlarm.Class
         public AlarmInfo NextAlarm { get; private set; }
 
         /// <summary>
-        /// 薬切れ
-        /// </summary>
-        public List<Int32> ShortageIndex;
-
-        /// <summary>
         /// 再通知
         /// </summary>
         private AlarmInfo ReAlarm;
@@ -276,11 +271,6 @@ namespace DrugAlarm.Class
                 public const string SLEEP = "Sleep";
 
                 /// <summary>
-                /// 残量アラーム(錠)
-                /// </summary>
-                public const string PRESCRIPTIOIN = "PrescriptionAlarm";
-
-                /// <summary>
                 /// 食前アラーム(分)
                 /// </summary>
                 public const string BEFOREMEALS = "BeforeMeals";
@@ -379,6 +369,11 @@ namespace DrugAlarm.Class
                 public const string TOTALVOLUME = "TotalVolume";
 
                 /// <summary>
+                /// 残量アラーム(錠)
+                /// </summary>
+                public const string PRESCRIPTIOIN = "PrescriptionAlarm";
+
+                /// <summary>
                 /// 備考
                 /// </summary>
                 public const string REMARKS = "Remarks";
@@ -396,7 +391,7 @@ namespace DrugAlarm.Class
             /// <summary>
             /// 設定データ読込・書込中
             /// </summary>
-            public bool IsAccess { get; set; }
+            public bool IsAccess;
 
             /// <summary>
             /// 朝食時間範囲
@@ -416,37 +411,32 @@ namespace DrugAlarm.Class
             /// <summary>
             /// 就寝時間
             /// </summary>
-            public DateTime Sleep { get; set; }
-
-            /// <summary>
-            /// お知らせを表示する薬残量
-            /// </summary>
-            public Int32 PrescriptionAlarmVolume { get; set; }
+            public DateTime Sleep;
 
             /// <summary>
             /// 食前時間(分)
             /// </summary>
-            public Int32 MinuteBeforeMeals { get; set; }
+            public Int32 MinuteBeforeMeals;
 
             /// <summary>
             /// 食間時間(分)
             /// </summary>
-            public Int32 MinuteBetweenMeals { get; set; }
+            public Int32 MinuteBetweenMeals;
 
             /// <summary>
             /// 食後時間(分)
             /// </summary>
-            public Int32 MinuteAfterMeals { get; set; }
+            public Int32 MinuteAfterMeals;
 
             /// <summary>
             /// 就寝前時間(分)
             /// </summary>
-            public Int32 MinuteBeforeSleep { get; set; }
+            public Int32 MinuteBeforeSleep;
 
             /// <summary>
             /// 再通知時間(分)
             /// </summary>
-            public Int32 MinuteReAlarm { get; set; }
+            public Int32 MinuteReAlarm;
 
             /// <summary>
             /// 初期値設定
@@ -471,7 +461,6 @@ namespace DrugAlarm.Class
                     Finish = GetTodayTime(18, 30)
                 };
                 Sleep = GetTodayTime(23, 0);
-                PrescriptionAlarmVolume = 0;
                 MinuteBeforeMeals = 30;
                 MinuteBetweenMeals = 30;
                 MinuteAfterMeals = 30;
@@ -526,17 +515,17 @@ namespace DrugAlarm.Class
             {
 
                 /// <summary>
-                /// 服用するか
+                /// 服用プロパティ
                 /// </summary>
                 public bool IsDrug { get; set; }
 
                 /// <summary>
-                /// 服用時間
+                /// 服用時間プロパティ
                 /// </summary>
                 public KindTiming Kind { get; set; }
 
                 /// <summary>
-                /// 何錠
+                /// 錠数プロパティ
                 /// </summary>
                 public Int32 Volume { get; set; }
 
@@ -555,10 +544,10 @@ namespace DrugAlarm.Class
             /// <summary>
             /// 設定データ読込・書込中
             /// </summary>
-            public bool IsAccess { get; set; }
+            public bool IsAccess;
 
             /// <summary>
-            /// 名称
+            /// 名称プロパティ
             /// </summary>
             public string Name { get; set; }
 
@@ -593,7 +582,7 @@ namespace DrugAlarm.Class
             public Timing Appoint;
 
             /// <summary>
-            /// 指定時間
+            /// 指定時間プロパティ
             /// </summary>
             public DateTime AppointTime { get; set; }
 
@@ -603,22 +592,58 @@ namespace DrugAlarm.Class
             public Timing HourEach;
 
             /// <summary>
-            /// 時間毎(時)
+            /// 時間毎(時)プロパティ
             /// </summary>
             public Int32 HourEachTime { get; set; }
 
             /// <summary>
             /// 処方量
             /// </summary>
-            public Int32 TotalVolume { get; set; }
+            private Int32 _TotalVolume;
 
             /// <summary>
-            /// 備考
+            /// お知らせを表示する薬残量
+            /// </summary>
+            private Int32 _PrescriptionAlarmVolume;
+
+            /// <summary>
+            /// 処方量プロパティ
+            /// </summary>
+            public Int32 TotalVolume
+            {
+                get { return _TotalVolume; }
+                set
+                {
+                    _TotalVolume = value;
+                    UpdatePrescription();
+                }
+            }
+
+            /// <summary>
+            /// お知らせを表示する薬残量プロパティ
+            /// </summary>
+            public Int32 PrescriptionAlarmVolume
+            {
+                get { return _PrescriptionAlarmVolume; }
+                set
+                {
+                    _PrescriptionAlarmVolume = value;
+                    UpdatePrescription();
+                }
+            }
+
+            /// <summary>
+            /// 薬切れお知らせアラームプロパティ
+            /// </summary>
+            public bool IsPrescriptionAlarm { get; set; }
+
+            /// <summary>
+            /// 備考プロパティ
             /// </summary>
             public string Remarks { get; set; }
 
             /// <summary>
-            /// 服用タイミングを一覧に表示
+            /// 服用タイミングを一覧に表示プロパティ
             /// </summary>
             public string DrugTiming { get; set; }
 
@@ -675,8 +700,17 @@ namespace DrugAlarm.Class
                 };
                 HourEachTime = 2;
                 TotalVolume = 0;
+                PrescriptionAlarmVolume = 0;
                 Remarks = "";
 
+            }
+
+            /// <summary>
+            /// お知らせ薬残量更新
+            /// </summary>
+            private void UpdatePrescription()
+            {
+                IsPrescriptionAlarm = (_TotalVolume <= _PrescriptionAlarmVolume);
             }
 
         }
@@ -699,7 +733,6 @@ namespace DrugAlarm.Class
 
             Setting = new SettingParameter();
             DrugList = new ObservableCollection<DrugParameter>();
-            ShortageIndex = new List<Int32>();
 
             NextAlarm = new AlarmInfo();
             ReAlarm = new AlarmInfo();
@@ -721,9 +754,6 @@ namespace DrugAlarm.Class
             }
             DrugList.Clear();
             DrugList = null;
-
-            ShortageIndex.Clear();
-            ShortageIndex = null;
 
         }
 
@@ -840,10 +870,6 @@ namespace DrugAlarm.Class
                                         Setting.Sleep = GetTodayTime(Str[1]);
                                         break;
 
-                                    case NAME.SETTING.PRESCRIPTIOIN:
-                                        Setting.PrescriptionAlarmVolume = ConvertToInt32(Str[1], Setting.PrescriptionAlarmVolume);
-                                        break;
-
                                     case NAME.SETTING.BEFOREMEALS:
                                         Setting.MinuteBeforeMeals = ConvertToInt32(Str[1], Setting.MinuteBeforeMeals);
                                         break;
@@ -932,6 +958,10 @@ namespace DrugAlarm.Class
 
                                     case NAME.DRUG.TOTALVOLUME:
                                         DrugList[Index].TotalVolume = ConvertToInt32(Str[1], DrugList[Index].TotalVolume);
+                                        break;
+
+                                    case NAME.DRUG.PRESCRIPTIOIN:
+                                        DrugList[Index].PrescriptionAlarmVolume = ConvertToInt32(Str[1], DrugList[Index].PrescriptionAlarmVolume);
                                         break;
 
                                     case NAME.DRUG.REMARKS:
@@ -1155,7 +1185,6 @@ namespace DrugAlarm.Class
                     file.WriteLine(MakeParameter(NAME.SETTING.LUNCH, Setting.Lunch.Start, Setting.Lunch.Finish));
                     file.WriteLine(MakeParameter(NAME.SETTING.DINNER, Setting.Dinner.Start, Setting.Dinner.Finish));
                     file.WriteLine(MakeParameter(NAME.SETTING.SLEEP, Setting.Sleep));
-                    file.WriteLine(MakeParameter(NAME.SETTING.PRESCRIPTIOIN, Setting.PrescriptionAlarmVolume));
                     file.WriteLine(MakeParameter(NAME.SETTING.BEFOREMEALS, Setting.MinuteBeforeMeals));
                     file.WriteLine(MakeParameter(NAME.SETTING.BETWEENMEALS, Setting.MinuteBetweenMeals));
                     file.WriteLine(MakeParameter(NAME.SETTING.AFTERMEALS, Setting.MinuteAfterMeals));
@@ -1224,6 +1253,7 @@ namespace DrugAlarm.Class
                         }
 
                         file.WriteLine(MakeParameter(NAME.DRUG.TOTALVOLUME, DrugList[iLoop].TotalVolume));
+                        file.WriteLine(MakeParameter(NAME.DRUG.PRESCRIPTIOIN, DrugList[iLoop].PrescriptionAlarmVolume));
                         file.WriteLine(MakeParameter(NAME.DRUG.REMARKS, DrugList[iLoop].Remarks, true));
 
                         file.WriteLine(NAME.DRUG.END);
@@ -1494,18 +1524,6 @@ namespace DrugAlarm.Class
                 Int32 Volume = NextAlarm.Volume[iLoop];
 
                 DrugList[Index].TotalVolume -= Volume;
-
-                //薬切れアラームセット
-                if (DrugList[Index].TotalVolume <= Setting.PrescriptionAlarmVolume)
-                {
-
-                    if (ShortageIndex.IndexOf(Index) == -1)
-                    {
-                        ShortageIndex.Add(Index);
-                        Return = true;
-                    }
-
-                }
 
             }
 

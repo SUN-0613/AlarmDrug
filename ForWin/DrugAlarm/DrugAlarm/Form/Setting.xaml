@@ -71,10 +71,7 @@
             <TextBlock Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" Text="{Binding Setting_Lunch, Source={StaticResource resources}}" TextAlignment="Left" VerticalAlignment="Center" />
             <TextBlock Grid.Row="2" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" Text="{Binding Setting_Dinner, Source={StaticResource resources}}" TextAlignment="Left" VerticalAlignment="Center" />
             <TextBlock Grid.Row="3" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" Text="{Binding Setting_Sleep, Source={StaticResource resources}}" TextAlignment="Left" VerticalAlignment="Center" />
-            <TextBlock Grid.Row="4" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="8" Text="{Binding Setting_InputAlarm, Source={StaticResource resources}}" TextAlignment="Center" VerticalAlignment="Bottom" />
-            <TextBlock Grid.Row="5" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" Text="{Binding Setting_Prescript, Source={StaticResource resources}}" TextAlignment="Left" VerticalAlignment="Center" />
-            <TextBlock Grid.Row="5" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" Text="{Binding Setting_Remaining, Source={StaticResource resources}}" TextAlignment="Right" VerticalAlignment="Center" />
-            <TextBlock Grid.Row="5" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="2" Text="{Binding Setting_Unit, Source={StaticResource resources}}" TextAlignment="Left" VerticalAlignment="Center" />
+            <TextBlock Grid.Row="5" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="8" Text="{Binding Setting_InputAlarm, Source={StaticResource resources}}" TextAlignment="Center" VerticalAlignment="Bottom" />
             <TextBlock Grid.Row="6" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" Text="{Binding Setting_BeforeMeals, Source={StaticResource resources}}" TextAlignment="Left" VerticalAlignment="Center" />
             <TextBlock Grid.Row="6" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="2" Text="{Binding Setting_BeforeMinute, Source={StaticResource resources}}" TextAlignment="Left" VerticalAlignment="Center" />
             <TextBlock Grid.Row="7" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" Text="{Binding Setting_AfterMeals, Source={StaticResource resources}}" TextAlignment="Left" VerticalAlignment="Center" />
@@ -170,11 +167,6 @@
                 </ComboBoxItem>
             </ComboBox>
 
-            <ComboBox Grid.Row="5" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="1" SelectedIndex="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" >
-                <ComboBoxItem >
-                    <TextBlock Text="0" />
-                </ComboBoxItem>
-            </ComboBox>
             <ComboBox Grid.Row="6" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="1" SelectedIndex="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" >
                 <ComboBoxItem >
                     <TextBlock Text="00" />

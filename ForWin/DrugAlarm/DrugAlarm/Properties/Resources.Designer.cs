@@ -178,6 +178,24 @@ namespace DrugAlarm.Properties {
         }
         
         /// <summary>
+        ///   薬残量お知らせ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_Prescript {
+            get {
+                return ResourceManager.GetString("Detail_Prescript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   残り に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_Remaining {
+            get {
+                return ResourceManager.GetString("Detail_Remaining", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   備考 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Detail_Remarks {
@@ -556,29 +574,11 @@ namespace DrugAlarm.Properties {
         }
         
         /// <summary>
-        ///   薬残量お知らせ に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        public static string Setting_Prescript {
-            get {
-                return ResourceManager.GetString("Setting_Prescript", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   再通知 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Setting_Realarm {
             get {
                 return ResourceManager.GetString("Setting_Realarm", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   残り に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        public static string Setting_Remaining {
-            get {
-                return ResourceManager.GetString("Setting_Remaining", resourceCulture);
             }
         }
         
