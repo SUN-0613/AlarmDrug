@@ -6,13 +6,13 @@ namespace DrugAlarm.Base
     /// <summary>
     /// ViewModel基幹
     /// </summary>
-    class ViewModelBase : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged
     {
 
         /// <summary>
         /// Event
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
         /// <summary>
         /// PropertyChanged()呼び出し

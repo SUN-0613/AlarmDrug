@@ -3,9 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Convert="clr-namespace:DrugAlarm.Converter"
         mc:Ignorable="d"
         Style="{Binding Mode=OneWay, Source={StaticResource WindowCustomStyle}}"
         Title="{Binding List_Title, Source={StaticResource resources}}" >
+    <Window.Resources>
+        <Convert:VolumeToForeground x:Key="ForegroundConverter" />
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
@@ -43,9 +47,9 @@
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding Name}" />
-                        <TextBlock Grid.Column="1" Text=":" />
-                        <TextBlock Grid.Column="2" Text="{Binding DrugTiming}" />
+                        <TextBlock Grid.Column="0" Text="{Binding Name}" Foreground="{Binding IsPrescriptionAlarm, Converter={StaticResource ForegroundConverter}}" />
+                        <TextBlock Grid.Column="1" Text="{Binding Colon}" Foreground="{Binding IsPrescriptionAlarm, Converter={StaticResource ForegroundConverter}}" />
+                        <TextBlock Grid.Column="2" Text="{Binding DrugTiming}" Foreground="{Binding IsPrescriptionAlarm, Converter={StaticResource ForegroundConverter}}" />
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

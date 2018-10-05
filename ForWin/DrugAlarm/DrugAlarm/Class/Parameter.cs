@@ -44,12 +44,12 @@ namespace DrugAlarm.Class
             /// <summary>
             /// 開始時間
             /// </summary>
-            public DateTime Start { get; set; }
+            public DateTime Start;
 
             /// <summary>
             /// 終了時間
             /// </summary>
-            public DateTime Finish { get; set; }
+            public DateTime Finish;
 
             /// <summary>
             /// new
@@ -106,138 +106,146 @@ namespace DrugAlarm.Class
         private AlarmInfo ReAlarm;
 
         /// <summary>
-        /// 指定時間を今日日付のDateTime型に変換
+        /// パラメータメソッド一覧
         /// </summary>
-        /// <param name="Hour">時</param>
-        /// <param name="Minute">分</param>
-        /// <returns>今日日付のDateTime型</returns>
-        private static DateTime GetTodayTime(Int32 Hour, Int32 Minute)
-        {
-            return new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, Hour, Minute, 0);
-        }
-
-        /// <summary>
-        /// 指定時間を今日日付のDateTime型に変換
-        /// </summary>
-        /// <param name="Time">HH:mm</param>
-        /// <returns>今日日付のDateTime型</returns>
-        private static DateTime GetTodayTime(string Time)
+        private class Method
         {
 
-            string[] Values = Time.Split(':');
-            Int32 Hour;
-            Int32 Minute;
-
-            if (!Int32.TryParse(Values[0], out Hour))
+            /// <summary>
+            /// 指定時間を今日日付のDateTime型に変換
+            /// </summary>
+            /// <param name="Hour">時</param>
+            /// <param name="Minute">分</param>
+            /// <returns>今日日付のDateTime型</returns>
+            public DateTime GetTodayTime(Int32 Hour, Int32 Minute)
             {
-                Hour = 0;
-            }
-            if (!Int32.TryParse(Values[1], out Minute))
-            {
-                Minute = 0;
+                return new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, Hour, Minute, 0);
             }
 
-            return new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, Hour, Minute, 0);
-        }
-
-        /// <summary>
-        /// 次回時間の取得
-        /// </summary>
-        /// <param name="Time">設定時間</param>
-        private static DateTime GetNextDateTime(DateTime Time)
-        {
-
-            DateTime Now = DateTime.Now;
-            DateTime Return = new DateTime(Now.Year, Now.Month, Now.Day, Time.Hour, Time.Minute, 0);
-
-            if (Time.Hour < Now.Hour || (Time.Hour.Equals(Now.Hour) && Time.Minute < Now.Minute))
+            /// <summary>
+            /// 指定時間を今日日付のDateTime型に変換
+            /// </summary>
+            /// <param name="Time">HH:mm</param>
+            /// <returns>今日日付のDateTime型</returns>
+            public DateTime GetTodayTime(string Time)
             {
-                Return.AddDays(1.0);
+
+                string[] Values = Time.Split(':');
+                Int32 Hour;
+                Int32 Minute;
+
+                if (!Int32.TryParse(Values[0], out Hour))
+                {
+                    Hour = 0;
+                }
+                if (!Int32.TryParse(Values[1], out Minute))
+                {
+                    Minute = 0;
+                }
+
+                return new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, Hour, Minute, 0);
             }
 
-            return Return;
-
-        }
-
-        /// <summary>
-        /// 文字列を整数値に変換
-        /// 変換できない場合は引数値を返す
-        /// </summary>
-        /// <param name="Value">変換文字列</param>
-        /// <param name="DefaultValue">デフォルト値</param>
-        /// <returns>変換後数値</returns>
-        private static Int32 ConvertToInt32(string Value, Int32 DefaultValue)
-        {
-            Int32 Return;
-
-            if (!Int32.TryParse(Value, out Return))
+            /// <summary>
+            /// 次回時間の取得
+            /// </summary>
+            /// <param name="Time">設定時間</param>
+            public DateTime GetNextDateTime(DateTime Time)
             {
-                Return = DefaultValue;
+
+                DateTime Now = DateTime.Now;
+                DateTime Return = new DateTime(Now.Year, Now.Month, Now.Day, Time.Hour, Time.Minute, 0);
+
+                if (Time.Hour < Now.Hour || (Time.Hour.Equals(Now.Hour) && Time.Minute < Now.Minute))
+                {
+                    Return.AddDays(1.0);
+                }
+
+                return Return;
+
             }
 
-            return Return;
-
-        }
-
-        /// <summary>
-        /// 文字列を日付型に変換
-        /// 変換できない場合は引数値を返す
-        /// </summary>
-        /// <param name="Value">変換文字列</param>
-        /// <param name="DefaultValue">デフォルト値</param>
-        /// <returns>変換後日付型</returns>
-        private static DateTime ConvertDateTime(string Value, DateTime DefaultValue)
-        {
-
-            DateTime Return;
-
-            if (Value.Split(':').Length != 2)
+            /// <summary>
+            /// 文字列を整数値に変換
+            /// 変換できない場合は引数値を返す
+            /// </summary>
+            /// <param name="Value">変換文字列</param>
+            /// <param name="DefaultValue">デフォルト値</param>
+            /// <returns>変換後数値</returns>
+            public Int32 ConvertToInt32(string Value, Int32 DefaultValue)
             {
-                Value += ":00";
+                Int32 Return;
+
+                if (!Int32.TryParse(Value, out Return))
+                {
+                    Return = DefaultValue;
+                }
+
+                return Return;
+
             }
 
-            if (!DateTime.TryParse(Value, out Return))
+            /// <summary>
+            /// 文字列を日付型に変換
+            /// 変換できない場合は引数値を返す
+            /// </summary>
+            /// <param name="Value">変換文字列</param>
+            /// <param name="DefaultValue">デフォルト値</param>
+            /// <returns>変換後日付型</returns>
+            public DateTime ConvertDateTime(string Value, DateTime DefaultValue)
             {
-                Return = DefaultValue;
+
+                DateTime Return;
+
+                if (Value.Split(':').Length != 2)
+                {
+                    Value += ":00";
+                }
+
+                if (!DateTime.TryParse(Value, out Return))
+                {
+                    Return = DefaultValue;
+                }
+
+                return Return;
+
             }
 
-            return Return;
-
-        }
-
-        /// <summary>
-        /// 改行変換
-        /// CRLF→"_CRLF_"
-        /// または"_CRLF_"→CRLF
-        /// </summary>
-        /// <param name="Str">対象文字列</param>
-        /// <returns>変換後文字列</returns>
-        private static string ConvertCRLF(string Str)
-        {
-
-            const string CRLF = "\r\n";
-            const string _CRLF_ = "_CRLF_";
-
-            if (Str.Contains(CRLF))
+            /// <summary>
+            /// 改行変換
+            /// CRLF→"_CRLF_"
+            /// または"_CRLF_"→CRLF
+            /// </summary>
+            /// <param name="Str">対象文字列</param>
+            /// <returns>変換後文字列</returns>
+            public string ConvertCRLF(string Str)
             {
-                return Str.Replace(CRLF, _CRLF_);
+
+                const string CRLF = "\r\n";
+                const string _CRLF_ = "_CRLF_";
+
+                if (Str.Contains(CRLF))
+                {
+                    return Str.Replace(CRLF, _CRLF_);
+                }
+                else
+                {
+                    return Str.Replace(_CRLF_, CRLF);
+                }
             }
-            else
-            {
-                return Str.Replace(_CRLF_, CRLF);
-            }
+
         }
 
         /// <summary>
         /// パラメータ名称一覧
         /// </summary>
-        private static class NAME
+        private class NAME
         {
 
             /// <summary>
             /// 設定
             /// </summary>
-            public static class SETTING
+            public class SETTING
             {
 
                 /// <summary>
@@ -300,7 +308,7 @@ namespace DrugAlarm.Class
             /// <summary>
             /// 薬
             /// </summary>
-            public static class DRUG
+            public class DRUG
             {
 
                 /// <summary>
@@ -385,7 +393,7 @@ namespace DrugAlarm.Class
         /// <summary>
         /// 設定クラス
         /// </summary>
-        private class SettingParameter
+        private class SettingParameter : Method
         {
 
             /// <summary>
@@ -517,17 +525,17 @@ namespace DrugAlarm.Class
                 /// <summary>
                 /// 服用プロパティ
                 /// </summary>
-                public bool IsDrug { get; set; }
+                public bool IsDrug;
 
                 /// <summary>
                 /// 服用時間プロパティ
                 /// </summary>
-                public KindTiming Kind { get; set; }
+                public KindTiming Kind;
 
                 /// <summary>
                 /// 錠数プロパティ
                 /// </summary>
-                public Int32 Volume { get; set; }
+                public Int32 Volume;
 
                 /// <summary>
                 /// new
@@ -549,7 +557,7 @@ namespace DrugAlarm.Class
             /// <summary>
             /// 名称プロパティ
             /// </summary>
-            public string Name { get; set; }
+            public string Name;
 
             /// <summary>
             /// 朝食
@@ -584,7 +592,7 @@ namespace DrugAlarm.Class
             /// <summary>
             /// 指定時間プロパティ
             /// </summary>
-            public DateTime AppointTime { get; set; }
+            public DateTime AppointTime;
 
             /// <summary>
             /// 時間毎(時)
@@ -594,7 +602,7 @@ namespace DrugAlarm.Class
             /// <summary>
             /// 時間毎(時)プロパティ
             /// </summary>
-            public Int32 HourEachTime { get; set; }
+            public Int32 HourEachTime;
 
             /// <summary>
             /// 処方量
@@ -635,17 +643,17 @@ namespace DrugAlarm.Class
             /// <summary>
             /// 薬切れお知らせアラームプロパティ
             /// </summary>
-            public bool IsPrescriptionAlarm { get; set; }
+            public bool IsPrescriptionAlarm;
 
             /// <summary>
             /// 備考プロパティ
             /// </summary>
-            public string Remarks { get; set; }
+            public string Remarks;
 
             /// <summary>
             /// 服用タイミングを一覧に表示プロパティ
             /// </summary>
-            public string DrugTiming { get; set; }
+            public string DrugTiming;
 
             /// <summary>
             /// 初期値設定
@@ -702,6 +710,7 @@ namespace DrugAlarm.Class
                 TotalVolume = 0;
                 PrescriptionAlarmVolume = 0;
                 Remarks = "";
+                DrugTiming = "";
 
             }
 
@@ -723,7 +732,7 @@ namespace DrugAlarm.Class
         /// <summary>
         /// 薬リスト
         /// </summary>
-        public ObservableCollection<DrugParameter> DrugList;
+        public List<DrugParameter> DrugList;
 
         /// <summary>
         /// new
@@ -732,7 +741,7 @@ namespace DrugAlarm.Class
         {
 
             Setting = new SettingParameter();
-            DrugList = new ObservableCollection<DrugParameter>();
+            DrugList = new List<DrugParameter>();
 
             NextAlarm = new AlarmInfo();
             ReAlarm = new AlarmInfo();
@@ -786,6 +795,7 @@ namespace DrugAlarm.Class
             using (System.IO.StreamReader file = new System.IO.StreamReader(Path, Encoding.Unicode))
             {
 
+                Method method = new Method();
                 StringBuilder NewLine = new StringBuilder();
                 Int32 Index = 0;
 
@@ -852,42 +862,42 @@ namespace DrugAlarm.Class
                                 switch (Str[0])
                                 {
                                     case NAME.SETTING.BREAKFAST:
-                                        Setting.Breakfast.Start = GetTodayTime(Values[0]);
-                                        Setting.Breakfast.Finish = GetTodayTime(Values[1]);
+                                        Setting.Breakfast.Start = method.GetTodayTime(Values[0]);
+                                        Setting.Breakfast.Finish = method.GetTodayTime(Values[1]);
                                         break;
 
                                     case NAME.SETTING.LUNCH:
-                                        Setting.Lunch.Start = GetTodayTime(Values[0]);
-                                        Setting.Lunch.Finish = GetTodayTime(Values[1]);
+                                        Setting.Lunch.Start = method.GetTodayTime(Values[0]);
+                                        Setting.Lunch.Finish = method.GetTodayTime(Values[1]);
                                         break;
 
                                     case NAME.SETTING.DINNER:
-                                        Setting.Dinner.Start = GetTodayTime(Values[0]);
-                                        Setting.Dinner.Finish = GetTodayTime(Values[1]);
+                                        Setting.Dinner.Start = method.GetTodayTime(Values[0]);
+                                        Setting.Dinner.Finish = method.GetTodayTime(Values[1]);
                                         break;
 
                                     case NAME.SETTING.SLEEP:
-                                        Setting.Sleep = GetTodayTime(Str[1]);
+                                        Setting.Sleep = method.GetTodayTime(Str[1]);
                                         break;
 
                                     case NAME.SETTING.BEFOREMEALS:
-                                        Setting.MinuteBeforeMeals = ConvertToInt32(Str[1], Setting.MinuteBeforeMeals);
+                                        Setting.MinuteBeforeMeals = method.ConvertToInt32(Str[1], Setting.MinuteBeforeMeals);
                                         break;
 
                                     case NAME.SETTING.BETWEENMEALS:
-                                        Setting.MinuteBetweenMeals = ConvertToInt32(Str[1], Setting.MinuteBetweenMeals);
+                                        Setting.MinuteBetweenMeals = method.ConvertToInt32(Str[1], Setting.MinuteBetweenMeals);
                                         break;
 
                                     case NAME.SETTING.AFTERMEALS:
-                                        Setting.MinuteAfterMeals = ConvertToInt32(Str[1], Setting.MinuteAfterMeals);
+                                        Setting.MinuteAfterMeals = method.ConvertToInt32(Str[1], Setting.MinuteAfterMeals);
                                         break;
 
                                     case NAME.SETTING.BEFORESLEEP:
-                                        Setting.MinuteBeforeSleep = ConvertToInt32(Str[1], Setting.MinuteBeforeSleep);
+                                        Setting.MinuteBeforeSleep = method.ConvertToInt32(Str[1], Setting.MinuteBeforeSleep);
                                         break;
 
                                     case NAME.SETTING.REALARM:
-                                        Setting.MinuteReAlarm = ConvertToInt32(Str[1], Setting.MinuteReAlarm);
+                                        Setting.MinuteReAlarm = method.ConvertToInt32(Str[1], Setting.MinuteReAlarm);
                                         break;
 
                                     default:
@@ -926,46 +936,46 @@ namespace DrugAlarm.Class
 
                                     case NAME.DRUG.BREAKFAST:
                                         DrugList[Index].Breakfast.IsDrug = true;
-                                        DrugList[Index].Breakfast.Volume = ConvertToInt32(Str[1], DrugList[Index].Breakfast.Volume);
+                                        DrugList[Index].Breakfast.Volume = method.ConvertToInt32(Str[1], DrugList[Index].Breakfast.Volume);
                                         break;
 
                                     case NAME.DRUG.LUNCH:
                                         DrugList[Index].Lunch.IsDrug = true;
-                                        DrugList[Index].Lunch.Volume = ConvertToInt32(Str[1], DrugList[Index].Lunch.Volume);
+                                        DrugList[Index].Lunch.Volume = method.ConvertToInt32(Str[1], DrugList[Index].Lunch.Volume);
                                         break;
 
                                     case NAME.DRUG.DINNER:
                                         DrugList[Index].Dinner.IsDrug = true;
-                                        DrugList[Index].Dinner.Volume = ConvertToInt32(Str[1], DrugList[Index].Dinner.Volume);
+                                        DrugList[Index].Dinner.Volume = method.ConvertToInt32(Str[1], DrugList[Index].Dinner.Volume);
                                         break;
 
                                     case NAME.DRUG.TOBETAKEN:
                                         DrugList[Index].ToBeTaken.IsDrug = true;
-                                        DrugList[Index].ToBeTaken.Volume = ConvertToInt32(Str[1], DrugList[Index].ToBeTaken.Volume);
+                                        DrugList[Index].ToBeTaken.Volume = method.ConvertToInt32(Str[1], DrugList[Index].ToBeTaken.Volume);
                                         break;
 
                                     case NAME.DRUG.APPOINTTIME:
                                         DrugList[Index].Appoint.IsDrug = true;
-                                        DrugList[Index].Appoint.Volume = ConvertToInt32(Str[1], DrugList[Index].Appoint.Volume);
-                                        DrugList[Index].AppointTime = ConvertDateTime(Str[2], DrugList[Index].AppointTime);
+                                        DrugList[Index].Appoint.Volume = method.ConvertToInt32(Str[1], DrugList[Index].Appoint.Volume);
+                                        DrugList[Index].AppointTime = method.ConvertDateTime(Str[2], DrugList[Index].AppointTime);
                                         break;
 
                                     case NAME.DRUG.HOUREACH:
                                         DrugList[Index].HourEach.IsDrug = true;
-                                        DrugList[Index].HourEach.Volume = ConvertToInt32(Str[1], DrugList[Index].HourEach.Volume);
-                                        DrugList[Index].HourEachTime = ConvertToInt32(Str[2], DrugList[Index].HourEachTime);
+                                        DrugList[Index].HourEach.Volume = method.ConvertToInt32(Str[1], DrugList[Index].HourEach.Volume);
+                                        DrugList[Index].HourEachTime = method.ConvertToInt32(Str[2], DrugList[Index].HourEachTime);
                                         break;
 
                                     case NAME.DRUG.TOTALVOLUME:
-                                        DrugList[Index].TotalVolume = ConvertToInt32(Str[1], DrugList[Index].TotalVolume);
+                                        DrugList[Index].TotalVolume = method.ConvertToInt32(Str[1], DrugList[Index].TotalVolume);
                                         break;
 
                                     case NAME.DRUG.PRESCRIPTIOIN:
-                                        DrugList[Index].PrescriptionAlarmVolume = ConvertToInt32(Str[1], DrugList[Index].PrescriptionAlarmVolume);
+                                        DrugList[Index].PrescriptionAlarmVolume = method.ConvertToInt32(Str[1], DrugList[Index].PrescriptionAlarmVolume);
                                         break;
 
                                     case NAME.DRUG.REMARKS:
-                                        DrugList[Index].Name = ConvertCRLF(Str[1]);
+                                        DrugList[Index].Name = method.ConvertCRLF(Str[1]);
                                         break;
 
                                     default:
@@ -1293,6 +1303,7 @@ namespace DrugAlarm.Class
         private string MakeParameter(string Parameter, string Value, bool IsAllowLine)
         {
 
+            Method method = new Method();
             StringBuilder Str = new StringBuilder(Parameter.Length + Value.Length + 1);
 
             try
@@ -1304,7 +1315,7 @@ namespace DrugAlarm.Class
 
                 if (IsAllowLine)
                 {
-                    Str.Append(ConvertCRLF(Value));
+                    Str.Append(method.ConvertCRLF(Value));
                 }
                 else
                 {
@@ -1543,6 +1554,7 @@ namespace DrugAlarm.Class
         private void SetNextAlarm()
         {
 
+            Method method = new Method();
             DateTime Time;
 
             //初期値
@@ -1579,7 +1591,7 @@ namespace DrugAlarm.Class
                 //毎時
                 if (DrugList[iLoop].HourEach.IsDrug)
                 {
-                    CompareToTime(GetNextDateTime(GetTodayTime(DrugList[iLoop].HourEachTime, 0)), iLoop, DrugList[iLoop].HourEach.Volume);
+                    CompareToTime(method.GetNextDateTime(method.GetTodayTime(DrugList[iLoop].HourEachTime, 0)), iLoop, DrugList[iLoop].HourEach.Volume);
                 }
 
                 //指定日時

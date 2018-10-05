@@ -5,24 +5,21 @@ using System.Windows.Media;
 
 namespace DrugAlarm.Converter
 {
-    class VolumeToForeground : IMultiValueConverter
+    class VolumeToForeground : IValueConverter
     {
 
         /// <summary>
         /// 薬残量により文字色の変更
         /// </summary>
-        /// <param name="values">
-        /// 0:薬残量
-        /// 1:薬切れアラーム残量
-        /// </param>
+        /// <param name="value">薬切れFLG</param>
         /// <returns>文字色
         /// 黒：残量十分
         /// 赤：残量不足
         /// </returns>
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
 
-            if (Int32.Parse(values[0].ToString()) <= (Int32.Parse(values[1].ToString())))
+            if (bool.Parse(value.ToString()))
             {
                 return Colors.Red;
             }
@@ -36,10 +33,9 @@ namespace DrugAlarm.Converter
         /// <summary>
         /// 使用しない
         /// </summary>
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
-
     }
 }
