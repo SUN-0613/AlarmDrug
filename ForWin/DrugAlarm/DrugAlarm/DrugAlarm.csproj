@@ -129,6 +129,7 @@
     <Compile Include="Form\Detail.xaml.cs">
       <DependentUpon>Detail.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Form\DetailViewModel.cs" />
     <Compile Include="Form\Information.xaml.cs">
       <DependentUpon>Information.xaml</DependentUpon>
     </Compile>

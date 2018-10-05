@@ -5,9 +5,13 @@ using System.Windows.Threading;
 using DrugAlarm.Class;
 using DrugAlarm.Base;
 
-namespace DrugAlarm.Form
+namespace DrugAlarm.Form.ViewModel
 {
-    class ListViewModel : ViewModelBase, IDisposable
+
+    /// <summary>
+    /// List.xamlのViewModel
+    /// </summary>
+    class List : ViewModelBase, IDisposable
     {
 
         /// <summary>
@@ -111,7 +115,7 @@ namespace DrugAlarm.Form
         /// <summary>
         /// 薬一覧
         /// </summary>
-        public ObservableCollection<DrugParameter> List { get; set; }
+        public ObservableCollection<DrugParameter> DrugList { get; set; }
 
         /// <summary>
         /// ListBox.SelectedIndex
@@ -150,11 +154,11 @@ namespace DrugAlarm.Form
         /// <summary>
         /// new
         /// </summary>
-        public ListViewModel()
+        public List()
         {
 
             _Parameter = (System.Windows.Application.Current as App).Parameter;
-            List = new ObservableCollection<DrugParameter>();
+            DrugList = new ObservableCollection<DrugParameter>();
 
             //タイマ処理
             _Timer = new DispatcherTimer
@@ -181,8 +185,8 @@ namespace DrugAlarm.Form
             }
             _Timer.Tick -= new EventHandler(Timer_Tick);
 
-            List.Clear();
-            List = null;
+            DrugList.Clear();
+            DrugList = null;
 
         }
 
@@ -192,10 +196,10 @@ namespace DrugAlarm.Form
         private void Timer_Tick(object sender, EventArgs e)
         {
 
-            if (!List.Count.Equals(_Parameter.DrugList.Count))
+            if (!DrugList.Count.Equals(_Parameter.DrugList.Count))
             {
 
-                List.Clear();
+                DrugList.Clear();
 
                 _Parameter.DrugList.ForEach(Drug =>
                     {
@@ -208,7 +212,7 @@ namespace DrugAlarm.Form
                         AddDrug.Remarks = Drug.Remarks;
                         AddDrug.IsPrescriptionAlarm = Drug.IsPrescriptionAlarm;
 
-                        List.Add(AddDrug);
+                        DrugList.Add(AddDrug);
 
                     });
 
@@ -216,10 +220,10 @@ namespace DrugAlarm.Form
             else
             {
 
-                for (Int32 iLoop = 0; iLoop < List.Count; iLoop++)
+                for (Int32 iLoop = 0; iLoop < DrugList.Count; iLoop++)
                 {
 
-                    DrugParameter Drug = List[iLoop];
+                    DrugParameter Drug = DrugList[iLoop];
                     Parameter.DrugParameter Param = _Parameter.DrugList[iLoop];
 
                     if (!Drug.Name.Equals(Param.Name))
@@ -252,7 +256,7 @@ namespace DrugAlarm.Form
         /// 設定画面呼出
         /// </summary>
         /// <param name="View">呼出元画面</param>
-        public void CallSetting(List View)
+        public void CallSetting(DrugAlarm.Form.List View)
         {
 
             var form = new Setting
@@ -267,7 +271,7 @@ namespace DrugAlarm.Form
         /// 新規追加画面呼出
         /// </summary>
         /// <param name="View">呼出元画面</param>
-        public void CallDetailForm(List View, bool IsNewDrug)
+        public void CallDetailForm(DrugAlarm.Form.List View, bool IsNewDrug)
         {
 
             Int32 Index;
@@ -276,7 +280,7 @@ namespace DrugAlarm.Form
             {
                 Index = -1;
             }
-            else if (-1 < _SelectedIndex && _SelectedIndex < List.Count)
+            else if (-1 < _SelectedIndex && _SelectedIndex < DrugList.Count)
             {
                 Index = _SelectedIndex;
             }
@@ -299,11 +303,11 @@ namespace DrugAlarm.Form
         public void DeleteDrug()
         {
 
-            if (-1 < _SelectedIndex && _SelectedIndex < List.Count)
+            if (-1 < _SelectedIndex && _SelectedIndex < DrugList.Count)
             {
 
                 string AppName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
-                string Message = DrugAlarm.Properties.Resources.List_DeleteMessage.Replace("_DRUG_", List[_SelectedIndex].Name);
+                string Message = DrugAlarm.Properties.Resources.List_DeleteMessage.Replace("_DRUG_", DrugList[_SelectedIndex].Name);
 
                 if (MessageBox.Show(Message, AppName, MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                 {
@@ -322,7 +326,7 @@ namespace DrugAlarm.Form
         public void DrugMedicine()
         {
 
-            if (-1 < _SelectedIndex && _SelectedIndex < List.Count)
+            if (-1 < _SelectedIndex && _SelectedIndex < DrugList.Count)
             {
 
                 Parameter.DrugParameter Drug = _Parameter.DrugList[_SelectedIndex];
@@ -335,8 +339,6 @@ namespace DrugAlarm.Form
             }
 
         }
-
-
 
     }
 }

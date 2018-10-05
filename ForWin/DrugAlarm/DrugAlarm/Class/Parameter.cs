@@ -769,7 +769,7 @@ namespace DrugAlarm.Class
         /// <summary>
         /// ファイル読込
         /// </summary>
-        private void Load()
+        public void Load()
         {
 
             //前回パスの取得

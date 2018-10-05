@@ -9,7 +9,10 @@ namespace DrugAlarm.Form
     public partial class List : Window
     {
 
-        private ListViewModel ViewModel;
+        /// <summary>
+        /// List.xamlのViewModel
+        /// </summary>
+        private ViewModel.List ViewModel;
 
         /// <summary>
         /// new
@@ -19,7 +22,7 @@ namespace DrugAlarm.Form
 
             InitializeComponent();
 
-            ViewModel = new ListViewModel();
+            ViewModel = new ViewModel.List();
             this.DataContext = ViewModel;
 
         }
