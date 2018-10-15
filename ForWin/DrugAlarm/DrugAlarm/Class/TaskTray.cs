@@ -1,9 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows.Forms;
-using DrugAlarm.Class;
 
-namespace DrugAlarm.Base
+namespace DrugAlarm.Class
 {
 
     /// <summary>
@@ -101,7 +100,7 @@ namespace DrugAlarm.Base
         private void MenuItem_ShowList_Click(object sender, EventArgs e)
         {
 
-            var ListForm = new DrugAlarm.Form.List();
+            var ListForm = new DrugAlarm.Form.View.List();
             ListForm.Show();
 
         }

@@ -93,19 +93,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Form\Alarm.xaml">
+    <Page Include="Form\View\Alarm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Form\Detail.xaml">
+    <Page Include="Form\View\Detail.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Form\Information.xaml">
+    <Page Include="Form\View\Information.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Form\List.xaml">
+    <Page Include="Form\View\List.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -113,44 +113,45 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Base\TaskTray.cs">
+    <Compile Include="Class\TaskTray.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Base\TaskTray.Designer.cs">
+    <Compile Include="Class\TaskTray.Designer.cs">
       <DependentUpon>TaskTray.cs</DependentUpon>
     </Compile>
-    <Compile Include="Base\ViewModelBase.cs" />
+    <Compile Include="Common\ViewModelBase.cs" />
     <Compile Include="Class\AlarmTimer.cs" />
     <Compile Include="Class\Parameter.cs" />
     <Compile Include="Converter\VolumeToForeground.cs" />
-    <Compile Include="Form\Alarm.xaml.cs">
+    <Compile Include="Form\Model\List.cs" />
+    <Compile Include="Form\View\Alarm.xaml.cs">
       <DependentUpon>Alarm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Form\Detail.xaml.cs">
+    <Compile Include="Form\View\Detail.xaml.cs">
       <DependentUpon>Detail.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Form\DetailViewModel.cs" />
-    <Compile Include="Form\Information.xaml.cs">
+    <Compile Include="Form\ViewModel\Detail.cs" />
+    <Compile Include="Form\View\Information.xaml.cs">
       <DependentUpon>Information.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Form\List.xaml.cs">
+    <Compile Include="Form\View\List.xaml.cs">
       <DependentUpon>List.xaml</DependentUpon>
     </Compile>
-    <Page Include="Form\Realarm.xaml">
+    <Page Include="Form\View\Realarm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Form\Setting.xaml">
+    <Page Include="Form\View\Setting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form\ListViewModel.cs" />
-    <Compile Include="Form\Realarm.xaml.cs">
+    <Compile Include="Form\ViewModel\List.cs" />
+    <Compile Include="Form\View\Realarm.xaml.cs">
       <DependentUpon>Realarm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Form\Setting.xaml.cs">
+    <Compile Include="Form\View\Setting.xaml.cs">
       <DependentUpon>Setting.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -166,7 +167,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Base\TaskTray.resx">
+    <EmbeddedResource Include="Class\TaskTray.resx">
       <DependentUpon>TaskTray.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -196,5 +197,6 @@
   <ItemGroup>
     <Resource Include="Picture\SampleIcon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

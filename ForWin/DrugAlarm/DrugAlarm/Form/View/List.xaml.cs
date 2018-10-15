@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace DrugAlarm.Form
+namespace DrugAlarm.Form.View
 {
 
     /// <summary>

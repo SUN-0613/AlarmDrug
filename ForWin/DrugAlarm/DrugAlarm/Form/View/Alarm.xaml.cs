@@ -1,19 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using DrugAlarm.Class;
+﻿using System.Windows;
 
-namespace DrugAlarm.Form
+namespace DrugAlarm.Form.View
 {
     /// <summary>
     /// Alarm.xaml の相互作用ロジック
@@ -24,7 +11,7 @@ namespace DrugAlarm.Form
         /// <summary>
         /// パラメータ
         /// </summary>
-        private Parameter _Parameter = (System.Windows.Application.Current as App).Parameter;
+        private Class.Parameter _Parameter = (System.Windows.Application.Current as App).Parameter;
 
         /// <summary>
         /// new

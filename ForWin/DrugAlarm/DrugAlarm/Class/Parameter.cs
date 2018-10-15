@@ -622,7 +622,14 @@ namespace DrugAlarm.Class
                 get { return _TotalVolume; }
                 set
                 {
-                    _TotalVolume = value;
+                    if (value < 0)
+                    {
+                        _TotalVolume = 0;
+                    }
+                    else
+                    {
+                        _TotalVolume = value;
+                    }
                     UpdatePrescription();
                 }
             }

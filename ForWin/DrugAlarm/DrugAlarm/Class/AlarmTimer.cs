@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Threading;
-using DrugAlarm.Form;
 
 namespace DrugAlarm.Class
 {
@@ -72,7 +71,7 @@ namespace DrugAlarm.Class
                 {
 
                     //アラーム表示
-                    var Alarm = new Alarm();
+                    var Alarm = new Form.View.Alarm();
                     if (Alarm.ShowDialog() == true)
                     {
 
@@ -80,7 +79,7 @@ namespace DrugAlarm.Class
                         if (_Parameter.TakeMedicine())
                         {
                             //薬切れアラーム表示
-                            var Information = new Information();
+                            var Information = new Form.View.Information();
                             Information.ShowDialog();
                         }
 

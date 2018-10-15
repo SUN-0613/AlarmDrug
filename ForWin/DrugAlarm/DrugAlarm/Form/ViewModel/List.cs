@@ -2,8 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Threading;
-using DrugAlarm.Class;
-using DrugAlarm.Base;
 
 namespace DrugAlarm.Form.ViewModel
 {
@@ -11,49 +9,39 @@ namespace DrugAlarm.Form.ViewModel
     /// <summary>
     /// List.xamlのViewModel
     /// </summary>
-    class List : ViewModelBase, IDisposable
+    class List : Common.ViewModelBase, IDisposable
     {
+
+        /// <summary>
+        /// List.xamlのModel
+        /// </summary>
+        private Model.List _Model;
 
         /// <summary>
         /// DrugParameterより一部抜粋
         /// </summary>
-        public class DrugParameter : ViewModelBase
+        public class DrugParameter : Common.ViewModelBase
         {
 
             /// <summary>
-            /// 名称
+            /// List.xamlのModel
             /// </summary>
-            private string _Name;
+            private Model.List _Model;
 
             /// <summary>
-            /// :
+            /// _Model.DrugList.Index
             /// </summary>
-            private string _Colon;
-
-            /// <summary>
-            /// 服用タイミング
-            /// </summary>
-            private string _DrugTiming;
-
-            /// <summary>
-            /// 備考
-            /// </summary>
-            private string _Remarks;
-
-            /// <summary>
-            /// 薬切れFLG
-            /// </summary>
-            private bool _IsPrescriptionAlarm;
+            private Int32 _Index;
 
             /// <summary>
             /// 名称プロパティ
             /// </summary>
             public string Name
             {
-                get { return _Name; }
+                get { return _Model.DrugList[_Index].Name; }
                 set
                 {
-                    _Name = value;
+                    _Model.DrugList[_Index].Name = value;
                     CallPropertyChanged();
                 }
             }
@@ -63,10 +51,10 @@ namespace DrugAlarm.Form.ViewModel
             /// </summary>
             public string Colon
             {
-                get { return _Colon; }
+                get { return _Model.DrugList[_Index].Colon; }
                 set
                 {
-                    _Colon = value;
+                    _Model.DrugList[_Index].Colon = value;
                     CallPropertyChanged();
                 }
             }
@@ -76,10 +64,10 @@ namespace DrugAlarm.Form.ViewModel
             /// </summary>
             public string DrugTiming
             {
-                get { return _DrugTiming; }
+                get { return _Model.DrugList[_Index].DrugTiming; }
                 set
                 {
-                    _DrugTiming = value;
+                    _Model.DrugList[_Index].DrugTiming = value;
                     CallPropertyChanged();
                 }
             }
@@ -89,10 +77,10 @@ namespace DrugAlarm.Form.ViewModel
             /// </summary>
             public string Remarks
             {
-                get { return _Remarks; }
+                get { return _Model.DrugList[_Index].Remarks; }
                 set
                 {
-                    _Remarks = value;
+                    _Model.DrugList[_Index].Remarks = value;
                     CallPropertyChanged();
                 }
             }
@@ -102,12 +90,22 @@ namespace DrugAlarm.Form.ViewModel
             /// </summary>
             public bool IsPrescriptionAlarm
             {
-                get { return _IsPrescriptionAlarm; }
+                get { return _Model.DrugList[_Index].IsPrescriptionAlarm; }
                 set
                 {
-                    _IsPrescriptionAlarm = value;
+                    _Model.DrugList[_Index].IsPrescriptionAlarm = value;
                     CallPropertyChanged();
                 }
+            }
+
+            /// <summary>
+            /// new
+            /// </summary>
+            /// <param name="Index">_Model.DrugList.Index</param>
+            public DrugParameter(Model.List Model)
+            {
+                _Model = Model;
+                _Index = _Model.AddDrugList();
             }
 
         }
@@ -118,33 +116,23 @@ namespace DrugAlarm.Form.ViewModel
         public ObservableCollection<DrugParameter> DrugList { get; set; }
 
         /// <summary>
-        /// ListBox.SelectedIndex
-        /// </summary>
-        private Int32 _SelectedIndex = -1;
-
-        /// <summary>
         /// ListBox.SelectedIndexプロパティ
         /// </summary>
         public Int32 SelectedIndex
         {
             get
             {
-                return _SelectedIndex;
+                return _Model.SelectedIndex;
             }
             set
             {
-                if (!_SelectedIndex.Equals(value))
+                if (!_Model.SelectedIndex.Equals(value))
                 {
-                    _SelectedIndex = value;
+                    _Model.SelectedIndex = value;
                     CallPropertyChanged();
                 }
             }
         }
-
-        /// <summary>
-        /// パラメータ
-        /// </summary>
-        private Parameter _Parameter;
 
         /// <summary>
         /// 100msタイマ
@@ -157,7 +145,7 @@ namespace DrugAlarm.Form.ViewModel
         public List()
         {
 
-            _Parameter = (System.Windows.Application.Current as App).Parameter;
+            _Model = new Model.List();
             DrugList = new ObservableCollection<DrugParameter>();
 
             //タイマ処理
@@ -188,6 +176,8 @@ namespace DrugAlarm.Form.ViewModel
             DrugList.Clear();
             DrugList = null;
 
+            _Model.Dispose();
+
         }
 
         /// <summary>
@@ -196,25 +186,29 @@ namespace DrugAlarm.Form.ViewModel
         private void Timer_Tick(object sender, EventArgs e)
         {
 
-            if (!DrugList.Count.Equals(_Parameter.DrugList.Count))
+            if (!DrugList.Count.Equals(_Model.GetDrugCount))
             {
 
                 DrugList.Clear();
+                _Model.ClearDrugList();
 
-                _Parameter.DrugList.ForEach(Drug =>
+                for (Int32 iLoop = 0; iLoop < _Model.GetDrugCount; iLoop++)
+                {
+
+                    _Model.DrugIndex = iLoop;
+
+                    DrugParameter AddDrug = new DrugParameter(_Model)
                     {
+                        Name = _Model.DrugName,
+                        Colon = ":",
+                        DrugTiming = _Model.DrugTiming,
+                        Remarks = _Model.DrugRemarks,
+                        IsPrescriptionAlarm = _Model.DrugIsPrescriptionAlarm
+                    };
 
-                        DrugParameter AddDrug = new DrugParameter();
+                    DrugList.Add(AddDrug);
 
-                        AddDrug.Name = Drug.Name;
-                        AddDrug.Colon = ":";
-                        AddDrug.DrugTiming = Drug.DrugTiming;
-                        AddDrug.Remarks = Drug.Remarks;
-                        AddDrug.IsPrescriptionAlarm = Drug.IsPrescriptionAlarm;
-
-                        DrugList.Add(AddDrug);
-
-                    });
+                }
 
             }
             else
@@ -224,26 +218,26 @@ namespace DrugAlarm.Form.ViewModel
                 {
 
                     DrugParameter Drug = DrugList[iLoop];
-                    Parameter.DrugParameter Param = _Parameter.DrugList[iLoop];
+                    _Model.DrugIndex = iLoop;
 
-                    if (!Drug.Name.Equals(Param.Name))
+                    if (!Drug.Name.Equals(_Model.DrugName))
                     {
-                        Drug.Name = Param.Name;
+                        Drug.Name = _Model.DrugName;
                     }
 
-                    if (!Drug.DrugTiming.Equals(Param.DrugTiming))
+                    if (!Drug.DrugTiming.Equals(_Model.DrugTiming))
                     {
-                        Drug.DrugTiming = Param.DrugTiming;
+                        Drug.DrugTiming = _Model.DrugTiming;
                     }
 
-                    if (!Drug.Remarks.Equals(Param.Remarks))
+                    if (!Drug.Remarks.Equals(_Model.DrugRemarks))
                     {
-                        Drug.Remarks = Param.Remarks;
+                        Drug.Remarks = _Model.DrugRemarks;
                     }
 
-                    if (!Drug.IsPrescriptionAlarm.Equals(Param.IsPrescriptionAlarm))
+                    if (!Drug.IsPrescriptionAlarm.Equals(_Model.DrugIsPrescriptionAlarm))
                     {
-                        Drug.IsPrescriptionAlarm = Param.IsPrescriptionAlarm;
+                        Drug.IsPrescriptionAlarm = _Model.DrugIsPrescriptionAlarm;
                     }
 
                 }
@@ -256,10 +250,10 @@ namespace DrugAlarm.Form.ViewModel
         /// 設定画面呼出
         /// </summary>
         /// <param name="View">呼出元画面</param>
-        public void CallSetting(DrugAlarm.Form.List View)
+        public void CallSetting(View.List View)
         {
 
-            var form = new Setting
+            var form = new View.Setting
             {
                 Owner = View
             };
@@ -271,7 +265,7 @@ namespace DrugAlarm.Form.ViewModel
         /// 新規追加画面呼出
         /// </summary>
         /// <param name="View">呼出元画面</param>
-        public void CallDetailForm(DrugAlarm.Form.List View, bool IsNewDrug)
+        public void CallDetailForm(View.List View, bool IsNewDrug)
         {
 
             Int32 Index;
@@ -280,16 +274,16 @@ namespace DrugAlarm.Form.ViewModel
             {
                 Index = -1;
             }
-            else if (-1 < _SelectedIndex && _SelectedIndex < DrugList.Count)
+            else if (-1 < _Model.SelectedIndex && _Model.SelectedIndex < DrugList.Count)
             {
-                Index = _SelectedIndex;
+                Index = _Model.SelectedIndex;
             }
             else
             {
                 return;
             }
 
-            var form = new Detail(Index)
+            var form = new View.Detail(Index)
             {
                 Owner = View
             };
@@ -303,17 +297,17 @@ namespace DrugAlarm.Form.ViewModel
         public void DeleteDrug()
         {
 
-            if (-1 < _SelectedIndex && _SelectedIndex < DrugList.Count)
+            if (-1 < _Model.SelectedIndex && _Model.SelectedIndex < DrugList.Count)
             {
 
+                _Model.DrugIndex = _Model.SelectedIndex;
+
                 string AppName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
-                string Message = DrugAlarm.Properties.Resources.List_DeleteMessage.Replace("_DRUG_", DrugList[_SelectedIndex].Name);
+                string Message = DrugAlarm.Properties.Resources.List_DeleteMessage.Replace("_DRUG_", _Model.DrugName);
 
                 if (MessageBox.Show(Message, AppName, MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                 {
-                    _Parameter.DrugList.RemoveAt(_SelectedIndex);
-                    _Parameter.Save();
-                    SelectedIndex = -1;
+                    _Model.DeleteDrug();
                 }
 
             }
@@ -325,19 +319,7 @@ namespace DrugAlarm.Form.ViewModel
         /// </summary>
         public void DrugMedicine()
         {
-
-            if (-1 < _SelectedIndex && _SelectedIndex < DrugList.Count)
-            {
-
-                Parameter.DrugParameter Drug = _Parameter.DrugList[_SelectedIndex];
-
-                if (Drug.ToBeTaken.IsDrug)
-                {
-                    Drug.TotalVolume -= Drug.ToBeTaken.Volume;
-                    _Parameter.Save();
-                }
-            }
-
+            _Model.DrugMedicine();
         }
 
     }

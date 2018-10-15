@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DrugAlarm.Base;
+using DrugAlarm.Common;
 using DrugAlarm.Class;
 
 namespace DrugAlarm.Form.ViewModel

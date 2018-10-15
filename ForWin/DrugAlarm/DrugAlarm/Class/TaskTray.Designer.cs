@@ -1,4 +1,4 @@
-﻿namespace DrugAlarm.Base
+﻿namespace DrugAlarm.Class
 {
     partial class TaskTray
     {

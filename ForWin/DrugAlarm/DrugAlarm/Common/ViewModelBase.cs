@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
 
-namespace DrugAlarm.Base
+namespace DrugAlarm.Common
 {
     /// <summary>
     /// ViewModel基幹
@@ -20,6 +20,8 @@ namespace DrugAlarm.Base
         /// <param name="PropertyName">Changedイベントを発生させたいプロパティ名</param>
         protected void CallPropertyChanged(string PropertyName = "")
         {
+
+            if (PropertyChanged == null) return;
 
             //プロパティ名が指定されていない場合は呼び出し元メソッド名とする
             if (PropertyName.Length.Equals(0))

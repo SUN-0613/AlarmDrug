@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using System.Threading;
 using System.Reflection;
-using DrugAlarm.Base;
 using DrugAlarm.Class;
 
 namespace DrugAlarm
