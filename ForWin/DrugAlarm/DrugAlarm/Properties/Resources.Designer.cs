@@ -304,6 +304,15 @@ namespace DrugAlarm.Properties {
         }
         
         /// <summary>
+        ///   _DRUG_を服用しました に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string List_DrugMedicineMessage {
+            get {
+                return ResourceManager.GetString("List_DrugMedicineMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   削除 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string List_Menu_Delete {

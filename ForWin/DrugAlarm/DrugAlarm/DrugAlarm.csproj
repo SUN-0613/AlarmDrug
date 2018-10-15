@@ -119,6 +119,7 @@
     <Compile Include="Class\TaskTray.Designer.cs">
       <DependentUpon>TaskTray.cs</DependentUpon>
     </Compile>
+    <Compile Include="Common\DelegateCommand.cs" />
     <Compile Include="Common\ViewModelBase.cs" />
     <Compile Include="Class\AlarmTimer.cs" />
     <Compile Include="Class\Parameter.cs" />

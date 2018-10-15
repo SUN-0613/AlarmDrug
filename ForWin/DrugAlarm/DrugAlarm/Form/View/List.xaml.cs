@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using System.ComponentModel;
 
 namespace DrugAlarm.Form.View
 {
@@ -6,13 +8,13 @@ namespace DrugAlarm.Form.View
     /// <summary>
     /// List.xaml の相互作用ロジック
     /// </summary>
-    public partial class List : Window
+    public partial class List : Window, IDisposable
     {
 
         /// <summary>
         /// List.xamlのViewModel
         /// </summary>
-        private ViewModel.List ViewModel;
+        private ViewModel.List _ViewModel;
 
         /// <summary>
         /// new
@@ -22,58 +24,92 @@ namespace DrugAlarm.Form.View
 
             InitializeComponent();
 
-            ViewModel = new ViewModel.List();
-            this.DataContext = ViewModel;
+            _ViewModel = new ViewModel.List();
+            this.DataContext = _ViewModel;
+
+            _ViewModel.PropertyChanged += OnPropertyChanged;
 
         }
 
         /// <summary>
-        /// 設定ボタンクリック
+        /// 終了処理
         /// </summary>
-        private void Setting_Click(object sender, RoutedEventArgs e)
+        public void Dispose()
         {
 
-            ViewModel.CallSetting(this);
+            _ViewModel.Dispose();
+            _ViewModel = null;
+
+            _ViewModel.PropertyChanged -= OnPropertyChanged;
 
         }
 
         /// <summary>
-        /// 新規追加ボタンクリック
+        /// ViewModelプロパティ変更通知イベント
         /// </summary>
-        private void Add_Click(object sender, RoutedEventArgs e)
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
 
-            ViewModel.CallDetailForm(this, true);
+            switch (e.PropertyName)
+            {
 
-        }
+                case "CallSetting":     //設定ボタンクリック
 
-        /// <summary>
-        /// メニュー：編集クリック
-        /// </summary>
-        private void Menu_Edit_Click(object sender, RoutedEventArgs e)
-        {
+                    var Setting = new View.Setting
+                    {
+                        Owner = this
+                    };
+                    Setting.ShowDialog();
 
-            ViewModel.CallDetailForm(this, false);
+                    break;
 
-        }
+                case "CallAddDrug":     //新規追加ボタンクリック
 
-        /// <summary>
-        /// メニュー：削除クリック
-        /// </summary>
-        private void Menu_Delete_Click(object sender, RoutedEventArgs e)
-        {
+                    var AddDrug = new View.Detail(-1)
+                    {
+                        Owner = this
+                    };
+                    AddDrug.ShowDialog();
+                    
+                    break;
 
-            ViewModel.DeleteDrug();
+                case "CallEditDrug":        //編集メニュークリック
 
-        }
+                    var EditDrug = new View.Detail(_ViewModel.SelectedIndex)
+                    {
+                        Owner = this
+                    };
+                    EditDrug.ShowDialog();
 
-        /// <summary>
-        /// メニュー：頓服服用クリック
-        /// </summary>
-        private void Menu_Drug_Click(object sender, RoutedEventArgs e)
-        {
+                    break;
 
-            ViewModel.DrugMedicine();
+                case "CallDeleteDrug":      //削除メニュークリック
+
+                    string AppName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+                    string Message = _ViewModel.MakeDeleteDrugMessage();
+
+                    if (MessageBox.Show(Message, AppName, MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                    {
+                        _ViewModel.DeleteDrug();
+                    }
+
+                    break;
+
+                case "CallDrugMedicine":    //服用メニュークリック
+
+                    _ViewModel.DrugMedicine();
+
+                    AppName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+                    Message = _ViewModel.MakeDrugMedicineMessage();
+
+                    MessageBox.Show(Message, AppName, MessageBoxButton.YesNo, MessageBoxImage.Information);
+
+                    break;
+
+                default:
+                    break;
+
+            }
 
         }
 

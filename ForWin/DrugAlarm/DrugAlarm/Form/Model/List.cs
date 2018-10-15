@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Threading;
 
 namespace DrugAlarm.Form.Model
 {
@@ -118,6 +119,36 @@ namespace DrugAlarm.Form.Model
                 return _Parameter.DrugList[DrugIndex].IsPrescriptionAlarm;
             }
         }
+
+        /// <summary>
+        /// 設定コマンド
+        /// </summary>
+        public Common.DelegateCommand SettingCommand;
+
+        /// <summary>
+        /// 新規追加コマンド
+        /// </summary>
+        public Common.DelegateCommand AddDrugCommand;
+
+        /// <summary>
+        /// 編集コマンド
+        /// </summary>
+        public Common.DelegateCommand EditCommand;
+
+        /// <summary>
+        /// 削除コマンド
+        /// </summary>
+        public Common.DelegateCommand DeleteCommand;
+
+        /// <summary>
+        /// 服用コマンド
+        /// </summary>
+        public Common.DelegateCommand DrugMedicineCommand;
+
+        /// <summary>
+        /// 100msタイマ
+        /// </summary>
+        public DispatcherTimer Timer;
 
         /// <summary>
         /// new

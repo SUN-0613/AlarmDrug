@@ -225,6 +225,10 @@
     <value>_DRUG_を削除しますか？</value>
     <comment>一覧：削除確認メッセージ</comment>
   </data>
+  <data name="List_DrugMedicineMessage" xml:space="preserve">
+    <value>_DRUG_を服用しました</value>
+    <comment>一覧：服用お知らせメッセージ</comment>
+  </data>
   <data name="List_Menu_Delete" xml:space="preserve">
     <value>削除</value>
     <comment>一覧：メニュー：削除</comment>

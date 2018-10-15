@@ -135,11 +135,6 @@ namespace DrugAlarm.Form.ViewModel
         }
 
         /// <summary>
-        /// 100msタイマ
-        /// </summary>
-        private DispatcherTimer _Timer;
-
-        /// <summary>
         /// new
         /// </summary>
         public List()
@@ -149,13 +144,13 @@ namespace DrugAlarm.Form.ViewModel
             DrugList = new ObservableCollection<DrugParameter>();
 
             //タイマ処理
-            _Timer = new DispatcherTimer
+            _Model.Timer = new DispatcherTimer
             {
                 Interval = new TimeSpan(0, 0, 0, 0, 100)
             };
-            _Timer.Tick += new EventHandler(Timer_Tick);
-            _Timer.IsEnabled = true;
-            _Timer.Start();
+            _Model.Timer.Tick += new EventHandler(Timer_Tick);
+            _Model.Timer.IsEnabled = true;
+            _Model.Timer.Start();
 
         }
 
@@ -166,12 +161,12 @@ namespace DrugAlarm.Form.ViewModel
         {
 
             //タイマ終了
-            if (_Timer.IsEnabled)
+            if (_Model.Timer.IsEnabled)
             {
-                _Timer.IsEnabled = false;
-                _Timer.Stop();
+                _Model.Timer.IsEnabled = false;
+                _Model.Timer.Stop();
             }
-            _Timer.Tick -= new EventHandler(Timer_Tick);
+            _Model.Timer.Tick -= new EventHandler(Timer_Tick);
 
             DrugList.Clear();
             DrugList = null;
@@ -247,71 +242,28 @@ namespace DrugAlarm.Form.ViewModel
         }
 
         /// <summary>
-        /// 設定画面呼出
+        /// 薬削除メッセージ作成
         /// </summary>
-        /// <param name="View">呼出元画面</param>
-        public void CallSetting(View.List View)
+        public string MakeDeleteDrugMessage()
         {
-
-            var form = new View.Setting
-            {
-                Owner = View
-            };
-            form.ShowDialog();
-
+            return DrugAlarm.Properties.Resources.List_DeleteMessage.Replace("_DRUG_", _Model.DrugName);
         }
 
         /// <summary>
-        /// 新規追加画面呼出
-        /// </summary>
-        /// <param name="View">呼出元画面</param>
-        public void CallDetailForm(View.List View, bool IsNewDrug)
-        {
-
-            Int32 Index;
-
-            if (IsNewDrug)
-            {
-                Index = -1;
-            }
-            else if (-1 < _Model.SelectedIndex && _Model.SelectedIndex < DrugList.Count)
-            {
-                Index = _Model.SelectedIndex;
-            }
-            else
-            {
-                return;
-            }
-
-            var form = new View.Detail(Index)
-            {
-                Owner = View
-            };
-            form.ShowDialog();
-
-        }
-
-        /// <summary>
-        /// 薬削除
+        /// 選択している薬の削除
         /// </summary>
         public void DeleteDrug()
         {
+            _Model.DeleteDrug();
+        }
 
-            if (-1 < _Model.SelectedIndex && _Model.SelectedIndex < DrugList.Count)
-            {
-
-                _Model.DrugIndex = _Model.SelectedIndex;
-
-                string AppName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
-                string Message = DrugAlarm.Properties.Resources.List_DeleteMessage.Replace("_DRUG_", _Model.DrugName);
-
-                if (MessageBox.Show(Message, AppName, MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
-                {
-                    _Model.DeleteDrug();
-                }
-
-            }
-
+        /// <summary>
+        /// 服用メッセージ作成
+        /// </summary>
+        /// <returns></returns>
+        public string MakeDrugMedicineMessage()
+        {
+            return DrugAlarm.Properties.Resources.List_DrugMedicineMessage.Replace("_DRUG_", _Model.DrugName);
         }
 
         /// <summary>
@@ -320,6 +272,112 @@ namespace DrugAlarm.Form.ViewModel
         public void DrugMedicine()
         {
             _Model.DrugMedicine();
+        }
+
+        /// <summary>
+        /// 設定コマンドプロパティ
+        /// </summary>
+        public Common.DelegateCommand SettingCommand
+        {
+            get
+            {
+
+                if (_Model.SettingCommand == null)
+                {
+                    _Model.SettingCommand = new Common.DelegateCommand(
+                        () => { CallPropertyChanged("CallSetting"); },
+                        () => true);
+                }
+
+                return _Model.SettingCommand;
+
+            }
+        }
+
+        /// <summary>
+        /// 新規追加コマンドプロパティ
+        /// </summary>
+        public Common.DelegateCommand AddDrugCommand
+        {
+            get
+            {
+
+                if (_Model.AddDrugCommand == null)
+                {
+                    _Model.AddDrugCommand = new Common.DelegateCommand(
+                        () => { CallPropertyChanged("CallAddDrug"); },
+                        () => true);
+                }
+
+                return _Model.AddDrugCommand;
+
+            }
+        }
+
+        /// <summary>
+        /// 編集コマンドプロパティ
+        /// </summary>
+        public Common.DelegateCommand EditCommand
+        {
+            get
+            {
+
+                if (_Model.EditCommand == null)
+                {
+                    _Model.EditCommand = new Common.DelegateCommand(
+                        () => {
+                            if (-1 < _Model.SelectedIndex && _Model.SelectedIndex < DrugList.Count)
+                                CallPropertyChanged("CallEditDrug");
+                        },
+                        () => true);
+                }
+
+                return _Model.EditCommand;
+
+            }
+        }
+
+        /// <summary>
+        /// 削除コマンドプロパティ
+        /// </summary>
+        public Common.DelegateCommand DeleteCommand
+        {
+            get
+            {
+
+                if (_Model.DeleteCommand == null)
+                {
+                    _Model.DeleteCommand = new Common.DelegateCommand(
+                        () => {
+                            if (-1 < _Model.SelectedIndex && _Model.SelectedIndex < DrugList.Count)
+                                CallPropertyChanged("CallDeleteDrug");
+                        },
+                        () => true);
+                }
+
+                return _Model.DeleteCommand;
+
+            }
+        }
+
+        /// <summary>
+        /// 服用コマンドプロパティ
+        /// </summary>
+        public Common.DelegateCommand DrugMedicineCommand
+        {
+            get
+            {
+
+                if (_Model.DrugMedicineCommand == null)
+                {
+                    _Model.DrugMedicineCommand = new Common.DelegateCommand(
+                        () => { CallPropertyChanged("CallDrugMedicine"); },
+                        () => true);
+                }
+
+                return _Model.DrugMedicineCommand;
+
+            }
         }
 
     }
