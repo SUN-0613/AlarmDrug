@@ -124,6 +124,15 @@ namespace DrugAlarm.Properties {
         }
         
         /// <summary>
+        ///   編集中のデータを破棄しますか？ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_CancelMessage {
+            get {
+                return ResourceManager.GetString("Detail_CancelMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   日時指定 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Detail_DateSpecified {
@@ -201,6 +210,15 @@ namespace DrugAlarm.Properties {
         public static string Detail_Remarks {
             get {
                 return ResourceManager.GetString("Detail_Remarks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   _DRUG_を保存しますか？ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_SaveMessage {
+            get {
+                return ResourceManager.GetString("Detail_SaveMessage", resourceCulture);
             }
         }
         

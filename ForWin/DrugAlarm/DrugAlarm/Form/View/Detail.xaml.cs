@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 
 namespace DrugAlarm.Form.View
@@ -7,13 +8,13 @@ namespace DrugAlarm.Form.View
     /// <summary>
     /// Detail.xaml の相互作用ロジック
     /// </summary>
-    public partial class Detail : Window
+    public partial class Detail : Window, IDisposable
     {
 
         /// <summary>
         /// Detail.xamlのViewModel
         /// </summary>
-        private ViewModel.Detail ViewModel;
+        private ViewModel.Detail _ViewModel;
 
         /// <summary>
         /// new
@@ -25,30 +26,74 @@ namespace DrugAlarm.Form.View
 
             InitializeComponent();
 
-            ViewModel = new ViewModel.Detail(DrugIndex);
-            this.DataContext = ViewModel.Bind;
+            _ViewModel = new ViewModel.Detail(DrugIndex);
+            this.DataContext = _ViewModel;
+
+            _ViewModel.PropertyChanged += OnPropertyChanged;
 
         }
 
         /// <summary>
-        /// 戻るボタンクリック
+        /// 終了処理
         /// </summary>
-        private void Cancel_Click(object sender, RoutedEventArgs e)
+        public void Dispose()
         {
 
-            ViewModel.Initialize();
-            this.Close();
+            _ViewModel.PropertyChanged -= OnPropertyChanged;
+
+            _ViewModel.Dispose();
+            _ViewModel = null;
 
         }
 
         /// <summary>
-        /// 保存ボタンクリック
+        /// ViewModelプロパティ変更通知イベント
         /// </summary>
-        private void Save_Click(object sender, RoutedEventArgs e)
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
 
-            ViewModel.Save();
-            this.Close();
+            switch (e.PropertyName)
+            {
+
+                case "CallCancel":  //キャンセルボタンクリック
+
+                    string AppName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+                    string Message = DrugAlarm.Properties.Resources.Detail_CancelMessage;
+
+                    if (_ViewModel.IsEdited)
+                    {
+
+                        if (MessageBox.Show(Message, AppName, MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                        {
+                            _ViewModel.Initialize();
+                            DialogResult = false;
+                        }
+
+                    }
+                    else
+                    {
+                        DialogResult = false;
+                    }
+
+                    break;
+
+                case "CallSave":    //保存ボタンクリック
+
+                    AppName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+                    Message = _ViewModel.MakeSaveMessage();
+
+                    if (MessageBox.Show(Message, AppName, MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                    {
+                        _ViewModel.Save();
+                        DialogResult = true;
+                    }
+
+                    break;
+
+                default:
+                    break;
+
+            }
 
         }
 

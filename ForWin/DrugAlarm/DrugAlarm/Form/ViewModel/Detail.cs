@@ -1,6 +1,4 @@
 ﻿using System;
-using DrugAlarm.Common;
-using DrugAlarm.Class;
 
 namespace DrugAlarm.Form.ViewModel
 {
@@ -8,84 +6,76 @@ namespace DrugAlarm.Form.ViewModel
     /// <summary>
     /// Detail.xamlのViewModel
     /// </summary>
-    class Detail : ViewModelBase, IDisposable
+    class Detail : Common.ViewModelBase, IDisposable
     {
 
         /// <summary>
-        /// 新規追加FLG
+        /// Detail.Model
         /// </summary>
-        private bool IsNewDrug;
+        private Model.Detail _Model;
 
         /// <summary>
-        /// パラメータ
+        /// 編集したか
         /// </summary>
-        private Parameter _Parameter;
-
-        /// <summary>
-        /// 対象薬
-        /// </summary>
-        private Parameter.DrugParameter _Drug;
-
-        /// <summary>
-        /// バインディングプロパティ一覧
-        /// </summary>
-        public BindProperty Bind;
-
-        /// <summary>
-        /// 薬名称
-        /// </summary>
-        public class BindProperty : ViewModelBase, IDisposable
+        public bool IsEdited
         {
-
-            /// <summary>
-            /// 薬パラメータ
-            /// </summary>
-            private Parameter.DrugParameter _Drug;
-
-            /// <summary>
-            /// new
-            /// </summary>
-            /// <param name="Drug">薬パラメータ</param>
-            public BindProperty(Parameter.DrugParameter Drug)
+            get
             {
-                _Drug = Drug;
+                return _Model.IsEdited;
             }
-
-            /// <summary>
-            /// 名称
-            /// </summary>
-            public string Name
+            set
             {
-                get { return _Drug.Name; }
-                set
-                {
-                    _Drug.Name = value;
-                    CallPropertyChanged();
-                }
-
+                _Model.IsEdited = value;
+                CallPropertyChanged();
             }
+        }
 
-            /// <summary>
-            /// 服用タイミング：朝食
-            /// </summary>
-            public bool IsBreakfast
+        /// <summary>
+        /// 朝食服用FLG
+        /// </summary>
+        public bool IsBreakfast
+        {
+            get
             {
-                get { return _Drug.Breakfast.IsDrug; }
-                set
-                {
-                    _Drug.Breakfast.IsDrug = value;
-                    CallPropertyChanged();
-                }
+                return _Model.Drug.Breakfast.IsDrug;
             }
-
-            /// <summary>
-            /// 終了処理
-            /// </summary>
-            public void Dispose()
+            set
             {
-                
+                _Model.Drug.Breakfast.IsDrug = value;
+                CallPropertyChanged();
             }
+        }
 
+        /// <summary>
+        /// 昼食服用FLG
+        /// </summary>
+        public bool IsLunch
+        {
+            get
+            {
+                return _Model.Drug.Lunch.IsDrug;
+            }
+            set
+            {
+                _Model.Drug.Lunch.IsDrug = value;
+                CallPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// 夕食服用FLG
+        /// </summary>
+        public bool IsDinner
+        {
+            get
+            {
+                return _Model.Drug.Dinner.IsDrug;
+            }
+            set
+            {
+                _Model.Drug.Dinner.IsDrug = value;
+                CallPropertyChanged();
+            }
         }
 
         /// <summary>
@@ -94,23 +84,7 @@ namespace DrugAlarm.Form.ViewModel
         /// <param name="Index">Parameter.DrugList[Index]</param>
         public Detail(Int32 Index)
         {
-
-            _Parameter = (System.Windows.Application.Current as App).Parameter;
-
-            if (-1 < Index && Index < _Parameter.DrugList.Count)
-            {
-                _Drug = _Parameter.DrugList[Index];
-                IsNewDrug = false;
-            }
-            else
-            {
-                _Drug = new Parameter.DrugParameter();
-                IsNewDrug = true;
-            }
-
-            Bind = new BindProperty(_Drug);
-
-
+            _Model = new Model.Detail(Index);
         }
 
         /// <summary>
@@ -118,17 +92,65 @@ namespace DrugAlarm.Form.ViewModel
         /// </summary>
         public void Dispose()
         {
-            Bind.Dispose();
-            Bind = null;
+            _Model.Dispose();
+            _Model = null;
+        }
+
+        /// <summary>
+        /// キャンセルコマンドプロパティ
+        /// </summary>
+        public Common.DelegateCommand CancelCommand
+        {
+            get
+            {
+
+                if (_Model.CancelCommand == null)
+                {
+                    _Model.CancelCommand = new Common.DelegateCommand(
+                        () => { CallPropertyChanged("CallCancel"); },
+                        () => true);
+                }
+
+                return _Model.CancelCommand;
+
+            }
         }
 
         /// <summary>
         /// 初期化
-        /// 編集内容を破棄
         /// </summary>
         public void Initialize()
         {
-            _Parameter.Load();
+            _Model.Initialize();
+        }
+
+        /// <summary>
+        /// 保存コマンドプロパティ
+        /// </summary>
+        public Common.DelegateCommand SaveCommand
+        {
+            get
+            {
+
+                if (_Model.SaveCommand == null)
+                {
+                    _Model.SaveCommand = new Common.DelegateCommand(
+                        () => { CallPropertyChanged("CallSave"); },
+                        () => true);
+                }
+
+                return _Model.SaveCommand;
+
+            }
+        }
+
+        /// <summary>
+        /// 保存確認メッセージ作成
+        /// </summary>
+        /// <returns>保存確認メッセージ</returns>
+        public string MakeSaveMessage()
+        {
+            return DrugAlarm.Properties.Resources.Detail_SaveMessage.Replace("_DRUG_", _Model.Drug.Name);
         }
 
         /// <summary>
@@ -136,14 +158,7 @@ namespace DrugAlarm.Form.ViewModel
         /// </summary>
         public void Save()
         {
-
-            if (IsNewDrug)
-            {
-                _Parameter.DrugList.Add(_Drug);
-            }
-
-            _Parameter.Save();
-
+            _Model.Save();
         }
 
     }

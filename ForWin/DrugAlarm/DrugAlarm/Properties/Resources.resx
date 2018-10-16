@@ -145,6 +145,10 @@
     <value>食間</value>
     <comment>詳細：食間</comment>
   </data>
+  <data name="Detail_CancelMessage" xml:space="preserve">
+    <value>編集中のデータを破棄しますか？</value>
+    <comment>詳細：キャンセル確認メッセージ</comment>
+  </data>
   <data name="Detail_DateSpecified" xml:space="preserve">
     <value>日時指定</value>
     <comment>詳細：日時指定</comment>
@@ -180,6 +184,10 @@
   <data name="Detail_Remarks" xml:space="preserve">
     <value>備考</value>
     <comment>詳細：備考</comment>
+  </data>
+  <data name="Detail_SaveMessage" xml:space="preserve">
+    <value>_DRUG_を保存しますか？</value>
+    <comment>詳細：保存確認メッセージ</comment>
   </data>
   <data name="Detail_Sleep" xml:space="preserve">
     <value>就寝前</value>

@@ -37,10 +37,10 @@ namespace DrugAlarm.Form.View
         public void Dispose()
         {
 
+            _ViewModel.PropertyChanged -= OnPropertyChanged;
+
             _ViewModel.Dispose();
             _ViewModel = null;
-
-            _ViewModel.PropertyChanged -= OnPropertyChanged;
 
         }
 
