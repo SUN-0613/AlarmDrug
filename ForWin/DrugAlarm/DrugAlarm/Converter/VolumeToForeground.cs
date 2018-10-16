@@ -5,6 +5,11 @@ using System.Windows.Media;
 
 namespace DrugAlarm.Converter
 {
+    /// <summary>
+    /// Converter
+    /// 薬残量により文字色変更
+    /// </summary>
+    [ValueConversion(typeof(bool), typeof(Brush))]
     class VolumeToForeground : IValueConverter
     {
 
@@ -19,14 +24,9 @@ namespace DrugAlarm.Converter
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
 
-            if (bool.Parse(value.ToString()))
-            {
-                return Colors.Red;
-            }
-            else
-            {
-                return Colors.Black;
-            }
+            if (value == null) return Brushes.Black;
+
+            return (bool)value ? Brushes.Red : Brushes.Black;
 
         }
 

@@ -31,7 +31,7 @@ namespace DrugAlarm.Form.ViewModel
         }
 
         /// <summary>
-        /// 朝食服用FLG
+        /// 朝食服用FLGプロパティ
         /// </summary>
         public bool IsBreakfast
         {
@@ -47,7 +47,7 @@ namespace DrugAlarm.Form.ViewModel
         }
 
         /// <summary>
-        /// 昼食服用FLG
+        /// 昼食服用FLGプロパティ
         /// </summary>
         public bool IsLunch
         {
@@ -63,7 +63,7 @@ namespace DrugAlarm.Form.ViewModel
         }
 
         /// <summary>
-        /// 夕食服用FLG
+        /// 夕食服用FLGプロパティ
         /// </summary>
         public bool IsDinner
         {
@@ -74,6 +74,23 @@ namespace DrugAlarm.Form.ViewModel
             set
             {
                 _Model.Drug.Dinner.IsDrug = value;
+                CallPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// 食事時の服用タイミング
+        /// </summary>
+        /// <remarks>朝昼夕ともに同設定のため、朝のみで判断</remarks>
+        public Class.Parameter.DrugParameter.KindTiming MealTiming
+        {
+            get
+            {
+                return _Model.Drug.Breakfast.Kind;
+            }
+            set
+            {
+                _Model.Drug.Breakfast.Kind = value;
                 CallPropertyChanged();
             }
         }
