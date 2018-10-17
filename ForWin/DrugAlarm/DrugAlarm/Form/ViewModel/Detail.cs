@@ -278,7 +278,7 @@ namespace DrugAlarm.Form.ViewModel
         /// <summary>
         /// 年：時間指定
         /// </summary>
-        public ObservableCollection<string> ApoointYear { get; set; }
+        public ObservableCollection<string> AppointYear { get; set; }
 
         /// <summary>
         /// 年Index：時間指定
@@ -309,7 +309,7 @@ namespace DrugAlarm.Form.ViewModel
         /// <summary>
         /// 月：時間指定
         /// </summary>
-        public ObservableCollection<string> ApoointMonth { get; set; }
+        public ObservableCollection<string> AppointMonth { get; set; }
 
         /// <summary>
         /// 月Index：時間指定
@@ -337,7 +337,7 @@ namespace DrugAlarm.Form.ViewModel
         /// <summary>
         /// 日：時間指定
         /// </summary>
-        public ObservableCollection<string> ApoointDay { get; set; }
+        public ObservableCollection<string> AppointDay { get; set; }
 
         /// <summary>
         /// 日Index：時間指定
@@ -364,7 +364,7 @@ namespace DrugAlarm.Form.ViewModel
         /// <summary>
         /// 時：時間指定
         /// </summary>
-        public ObservableCollection<string> ApoointHour { get; set; }
+        public ObservableCollection<string> AppointHour { get; set; }
 
         /// <summary>
         /// 時Index：時間指定
@@ -391,7 +391,7 @@ namespace DrugAlarm.Form.ViewModel
         /// <summary>
         /// 分：時間指定
         /// </summary>
-        public ObservableCollection<string> ApoointMiniute { get; set; }
+        public ObservableCollection<string> AppointMinute { get; set; }
 
         /// <summary>
         /// 分Index：時間指定
@@ -499,15 +499,30 @@ namespace DrugAlarm.Form.ViewModel
 
             });
 
-            /*
+            /* 初期値設定
             BreakfastVolumeIndex = 0;
 
-            ApoointYear = new ObservableCollection<string>();
-            ApoointMonth = new ObservableCollection<string>();
-            ApoointDay = new ObservableCollection<string>();
-            ApoointHour = new ObservableCollection<string>();
-            ApoointMiniute = new ObservableCollection<string>();
             */
+
+            AppointYear = new ObservableCollection<string>();
+            _Model.GetYearList().ForEach(Year => { AppointYear.Add(Year.ToString("0000")); });
+            AppointYearIndex = _Model.GetAppointYearIndex();
+
+            AppointMonth = new ObservableCollection<string>();
+            _Model.GetMonthList().ForEach(Month => { AppointMonth.Add(Month.ToString("00")); });
+            AppointMonthIndex = _Model.GetAppointMonthIndex();
+
+            AppointDay = new ObservableCollection<string>();
+            _Model.GetDayList().ForEach(Day => { AppointDay.Add(Day.ToString("00")); });
+            AppointDayIndex = _Model.GetAppointDayIndex();
+
+            AppointHour = new ObservableCollection<string>();
+            _Model.GetHourList().ForEach(Hour => { AppointHour.Add(Hour.ToString("00")); });
+            AppointHourIndex = _Model.GetAppointHourIndex();
+
+            AppointMinute = new ObservableCollection<string>();
+            _Model.GetMinuteList().ForEach(Minute => { AppointMinute.Add(Minute.ToString("00")); });
+            AppointMinuteIndex = _Model.GetAppointMinuteIndex();
 
         }
 
@@ -540,20 +555,20 @@ namespace DrugAlarm.Form.ViewModel
             HourEachVolume.Clear();
             HourEachVolume = null;
 
-            ApoointYear.Clear();
-            ApoointYear = null;
+            AppointYear.Clear();
+            AppointYear = null;
 
-            ApoointMonth.Clear();
-            ApoointMonth = null;
+            AppointMonth.Clear();
+            AppointMonth = null;
 
-            ApoointDay.Clear();
-            ApoointDay = null;
+            AppointDay.Clear();
+            AppointDay = null;
 
-            ApoointHour.Clear();
-            ApoointHour = null;
+            AppointHour.Clear();
+            AppointHour = null;
 
-            ApoointMiniute.Clear();
-            ApoointMiniute = null;
+            AppointMinute.Clear();
+            AppointMinute = null;
 
         }
 
@@ -634,12 +649,12 @@ namespace DrugAlarm.Form.ViewModel
                 Int32 Tmp = _Model.AppointDayIndex;
                 _Model.AppointDayIndex = -1;
 
-                ApoointDay.Clear();
-                _Model.GetDayList().ForEach(Data => { ApoointDay.Add(Data.ToString("00")); });
+                AppointDay.Clear();
+                _Model.GetDayList().ForEach(Data => { AppointDay.Add(Data.ToString("00")); });
 
-                if (ApoointDay.Count <= Tmp)
+                if (AppointDay.Count <= Tmp)
                 {
-                    Tmp = ApoointDay.Count - 1;
+                    Tmp = AppointDay.Count - 1;
                 }
 
                 _Model.AppointDayIndex = Tmp;

@@ -242,14 +242,35 @@ namespace DrugAlarm.Form.Model
             _Parameter = (System.Windows.Application.Current as App).Parameter;
             _SelectedIndex = Index;
 
-            if (-1 < Index && Index < _Parameter.DrugList.Count)
-            {
-                Drug = _Parameter.DrugList[Index];
-            }
-            else
+            if (_SelectedIndex.Equals(-1))
             {
                 Drug = new Class.Parameter.DrugParameter();
             }
+            else
+            {
+
+                Drug = new Class.Parameter.DrugParameter()
+                {
+                    Name = _Parameter.DrugList[_SelectedIndex].Name,
+                    Breakfast = _Parameter.DrugList[_SelectedIndex].Breakfast,
+                    Lunch = _Parameter.DrugList[_SelectedIndex].Lunch,
+                    Dinner = _Parameter.DrugList[_SelectedIndex].Dinner,
+                    Sleep = _Parameter.DrugList[_SelectedIndex].Sleep,
+                    ToBeTaken = _Parameter.DrugList[_SelectedIndex].ToBeTaken,
+                    Appoint = _Parameter.DrugList[_SelectedIndex].Appoint,
+                    AppointTime = _Parameter.DrugList[_SelectedIndex].AppointTime,
+                    HourEach = _Parameter.DrugList[_SelectedIndex].HourEach,
+                    HourEachTime = _Parameter.DrugList[_SelectedIndex].HourEachTime,
+                    TotalVolume = _Parameter.DrugList[_SelectedIndex].TotalVolume,
+                    PrescriptionAlarmVolume = _Parameter.DrugList[_SelectedIndex].PrescriptionAlarmVolume,
+                    IsPrescriptionAlarm = _Parameter.DrugList[_SelectedIndex].IsPrescriptionAlarm,
+                    Remarks = _Parameter.DrugList[_SelectedIndex].Remarks,
+                    DrugTiming = _Parameter.DrugList[_SelectedIndex].DrugTiming
+                };
+
+            }
+
+            if (Drug.AppointTime < DateTime.Now) Drug.AppointTime = DateTime.Now;
 
             IsEdited = false;
 
@@ -386,6 +407,44 @@ namespace DrugAlarm.Form.Model
         }
 
         /// <summary>
+        /// 時Listの取得
+        /// </summary>
+        /// <returns>時List</returns>
+        public List<Int32> GetHourList()
+        {
+
+            if (_Hour == null)
+                _Hour = new List<Int32>();
+
+            _Hour.Clear();
+
+            for (Int32 iLoop = 0; iLoop <= 23; iLoop++)
+                _Hour.Add(iLoop);
+
+            return _Hour;
+
+        }
+
+        /// <summary>
+        /// 分Listの取得
+        /// </summary>
+        /// <returns>分List</returns>
+        public List<Int32> GetMinuteList()
+        {
+
+            if (_Minute == null)
+                _Minute = new List<Int32>();
+
+            _Minute.Clear();
+
+            for (Int32 iLoop = 0; iLoop < 60; iLoop += 5)
+                _Minute.Add(iLoop);
+
+            return _Minute;
+
+        }
+
+        /// <summary>
         /// 指定日時を作成
         /// </summary>
         public void SetAppointDateTime()
@@ -422,6 +481,80 @@ namespace DrugAlarm.Form.Model
         }
 
         /// <summary>
+        /// 指定日時：年Indexの設定
+        /// </summary>
+        public Int32 GetAppointYearIndex()
+        {
+
+            Int32 Return = _Year.IndexOf(Drug.AppointTime.Year);
+            if (Return.Equals(-1)) Return = 0;
+
+            return Return;
+
+        }
+
+        /// <summary>
+        /// 指定日時：月Indexの設定
+        /// </summary>
+        public Int32 GetAppointMonthIndex()
+        {
+
+            Int32 Return = _Month.IndexOf(Drug.AppointTime.Month);
+            if (Return.Equals(-1)) Return = 0;
+
+            return Return;
+
+        }
+
+        /// <summary>
+        /// 指定日時：日Indexの設定
+        /// </summary>
+        public Int32 GetAppointDayIndex()
+        {
+
+            Int32 Return = _Day.IndexOf(Drug.AppointTime.Day);
+            if (Return.Equals(-1)) Return = 0;
+
+            return Return;
+
+        }
+
+        /// <summary>
+        /// 指定日時：時Indexの設定
+        /// </summary>
+        public Int32 GetAppointHourIndex()
+        {
+
+            Int32 Return = _Hour.IndexOf(Drug.AppointTime.Hour);
+            if (Return.Equals(-1)) Return = 0;
+
+            return Return;
+
+        }
+
+        /// <summary>
+        /// 指定日時：分Indexの設定
+        /// </summary>
+        public Int32 GetAppointMinuteIndex()
+        {
+
+            Int32 Return = -1;
+            for (Int32 iLoop = 0; iLoop < _Minute.Count; iLoop++)
+            {
+                if (Drug.AppointTime.Minute <= _Minute[iLoop])
+                {
+                    Return = iLoop;
+                    break;
+                }
+            }
+
+            if (Return.Equals(-1)) Return = 0;
+
+            return Return;
+
+        }
+
+        /// <summary>
         /// 初期化
         /// 編集内容を破棄
         /// </summary>
@@ -439,6 +572,11 @@ namespace DrugAlarm.Form.Model
             if (_SelectedIndex == -1)
             {
                 _Parameter.DrugList.Add(Drug);
+            }
+            else
+            {
+                _Parameter.DrugList.RemoveAt(_SelectedIndex);
+                _Parameter.DrugList.Insert(_SelectedIndex, Drug);
             }
 
             _Parameter.Save();
