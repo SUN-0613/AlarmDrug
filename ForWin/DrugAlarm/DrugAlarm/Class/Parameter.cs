@@ -1259,9 +1259,15 @@ namespace DrugAlarm.Class
                             file.WriteLine(MakeParameter(NAME.DRUG.TOBETAKEN, DrugList[iLoop].ToBeTaken.Volume));
                         }
 
-                        if (DrugList[iLoop].Appoint.IsDrug)
+                        //指定日時が設定されていても、現在日時を超えていれば保存しない
+                        if (DrugList[iLoop].Appoint.IsDrug && DrugList[iLoop].AppointTime > DateTime.Now)
                         {
                             file.WriteLine(MakeParameter(NAME.DRUG.APPOINTTIME, DrugList[iLoop].AppointTime, DrugList[iLoop].Appoint.Volume));
+                        }
+                        else
+                        {
+                            //現在日時を超えている場合は服用設定を解除
+                            DrugList[iLoop].Appoint.IsDrug = false;
                         }
 
                         if (DrugList[iLoop].HourEach.IsDrug)

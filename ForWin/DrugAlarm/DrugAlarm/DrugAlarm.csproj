@@ -124,6 +124,7 @@
     <Compile Include="Class\AlarmTimer.cs" />
     <Compile Include="Class\Parameter.cs" />
     <Compile Include="Converter\EnumToBool.cs" />
+    <Compile Include="Converter\IsMultiMeal.cs" />
     <Compile Include="Converter\VolumeToForeground.cs" />
     <Compile Include="Form\Model\Detail.cs" />
     <Compile Include="Form\Model\List.cs" />
