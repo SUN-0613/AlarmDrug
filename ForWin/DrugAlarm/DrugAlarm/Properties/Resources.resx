@@ -137,6 +137,10 @@
     <value>食後</value>
     <comment>詳細：食後</comment>
   </data>
+  <data name="Detail_AlarmVolumeOverMessage" xml:space="preserve">
+    <value>薬残量お知らせは_ALARMVOLUME_錠以下で入力してください</value>
+    <comment>詳細：薬残量お知らせオーバー警告メッセージ</comment>
+  </data>
   <data name="Detail_BeforeMeals" xml:space="preserve">
     <value>食前</value>
     <comment>詳細：食前</comment>
@@ -209,6 +213,10 @@
     <value>お薬の内容</value>
     <comment>詳細：お薬の内容</comment>
   </data>
+  <data name="Detail_TotalVolumeOverMessage" xml:space="preserve">
+    <value>処方量は_TOTALVOLUME_錠以下で入力してください</value>
+    <comment>詳細：処方量オーバー警告メッセージ</comment>
+  </data>
   <data name="Detail_Unit" xml:space="preserve">
     <value>錠</value>
     <comment>詳細：錠</comment>
@@ -274,7 +282,7 @@
     <comment>パラメータ：一覧表示：毎食</comment>
   </data>
   <data name="Parameter_Timing_Appoint" xml:space="preserve">
-    <value>_yy/MM/dd HH:mm_</value>
+    <value>_yyyy/MM/dd HH:mm_</value>
     <comment>パラメータ：一覧表示：指定日時</comment>
   </data>
   <data name="Parameter_Timing_Before" xml:space="preserve">

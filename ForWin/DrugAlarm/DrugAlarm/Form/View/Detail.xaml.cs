@@ -27,7 +27,7 @@ namespace DrugAlarm.Form.View
             InitializeComponent();
 
             _ViewModel = new ViewModel.Detail(DrugIndex);
-            this.DataContext = _ViewModel;
+            DataContext = _ViewModel;
 
             _ViewModel.PropertyChanged += OnPropertyChanged;
 
@@ -55,7 +55,7 @@ namespace DrugAlarm.Form.View
             switch (e.PropertyName)
             {
 
-                case "CallCancel":  //キャンセルボタンクリック
+                case "CallCancel":      //キャンセルボタンクリック
 
                     string AppName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
                     string Message = DrugAlarm.Properties.Resources.Detail_CancelMessage;
@@ -77,7 +77,7 @@ namespace DrugAlarm.Form.View
 
                     break;
 
-                case "CallSave":    //保存ボタンクリック
+                case "CallSave":        //保存ボタンクリック
 
                     AppName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
                     Message = _ViewModel.MakeSaveMessage();
@@ -87,6 +87,24 @@ namespace DrugAlarm.Form.View
                         _ViewModel.Save();
                         DialogResult = true;
                     }
+
+                    break;
+
+                case "CallTotalVolume": //処方量入力オーバー
+
+                    AppName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+                    Message = _ViewModel.MakeTotalVolumeOverMessage();
+
+                    MessageBox.Show(Message, AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+
+                    break;
+
+                case "CallAlarmVolume": //残量入力オーバー
+
+                    AppName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+                    Message = _ViewModel.MakeAlarmVolumeOverMessage();
+
+                    MessageBox.Show(Message, AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
 
                     break;
 

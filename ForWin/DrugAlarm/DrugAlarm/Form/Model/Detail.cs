@@ -123,6 +123,19 @@ namespace DrugAlarm.Form.Model
         }
 
         /// <summary>
+        /// 設定時間Index：時間毎プロパティ
+        /// </summary>
+        public Int32 HourEachTimeIndex
+        {
+            get { return _HourEachTimeIndex; }
+            set
+            {
+                _HourEachTimeIndex = value;
+                Drug.HourEachTime = _HourEach[value];
+            }
+        }
+
+        /// <summary>
         /// 年Index：指定日時
         /// </summary>
         public Int32 AppointYearIndex;
@@ -193,6 +206,11 @@ namespace DrugAlarm.Form.Model
         private Int32 _HourEachVolumeIndex;
 
         /// <summary>
+        /// 設定時間Index：時間毎
+        /// </summary>
+        private Int32 _HourEachTimeIndex;
+
+        /// <summary>
         /// 薬パラメータIndex
         /// -1は新規登録
         /// </summary>
@@ -232,6 +250,11 @@ namespace DrugAlarm.Form.Model
         /// 分List
         /// </summary>
         private List<Int32> _Minute;
+
+        /// <summary>
+        /// 時間毎List
+        /// </summary>
+        private List<Int32> _HourEach;
 
         /// <summary>
         /// new
@@ -445,38 +468,119 @@ namespace DrugAlarm.Form.Model
         }
 
         /// <summary>
-        /// 指定日時を作成
+        /// 時間毎Listの取得
         /// </summary>
-        public void SetAppointDateTime()
+        /// <returns>分List</returns>
+        public List<Int32> GetHourEachList()
         {
 
-            if (!AppointYearIndex.Equals(-1)
-                && !AppointMonthIndex.Equals(-1)
-                && !AppointDayIndex.Equals(-1)
-                && !AppointHourIndex.Equals(-1)
-                && !AppointMinuteIndex.Equals(-1))
-            {
+            if (_HourEach == null)
+                _HourEach = new List<Int32>();
 
-                Int32 Year = _Year[AppointYearIndex];
-                Int32 Month = _Month[AppointMonthIndex];
-                Int32 Day = _Day[AppointDayIndex];
-                Int32 Hour = _Hour[AppointHourIndex];
-                Int32 Minute = _Minute[AppointMinuteIndex];
-                StringBuilder Str = new StringBuilder();
-                DateTime Return;
+            _HourEach.Clear();
 
-                Str.Append(Year.ToString()).Append("/").Append(Month.ToString()).Append("/").Append(Day.ToString())
-                    .Append(" ").Append(Hour.ToString()).Append(":").Append(Minute.ToString());
+            for (Int32 iLoop = 1; iLoop <= 24; iLoop++)
+                _HourEach.Add(iLoop);
 
-                if (DateTime.TryParse(Str.ToString(), out Return))
-                {
-                    Drug.AppointTime = Return;
-                }
+            return _HourEach;
 
-                Str.Clear();
-                Str = null;
+        }
 
-            }
+        /// <summary>
+        /// 朝食：錠数Indexの設定
+        /// </summary>
+        /// <returns></returns>
+        public Int32 GetVolumeBreakfastIndex()
+        {
+
+            Int32 Return = _Volume.IndexOf(Drug.Breakfast.Volume);
+            if (Return.Equals(-1)) Return = 0;
+
+            return Return;
+
+        }
+
+        /// <summary>
+        /// 昼食：錠数Indexの設定
+        /// </summary>
+        /// <returns></returns>
+        public Int32 GetVolumeLunchIndex()
+        {
+
+            Int32 Return = _Volume.IndexOf(Drug.Lunch.Volume);
+            if (Return.Equals(-1)) Return = 0;
+
+            return Return;
+
+        }
+
+        /// <summary>
+        /// 夕食：錠数Indexの設定
+        /// </summary>
+        /// <returns></returns>
+        public Int32 GetVolumeDinnerIndex()
+        {
+
+            Int32 Return = _Volume.IndexOf(Drug.Dinner.Volume);
+            if (Return.Equals(-1)) Return = 0;
+
+            return Return;
+
+        }
+
+        /// <summary>
+        /// 就寝前：錠数Indexの設定
+        /// </summary>
+        /// <returns></returns>
+        public Int32 GetVolumeSleepIndex()
+        {
+
+            Int32 Return = _Volume.IndexOf(Drug.Sleep.Volume);
+            if (Return.Equals(-1)) Return = 0;
+
+            return Return;
+
+        }
+
+        /// <summary>
+        /// 頓服：錠数Indexの設定
+        /// </summary>
+        /// <returns></returns>
+        public Int32 GetVolumeToBeTakenIndex()
+        {
+
+            Int32 Return = _Volume.IndexOf(Drug.ToBeTaken.Volume);
+            if (Return.Equals(-1)) Return = 0;
+
+            return Return;
+
+        }
+
+        /// <summary>
+        /// 指定日時：錠数Indexの設定
+        /// </summary>
+        /// <returns></returns>
+        public Int32 GetVolumeAppointIndex()
+        {
+
+            Int32 Return = _Volume.IndexOf(Drug.Appoint.Volume);
+            if (Return.Equals(-1)) Return = 0;
+
+            return Return;
+
+        }
+
+        /// <summary>
+        /// 時間毎：錠数Indexの設定
+        /// </summary>
+        /// <returns></returns>
+        public Int32 GetVolumeHourEachIndex()
+        {
+
+            Int32 Return = _Volume.IndexOf(Drug.HourEach.Volume);
+            if (Return.Equals(-1)) Return = 0;
+
+            return Return;
 
         }
 
@@ -555,6 +659,59 @@ namespace DrugAlarm.Form.Model
         }
 
         /// <summary>
+        /// 時間毎：設定時間Indexの設定
+        /// </summary>
+        public Int32 GetHourEachIndex()
+        {
+
+            Int32 Return = _HourEach.IndexOf(Drug.HourEachTime);
+            if (Return.Equals(-1)) Return = 0;
+
+            return Return;
+
+        }
+
+        /// <summary>
+        /// 指定日時を作成
+        /// </summary>
+        public void SetAppointDateTime()
+        {
+
+            if (_Year != null
+                && _Month != null
+                && _Day != null
+                && _Hour != null
+                && _Minute != null
+                && !AppointYearIndex.Equals(-1)
+                && !AppointMonthIndex.Equals(-1)
+                && !AppointDayIndex.Equals(-1)
+                && !AppointHourIndex.Equals(-1)
+                && !AppointMinuteIndex.Equals(-1))
+            {
+
+                Int32 Year = _Year[AppointYearIndex];
+                Int32 Month = _Month[AppointMonthIndex];
+                Int32 Day = _Day[AppointDayIndex];
+                Int32 Hour = _Hour[AppointHourIndex];
+                Int32 Minute = _Minute[AppointMinuteIndex];
+                StringBuilder Str = new StringBuilder();
+
+                Str.Append(Year.ToString()).Append("/").Append(Month.ToString()).Append("/").Append(Day.ToString())
+                    .Append(" ").Append(Hour.ToString()).Append(":").Append(Minute.ToString());
+
+                if (DateTime.TryParse(Str.ToString(), out DateTime Return))
+                {
+                    Drug.AppointTime = Return;
+                }
+
+                Str.Clear();
+                Str = null;
+
+            }
+
+        }
+
+        /// <summary>
         /// 初期化
         /// 編集内容を破棄
         /// </summary>
@@ -580,6 +737,7 @@ namespace DrugAlarm.Form.Model
             }
 
             _Parameter.Save();
+            _Parameter.Load();
 
         }
 

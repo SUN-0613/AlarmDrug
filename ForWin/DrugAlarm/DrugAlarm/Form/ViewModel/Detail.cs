@@ -11,11 +11,6 @@ namespace DrugAlarm.Form.ViewModel
     {
 
         /// <summary>
-        /// Detail.Model
-        /// </summary>
-        private Model.Detail _Model;
-
-        /// <summary>
         /// 編集したか
         /// </summary>
         public bool IsEdited
@@ -32,6 +27,25 @@ namespace DrugAlarm.Form.ViewModel
         }
 
         /// <summary>
+        /// 薬名プロパティ
+        /// </summary>
+        public string Name
+        {
+            get { return _Model.Drug.Name; }
+            set
+            {
+                if (!_Model.Drug.Name.Equals(value))
+                {
+                    _Model.Drug.Name = value;
+                    CallPropertyChanged();
+
+                    IsEdited = true;
+
+                }
+            }
+        }
+
+        /// <summary>
         /// 朝食服用FLGプロパティ
         /// </summary>
         public bool IsBreakfast
@@ -44,6 +58,9 @@ namespace DrugAlarm.Form.ViewModel
             {
                 _Model.Drug.Breakfast.IsDrug = value;
                 CallPropertyChanged();
+
+                IsEdited = true;
+
             }
         }
 
@@ -65,6 +82,9 @@ namespace DrugAlarm.Form.ViewModel
                 {
                     _Model.BreakfastVolumeIndex = value;
                     CallPropertyChanged();
+
+                    IsEdited = true;
+
                 }
 
             }
@@ -83,6 +103,9 @@ namespace DrugAlarm.Form.ViewModel
             {
                 _Model.Drug.Lunch.IsDrug = value;
                 CallPropertyChanged();
+
+                IsEdited = true;
+
             }
         }
 
@@ -106,6 +129,8 @@ namespace DrugAlarm.Form.ViewModel
                     _Model.LunchVolumeIndex = value;
                     CallPropertyChanged();
 
+                    IsEdited = true;
+
                 }
 
             }
@@ -124,6 +149,9 @@ namespace DrugAlarm.Form.ViewModel
             {
                 _Model.Drug.Dinner.IsDrug = value;
                 CallPropertyChanged();
+
+                IsEdited = true;
+
             }
         }
 
@@ -147,6 +175,8 @@ namespace DrugAlarm.Form.ViewModel
                     _Model.DinnerVolumeIndex = value;
                     CallPropertyChanged();
 
+                    IsEdited = true;
+
                 }
 
             }
@@ -165,6 +195,9 @@ namespace DrugAlarm.Form.ViewModel
             {
                 _Model.Drug.Sleep.IsDrug = value;
                 CallPropertyChanged();
+
+                IsEdited = true;
+
             }
         }
 
@@ -188,6 +221,8 @@ namespace DrugAlarm.Form.ViewModel
                     _Model.SleepVolumeIndex = value;
                     CallPropertyChanged();
 
+                    IsEdited = true;
+
                 }
 
             }
@@ -206,6 +241,9 @@ namespace DrugAlarm.Form.ViewModel
             {
                 _Model.Drug.ToBeTaken.IsDrug = value;
                 CallPropertyChanged();
+
+                IsEdited = true;
+
             }
         }
 
@@ -229,6 +267,8 @@ namespace DrugAlarm.Form.ViewModel
                     _Model.ToBeTakenVolumeIndex = value;
                     CallPropertyChanged();
 
+                    IsEdited = true;
+
                 }
 
             }
@@ -247,6 +287,9 @@ namespace DrugAlarm.Form.ViewModel
             {
                 _Model.Drug.Appoint.IsDrug = value;
                 CallPropertyChanged();
+
+                IsEdited = true;
+
             }
         }
 
@@ -269,6 +312,8 @@ namespace DrugAlarm.Form.ViewModel
 
                     _Model.AppointVolumeIndex = value;
                     CallPropertyChanged();
+
+                    IsEdited = true;
 
                 }
 
@@ -301,6 +346,8 @@ namespace DrugAlarm.Form.ViewModel
                     CallPropertyChanged();
                     _Model.SetAppointDateTime();
 
+                    IsEdited = true;
+
                 }
 
             }
@@ -329,6 +376,8 @@ namespace DrugAlarm.Form.ViewModel
                     CallPropertyChanged();
                     _Model.SetAppointDateTime();
 
+                    IsEdited = true;
+
                 }
 
             }
@@ -355,6 +404,8 @@ namespace DrugAlarm.Form.ViewModel
 
                     CallPropertyChanged();
                     _Model.SetAppointDateTime();
+
+                    IsEdited = true;
 
                 }
 
@@ -383,6 +434,8 @@ namespace DrugAlarm.Form.ViewModel
                     CallPropertyChanged();
                     _Model.SetAppointDateTime();
 
+                    IsEdited = true;
+
                 }
 
             }
@@ -410,6 +463,8 @@ namespace DrugAlarm.Form.ViewModel
                     CallPropertyChanged();
                     _Model.SetAppointDateTime();
 
+                    IsEdited = true;
+
                 }
 
 
@@ -429,6 +484,9 @@ namespace DrugAlarm.Form.ViewModel
             {
                 _Model.Drug.HourEach.IsDrug = value;
                 CallPropertyChanged();
+
+                IsEdited = true;
+
             }
         }
 
@@ -447,6 +505,30 @@ namespace DrugAlarm.Form.ViewModel
             {
                 _Model.HourEachVolumeIndex = value;
                 CallPropertyChanged();
+
+                IsEdited = true;
+
+            }
+        }
+
+        /// <summary>
+        /// 時間毎：設定時間
+        /// </summary>
+        public ObservableCollection<string> HourEachTime { get; set; }
+
+        /// <summary>
+        /// 設定時間Index：時間毎
+        /// </summary>
+        public Int32 HourEachTimeIndex
+        {
+            get { return _Model.HourEachTimeIndex; }
+            set
+            {
+                _Model.HourEachTimeIndex = value;
+                CallPropertyChanged();
+
+                IsEdited = true;
+
             }
         }
 
@@ -468,6 +550,108 @@ namespace DrugAlarm.Form.ViewModel
         }
 
         /// <summary>
+        /// 処方量
+        /// </summary>
+        public string TotalVolume
+        {
+            get { return _Model.Drug.TotalVolume.ToString(); }
+            set
+            {
+                if (Int32.TryParse(value, out Int32 Number))
+                {
+
+                    if (Number < 0 || MaxTotalVolume < Number)
+                    {
+                        //メッセージ表示後、元値に戻す
+                        CallPropertyChanged("CallTotalVolume");
+                        CallPropertyChanged();
+                    }
+                    else if (!_Model.Drug.TotalVolume.Equals(Number))
+                    {
+                        _Model.Drug.TotalVolume = Number;
+                        CallPropertyChanged();
+
+                        IsEdited = true;
+
+                    }
+                }
+                else
+                {
+                    //数値でない場合、元値に戻す
+                    CallPropertyChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 薬残量お知らせ錠数
+        /// </summary>
+        public string AlarmVolume
+        {
+            get { return _Model.Drug.PrescriptionAlarmVolume.ToString(); }
+            set
+            {
+                if (Int32.TryParse(value, out Int32 Number))
+                {
+
+                    if (Number < 0 || MaxAlarmVolume < Number)
+                    {
+                        //メッセージ表示後、元値に戻す
+                        CallPropertyChanged("CallAlarmVolume");
+                        CallPropertyChanged();
+                    }
+                    else if (!_Model.Drug.PrescriptionAlarmVolume.Equals(Number))
+                    {
+                        _Model.Drug.PrescriptionAlarmVolume = Number;
+                        CallPropertyChanged();
+
+                        IsEdited = true;
+
+                    }
+                }
+                else
+                {
+                    //数値でない場合、元値に戻す
+                    CallPropertyChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 備考欄
+        /// </summary>
+        public string Remarks
+        {
+            get { return _Model.Drug.Remarks; }
+            set
+            {
+                if (!_Model.Drug.Remarks.Equals(value))
+                {
+                    _Model.Drug.Remarks = value;
+                    CallPropertyChanged();
+
+                    IsEdited = true;
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// 処方量最大値
+        /// </summary>
+        private const Int32 MaxTotalVolume = 3000;
+
+        /// <summary>
+        /// お知らせ錠数最大値
+        /// </summary>
+        private const Int32 MaxAlarmVolume = 100;
+
+        /// <summary>
+        /// Detail.Model
+        /// </summary>
+        private Model.Detail _Model;
+
+        /// <summary>
         /// new
         /// </summary>
         /// <param name="Index">Parameter.DrugList[Index]</param>
@@ -475,6 +659,7 @@ namespace DrugAlarm.Form.ViewModel
         {
 
             _Model = new Model.Detail(Index);
+
 
             BreakfastVolume = new ObservableCollection<string>();
             LunchVolume = new ObservableCollection<string>();
@@ -484,7 +669,7 @@ namespace DrugAlarm.Form.ViewModel
             AppointVolume = new ObservableCollection<string>();
             HourEachVolume = new ObservableCollection<string>();
 
-            _Model.GetVolumeList().ForEach(Volume => 
+            _Model.GetVolumeList().ForEach(Volume =>
             {
 
                 string Value = Volume.ToString("00");
@@ -499,30 +684,42 @@ namespace DrugAlarm.Form.ViewModel
 
             });
 
-            /* 初期値設定
-            BreakfastVolumeIndex = 0;
-
-            */
+            BreakfastVolumeIndex = _Model.GetVolumeBreakfastIndex();
+            LunchVolumeIndex = _Model.GetVolumeLunchIndex();
+            DinnerVolumeIndex = _Model.GetVolumeDinnerIndex();
+            SleepVolumeIndex = _Model.GetVolumeSleepIndex();
+            ToBeTakenVolumeIndex = _Model.GetVolumeToBeTakenIndex();
+            AppointVolumeIndex = _Model.GetVolumeAppointIndex();
+            HourEachVolumeIndex = _Model.GetVolumeHourEachIndex();
 
             AppointYear = new ObservableCollection<string>();
+            AppointMonth = new ObservableCollection<string>();
+            AppointDay = new ObservableCollection<string>();
+            AppointHour = new ObservableCollection<string>();
+            AppointMinute = new ObservableCollection<string>();
+            HourEachTime = new ObservableCollection<string>();
+
             _Model.GetYearList().ForEach(Year => { AppointYear.Add(Year.ToString("0000")); });
             AppointYearIndex = _Model.GetAppointYearIndex();
 
-            AppointMonth = new ObservableCollection<string>();
             _Model.GetMonthList().ForEach(Month => { AppointMonth.Add(Month.ToString("00")); });
             AppointMonthIndex = _Model.GetAppointMonthIndex();
 
-            AppointDay = new ObservableCollection<string>();
-            _Model.GetDayList().ForEach(Day => { AppointDay.Add(Day.ToString("00")); });
+            /* AppointMonthIndexプロパティにて作成済みのためコメントアウト
+             _Model.GetDayList().ForEach(Day => { AppointDay.Add(Day.ToString("00")); });
+             */
             AppointDayIndex = _Model.GetAppointDayIndex();
 
-            AppointHour = new ObservableCollection<string>();
             _Model.GetHourList().ForEach(Hour => { AppointHour.Add(Hour.ToString("00")); });
             AppointHourIndex = _Model.GetAppointHourIndex();
 
-            AppointMinute = new ObservableCollection<string>();
             _Model.GetMinuteList().ForEach(Minute => { AppointMinute.Add(Minute.ToString("00")); });
             AppointMinuteIndex = _Model.GetAppointMinuteIndex();
+
+            _Model.GetHourEachList().ForEach(Time => { HourEachTime.Add(Time.ToString("00")); });
+            HourEachTimeIndex = _Model.GetHourEachIndex();
+
+            IsEdited = false;
 
         }
 
@@ -569,6 +766,9 @@ namespace DrugAlarm.Form.ViewModel
 
             AppointMinute.Clear();
             AppointMinute = null;
+
+            HourEachTime.Clear();
+            HourEachTime = null;
 
         }
 
@@ -661,6 +861,24 @@ namespace DrugAlarm.Form.ViewModel
 
             }
 
+        }
+
+        /// <summary>
+        /// 処方量入力オーバーメッセージ作成
+        /// </summary>
+        /// <returns>処方量入力オーバーメッセージ</returns>
+        public string MakeTotalVolumeOverMessage()
+        {
+            return DrugAlarm.Properties.Resources.Detail_TotalVolumeOverMessage.Replace("_TOTALVOLUME_", MaxTotalVolume.ToString());
+        }
+
+        /// <summary>
+        /// 薬残量お知らせ入力オーバーメッセージ作成
+        /// </summary>
+        /// <returns>処方量入力オーバーメッセージ</returns>
+        public string MakeAlarmVolumeOverMessage()
+        {
+            return DrugAlarm.Properties.Resources.Detail_AlarmVolumeOverMessage.Replace("_ALARMVOLUME_", MaxAlarmVolume.ToString());
         }
 
     }

@@ -159,11 +159,13 @@ namespace DrugAlarm.Form.Model
             _Parameter = (System.Windows.Application.Current as App).Parameter;
             DrugList = new List<DrugParameter>();
 
+            /*
 #if DEBUG
             _Parameter.DebugTest_AddDrug("AAA");
             _Parameter.DebugTest_AddDrug("BBB");
             _Parameter.DebugTest_AddDrug("CCC");
 #endif
+             */
 
         }
 

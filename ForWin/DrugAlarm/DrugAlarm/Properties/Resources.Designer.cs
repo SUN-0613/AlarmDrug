@@ -106,6 +106,15 @@ namespace DrugAlarm.Properties {
         }
         
         /// <summary>
+        ///   薬残量お知らせは_ALARMVOLUME_錠以下で入力してください に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_AlarmVolumeOverMessage {
+            get {
+                return ResourceManager.GetString("Detail_AlarmVolumeOverMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   食前 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Detail_BeforeMeals {
@@ -268,6 +277,15 @@ namespace DrugAlarm.Properties {
         }
         
         /// <summary>
+        ///   処方量は_TOTALVOLUME_錠以下で入力してください に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Detail_TotalVolumeOverMessage {
+            get {
+                return ResourceManager.GetString("Detail_TotalVolumeOverMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   錠 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Detail_Unit {
@@ -412,7 +430,7 @@ namespace DrugAlarm.Properties {
         }
         
         /// <summary>
-        ///   _yy/MM/dd HH:mm_ に類似しているローカライズされた文字列を検索します。
+        ///   _yyyy/MM/dd HH:mm_ に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Parameter_Timing_Appoint {
             get {

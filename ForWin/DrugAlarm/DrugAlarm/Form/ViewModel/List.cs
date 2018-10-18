@@ -246,6 +246,7 @@ namespace DrugAlarm.Form.ViewModel
         /// </summary>
         public string MakeDeleteDrugMessage()
         {
+            _Model.DrugIndex = SelectedIndex;
             return DrugAlarm.Properties.Resources.List_DeleteMessage.Replace("_DRUG_", _Model.DrugName);
         }
 
@@ -263,6 +264,7 @@ namespace DrugAlarm.Form.ViewModel
         /// <returns></returns>
         public string MakeDrugMedicineMessage()
         {
+            _Model.DrugIndex = SelectedIndex;
             return DrugAlarm.Properties.Resources.List_DrugMedicineMessage.Replace("_DRUG_", _Model.DrugName);
         }
 

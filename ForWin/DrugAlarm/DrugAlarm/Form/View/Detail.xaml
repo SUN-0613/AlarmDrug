@@ -134,50 +134,66 @@
                 </RadioButton.IsEnabled>
             </RadioButton>
 
-            <TextBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="9" Text="薬A" TextAlignment="Left" VerticalContentAlignment="Center" AcceptsReturn="False" />
-            <TextBox Grid.Row="9" Grid.RowSpan="1" Grid.Column="3" Grid.ColumnSpan="2" Text="10" TextAlignment="Right" VerticalContentAlignment="Center" AcceptsReturn="False" />
-            <TextBox Grid.Row="10" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" Text="10" TextAlignment="Right" VerticalContentAlignment="Center" AcceptsReturn="False" />
-            <TextBox Grid.Row="11" Grid.RowSpan="2" Grid.Column="1" Grid.ColumnSpan="9" Text="備考入力" TextAlignment="Left" AcceptsReturn="True" />
+            <TextBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="9" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Left" VerticalContentAlignment="Center" AcceptsReturn="False" />
+            <TextBox Grid.Row="9" Grid.RowSpan="1" Grid.Column="3" Grid.ColumnSpan="2" Text="{Binding TotalVolume, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Right" VerticalContentAlignment="Center" AcceptsReturn="False" />
+            <TextBox Grid.Row="10" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" Text="{Binding AlarmVolume, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Right" VerticalContentAlignment="Center" AcceptsReturn="False" />
+            <TextBox Grid.Row="11" Grid.RowSpan="2" Grid.Column="1" Grid.ColumnSpan="9" Text="{Binding Remarks, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Left" AcceptsReturn="True" />
 
             <ComboBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsBreakfast}" ItemsSource="{Binding BreakfastVolume}" SelectedIndex="{Binding BreakfastVolumeIndex}" >
-                <ComboBoxItem >
-                    <TextBlock Text="{Binding}" TextAlignment="Right" />
-                </ComboBoxItem>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" TextAlignment="Right" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
             <ComboBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsLunch}" ItemsSource="{Binding LunchVolume}" SelectedIndex="{Binding LunchVolumeIndex}" >
-                <ComboBoxItem >
-                    <TextBlock Text="{Binding}" TextAlignment="Right" />
-                </ComboBoxItem>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" TextAlignment="Right" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
             <ComboBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="8" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsDinner}" ItemsSource="{Binding DinnerVolume}" SelectedIndex="{Binding DinnerVolumeIndex}" >
-                <ComboBoxItem >
-                    <TextBlock Text="{Binding}" TextAlignment="Right" />
-                </ComboBoxItem>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" TextAlignment="Right" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
             <ComboBox Grid.Row="3" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsSleep}" ItemsSource="{Binding SleepVolume}" SelectedIndex="{Binding SleepVolumeIndex}" >
-                <ComboBoxItem >
-                    <TextBlock Text="{Binding}" TextAlignment="Right" />
-                </ComboBoxItem>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" TextAlignment="Right" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
             <ComboBox Grid.Row="4" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsToBeTaken}" ItemsSource="{Binding ToBeTakenVolume}" SelectedIndex="{Binding ToBeTakenVolumeIndex}" >
-                <ComboBoxItem >
-                    <TextBlock Text="{Binding}" TextAlignment="Right" />
-                </ComboBoxItem>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" TextAlignment="Right" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
             <ComboBox Grid.Row="5" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding AppointVolume}" SelectedIndex="{Binding AppointVolumeIndex}" >
-                <ComboBoxItem >
-                    <TextBlock Text="{Binding}" TextAlignment="Right" />
-                </ComboBoxItem>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" TextAlignment="Right" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
             <ComboBox Grid.Row="7" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsHourEach}" ItemsSource="{Binding HourEachVolume}" SelectedIndex="{Binding HourEachVolumeIndex}" >
-                <ComboBoxItem >
-                    <TextBlock Text="{Binding}" TextAlignment="Right" />
-                </ComboBoxItem>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" TextAlignment="Right" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
-            <ComboBox Grid.Row="8" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsHourEach}" >
-                <ComboBoxItem >
-                    <TextBlock Text="{Binding}" TextAlignment="Right" />
-                </ComboBoxItem>
+            <ComboBox Grid.Row="8" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsHourEach}" ItemsSource="{Binding HourEachTime}" SelectedIndex="{Binding HourEachTimeIndex}" >
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" TextAlignment="Right" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
 
             <Grid Grid.Row="6" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="8" >
@@ -191,37 +207,47 @@
                     <ColumnDefinition Width="40" />
                     <ColumnDefinition Width="10" />
                     <ColumnDefinition Width="40" />
-                    <ColumnDefinition Width="15" />
+                    <ColumnDefinition Width="10" />
                     <ColumnDefinition Width="40" />
                     <ColumnDefinition Width="10" />
                     <ColumnDefinition Width="40" />
-                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="10" />
                 </Grid.ColumnDefinitions>
 
-                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding ApoointYear}" SelectedIndex="{Binding AppointYearIndex}" >
-                    <ComboBoxItem >
-                        <TextBlock Text="{Binding}" TextAlignment="Right" />
-                    </ComboBoxItem>
+                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding AppointYear}" SelectedIndex="{Binding AppointYearIndex}" >
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" TextAlignment="Right" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding ApoointMonth}" SelectedIndex="{Binding AppointMonthIndex}" >
-                    <ComboBoxItem >
-                        <TextBlock Text="{Binding}" TextAlignment="Right" />
-                    </ComboBoxItem>
+                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding AppointMonth}" SelectedIndex="{Binding AppointMonthIndex}" >
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" TextAlignment="Right" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding ApoointDay}" SelectedIndex="{Binding AppointDayIndex}" >
-                    <ComboBoxItem >
-                        <TextBlock Text="{Binding}" TextAlignment="Right" />
-                    </ComboBoxItem>
+                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding AppointDay}" SelectedIndex="{Binding AppointDayIndex}" >
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" TextAlignment="Right" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding ApoointHour}" SelectedIndex="{Binding AppointHourIndex}" >
-                    <ComboBoxItem >
-                        <TextBlock Text="{Binding}" TextAlignment="Right" />
-                    </ComboBoxItem>
+                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding AppointHour}" SelectedIndex="{Binding AppointHourIndex}" >
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" TextAlignment="Right" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="8" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding ApoointMiniute}" SelectedIndex="{Binding AppointMinuteIndex}" >
-                    <ComboBoxItem >
-                        <TextBlock Text="{Binding}" TextAlignment="Right" />
-                    </ComboBoxItem>
+                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="8" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding AppointMinute}" SelectedIndex="{Binding AppointMinuteIndex}" >
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" TextAlignment="Right" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
                 </ComboBox>
 
                 <TextBlock Grid.Row="0" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" Text="/" VerticalAlignment="Center" TextAlignment="Center" />

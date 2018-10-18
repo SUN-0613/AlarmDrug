@@ -195,14 +195,13 @@ namespace DrugAlarm.Class
             public DateTime ConvertDateTime(string Value, DateTime DefaultValue)
             {
 
-                DateTime Return;
 
                 if (Value.Split(':').Length != 2)
                 {
                     Value += ":00";
                 }
 
-                if (!DateTime.TryParse(Value, out Return))
+                if (!DateTime.TryParse(Value, out DateTime Return))
                 {
                     Return = DefaultValue;
                 }
@@ -806,6 +805,8 @@ namespace DrugAlarm.Class
                 StringBuilder NewLine = new StringBuilder();
                 Int32 Index = 0;
 
+                DrugList.Clear();
+
                 while (!file.EndOfStream)
                 {
 
@@ -963,14 +964,14 @@ namespace DrugAlarm.Class
 
                                     case NAME.DRUG.APPOINTTIME:
                                         DrugList[Index].Appoint.IsDrug = true;
-                                        DrugList[Index].Appoint.Volume = method.ConvertToInt32(Str[1], DrugList[Index].Appoint.Volume);
-                                        DrugList[Index].AppointTime = method.ConvertDateTime(Str[2], DrugList[Index].AppointTime);
+                                        DrugList[Index].AppointTime = method.ConvertDateTime(Values[0], DrugList[Index].AppointTime);
+                                        DrugList[Index].Appoint.Volume = method.ConvertToInt32(Values[1], DrugList[Index].Appoint.Volume);
                                         break;
 
                                     case NAME.DRUG.HOUREACH:
                                         DrugList[Index].HourEach.IsDrug = true;
-                                        DrugList[Index].HourEach.Volume = method.ConvertToInt32(Str[1], DrugList[Index].HourEach.Volume);
-                                        DrugList[Index].HourEachTime = method.ConvertToInt32(Str[2], DrugList[Index].HourEachTime);
+                                        DrugList[Index].HourEachTime = method.ConvertToInt32(Values[0], DrugList[Index].HourEachTime);
+                                        DrugList[Index].HourEach.Volume = method.ConvertToInt32(Values[1], DrugList[Index].HourEach.Volume);
                                         break;
 
                                     case NAME.DRUG.TOTALVOLUME:
@@ -982,7 +983,7 @@ namespace DrugAlarm.Class
                                         break;
 
                                     case NAME.DRUG.REMARKS:
-                                        DrugList[Index].Name = method.ConvertCRLF(Str[1]);
+                                        DrugList[Index].Remarks = method.ConvertCRLF(Str[1]);
                                         break;
 
                                     default:
@@ -1213,6 +1214,8 @@ namespace DrugAlarm.Class
                     #region 薬パラメータ
                     for (Int32 iLoop = 0; iLoop < DrugList.Count; iLoop++)
                     {
+                        file.WriteLine("");
+
                         file.WriteLine(NAME.DRUG.START);
 
                         file.WriteLine(MakeParameter(NAME.DRUG.NAME, DrugList[iLoop].Name, false));
@@ -1259,14 +1262,14 @@ namespace DrugAlarm.Class
                             file.WriteLine(MakeParameter(NAME.DRUG.TOBETAKEN, DrugList[iLoop].ToBeTaken.Volume));
                         }
 
-                        //指定日時が設定されていても、現在日時を超えていれば保存しない
+                        //指定日時が設定されていても、過去であれば保存しない
                         if (DrugList[iLoop].Appoint.IsDrug && DrugList[iLoop].AppointTime > DateTime.Now)
                         {
                             file.WriteLine(MakeParameter(NAME.DRUG.APPOINTTIME, DrugList[iLoop].AppointTime, DrugList[iLoop].Appoint.Volume));
                         }
                         else
                         {
-                            //現在日時を超えている場合は服用設定を解除
+                            //過去の場合は服用設定を解除
                             DrugList[iLoop].Appoint.IsDrug = false;
                         }
 
