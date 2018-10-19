@@ -108,7 +108,7 @@ namespace DrugAlarm.Class
         /// <summary>
         /// パラメータメソッド一覧
         /// </summary>
-        private class Method
+        public class Method
         {
 
             /// <summary>
@@ -392,7 +392,7 @@ namespace DrugAlarm.Class
         /// <summary>
         /// 設定クラス
         /// </summary>
-        private class SettingParameter : Method
+        public class SettingParameter : Method
         {
 
             /// <summary>
@@ -733,7 +733,7 @@ namespace DrugAlarm.Class
         /// <summary>
         /// 設定データ
         /// </summary>
-        private SettingParameter Setting;
+        public SettingParameter Setting;
 
         /// <summary>
         /// 薬リスト

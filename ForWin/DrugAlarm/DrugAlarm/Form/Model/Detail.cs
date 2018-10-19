@@ -305,40 +305,46 @@ namespace DrugAlarm.Form.Model
         public void Dispose()
         {
 
-            if (_Volume == null)
+            if (_Volume != null)
             {
                 _Volume.Clear();
                 _Volume = null;
             }
 
-            if (_Year == null)
+            if (_Year != null)
             {
                 _Year.Clear();
                 _Year = null;
             }
 
-            if (_Month == null)
+            if (_Month != null)
             {
                 _Month.Clear();
                 _Month = null;
             }
 
-            if (_Day == null)
+            if (_Day != null)
             {
                 _Day.Clear();
                 _Day = null;
             }
 
-            if (_Hour == null)
+            if (_Hour != null)
             {
                 _Hour.Clear();
                 _Hour = null;
             }
 
-            if (_Minute == null)
+            if (_Minute != null)
             {
                 _Minute.Clear();
                 _Minute = null;
+            }
+
+            if (_HourEach != null)
+            {
+                _HourEach.Clear();
+                _HourEach = null;
             }
 
         }

@@ -18,7 +18,7 @@ namespace DrugAlarm.Common
         /// PropertyChanged()呼び出し
         /// </summary>
         /// <param name="PropertyName">Changedイベントを発生させたいプロパティ名</param>
-        protected void CallPropertyChanged(string PropertyName = "")
+        protected virtual void CallPropertyChanged(string PropertyName = "")
         {
 
             if (PropertyChanged == null) return;

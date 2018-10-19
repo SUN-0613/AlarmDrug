@@ -1,38 +1,94 @@
-﻿using System.Windows;
+﻿using System;
+using System.ComponentModel;
+using System.Windows;
 
 namespace DrugAlarm.Form.View
 {
     /// <summary>
     /// Setting.xaml の相互作用ロジック
     /// </summary>
-    public partial class Setting : Window
+    public partial class Setting : Window, IDisposable
     {
+
+        /// <summary>
+        /// Setting.ViewModel
+        /// </summary>
+        private ViewModel.Setting _ViewModel;
+
         /// <summary>
         /// new
         /// </summary>
         public Setting()
         {
+
             InitializeComponent();
-        }
 
-        /// <summary>
-        /// 戻るボタンクリック
-        /// </summary>
-        private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
+            _ViewModel = new ViewModel.Setting();
+            DataContext = _ViewModel;
 
-            this.Close();
+            _ViewModel.PropertyChanged += OnPropertyChanged;
 
         }
 
         /// <summary>
-        /// 保存ボタンクリック
+        /// 終了処理
         /// </summary>
-        private void Save_Click(object sender, RoutedEventArgs e)
+        public void Dispose()
+        {
+            _ViewModel.PropertyChanged -= OnPropertyChanged;
+
+            _ViewModel.Dispose();
+            _ViewModel = null;
+        }
+
+        /// <summary>
+        /// ViewModelプロパティ変更通知イベント
+        /// </summary>
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
 
-            MessageBox.Show("保存します");
-            this.Close();
+            switch (e.PropertyName)
+            {
+
+                case "CallCancel":      //キャンセルボタンクリック
+
+                    string AppName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+                    string Message = DrugAlarm.Properties.Resources.Setting_CancelMessage;
+
+                    if (_ViewModel.IsEdited)
+                    {
+
+                        if (MessageBox.Show(Message, AppName, MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                        {
+                            _ViewModel.Initialize();
+                            DialogResult = false;
+                        }
+
+                    }
+                    else
+                    {
+                        DialogResult = false;
+                    }
+
+                    break;
+
+                case "CallSave":        //保存ボタンクリック
+
+                    AppName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+                    Message = DrugAlarm.Properties.Resources.Setting_SaveMessage;
+
+                    if (MessageBox.Show(Message, AppName, MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                    {
+                        _ViewModel.Save();
+                        DialogResult = true;
+                    }
+
+                    break;
+
+                default:
+                    break;
+
+            }
 
         }
 

@@ -353,6 +353,10 @@
     <value>朝食時間</value>
     <comment>設定：朝食時間</comment>
   </data>
+  <data name="Setting_CancelMessage" xml:space="preserve">
+    <value>編集中のデータを破棄しますか？</value>
+    <comment>設定：キャンセル確認メッセージ</comment>
+  </data>
   <data name="Setting_Dinner" xml:space="preserve">
     <value>夕食時間</value>
     <comment>設定：夕食時間</comment>
@@ -368,6 +372,10 @@
   <data name="Setting_Realarm" xml:space="preserve">
     <value>再通知</value>
     <comment>設定：再通知</comment>
+  </data>
+  <data name="Setting_SaveMessage" xml:space="preserve">
+    <value>設定を保存しますか？</value>
+    <comment>設定：保存確認メッセージ</comment>
   </data>
   <data name="Setting_Sleep" xml:space="preserve">
     <value>就寝時間</value>

@@ -592,6 +592,15 @@ namespace DrugAlarm.Properties {
         }
         
         /// <summary>
+        ///   編集中のデータを破棄しますか？ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Setting_CancelMessage {
+            get {
+                return ResourceManager.GetString("Setting_CancelMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   夕食時間 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Setting_Dinner {
@@ -624,6 +633,15 @@ namespace DrugAlarm.Properties {
         public static string Setting_Realarm {
             get {
                 return ResourceManager.GetString("Setting_Realarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   設定を保存しますか？ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Setting_SaveMessage {
+            get {
+                return ResourceManager.GetString("Setting_SaveMessage", resourceCulture);
             }
         }
         
