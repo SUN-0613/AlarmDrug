@@ -72,18 +72,7 @@ namespace DrugAlarm.Class
 
                     //アラーム表示
                     var Alarm = new Form.View.Alarm();
-                    if (Alarm.ShowDialog() == true)
-                    {
-
-                        //残り錠の計算、次回アラーム設定
-                        if (_Parameter.TakeMedicine())
-                        {
-                            //薬切れアラーム表示
-                            var Information = new Form.View.Information();
-                            Information.ShowDialog();
-                        }
-
-                    }
+                    Alarm.ShowDialog();
 
                 }
 

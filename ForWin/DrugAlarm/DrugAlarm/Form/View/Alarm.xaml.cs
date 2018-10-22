@@ -1,45 +1,90 @@
-﻿using System.Windows;
+﻿using System;
+using System.ComponentModel;
+using System.Windows;
 
 namespace DrugAlarm.Form.View
 {
     /// <summary>
     /// Alarm.xaml の相互作用ロジック
     /// </summary>
-    public partial class Alarm : Window
+    public partial class Alarm : Window, IDisposable
     {
 
         /// <summary>
-        /// パラメータ
+        /// Alarm.ViewModel
         /// </summary>
-        private Class.Parameter _Parameter = (System.Windows.Application.Current as App).Parameter;
+        private ViewModel.Alarm _ViewModel;
 
         /// <summary>
         /// new
         /// </summary>
         public Alarm()
         {
+
             InitializeComponent();
-        }
 
-        /// <summary>
-        /// 完了ボタンクリック
-        /// </summary>
-        private void OK_Click(object sender, RoutedEventArgs e)
-        {
+            _ViewModel = new ViewModel.Alarm();
+            DataContext = _ViewModel;
 
-            MessageBox.Show("完了します");
-            this.Close();
+            _ViewModel.PropertyChanged += OnPropertyChanged;
 
         }
 
         /// <summary>
-        /// 再通知ボタンクリック
+        /// 終了処理
         /// </summary>
-        private void Realarm_Click(object sender, RoutedEventArgs e)
+        public void Dispose()
         {
 
-            MessageBox.Show("再通知します");
-            this.Close();
+            _ViewModel.PropertyChanged -= OnPropertyChanged;
+
+            _ViewModel.Dispose();
+            _ViewModel = null;
+
+        }
+
+        /// <summary>
+        /// ViewModelプロパティ変更通知イベント
+        /// </summary>
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+
+            switch (e.PropertyName)
+            {
+
+                case "CallOk":      //OKボタンクリック
+
+                    //残り錠の計算、次回アラーム設定
+                    if (_ViewModel.TakeMedicine())
+                    {
+                        //薬切れアラーム表示
+                        var Information = new View.Information
+                        {
+                            Owner = this
+                        };
+                        Information.ShowDialog();
+
+                    }
+
+                    DialogResult = true;
+                    break;
+
+                case "CallRealarm": //再通知ボタンクリック
+
+                    //再通知設定表示
+                    var Realarm = new View.Realarm
+                    {
+                        Owner = this
+                    };
+                    Realarm.ShowDialog();
+
+                    DialogResult = false;
+                    break;
+
+                default:
+                    break;
+
+            }
 
         }
 
