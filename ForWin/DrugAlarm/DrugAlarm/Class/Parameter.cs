@@ -1649,6 +1649,27 @@ namespace DrugAlarm.Class
         }
 
         /// <summary>
+        /// 再通知設定
+        /// </summary>
+        /// <param name="AfterMinute">再通知設定時間(分)</param>
+        public void SetRealarm(Int32 AfterMinute)
+        {
+
+            ReAlarm.Index.Clear();
+            ReAlarm.Volume.Clear();
+
+            //DrugListのIndexを登録
+            for (Int32 iLoop = 0; iLoop < NextAlarm.Index.Count; iLoop++)
+            {
+                ReAlarm.Index.Add(NextAlarm.Index[iLoop]);
+                ReAlarm.Volume.Add(NextAlarm.Volume[iLoop]);
+            }
+
+            ReAlarm.Timer = DateTime.Now.AddMinutes(AfterMinute);
+
+        }
+
+        /// <summary>
         /// 次回アラームとなるか比較、Indexを登録する
         /// </summary>
         /// <param name="Time">アラーム候補時刻</param>
