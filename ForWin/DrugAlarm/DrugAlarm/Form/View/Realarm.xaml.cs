@@ -18,7 +18,7 @@ namespace DrugAlarm.Form.View
         /// <summary>
         /// 画面終了可能FLG
         /// </summary>
-        private bool IsCloseEnabeld = false;
+        private bool IsCloseEnabled = false;
 
         /// <summary>
         /// new
@@ -53,7 +53,7 @@ namespace DrugAlarm.Form.View
         /// </summary>
         public void OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (!IsCloseEnabeld)
+            if (!IsCloseEnabled)
                 e.Cancel = true;
         }
 
@@ -67,7 +67,7 @@ namespace DrugAlarm.Form.View
             {
 
                 case "CallSave":
-                    IsCloseEnabeld = true;
+                    IsCloseEnabled = true;
                     DialogResult = true;
                     break;
 

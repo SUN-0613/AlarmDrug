@@ -128,10 +128,12 @@
     <Compile Include="Converter\VolumeToForeground.cs" />
     <Compile Include="Form\Model\Alarm.cs" />
     <Compile Include="Form\Model\Detail.cs" />
+    <Compile Include="Form\Model\Information.cs" />
     <Compile Include="Form\Model\List.cs" />
     <Compile Include="Form\Model\Realarm.cs" />
     <Compile Include="Form\Model\Setting.cs" />
     <Compile Include="Form\ViewModel\Alarm.cs" />
+    <Compile Include="Form\ViewModel\Information.cs" />
     <Compile Include="Form\ViewModel\Realarm.cs" />
     <Compile Include="Form\ViewModel\Setting.cs" />
     <Compile Include="Form\View\Alarm.xaml.cs">
