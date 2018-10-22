@@ -84,7 +84,10 @@ namespace DrugAlarm.Form.ViewModel
                 if (_Model.SaveCommand == null)
                 {
                     _Model.SaveCommand = new Common.DelegateCommand(
-                        () => { _Model.Save(); },
+                        () => {
+                            _Model.Save();
+                            CallPropertyChanged("CallSave");
+                        },
                         () => true);
                 }
 

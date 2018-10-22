@@ -16,6 +16,11 @@ namespace DrugAlarm.Form.View
         private ViewModel.Realarm _ViewModel;
 
         /// <summary>
+        /// 画面終了可能FLG
+        /// </summary>
+        private bool IsCloseEnabeld = false;
+
+        /// <summary>
         /// new
         /// </summary>
         public Realarm()
@@ -44,6 +49,15 @@ namespace DrugAlarm.Form.View
         }
 
         /// <summary>
+        /// 終了処理
+        /// </summary>
+        public void OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!IsCloseEnabeld)
+                e.Cancel = true;
+        }
+
+        /// <summary>
         /// ViewModelプロパティ変更通知イベント
         /// </summary>
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -51,6 +65,11 @@ namespace DrugAlarm.Form.View
 
             switch (e.PropertyName)
             {
+
+                case "CallSave":
+                    IsCloseEnabeld = true;
+                    DialogResult = true;
+                    break;
 
                 default:
                     break;
