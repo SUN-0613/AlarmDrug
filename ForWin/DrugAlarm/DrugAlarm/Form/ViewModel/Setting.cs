@@ -147,7 +147,7 @@ namespace DrugAlarm.Form.ViewModel
             }
         }
 
-#endregion
+        #endregion
 
         #region 昼食プロパティ
 
