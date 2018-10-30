@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace DrugAlarm.Form.ViewModel
 {
@@ -17,9 +18,20 @@ namespace DrugAlarm.Form.ViewModel
         /// <param name="PropertyName">Changedイベントを発生させたいプロパティ名</param>
         protected override void CallPropertyChanged(string PropertyName = "")
         {
+
+            //プロパティ名が指定されていない場合は呼び出し元メソッド名とする
+            if (PropertyName.Length.Equals(0))
+            {
+                StackFrame Caller = new StackFrame(1);                      //呼び出し元メソッド情報
+                string[] MethodName = Caller.GetMethod().Name.Split('_');   //呼び出し元メソッド名
+                PropertyName = MethodName[MethodName.Length - 1];
+            }
+
             base.CallPropertyChanged(PropertyName);
+
             IsEdited = true;    //編集FLGの更新
             base.CallPropertyChanged("IsEdited");
+
         }
 
         /// <summary>

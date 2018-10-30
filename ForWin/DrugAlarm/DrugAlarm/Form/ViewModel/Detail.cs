@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace DrugAlarm.Form.ViewModel
 {
@@ -9,6 +10,28 @@ namespace DrugAlarm.Form.ViewModel
     /// </summary>
     class Detail : Common.ViewModelBase, IDisposable
     {
+
+        /// <summary>
+        /// PropertyChanged()呼び出し
+        /// </summary>
+        /// <param name="PropertyName">Changedイベントを発生させたいプロパティ名</param>
+        protected override void CallPropertyChanged(string PropertyName = "")
+        {
+            
+            //プロパティ名が指定されていない場合は呼び出し元メソッド名とする
+            if (PropertyName.Length.Equals(0))
+            {
+                StackFrame Caller = new StackFrame(1);                      //呼び出し元メソッド情報
+                string[] MethodName = Caller.GetMethod().Name.Split('_');   //呼び出し元メソッド名
+                PropertyName = MethodName[MethodName.Length - 1];
+            }
+
+            base.CallPropertyChanged(PropertyName);
+
+            IsEdited = true;    //編集FLGの更新
+            base.CallPropertyChanged("IsEdited");
+
+        }
 
         /// <summary>
         /// 編集したか
@@ -22,7 +45,6 @@ namespace DrugAlarm.Form.ViewModel
             set
             {
                 _Model.IsEdited = value;
-                CallPropertyChanged();
             }
         }
 
@@ -59,8 +81,6 @@ namespace DrugAlarm.Form.ViewModel
                 _Model.Drug.Breakfast.IsDrug = value;
                 CallPropertyChanged();
 
-                IsEdited = true;
-
             }
         }
 
@@ -82,9 +102,6 @@ namespace DrugAlarm.Form.ViewModel
                 {
                     _Model.BreakfastVolumeIndex = value;
                     CallPropertyChanged();
-
-                    IsEdited = true;
-
                 }
 
             }
@@ -103,9 +120,6 @@ namespace DrugAlarm.Form.ViewModel
             {
                 _Model.Drug.Lunch.IsDrug = value;
                 CallPropertyChanged();
-
-                IsEdited = true;
-
             }
         }
 
@@ -128,9 +142,6 @@ namespace DrugAlarm.Form.ViewModel
 
                     _Model.LunchVolumeIndex = value;
                     CallPropertyChanged();
-
-                    IsEdited = true;
-
                 }
 
             }
@@ -149,9 +160,6 @@ namespace DrugAlarm.Form.ViewModel
             {
                 _Model.Drug.Dinner.IsDrug = value;
                 CallPropertyChanged();
-
-                IsEdited = true;
-
             }
         }
 
@@ -174,9 +182,6 @@ namespace DrugAlarm.Form.ViewModel
 
                     _Model.DinnerVolumeIndex = value;
                     CallPropertyChanged();
-
-                    IsEdited = true;
-
                 }
 
             }
@@ -195,9 +200,6 @@ namespace DrugAlarm.Form.ViewModel
             {
                 _Model.Drug.Sleep.IsDrug = value;
                 CallPropertyChanged();
-
-                IsEdited = true;
-
             }
         }
 
@@ -220,9 +222,6 @@ namespace DrugAlarm.Form.ViewModel
 
                     _Model.SleepVolumeIndex = value;
                     CallPropertyChanged();
-
-                    IsEdited = true;
-
                 }
 
             }
@@ -241,9 +240,6 @@ namespace DrugAlarm.Form.ViewModel
             {
                 _Model.Drug.ToBeTaken.IsDrug = value;
                 CallPropertyChanged();
-
-                IsEdited = true;
-
             }
         }
 
@@ -266,9 +262,6 @@ namespace DrugAlarm.Form.ViewModel
 
                     _Model.ToBeTakenVolumeIndex = value;
                     CallPropertyChanged();
-
-                    IsEdited = true;
-
                 }
 
             }
@@ -287,9 +280,6 @@ namespace DrugAlarm.Form.ViewModel
             {
                 _Model.Drug.Appoint.IsDrug = value;
                 CallPropertyChanged();
-
-                IsEdited = true;
-
             }
         }
 
@@ -312,9 +302,6 @@ namespace DrugAlarm.Form.ViewModel
 
                     _Model.AppointVolumeIndex = value;
                     CallPropertyChanged();
-
-                    IsEdited = true;
-
                 }
 
             }
@@ -345,9 +332,6 @@ namespace DrugAlarm.Form.ViewModel
 
                     CallPropertyChanged();
                     _Model.SetAppointDateTime();
-
-                    IsEdited = true;
-
                 }
 
             }
@@ -375,9 +359,6 @@ namespace DrugAlarm.Form.ViewModel
 
                     CallPropertyChanged();
                     _Model.SetAppointDateTime();
-
-                    IsEdited = true;
-
                 }
 
             }
@@ -404,9 +385,6 @@ namespace DrugAlarm.Form.ViewModel
 
                     CallPropertyChanged();
                     _Model.SetAppointDateTime();
-
-                    IsEdited = true;
-
                 }
 
             }
@@ -433,9 +411,6 @@ namespace DrugAlarm.Form.ViewModel
 
                     CallPropertyChanged();
                     _Model.SetAppointDateTime();
-
-                    IsEdited = true;
-
                 }
 
             }
@@ -463,8 +438,6 @@ namespace DrugAlarm.Form.ViewModel
                     CallPropertyChanged();
                     _Model.SetAppointDateTime();
 
-                    IsEdited = true;
-
                 }
 
 
@@ -484,9 +457,6 @@ namespace DrugAlarm.Form.ViewModel
             {
                 _Model.Drug.HourEach.IsDrug = value;
                 CallPropertyChanged();
-
-                IsEdited = true;
-
             }
         }
 
@@ -505,9 +475,6 @@ namespace DrugAlarm.Form.ViewModel
             {
                 _Model.HourEachVolumeIndex = value;
                 CallPropertyChanged();
-
-                IsEdited = true;
-
             }
         }
 
@@ -526,9 +493,6 @@ namespace DrugAlarm.Form.ViewModel
             {
                 _Model.HourEachTimeIndex = value;
                 CallPropertyChanged();
-
-                IsEdited = true;
-
             }
         }
 
@@ -570,9 +534,6 @@ namespace DrugAlarm.Form.ViewModel
                     {
                         _Model.Drug.TotalVolume = Number;
                         CallPropertyChanged();
-
-                        IsEdited = true;
-
                     }
                 }
                 else
@@ -604,9 +565,6 @@ namespace DrugAlarm.Form.ViewModel
                     {
                         _Model.Drug.PrescriptionAlarmVolume = Number;
                         CallPropertyChanged();
-
-                        IsEdited = true;
-
                     }
                 }
                 else
@@ -629,9 +587,6 @@ namespace DrugAlarm.Form.ViewModel
                 {
                     _Model.Drug.Remarks = value;
                     CallPropertyChanged();
-
-                    IsEdited = true;
-
                 }
             }
         }
