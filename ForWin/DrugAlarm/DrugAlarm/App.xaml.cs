@@ -64,14 +64,22 @@ namespace DrugAlarm
         protected override void OnExit(ExitEventArgs e)
         {
 
-            //基本処理
-            base.OnExit(e);
-
             //パラメータ終了処理
-            Parameter.Dispose();
+            if (!Parameter.Equals(null))
+            {
+                Parameter.Dispose();
+                Parameter = null;
+            }
 
             //タスクトレイから削除
-            _TaskTray.Dispose();
+            if (!_TaskTray.Equals(null))
+            {
+                _TaskTray.Dispose();
+                _TaskTray = null;
+            }
+
+            //基本処理
+            base.OnExit(e);
 
         }
 
