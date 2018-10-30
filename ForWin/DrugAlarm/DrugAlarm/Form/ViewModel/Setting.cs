@@ -54,11 +54,15 @@ namespace DrugAlarm.Form.ViewModel
             get { return _Model.BreakfastStartHourIndex; }
             set
             {
+
                 if (!_Model.BreakfastStartHourIndex.Equals(value))
                 {
+
                     _Model.BreakfastStartHourIndex = value;
                     CallPropertyChanged();
+
                 }
+
             }
         }
 
@@ -77,8 +81,10 @@ namespace DrugAlarm.Form.ViewModel
             {
                 if (!_Model.BreakfastStartMinuteIndex.Equals(value))
                 {
+
                     _Model.BreakfastStartMinuteIndex = value;
                     CallPropertyChanged();
+
                 }
             }
         }
@@ -98,8 +104,10 @@ namespace DrugAlarm.Form.ViewModel
             {
                 if (!_Model.BreakfastFinishHourIndex.Equals(value))
                 {
+
                     _Model.BreakfastFinishHourIndex = value;
                     CallPropertyChanged();
+
                 }
             }
         }
@@ -119,13 +127,15 @@ namespace DrugAlarm.Form.ViewModel
             {
                 if (!_Model.BreakfastFinishMinuteIndex.Equals(value))
                 {
+
                     _Model.BreakfastFinishMinuteIndex = value;
                     CallPropertyChanged();
+
                 }
             }
         }
 
-        #endregion
+#endregion
 
         #region 昼食プロパティ
 

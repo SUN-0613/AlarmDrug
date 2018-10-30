@@ -56,6 +56,11 @@ namespace DrugAlarm.Form.Model
         public void Save()
         {
 
+            //開始・終了時間の整合性チェック
+            SetParam.Breakfast.CompareTimes();
+            SetParam.Lunch.CompareTimes();
+            SetParam.Dinner.CompareTimes();
+
             _Parameter.Setting = SetParam;
             _Parameter.Save();
             _Parameter.Load();
@@ -902,7 +907,7 @@ namespace DrugAlarm.Form.Model
         /// <summary>
         /// 分Indexの取得
         /// </summary>
-        public Int32 GetMinuteIndex(Int32 Minute)
+        private Int32 GetMinuteIndex(Int32 Minute)
         {
 
             Int32 Return = -1;
@@ -924,7 +929,7 @@ namespace DrugAlarm.Form.Model
         /// <summary>
         /// アラーム用分Indexの取得
         /// </summary>
-        public Int32 GetAlarmMinuteIndex(Int32 Minute)
+        private Int32 GetAlarmMinuteIndex(Int32 Minute)
         {
 
             Int32 Return = -1;

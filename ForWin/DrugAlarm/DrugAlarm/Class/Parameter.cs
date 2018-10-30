@@ -60,6 +60,19 @@ namespace DrugAlarm.Class
                 Finish = DateTime.MaxValue;
             }
 
+            /// <summary>
+            /// 開始・終了時間を比較し、前後逆なら並び替え
+            /// </summary>
+            public void CompareTimes()
+            {
+                if (Start.CompareTo(Finish).Equals(1))
+                {
+                    DateTime Tmp = Start;
+                    Start = Finish;
+                    Finish = Tmp;
+                }
+            }
+
         }
 
         /// <summary>
