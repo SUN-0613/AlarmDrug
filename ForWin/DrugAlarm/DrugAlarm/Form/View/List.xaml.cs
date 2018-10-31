@@ -97,12 +97,15 @@ namespace DrugAlarm.Form.View
 
                 case "CallDrugMedicine":    //服用メニュークリック
 
-                    _ViewModel.DrugMedicine();
+                    if (_ViewModel.DrugMedicine())
+                    {
 
-                    AppName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
-                    Message = _ViewModel.MakeDrugMedicineMessage();
+                        AppName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+                        Message = _ViewModel.MakeDrugMedicineMessage();
 
-                    MessageBox.Show(Message, AppName, MessageBoxButton.YesNo, MessageBoxImage.Information);
+                        MessageBox.Show(Message, AppName, MessageBoxButton.YesNo, MessageBoxImage.Information);
+
+                    }
 
                     break;
 

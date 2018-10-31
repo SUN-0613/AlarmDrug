@@ -7,6 +7,8 @@ namespace DrugAlarm.Form.Model
     class List : IDisposable
     {
 
+        #region パラメータ
+
         /// <summary>
         /// DrugParameterより一部抜粋
         /// </summary>
@@ -38,12 +40,12 @@ namespace DrugAlarm.Form.Model
             /// </summary>
             public bool IsPrescriptionAlarm;
 
-        }
+            /// <summary>
+            /// 頓服服用
+            /// </summary>
+            public bool IsToBeTaken;
 
-        /// <summary>
-        /// 薬一覧
-        /// </summary>
-        public List<DrugParameter> DrugList;
+        }
 
         /// <summary>
         /// パラメータ
@@ -54,6 +56,111 @@ namespace DrugAlarm.Form.Model
         /// ListBox.SelectedIndex
         /// </summary>
         public Int32 SelectedIndex = -1;
+
+        /// <summary>
+        /// 100msタイマ
+        /// </summary>
+        public DispatcherTimer Timer;
+
+        #endregion
+
+        #region コマンド
+
+        /// <summary>
+        /// 設定コマンド
+        /// </summary>
+        public Common.DelegateCommand SettingCommand;
+
+        /// <summary>
+        /// 新規追加コマンド
+        /// </summary>
+        public Common.DelegateCommand AddDrugCommand;
+
+        /// <summary>
+        /// 編集コマンド
+        /// </summary>
+        public Common.DelegateCommand EditCommand;
+
+        /// <summary>
+        /// 削除コマンド
+        /// </summary>
+        public Common.DelegateCommand DeleteCommand;
+
+        /// <summary>
+        /// 服用コマンド
+        /// </summary>
+        public Common.DelegateCommand DrugMedicineCommand;
+
+        /// <summary>
+        /// 薬一覧に追加
+        /// </summary>
+        /// <returns>薬パラメータIndex</returns>
+        public Int32 AddDrugList()
+        {
+            DrugList.Add(new DrugParameter());
+            return DrugList.Count - 1;
+        }
+
+        /// <summary>
+        /// 薬一覧クリア
+        /// </summary>
+        public void ClearDrugList()
+        {
+            DrugList.Clear();
+        }
+
+        /// <summary>
+        /// 選択している薬の削除
+        /// </summary>
+        public void DeleteDrug()
+        {
+
+            if (-1 < SelectedIndex && SelectedIndex < _Parameter.DrugList.Count)
+            {
+                _Parameter.DrugList.RemoveAt(SelectedIndex);
+                _Parameter.Save();
+                SelectedIndex = -1;
+            }
+
+        }
+
+        /// <summary>
+        /// 選択している薬の服用
+        /// </summary>
+        public bool DrugMedicine()
+        {
+
+            bool Return = false;
+
+            if (-1 < SelectedIndex && SelectedIndex < _Parameter.DrugList.Count)
+            {
+
+                Class.Parameter.DrugParameter Drug = _Parameter.DrugList[SelectedIndex];
+
+                if (Drug.ToBeTaken.IsDrug)
+                {
+
+                    Drug.TotalVolume -= Drug.ToBeTaken.Volume;
+                    _Parameter.Save();
+
+                    Return = true;
+
+                }
+
+            }
+
+            return Return;
+
+        }
+
+        #endregion
+
+        #region 薬プロパティ
+
+        /// <summary>
+        /// 薬一覧
+        /// </summary>
+        public List<DrugParameter> DrugList;
 
         /// <summary>
         /// 登録している薬の総数プロパティ
@@ -121,34 +228,14 @@ namespace DrugAlarm.Form.Model
         }
 
         /// <summary>
-        /// 設定コマンド
+        /// 頓服服用プロパティ
         /// </summary>
-        public Common.DelegateCommand SettingCommand;
+        public bool IsToBeTaken
+        {
+            get { return _Parameter.DrugList[DrugIndex].ToBeTaken.IsDrug; }
+        }
 
-        /// <summary>
-        /// 新規追加コマンド
-        /// </summary>
-        public Common.DelegateCommand AddDrugCommand;
-
-        /// <summary>
-        /// 編集コマンド
-        /// </summary>
-        public Common.DelegateCommand EditCommand;
-
-        /// <summary>
-        /// 削除コマンド
-        /// </summary>
-        public Common.DelegateCommand DeleteCommand;
-
-        /// <summary>
-        /// 服用コマンド
-        /// </summary>
-        public Common.DelegateCommand DrugMedicineCommand;
-
-        /// <summary>
-        /// 100msタイマ
-        /// </summary>
-        public DispatcherTimer Timer;
+        #endregion
 
         /// <summary>
         /// new
@@ -177,60 +264,6 @@ namespace DrugAlarm.Form.Model
 
             DrugList.Clear();
             DrugList = null;
-
-        }
-
-        /// <summary>
-        /// 薬一覧に追加
-        /// </summary>
-        /// <returns>薬パラメータIndex</returns>
-        public Int32 AddDrugList()
-        {
-            DrugList.Add(new DrugParameter());
-            return DrugList.Count - 1;
-        }
-
-        /// <summary>
-        /// 薬一覧クリア
-        /// </summary>
-        public void ClearDrugList()
-        {
-            DrugList.Clear();
-        }
-
-        /// <summary>
-        /// 選択している薬の削除
-        /// </summary>
-        public void DeleteDrug()
-        {
-
-            if (-1 < SelectedIndex && SelectedIndex < _Parameter.DrugList.Count)
-            {
-                _Parameter.DrugList.RemoveAt(SelectedIndex);
-                _Parameter.Save();
-                SelectedIndex = -1;
-            }
-
-        }
-
-        /// <summary>
-        /// 選択している薬の服用
-        /// </summary>
-        public void DrugMedicine()
-        {
-
-            if (-1 < SelectedIndex && SelectedIndex < _Parameter.DrugList.Count)
-            {
-
-                Class.Parameter.DrugParameter Drug = _Parameter.DrugList[SelectedIndex];
-
-                if (Drug.ToBeTaken.IsDrug)
-                {
-                    Drug.TotalVolume -= Drug.ToBeTaken.Volume;
-                    _Parameter.Save();
-                }
-
-            }
 
         }
 

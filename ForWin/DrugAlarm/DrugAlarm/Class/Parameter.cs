@@ -158,25 +158,6 @@ namespace DrugAlarm.Class
             }
 
             /// <summary>
-            /// 次回時間の取得
-            /// </summary>
-            /// <param name="Time">設定時間</param>
-            public DateTime GetNextDateTime(DateTime Time)
-            {
-
-                DateTime Now = DateTime.Now;
-                DateTime Return = new DateTime(Now.Year, Now.Month, Now.Day, Time.Hour, Time.Minute, 0);
-
-                if (Time.Hour < Now.Hour || (Time.Hour.Equals(Now.Hour) && Time.Minute < Now.Minute))
-                {
-                    Return.AddDays(1.0);
-                }
-
-                return Return;
-
-            }
-
-            /// <summary>
             /// 文字列を整数値に変換
             /// 変換できない場合は引数値を返す
             /// </summary>
@@ -1614,7 +1595,7 @@ namespace DrugAlarm.Class
             NextAlarm.Volume.Clear();
 
             //再通知
-            if (NextAlarm.Timer <= ReAlarm.Timer)  
+            if (ReAlarm.Index.Count > 0 && ReAlarm.Timer <= NextAlarm.Timer)
             {
 
                 //同時刻ならば追加、現在設定値より前時刻なら新規に登録
@@ -1642,7 +1623,7 @@ namespace DrugAlarm.Class
                 //毎時
                 if (DrugList[iLoop].HourEach.IsDrug)
                 {
-                    CompareToTime(method.GetNextDateTime(method.GetTodayTime(DrugList[iLoop].HourEachTime, 0)), iLoop, DrugList[iLoop].HourEach.Volume);
+                    CompareToTime(DateTime.Now.AddHours(DrugList[iLoop].HourEachTime), iLoop, DrugList[iLoop].HourEach.Volume);
                 }
 
                 //指定日時
@@ -1675,8 +1656,15 @@ namespace DrugAlarm.Class
                 //就寝前
                 if (DrugList[iLoop].Sleep.IsDrug)
                 {
+
                     Time = Setting.Sleep.AddMinutes((-1) * Setting.MinuteBeforeSleep);
+
+                    //取得した時間を超過している場合は翌日にする
+                    if (Time < DateTime.Now)
+                        Time = Time.AddDays(1);
+
                     CompareToTime(Time, iLoop, DrugList[iLoop].Sleep.Volume);
+
                 }
 
             }
@@ -1713,21 +1701,26 @@ namespace DrugAlarm.Class
         private void CompareToTime(DateTime Time, Int32 DrugIndex, Int32 Volume)
         {
 
-            //同時刻ならば追加、現在設定値より前時刻なら新規に登録
-            if (NextAlarm.Timer != Time)
+            if (Time <= NextAlarm.Timer)
             {
-                NextAlarm.Index.Clear();
-            }
 
-            //DrugListのIndexを登録
-            if (NextAlarm.Index.IndexOf(DrugIndex) == -1)
-            {
-                NextAlarm.Index.Add(DrugIndex);
-                NextAlarm.Volume.Add(Volume);
-            }
+                //同時刻ならば追加、現在設定値より前時刻なら新規に登録
+                if (NextAlarm.Timer != Time)
+                {
+                    NextAlarm.Index.Clear();
+                }
 
-            //アラーム時刻の更新
-            NextAlarm.Timer = Time;
+                //DrugListのIndexを登録
+                if (NextAlarm.Index.IndexOf(DrugIndex) == -1)
+                {
+                    NextAlarm.Index.Add(DrugIndex);
+                    NextAlarm.Volume.Add(Volume);
+                }
+
+                //アラーム時刻の更新
+                NextAlarm.Timer = Time;
+
+            }
 
         }
 
@@ -1741,22 +1734,34 @@ namespace DrugAlarm.Class
         private DateTime CalcMealsTime(DateTime StartTime, DateTime FinishTime, DrugParameter.KindTiming Kind)
         {
 
+            DateTime Return = DateTime.MaxValue;
+
             switch (Kind)
             {
 
                 case DrugParameter.KindTiming.Before:   //食前
-                    return StartTime.AddMinutes((-1) * Setting.MinuteBeforeMeals);
+                    Return = StartTime.AddMinutes((-1) * Setting.MinuteBeforeMeals);
+                    break;
 
                 case DrugParameter.KindTiming.Between:  //食間
-                    return StartTime.AddMinutes(Setting.MinuteBetweenMeals);
+                    Return = StartTime.AddMinutes(Setting.MinuteBetweenMeals);
+                    break;
 
                 case DrugParameter.KindTiming.After:    //食後
-                    return FinishTime.AddMinutes(Setting.MinuteAfterMeals);
+                    Return = FinishTime.AddMinutes(Setting.MinuteAfterMeals);
+                    break;
 
                 default:    //ここにはこない
-                    return StartTime;
+                    Return = StartTime;
+                    break;
 
             }
+
+            //取得した時間を超過している場合は翌日にする
+            if (Return < DateTime.Now)
+                Return = Return.AddDays(1);
+
+            return Return;
 
         }
 

@@ -42,7 +42,7 @@
             </Button>
         </Grid>
 
-        <ListBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" SelectionMode="Single" BorderBrush="Transparent" Background="Transparent" ItemsSource="{Binding DrugList}" SelectedIndex="{Binding SelectedIndex}" >
+        <ListBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" SelectionMode="Single" BorderBrush="Transparent" Background="Transparent" ItemsSource="{Binding DrugList}" SelectedIndex="{Binding SelectedIndex}" VirtualizingPanel.IsVirtualizing="True" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid ToolTip="{Binding Remarks}">
@@ -69,7 +69,7 @@
                             <MouseBinding MouseAction="LeftClick" Command="{Binding DeleteCommand}" />
                         </MenuItem.InputBindings>
                     </MenuItem>
-                    <MenuItem Header="{Binding List_Menu_Drug, Source={StaticResource resources}}" >
+                    <MenuItem Header="{Binding List_Menu_Drug, Source={StaticResource resources}}" IsEnabled="{Binding IsToBeTaken}" >
                         <MenuItem.InputBindings>
                             <MouseBinding MouseAction="LeftClick" Command="{Binding DrugMedicineCommand}" />
                         </MenuItem.InputBindings>
