@@ -11,6 +11,8 @@ namespace DrugAlarm.Form.ViewModel
     class Detail : Common.ViewModelBase, IDisposable
     {
 
+        #region プロパティ
+
         /// <summary>
         /// PropertyChanged()呼び出し
         /// </summary>
@@ -48,6 +50,97 @@ namespace DrugAlarm.Form.ViewModel
             }
         }
 
+        #endregion
+
+        #region コマンド
+
+        /// <summary>
+        /// キャンセルコマンドプロパティ
+        /// </summary>
+        public Common.DelegateCommand CancelCommand
+        {
+            get
+            {
+
+                if (_Model.CancelCommand == null)
+                {
+                    _Model.CancelCommand = new Common.DelegateCommand(
+                        () => { CallPropertyChanged("CallCancel"); },
+                        () => true);
+                }
+
+                return _Model.CancelCommand;
+
+            }
+        }
+
+        /// <summary>
+        /// 初期化
+        /// </summary>
+        public void Initialize()
+        {
+            _Model.Initialize();
+        }
+
+        /// <summary>
+        /// 保存コマンドプロパティ
+        /// </summary>
+        public Common.DelegateCommand SaveCommand
+        {
+            get
+            {
+
+                if (_Model.SaveCommand == null)
+                {
+                    _Model.SaveCommand = new Common.DelegateCommand(
+                        () => { CallPropertyChanged("CallSave"); },
+                        () => true);
+                }
+
+                return _Model.SaveCommand;
+
+            }
+        }
+
+        /// <summary>
+        /// 保存確認メッセージ作成
+        /// </summary>
+        /// <returns>保存確認メッセージ</returns>
+        public string MakeSaveMessage()
+        {
+            return DrugAlarm.Properties.Resources.Detail_SaveMessage.Replace("_DRUG_", _Model.Drug.Name);
+        }
+
+        /// <summary>
+        /// 保存
+        /// </summary>
+        public void Save()
+        {
+            _Model.Save();
+        }
+
+        /// <summary>
+        /// 処方量入力オーバーメッセージ作成
+        /// </summary>
+        /// <returns>処方量入力オーバーメッセージ</returns>
+        public string MakeTotalVolumeOverMessage()
+        {
+            return DrugAlarm.Properties.Resources.Detail_TotalVolumeOverMessage.Replace("_TOTALVOLUME_", MaxTotalVolume.ToString());
+        }
+
+        /// <summary>
+        /// 薬残量お知らせ入力オーバーメッセージ作成
+        /// </summary>
+        /// <returns>処方量入力オーバーメッセージ</returns>
+        public string MakeAlarmVolumeOverMessage()
+        {
+            return DrugAlarm.Properties.Resources.Detail_AlarmVolumeOverMessage.Replace("_ALARMVOLUME_", MaxAlarmVolume.ToString());
+        }
+
+        #endregion
+
+        #region 薬プロパティ
+
         /// <summary>
         /// 薬名プロパティ
         /// </summary>
@@ -66,6 +159,8 @@ namespace DrugAlarm.Form.ViewModel
                 }
             }
         }
+
+        #region 朝食
 
         /// <summary>
         /// 朝食服用FLGプロパティ
@@ -107,6 +202,10 @@ namespace DrugAlarm.Form.ViewModel
             }
         }
 
+        #endregion
+
+        #region 昼食
+
         /// <summary>
         /// 昼食服用FLGプロパティ
         /// </summary>
@@ -146,6 +245,10 @@ namespace DrugAlarm.Form.ViewModel
 
             }
         }
+
+        #endregion
+
+        #region 夕食
 
         /// <summary>
         /// 夕食服用FLGプロパティ
@@ -187,6 +290,27 @@ namespace DrugAlarm.Form.ViewModel
             }
         }
 
+        #endregion
+
+        /// <summary>
+        /// 食事時の服用タイミング
+        /// </summary>
+        /// <remarks>朝昼夕ともに同設定のため、朝のみで判断</remarks>
+        public Class.Parameter.DrugParameter.KindTiming MealTiming
+        {
+            get
+            {
+                return _Model.Drug.Breakfast.Kind;
+            }
+            set
+            {
+                _Model.Drug.Breakfast.Kind = value;
+                CallPropertyChanged();
+            }
+        }
+
+        #region 就寝前
+
         /// <summary>
         /// 就寝前服用FLGプロパティ
         /// </summary>
@@ -219,13 +343,16 @@ namespace DrugAlarm.Form.ViewModel
 
                 if (!_Model.SleepVolumeIndex.Equals(value))
                 {
-
                     _Model.SleepVolumeIndex = value;
                     CallPropertyChanged();
                 }
 
             }
         }
+
+        #endregion
+
+        #region 頓服
 
         /// <summary>
         /// 頓服服用FLGプロパティ
@@ -266,6 +393,10 @@ namespace DrugAlarm.Form.ViewModel
 
             }
         }
+
+        #endregion
+
+        #region 時間指定
 
         /// <summary>
         /// 時間指定服用FLGプロパティ
@@ -445,6 +576,36 @@ namespace DrugAlarm.Form.ViewModel
         }
 
         /// <summary>
+        /// 日リスト再作成
+        /// </summary>
+        private void RemakeDayList()
+        {
+
+            if (!_Model.AppointYearIndex.Equals(-1) && !_Model.AppointMonthIndex.Equals(-1))
+            {
+
+                Int32 Tmp = _Model.AppointDayIndex;
+                _Model.AppointDayIndex = -1;
+
+                AppointDay.Clear();
+                _Model.GetDayList().ForEach(Data => { AppointDay.Add(Data.ToString("00")); });
+
+                if (AppointDay.Count <= Tmp)
+                {
+                    Tmp = AppointDay.Count - 1;
+                }
+
+                AppointDayIndex = Tmp;
+
+            }
+
+        }
+
+        #endregion
+
+        #region 時間毎
+
+        /// <summary>
         /// 時間毎服用FLGプロパティ
         /// </summary>
         public bool IsHourEach
@@ -496,22 +657,7 @@ namespace DrugAlarm.Form.ViewModel
             }
         }
 
-        /// <summary>
-        /// 食事時の服用タイミング
-        /// </summary>
-        /// <remarks>朝昼夕ともに同設定のため、朝のみで判断</remarks>
-        public Class.Parameter.DrugParameter.KindTiming MealTiming
-        {
-            get
-            {
-                return _Model.Drug.Breakfast.Kind;
-            }
-            set
-            {
-                _Model.Drug.Breakfast.Kind = value;
-                CallPropertyChanged();
-            }
-        }
+        #endregion
 
         /// <summary>
         /// 処方量
@@ -591,6 +737,10 @@ namespace DrugAlarm.Form.ViewModel
             }
         }
 
+        #endregion
+
+        #region Const
+
         /// <summary>
         /// 処方量最大値
         /// </summary>
@@ -600,6 +750,8 @@ namespace DrugAlarm.Form.ViewModel
         /// お知らせ錠数最大値
         /// </summary>
         private const Int32 MaxAlarmVolume = 100;
+
+        #endregion
 
         /// <summary>
         /// Detail.Model
@@ -725,115 +877,6 @@ namespace DrugAlarm.Form.ViewModel
             HourEachTime.Clear();
             HourEachTime = null;
 
-        }
-
-        /// <summary>
-        /// キャンセルコマンドプロパティ
-        /// </summary>
-        public Common.DelegateCommand CancelCommand
-        {
-            get
-            {
-
-                if (_Model.CancelCommand == null)
-                {
-                    _Model.CancelCommand = new Common.DelegateCommand(
-                        () => { CallPropertyChanged("CallCancel"); },
-                        () => true);
-                }
-
-                return _Model.CancelCommand;
-
-            }
-        }
-
-        /// <summary>
-        /// 初期化
-        /// </summary>
-        public void Initialize()
-        {
-            _Model.Initialize();
-        }
-
-        /// <summary>
-        /// 保存コマンドプロパティ
-        /// </summary>
-        public Common.DelegateCommand SaveCommand
-        {
-            get
-            {
-
-                if (_Model.SaveCommand == null)
-                {
-                    _Model.SaveCommand = new Common.DelegateCommand(
-                        () => { CallPropertyChanged("CallSave"); },
-                        () => true);
-                }
-
-                return _Model.SaveCommand;
-
-            }
-        }
-
-        /// <summary>
-        /// 保存確認メッセージ作成
-        /// </summary>
-        /// <returns>保存確認メッセージ</returns>
-        public string MakeSaveMessage()
-        {
-            return DrugAlarm.Properties.Resources.Detail_SaveMessage.Replace("_DRUG_", _Model.Drug.Name);
-        }
-
-        /// <summary>
-        /// 保存
-        /// </summary>
-        public void Save()
-        {
-            _Model.Save();
-        }
-
-        /// <summary>
-        /// 日リスト再作成
-        /// </summary>
-        private void RemakeDayList()
-        {
-
-            if (!_Model.AppointYearIndex.Equals(-1) && !_Model.AppointMonthIndex.Equals(-1))
-            {
-
-                Int32 Tmp = _Model.AppointDayIndex;
-                _Model.AppointDayIndex = -1;
-
-                AppointDay.Clear();
-                _Model.GetDayList().ForEach(Data => { AppointDay.Add(Data.ToString("00")); });
-
-                if (AppointDay.Count <= Tmp)
-                {
-                    Tmp = AppointDay.Count - 1;
-                }
-
-                _Model.AppointDayIndex = Tmp;
-
-            }
-
-        }
-
-        /// <summary>
-        /// 処方量入力オーバーメッセージ作成
-        /// </summary>
-        /// <returns>処方量入力オーバーメッセージ</returns>
-        public string MakeTotalVolumeOverMessage()
-        {
-            return DrugAlarm.Properties.Resources.Detail_TotalVolumeOverMessage.Replace("_TOTALVOLUME_", MaxTotalVolume.ToString());
-        }
-
-        /// <summary>
-        /// 薬残量お知らせ入力オーバーメッセージ作成
-        /// </summary>
-        /// <returns>処方量入力オーバーメッセージ</returns>
-        public string MakeAlarmVolumeOverMessage()
-        {
-            return DrugAlarm.Properties.Resources.Detail_AlarmVolumeOverMessage.Replace("_ALARMVOLUME_", MaxAlarmVolume.ToString());
         }
 
     }
