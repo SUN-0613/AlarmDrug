@@ -52,7 +52,7 @@ namespace DrugAlarm.Form.View
             switch (e.PropertyName)
             {
 
-                case "CallOk":      //OKボタンクリック
+                case "CallOK":      //OKボタンクリック
 
                     //残り錠の計算、次回アラーム設定
                     if (_ViewModel.TakeMedicine())

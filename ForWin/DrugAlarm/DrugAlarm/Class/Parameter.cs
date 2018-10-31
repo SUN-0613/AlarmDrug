@@ -1669,6 +1669,14 @@ namespace DrugAlarm.Class
 
             }
 
+#if DEBUG
+
+            NextAlarm.Timer = DateTime.Now;
+            NextAlarm.Index.Add(0);
+            NextAlarm.Volume.Add(3);
+
+#endif
+
         }
 
         /// <summary>

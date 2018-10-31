@@ -33,6 +33,14 @@ namespace DrugAlarm.Form.ViewModel
         }
 
         /// <summary>
+        /// 薬残量計算
+        /// </summary>
+        public bool TakeMedicine()
+        {
+            return _Model.TakeMedicine();
+        }
+
+        /// <summary>
         /// 再通知コマンドプロパティ
         /// </summary>
         public Common.DelegateCommand RealarmCommand
@@ -54,10 +62,14 @@ namespace DrugAlarm.Form.ViewModel
 
         #endregion
 
+        #region プロパティ
+
         /// <summary>
         /// 表示薬一覧プロパティ
         /// </summary>
         public ObservableCollection<string> DrugList { get; set; }
+
+        #endregion
 
         /// <summary>
         /// Alarm.Model
@@ -93,14 +105,6 @@ namespace DrugAlarm.Form.ViewModel
             DrugList.Clear();
             DrugList = null;
 
-        }
-
-        /// <summary>
-        /// 薬残量計算
-        /// </summary>
-        public bool TakeMedicine()
-        {
-            return _Model.TakeMedicine();
         }
 
     }

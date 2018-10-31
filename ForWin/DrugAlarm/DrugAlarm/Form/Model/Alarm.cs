@@ -18,6 +18,14 @@ namespace DrugAlarm.Form.Model
         public Common.DelegateCommand OkCommand;
 
         /// <summary>
+        /// 薬残量計算
+        /// </summary>
+        public bool TakeMedicine()
+        {
+            return _Parameter.TakeMedicine();
+        }
+
+        /// <summary>
         /// 再通知コマンド
         /// </summary>
         public Common.DelegateCommand RealarmCommand;
@@ -36,30 +44,6 @@ namespace DrugAlarm.Form.Model
         /// </summary>
         private List<string> _DrugList;
 
-        #endregion
-
-        /// <summary>
-        /// new
-        /// </summary>
-        public Alarm()
-        {
-
-            _Parameter = (System.Windows.Application.Current as App).Parameter;
-
-        }
-
-        /// <summary>
-        /// 終了処理
-        /// </summary>
-        public void Dispose()
-        {
-            if (_DrugList != null)
-            {
-                _DrugList.Clear();
-                _DrugList = null;
-            }
-        }
-
         /// <summary>
         /// 表示薬一覧取得
         /// </summary>
@@ -72,7 +56,7 @@ namespace DrugAlarm.Form.Model
 
             _DrugList.Clear();
 
-            _Parameter.NextAlarm.Index.ForEach(Index => 
+            _Parameter.NextAlarm.Index.ForEach(Index =>
             {
                 _DrugList.Add(_Parameter.DrugList[Index].Name);
             });
@@ -81,12 +65,26 @@ namespace DrugAlarm.Form.Model
 
         }
 
+        #endregion
+
         /// <summary>
-        /// 薬残量計算
+        /// new
         /// </summary>
-        public bool TakeMedicine()
+        public Alarm()
         {
-            return _Parameter.TakeMedicine();
+            _Parameter = (System.Windows.Application.Current as App).Parameter;
+        }
+
+        /// <summary>
+        /// 終了処理
+        /// </summary>
+        public void Dispose()
+        {
+            if (_DrugList != null)
+            {
+                _DrugList.Clear();
+                _DrugList = null;
+            }
         }
 
     }
