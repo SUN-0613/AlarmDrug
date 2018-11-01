@@ -845,51 +845,6 @@ namespace DrugAlarm.Form.Model
 
         }
 
-        #endregion
-
-        /// <summary>
-        /// new
-        /// </summary>
-        public Setting()
-        {
-
-            _Parameter = (System.Windows.Application.Current as App).Parameter;
-
-            SetParam = new Class.Parameter.SettingParameter()
-            {
-                Breakfast = _Parameter.Setting.Breakfast,
-                Lunch = _Parameter.Setting.Lunch,
-                Dinner = _Parameter.Setting.Dinner,
-                Sleep = _Parameter.Setting.Sleep,
-                MinuteBeforeMeals = _Parameter.Setting.MinuteBeforeMeals,
-                MinuteBetweenMeals = _Parameter.Setting.MinuteBetweenMeals,
-                MinuteAfterMeals = _Parameter.Setting.MinuteAfterMeals,
-                MinuteBeforeSleep = _Parameter.Setting.MinuteBeforeSleep,
-                MinuteReAlarm = _Parameter.Setting.MinuteReAlarm
-            };
-
-        }
-
-        /// <summary>
-        /// 終了処理
-        /// </summary>
-        public void Dispose()
-        {
-
-            if (_Hour != null)
-            {
-                _Hour.Clear();
-                _Hour = null;
-            }
-
-            if (_Minute != null)
-            {
-                _Minute.Clear();
-                _Minute = null;
-            }
-
-        }
-
         /// <summary>
         /// 時Indexの取得
         /// </summary>
@@ -945,6 +900,51 @@ namespace DrugAlarm.Form.Model
             if (Return.Equals(-1)) Return = 0;
 
             return Return;
+
+        }
+
+        #endregion
+
+        /// <summary>
+        /// new
+        /// </summary>
+        public Setting()
+        {
+
+            _Parameter = (System.Windows.Application.Current as App).Parameter;
+
+            SetParam = new Class.Parameter.SettingParameter()
+            {
+                Breakfast = _Parameter.Setting.Breakfast,
+                Lunch = _Parameter.Setting.Lunch,
+                Dinner = _Parameter.Setting.Dinner,
+                Sleep = _Parameter.Setting.Sleep,
+                MinuteBeforeMeals = _Parameter.Setting.MinuteBeforeMeals,
+                //MinuteBetweenMeals = _Parameter.Setting.MinuteBetweenMeals,
+                MinuteAfterMeals = _Parameter.Setting.MinuteAfterMeals,
+                MinuteBeforeSleep = _Parameter.Setting.MinuteBeforeSleep,
+                MinuteReAlarm = _Parameter.Setting.MinuteReAlarm
+            };
+
+        }
+
+        /// <summary>
+        /// 終了処理
+        /// </summary>
+        public void Dispose()
+        {
+
+            if (_Hour != null)
+            {
+                _Hour.Clear();
+                _Hour = null;
+            }
+
+            if (_Minute != null)
+            {
+                _Minute.Clear();
+                _Minute = null;
+            }
 
         }
 

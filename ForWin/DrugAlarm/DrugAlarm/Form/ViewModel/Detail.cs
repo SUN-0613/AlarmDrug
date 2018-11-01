@@ -729,6 +729,10 @@ namespace DrugAlarm.Form.ViewModel
             get { return _Model.Drug.Remarks; }
             set
             {
+
+                //=は全角に置換
+                value = value.Replace("=", "＝");
+
                 if (!_Model.Drug.Remarks.Equals(value))
                 {
                     _Model.Drug.Remarks = value;
