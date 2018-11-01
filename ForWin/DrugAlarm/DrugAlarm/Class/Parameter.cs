@@ -1073,7 +1073,7 @@ namespace DrugAlarm.Class
                                         DrugList[Index].HourEach.IsDrug = true;
                                         DrugList[Index].HourEachTime = method.ConvertToInt32(Values[0], DrugList[Index].HourEachTime);
                                         DrugList[Index].HourEach.Volume = method.ConvertToInt32(Values[1], DrugList[Index].HourEach.Volume);
-                                        DrugList[Index].HourEachNextTime = DateTime.Now.AddHours(DrugList[Index].HourEachTime);
+                                        DrugList[Index].HourEachNextTime = method.ConvertDateTime(Values[2], DateTime.Now.AddHours(DrugList[Index].HourEachTime));
                                         break;
 
                                     case NAME.DRUG.TOTALVOLUME:
@@ -1386,7 +1386,13 @@ namespace DrugAlarm.Class
 
                         if (DrugList[iLoop].HourEach.IsDrug)
                         {
-                            file.WriteLine(MakeParameter(NAME.DRUG.HOUREACH, DrugList[iLoop].HourEachTime, DrugList[iLoop].HourEach.Volume));
+
+                            if (DrugList[iLoop].HourEachNextTime.Equals(DateTime.MaxValue))
+                            {
+                                DrugList[iLoop].HourEachNextTime = DateTime.Now.AddHours(DrugList[iLoop].HourEachTime);
+                            }
+
+                            file.WriteLine(MakeParameter(NAME.DRUG.HOUREACH, DrugList[iLoop].HourEachTime, DrugList[iLoop].HourEach.Volume, DrugList[iLoop].HourEachNextTime));
                         }
 
                         file.WriteLine(MakeParameter(NAME.DRUG.TOTALVOLUME, DrugList[iLoop].TotalVolume));
@@ -1614,8 +1620,9 @@ namespace DrugAlarm.Class
         /// <param name="Parameter">パラメータ名</param>
         /// <param name="HourEach">時間毎</param>
         /// <param name="Volume">錠</param>
+        /// <param name="NextTime">次回アラーム時間</param>
         /// <returns>パラメータ出力値</returns>
-        private string MakeParameter(string Parameter, Int32 HourEach, Int32 Volume)
+        private string MakeParameter(string Parameter, Int32 HourEach, Int32 Volume, DateTime NextTime)
         {
 
             StringBuilder Str = new StringBuilder(Parameter.Length + HourEach.ToString().Length + Volume.ToString().Length + 2);
@@ -1625,10 +1632,9 @@ namespace DrugAlarm.Class
 
                 Str.Clear();
                 Str.Append(Parameter);
-                Str.Append("=");
-                Str.Append(HourEach.ToString());
-                Str.Append(",");
-                Str.Append(Volume.ToString());
+                Str.Append("=").Append(HourEach.ToString());
+                Str.Append(",").Append(Volume.ToString());
+                Str.Append(",").Append(NextTime.ToString("yyyy/MM/dd HH:mm"));
 
                 return Str.ToString();
 
@@ -1679,9 +1685,6 @@ namespace DrugAlarm.Class
 
             //パラメータ更新
             Save();
-
-            //次回アラームの設定
-            SetNextAlarm();
 
             //残量チェック
             for (Int32 iLoop = 0; iLoop < DrugList.Count; iLoop++)
