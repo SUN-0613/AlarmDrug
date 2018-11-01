@@ -30,10 +30,6 @@ namespace DrugAlarm.Class
     public class Parameter : IDisposable
     {
 
-#if DEBUG
-        private bool IsFirst;
-#endif
-
         /// <summary>
         /// パラメータ時間フォーマット
         /// </summary>
@@ -786,11 +782,6 @@ namespace DrugAlarm.Class
         /// </summary>
         public Parameter()
         {
-
-#if DEBUG
-            IsFirst = true;
-
-#endif
 
             IsSetRealarm = false;
 
@@ -1636,6 +1627,13 @@ namespace DrugAlarm.Class
             //次回アラームの設定
             SetNextAlarm();
 
+            //残量チェック
+            for (Int32 iLoop = 0; iLoop < DrugList.Count; iLoop++)
+            {
+                Return = DrugList[iLoop].IsPrescriptionAlarm;
+                if (Return) break;
+            }
+
             return Return;
 
         }
@@ -1742,27 +1740,6 @@ namespace DrugAlarm.Class
                 }
 
             }
-
-#if DEBUG
-
-            if (IsFirst)
-            {
-
-                NextAlarm.Timer = DateTime.Now;
-                NextAlarm.DrugList.Clear();
-
-                NextAlarm.DrugList.Add(new AlarmInfo.Drug
-                {
-                    Index = 0,
-                    Volume = 3,
-                    IsAppoint = false
-                });
-
-                IsFirst = false;
-
-            }
-
-#endif
 
         }
 
@@ -1871,21 +1848,6 @@ namespace DrugAlarm.Class
                 Return = Return.AddDays(1);
 
             return Return;
-
-        }
-
-        /// <summary>
-        /// デバッグ用:薬の追加
-        /// </summary>
-        public void DebugTest_AddDrug(string DrugName)
-        {
-
-            var AddDrug = new DrugParameter
-            {
-                Name = DrugName
-            };
-
-            DrugList.Insert(DrugList.Count, AddDrug);
 
         }
 

@@ -70,8 +70,7 @@ namespace DrugAlarm.Form.Model
             _Parameter.DrugList.ForEach(Drug =>
             {
 
-                if (Drug.IsPrescriptionAlarm
-                    && Drug.TotalVolume <= Drug.PrescriptionAlarmVolume)
+                if (Drug.IsPrescriptionAlarm)
                 {
                     _DrugList.Add(Drug.Name);
                 }
