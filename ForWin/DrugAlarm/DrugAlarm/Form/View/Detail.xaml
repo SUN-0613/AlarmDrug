@@ -8,10 +8,14 @@
         Style="{Binding Mode=OneWay, Source={StaticResource WindowCustomStyle}}"
         Title="{Binding Detail_Title, Source={StaticResource resources}}" 
         WindowStartupLocation="CenterOwner"
+        FocusManager.FocusedElement="{Binding ElementName=Name}"
         >
     <Window.Resources>
         <Convert:EnumToBool x:Key="EnumToBool" />
         <Convert:IsMultiMeal x:Key="IsMultiMeal" />
+        <Style TargetType="TextBox">
+            <EventSetter Event="GotFocus" Handler="TextBox_GotFocus" />
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -36,13 +40,13 @@
                 <ColumnDefinition Width="40" />
             </Grid.ColumnDefinitions>
             <Rectangle Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="3" IsHitTestVisible="False" Fill="{StaticResource TitleColor}" />
-            <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" Foreground="White" Background="Transparent" BorderBrush="Transparent" Content="&lt;" FontSize="15" Style="{StaticResource ButtonCustomStyle}" >
+            <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" Foreground="White" Background="Transparent" BorderBrush="Transparent" Content="&lt;" FontSize="15" Style="{StaticResource ButtonCustomStyle}" IsTabStop="False" >
                 <Button.InputBindings>
                     <MouseBinding MouseAction="LeftClick" Command="{Binding CancelCommand}" />
                 </Button.InputBindings>
             </Button>
             <TextBlock Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="3" IsHitTestVisible="False" Foreground="White" Text="{Binding Detail_Title, Source={StaticResource resources}}" FontWeight="Bold" VerticalAlignment="Center" TextAlignment="Center" />
-            <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" Foreground="White" Background="Transparent" BorderBrush="Transparent" Content="✓" FontSize="15" Style="{StaticResource ButtonCustomStyle}" IsEnabled="{Binding IsEdited}" >
+            <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" Foreground="White" Background="Transparent" BorderBrush="Transparent" Content="✓" FontSize="15" Style="{StaticResource ButtonCustomStyle}" IsEnabled="{Binding IsEdited}" IsTabStop="False" >
                 <Button.InputBindings>
                     <MouseBinding MouseAction="LeftClick" Command="{Binding SaveCommand}" />
                 </Button.InputBindings>
@@ -98,15 +102,15 @@
             <TextBlock Grid.Row="10" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="1" Text="{Binding Detail_Unit, Source={StaticResource resources}}" VerticalAlignment="Center" TextAlignment="Left" />
             <TextBlock Grid.Row="11" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" Text="{Binding Detail_Remarks, Source={StaticResource resources}}" VerticalAlignment="Center" TextAlignment="Left" />
 
-            <CheckBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" Content="{Binding Detail_Morning, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding IsBreakfast}" />
-            <CheckBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" Content="{Binding Detail_Lunch, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding IsLunch}" />
-            <CheckBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="7" Grid.ColumnSpan="1" Content="{Binding Detail_Dinner, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding IsDinner}" />
-            <CheckBox Grid.Row="3" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="3" Content="{Binding Detail_Sleep, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding IsSleep}" />
-            <CheckBox Grid.Row="4" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="3" Content="{Binding Detail_Potions, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding IsToBeTaken}" />
-            <CheckBox Grid.Row="5" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="3" Content="{Binding Detail_DateSpecified, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding IsAppoint}"/>
-            <CheckBox Grid.Row="7" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="3" Content="{Binding Detail_TimeSpecified, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding IsHourEach}"/>
+            <CheckBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" Content="{Binding Detail_Morning, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding IsBreakfast}" TabIndex="1" />
+            <CheckBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" Content="{Binding Detail_Lunch, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding IsLunch}" TabIndex="3" />
+            <CheckBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="7" Grid.ColumnSpan="1" Content="{Binding Detail_Dinner, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding IsDinner}" TabIndex="5" />
+            <CheckBox Grid.Row="3" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="3" Content="{Binding Detail_Sleep, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding IsSleep}" TabIndex="10" />
+            <CheckBox Grid.Row="4" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="3" Content="{Binding Detail_Potions, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding IsToBeTaken}" TabIndex="12" />
+            <CheckBox Grid.Row="5" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="3" Content="{Binding Detail_DateSpecified, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding IsAppoint}" TabIndex="14" />
+            <CheckBox Grid.Row="7" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="3" Content="{Binding Detail_TimeSpecified, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding IsHourEach}" TabIndex="21" />
 
-            <RadioButton Grid.Row="2" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="3" Content="{Binding Detail_BeforeMeals, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" GroupName="Meals" IsChecked="{Binding Path=MealTiming, ConverterParameter=Before, Converter={StaticResource EnumToBool}}" >
+            <RadioButton Grid.Row="2" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="3" Content="{Binding Detail_BeforeMeals, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" GroupName="Meals" IsChecked="{Binding Path=MealTiming, ConverterParameter=Before, Converter={StaticResource EnumToBool}}" TabIndex="7" >
                 <RadioButton.IsEnabled>
                     <MultiBinding Converter="{StaticResource IsMultiMeal}">
                         <Binding Path="IsBreakfast" />
@@ -115,7 +119,7 @@
                     </MultiBinding>
                 </RadioButton.IsEnabled>
             </RadioButton>
-            <RadioButton Grid.Row="2" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="3" Content="{Binding Detail_BetweenMeals, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" GroupName="Meals" IsChecked="{Binding Path=MealTiming, ConverterParameter=Between, Converter={StaticResource EnumToBool}}" >
+            <RadioButton Grid.Row="2" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="3" Content="{Binding Detail_BetweenMeals, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" GroupName="Meals" IsChecked="{Binding Path=MealTiming, ConverterParameter=Between, Converter={StaticResource EnumToBool}}" TabIndex="8" >
                 <RadioButton.IsEnabled>
                     <MultiBinding Converter="{StaticResource IsMultiMeal}">
                         <Binding Path="IsBreakfast" />
@@ -124,7 +128,7 @@
                     </MultiBinding>
                 </RadioButton.IsEnabled>
             </RadioButton>
-            <RadioButton Grid.Row="2" Grid.RowSpan="1" Grid.Column="7" Grid.ColumnSpan="3" Content="{Binding Detail_AfterMeals, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" GroupName="Meals" IsChecked="{Binding Path=MealTiming, ConverterParameter=After, Converter={StaticResource EnumToBool}}" >
+            <RadioButton Grid.Row="2" Grid.RowSpan="1" Grid.Column="7" Grid.ColumnSpan="3" Content="{Binding Detail_AfterMeals, Source={StaticResource resources}}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" GroupName="Meals" IsChecked="{Binding Path=MealTiming, ConverterParameter=After, Converter={StaticResource EnumToBool}}" TabIndex="9" >
                 <RadioButton.IsEnabled>
                     <MultiBinding Converter="{StaticResource IsMultiMeal}">
                         <Binding Path="IsBreakfast" />
@@ -134,61 +138,61 @@
                 </RadioButton.IsEnabled>
             </RadioButton>
 
-            <TextBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="9" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Left" VerticalContentAlignment="Center" AcceptsReturn="False" />
-            <TextBox Grid.Row="9" Grid.RowSpan="1" Grid.Column="3" Grid.ColumnSpan="2" Text="{Binding TotalVolume, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Right" VerticalContentAlignment="Center" AcceptsReturn="False" />
-            <TextBox Grid.Row="10" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" Text="{Binding AlarmVolume, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Right" VerticalContentAlignment="Center" AcceptsReturn="False" />
-            <TextBox Grid.Row="11" Grid.RowSpan="2" Grid.Column="1" Grid.ColumnSpan="9" Text="{Binding Remarks, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Left" AcceptsReturn="True" />
+            <TextBox Name="Name" Grid.Row="0" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="9" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Left" VerticalContentAlignment="Center" AcceptsReturn="False" TabIndex="0" />
+            <TextBox Grid.Row="9" Grid.RowSpan="1" Grid.Column="3" Grid.ColumnSpan="2" Text="{Binding TotalVolume, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Right" VerticalContentAlignment="Center" AcceptsReturn="False" TabIndex="24" />
+            <TextBox Grid.Row="10" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" Text="{Binding AlarmVolume, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Right" VerticalContentAlignment="Center" AcceptsReturn="False" TabIndex="25" />
+            <TextBox Grid.Row="11" Grid.RowSpan="2" Grid.Column="1" Grid.ColumnSpan="9" Text="{Binding Remarks, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Left" AcceptsReturn="True" TabIndex="26" />
 
-            <ComboBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsBreakfast}" ItemsSource="{Binding BreakfastVolume}" SelectedIndex="{Binding BreakfastVolumeIndex}" >
+            <ComboBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsBreakfast}" ItemsSource="{Binding BreakfastVolume}" SelectedIndex="{Binding BreakfastVolumeIndex}" TabIndex="2" >
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding}" TextAlignment="Right" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <ComboBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsLunch}" ItemsSource="{Binding LunchVolume}" SelectedIndex="{Binding LunchVolumeIndex}" >
+            <ComboBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsLunch}" ItemsSource="{Binding LunchVolume}" SelectedIndex="{Binding LunchVolumeIndex}" TabIndex="4" >
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding}" TextAlignment="Right" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <ComboBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="8" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsDinner}" ItemsSource="{Binding DinnerVolume}" SelectedIndex="{Binding DinnerVolumeIndex}" >
+            <ComboBox Grid.Row="1" Grid.RowSpan="1" Grid.Column="8" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsDinner}" ItemsSource="{Binding DinnerVolume}" SelectedIndex="{Binding DinnerVolumeIndex}" TabIndex="6" >
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding}" TextAlignment="Right" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <ComboBox Grid.Row="3" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsSleep}" ItemsSource="{Binding SleepVolume}" SelectedIndex="{Binding SleepVolumeIndex}" >
+            <ComboBox Grid.Row="3" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsSleep}" ItemsSource="{Binding SleepVolume}" SelectedIndex="{Binding SleepVolumeIndex}" TabIndex="11" >
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding}" TextAlignment="Right" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <ComboBox Grid.Row="4" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsToBeTaken}" ItemsSource="{Binding ToBeTakenVolume}" SelectedIndex="{Binding ToBeTakenVolumeIndex}" >
+            <ComboBox Grid.Row="4" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsToBeTaken}" ItemsSource="{Binding ToBeTakenVolume}" SelectedIndex="{Binding ToBeTakenVolumeIndex}" TabIndex="13" >
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding}" TextAlignment="Right" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <ComboBox Grid.Row="5" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding AppointVolume}" SelectedIndex="{Binding AppointVolumeIndex}" >
+            <ComboBox Grid.Row="5" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding AppointVolume}" SelectedIndex="{Binding AppointVolumeIndex}" TabIndex="15" >
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding}" TextAlignment="Right" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <ComboBox Grid.Row="7" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsHourEach}" ItemsSource="{Binding HourEachVolume}" SelectedIndex="{Binding HourEachVolumeIndex}" >
+            <ComboBox Grid.Row="7" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsHourEach}" ItemsSource="{Binding HourEachVolume}" SelectedIndex="{Binding HourEachVolumeIndex}" TabIndex="22" >
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding}" TextAlignment="Right" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <ComboBox Grid.Row="8" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsHourEach}" ItemsSource="{Binding HourEachTime}" SelectedIndex="{Binding HourEachTimeIndex}" >
+            <ComboBox Grid.Row="8" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsHourEach}" ItemsSource="{Binding HourEachTime}" SelectedIndex="{Binding HourEachTimeIndex}" TabIndex="23" >
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding}" TextAlignment="Right" />
@@ -214,35 +218,35 @@
                     <ColumnDefinition Width="10" />
                 </Grid.ColumnDefinitions>
 
-                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding AppointYear}" SelectedIndex="{Binding AppointYearIndex}" >
+                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding AppointYear}" SelectedIndex="{Binding AppointYearIndex}" TabIndex="16" >
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding}" TextAlignment="Right" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding AppointMonth}" SelectedIndex="{Binding AppointMonthIndex}" >
+                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding AppointMonth}" SelectedIndex="{Binding AppointMonthIndex}" TabIndex="17" >
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding}" TextAlignment="Right" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding AppointDay}" SelectedIndex="{Binding AppointDayIndex}" >
+                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding AppointDay}" SelectedIndex="{Binding AppointDayIndex}" TabIndex="18" >
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding}" TextAlignment="Right" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding AppointHour}" SelectedIndex="{Binding AppointHourIndex}" >
+                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding AppointHour}" SelectedIndex="{Binding AppointHourIndex}" TabIndex="19" >
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding}" TextAlignment="Right" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="8" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding AppointMinute}" SelectedIndex="{Binding AppointMinuteIndex}" >
+                <ComboBox Grid.Row="0" Grid.RowSpan="1" Grid.Column="8" Grid.ColumnSpan="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0" IsEnabled="{Binding IsAppoint}" ItemsSource="{Binding AppointMinute}" SelectedIndex="{Binding AppointMinuteIndex}" TabIndex="20" >
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding}" TextAlignment="Right" />

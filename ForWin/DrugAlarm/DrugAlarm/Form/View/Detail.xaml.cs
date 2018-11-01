@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace DrugAlarm.Form.View
 {
@@ -112,6 +113,19 @@ namespace DrugAlarm.Form.View
                     break;
 
             }
+
+        }
+
+        /// <summary>
+        /// TextBox.GotFocus
+        /// </summary>
+        public void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+            if (!(e.OriginalSource is TextBox TBox)) return;
+
+            Action SelectAll = TBox.SelectAll;
+            Dispatcher.BeginInvoke(SelectAll);
 
         }
 
