@@ -10,9 +10,6 @@
         WindowStartupLocation="CenterOwner"
         Topmost="True"
         >
-    <Window.DataContext>
-        <prm:Parameter/>
-    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />

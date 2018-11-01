@@ -47,7 +47,7 @@ namespace DrugAlarm.Form.Model
         public Int32 AlarmMinuteIndex = -1;
 
         /// <summary>
-        /// 食前：分Indexの取得
+        /// 分Indexの取得
         /// </summary>
         /// <returns></returns>
         public Int32 GetAlarmMinuteIndex()
@@ -76,7 +76,7 @@ namespace DrugAlarm.Form.Model
 
             _AlarmMinute.Clear();
 
-            for (Int32 iLoop = 0; iLoop <= 60; iLoop += 5)
+            for (Int32 iLoop = 5; iLoop <= 60; iLoop += 5)
                 _AlarmMinute.Add(iLoop);
 
             return _AlarmMinute;

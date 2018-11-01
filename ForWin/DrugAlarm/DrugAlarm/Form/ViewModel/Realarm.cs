@@ -35,6 +35,33 @@ namespace DrugAlarm.Form.ViewModel
 
         #endregion
 
+        #region コマンド
+
+        /// <summary>
+        /// 保存コマンドプロパティ
+        /// </summary>
+        public Common.DelegateCommand SaveCommand
+        {
+            get
+            {
+
+                if (_Model.SaveCommand == null)
+                {
+                    _Model.SaveCommand = new Common.DelegateCommand(
+                        () => {
+                            _Model.Save();
+                            CallPropertyChanged("CallSave");
+                        },
+                        () => true);
+                }
+
+                return _Model.SaveCommand;
+
+            }
+        }
+
+        #endregion
+
         /// <summary>
         /// Realarm.Model
         /// </summary>
@@ -71,29 +98,6 @@ namespace DrugAlarm.Form.ViewModel
             _Model.Dispose();
             _Model = null;
 
-        }
-
-        /// <summary>
-        /// 保存コマンドプロパティ
-        /// </summary>
-        public Common.DelegateCommand SaveCommand
-        {
-            get
-            {
-
-                if (_Model.SaveCommand == null)
-                {
-                    _Model.SaveCommand = new Common.DelegateCommand(
-                        () => {
-                            _Model.Save();
-                            CallPropertyChanged("CallSave");
-                        },
-                        () => true);
-                }
-
-                return _Model.SaveCommand;
-
-            }
         }
 
     }

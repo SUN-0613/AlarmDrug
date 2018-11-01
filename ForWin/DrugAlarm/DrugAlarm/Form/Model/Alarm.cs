@@ -56,9 +56,9 @@ namespace DrugAlarm.Form.Model
 
             _DrugList.Clear();
 
-            _Parameter.NextAlarm.Index.ForEach(Index =>
+            _Parameter.NextAlarm.DrugList.ForEach(Drug =>
             {
-                _DrugList.Add(_Parameter.DrugList[Index].Name);
+                _DrugList.Add(_Parameter.DrugList[Drug.Index].Name);
             });
 
             return _DrugList;

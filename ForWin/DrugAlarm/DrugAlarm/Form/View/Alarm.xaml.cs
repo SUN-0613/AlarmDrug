@@ -18,6 +18,7 @@ namespace DrugAlarm.Form.View
         /// <summary>
         /// new
         /// </summary>
+        /// <param name="parameter">パラメータ</param>
         public Alarm()
         {
 
