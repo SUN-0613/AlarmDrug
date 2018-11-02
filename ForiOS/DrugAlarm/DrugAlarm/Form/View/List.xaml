@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage x:Class="DrugAlarm.Form.View.List"
+             xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:Common="clr-namespace:DrugAlarm.Common">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40*" />
+                <RowDefinition Height="370*" />
+                <RowDefinition Height="30*" />
+                <RowDefinition Height="10*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="400*" />
+            </Grid.ColumnDefinitions>
+            
+            <Grid Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" >
+                <Grid.RowDefinitions>
+                    <!--40-->
+                    <RowDefinition Height="40*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <!--400-->
+                    <ColumnDefinition Width="340*" />
+                    <ColumnDefinition Width="60*" />
+                </Grid.ColumnDefinitions>
+                
+                <Label Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#FF333333" Text="{Common:Translate List_Title}" TextColor="White" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+                
+            </Grid>
+            
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
