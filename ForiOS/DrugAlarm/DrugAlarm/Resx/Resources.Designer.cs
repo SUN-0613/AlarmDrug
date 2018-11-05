@@ -94,5 +94,95 @@ namespace DrugAlarm.Resx {
                 return ResourceManager.GetString("List_Setting", resourceCulture);
             }
         }
+        
+        internal static string Setting_AfterMeals {
+            get {
+                return ResourceManager.GetString("Setting_AfterMeals", resourceCulture);
+            }
+        }
+        
+        internal static string Setting_AfterMinute {
+            get {
+                return ResourceManager.GetString("Setting_AfterMinute", resourceCulture);
+            }
+        }
+        
+        internal static string Setting_BeforeMeals {
+            get {
+                return ResourceManager.GetString("Setting_BeforeMeals", resourceCulture);
+            }
+        }
+        
+        internal static string Setting_BeforeMinute {
+            get {
+                return ResourceManager.GetString("Setting_BeforeMinute", resourceCulture);
+            }
+        }
+        
+        internal static string Setting_BeforeSleep {
+            get {
+                return ResourceManager.GetString("Setting_BeforeSleep", resourceCulture);
+            }
+        }
+        
+        internal static string Setting_Breakfast {
+            get {
+                return ResourceManager.GetString("Setting_Breakfast", resourceCulture);
+            }
+        }
+        
+        internal static string Setting_CancelMessage {
+            get {
+                return ResourceManager.GetString("Setting_CancelMessage", resourceCulture);
+            }
+        }
+        
+        internal static string Setting_Dinner {
+            get {
+                return ResourceManager.GetString("Setting_Dinner", resourceCulture);
+            }
+        }
+        
+        internal static string Setting_InputAlarm {
+            get {
+                return ResourceManager.GetString("Setting_InputAlarm", resourceCulture);
+            }
+        }
+        
+        internal static string Setting_Lunch {
+            get {
+                return ResourceManager.GetString("Setting_Lunch", resourceCulture);
+            }
+        }
+        
+        internal static string Setting_Realarm {
+            get {
+                return ResourceManager.GetString("Setting_Realarm", resourceCulture);
+            }
+        }
+        
+        internal static string Setting_SaveMessage {
+            get {
+                return ResourceManager.GetString("Setting_SaveMessage", resourceCulture);
+            }
+        }
+        
+        internal static string Setting_Sleep {
+            get {
+                return ResourceManager.GetString("Setting_Sleep", resourceCulture);
+            }
+        }
+        
+        internal static string Setting_Title {
+            get {
+                return ResourceManager.GetString("Setting_Title", resourceCulture);
+            }
+        }
+        
+        internal static string Setting_Unit {
+            get {
+                return ResourceManager.GetString("Setting_Unit", resourceCulture);
+            }
+        }
     }
 }

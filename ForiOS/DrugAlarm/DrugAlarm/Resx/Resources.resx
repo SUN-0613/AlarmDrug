@@ -44,4 +44,64 @@
         <value>設定</value>
         <comment>一覧：設定ボタン</comment>
     </data>
+    <data name="Setting_AfterMeals" xml:space="preserve">
+        <value>食後</value>
+        <comment>設定：食後</comment>
+    </data>
+    <data name="Setting_AfterMinute" xml:space="preserve">
+        <value>分後</value>
+        <comment>設定：分後</comment>
+    </data>
+    <data name="Setting_BeforeMeals" xml:space="preserve">
+        <value>食前</value>
+        <comment>設定：食前</comment>
+    </data>
+    <data name="Setting_BeforeMinute" xml:space="preserve">
+        <value>分前</value>
+        <comment>設定：分前</comment>
+    </data>
+    <data name="Setting_BeforeSleep" xml:space="preserve">
+        <value>就寝前</value>
+        <comment>設定：就寝前</comment>
+    </data>
+    <data name="Setting_Breakfast" xml:space="preserve">
+        <value>朝食時間</value>
+        <comment>設定：朝食時間</comment>
+    </data>
+    <data name="Setting_CancelMessage" xml:space="preserve">
+        <value>編集中のデータを破棄しますか？</value>
+        <comment>設定：キャンセル確認メッセージ</comment>
+    </data>
+    <data name="Setting_Dinner" xml:space="preserve">
+        <value>夕食時間</value>
+        <comment>設定：夕食時間</comment>
+    </data>
+    <data name="Setting_InputAlarm" xml:space="preserve">
+        <value>アラーム設定</value>
+        <comment>設定：アラーム設定</comment>
+    </data>
+    <data name="Setting_Lunch" xml:space="preserve">
+        <value>昼食時間</value>
+        <comment>設定：昼食時間</comment>
+    </data>
+    <data name="Setting_Realarm" xml:space="preserve">
+        <value>再通知</value>
+        <comment>設定：再通知</comment>
+    </data>
+    <data name="Setting_SaveMessage" xml:space="preserve">
+        <value>設定を保存しますか？</value>
+        <comment>設定：保存確認メッセージ</comment>
+    </data>
+    <data name="Setting_Sleep" xml:space="preserve">
+        <value>就寝時間</value>
+        <comment>設定：就寝時間</comment>
+    </data>
+    <data name="Setting_Title" xml:space="preserve">
+        <value>設定</value>
+        <comment>設定：タイトル</comment>
+    </data>
+    <data name="Setting_Unit" xml:space="preserve">
+        <value>錠</value>
+        <comment>設定：錠</comment>
+    </data>
 </root>

@@ -5,9 +5,9 @@ using Xamarin.Forms;
 
 namespace DrugAlarm.Form.View
 {
-    public partial class MyPage : ContentPage
+    public partial class Setting : ContentPage
     {
-        public MyPage()
+        public Setting()
         {
             InitializeComponent();
         }
