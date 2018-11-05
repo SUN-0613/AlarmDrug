@@ -47,9 +47,51 @@ namespace DrugAlarm.Resx {
             }
         }
         
+        internal static string List_AddList {
+            get {
+                return ResourceManager.GetString("List_AddList", resourceCulture);
+            }
+        }
+        
+        internal static string List_DeleteMessage {
+            get {
+                return ResourceManager.GetString("List_DeleteMessage", resourceCulture);
+            }
+        }
+        
+        internal static string List_DrugMedicineMessage {
+            get {
+                return ResourceManager.GetString("List_DrugMedicineMessage", resourceCulture);
+            }
+        }
+        
+        internal static string List_Menu_Delete {
+            get {
+                return ResourceManager.GetString("List_Menu_Delete", resourceCulture);
+            }
+        }
+        
+        internal static string List_Menu_Drug {
+            get {
+                return ResourceManager.GetString("List_Menu_Drug", resourceCulture);
+            }
+        }
+        
+        internal static string List_Menu_Edit {
+            get {
+                return ResourceManager.GetString("List_Menu_Edit", resourceCulture);
+            }
+        }
+        
         internal static string List_Title {
             get {
                 return ResourceManager.GetString("List_Title", resourceCulture);
+            }
+        }
+        
+        internal static string List_Setting {
+            get {
+                return ResourceManager.GetString("List_Setting", resourceCulture);
             }
         }
     }
