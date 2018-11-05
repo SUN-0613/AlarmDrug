@@ -26,6 +26,7 @@
     <Compile Remove="Common\EmptyClass.cs" />
     <Compile Remove="Form\View\MyPage.xaml.cs" />
     <Compile Remove="Form\View\List.cs" />
+    <Compile Remove="Converter\MultiBinding.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Form\View\MyPage.xaml" />

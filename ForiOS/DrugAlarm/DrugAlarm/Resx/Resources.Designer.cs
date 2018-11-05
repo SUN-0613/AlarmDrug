@@ -47,6 +47,180 @@ namespace DrugAlarm.Resx {
             }
         }
         
+        internal static string Alarm_Button_OK {
+            get {
+                return ResourceManager.GetString("Alarm_Button_OK", resourceCulture);
+            }
+        }
+        
+        internal static string Alarm_Button_Realarm {
+            get {
+                return ResourceManager.GetString("Alarm_Button_Realarm", resourceCulture);
+            }
+        }
+        
+        internal static string Alarm_Title {
+            get {
+                return ResourceManager.GetString("Alarm_Title", resourceCulture);
+            }
+        }
+        
+        internal static string App_MutexMessage {
+            get {
+                return ResourceManager.GetString("App_MutexMessage", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_AfterMeals {
+            get {
+                return ResourceManager.GetString("Detail_AfterMeals", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_AlarmVolumeOverMessage {
+            get {
+                return ResourceManager.GetString("Detail_AlarmVolumeOverMessage", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_BeforeMeals {
+            get {
+                return ResourceManager.GetString("Detail_BeforeMeals", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_BetweenMeals {
+            get {
+                return ResourceManager.GetString("Detail_BetweenMeals", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_CancelMessage {
+            get {
+                return ResourceManager.GetString("Detail_CancelMessage", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_DateSpecified {
+            get {
+                return ResourceManager.GetString("Detail_DateSpecified", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_Dinner {
+            get {
+                return ResourceManager.GetString("Detail_Dinner", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_Lunch {
+            get {
+                return ResourceManager.GetString("Detail_Lunch", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_Morning {
+            get {
+                return ResourceManager.GetString("Detail_Morning", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_Name {
+            get {
+                return ResourceManager.GetString("Detail_Name", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_Potions {
+            get {
+                return ResourceManager.GetString("Detail_Potions", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_Prescript {
+            get {
+                return ResourceManager.GetString("Detail_Prescript", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_Remaining {
+            get {
+                return ResourceManager.GetString("Detail_Remaining", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_Remarks {
+            get {
+                return ResourceManager.GetString("Detail_Remarks", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_SaveMessage {
+            get {
+                return ResourceManager.GetString("Detail_SaveMessage", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_Sleep {
+            get {
+                return ResourceManager.GetString("Detail_Sleep", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_Time {
+            get {
+                return ResourceManager.GetString("Detail_Time", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_TimeSpecified {
+            get {
+                return ResourceManager.GetString("Detail_TimeSpecified", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_Timing {
+            get {
+                return ResourceManager.GetString("Detail_Timing", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_Title {
+            get {
+                return ResourceManager.GetString("Detail_Title", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_TotalVolumeOverMessage {
+            get {
+                return ResourceManager.GetString("Detail_TotalVolumeOverMessage", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_Unit {
+            get {
+                return ResourceManager.GetString("Detail_Unit", resourceCulture);
+            }
+        }
+        
+        internal static string Detail_Volume {
+            get {
+                return ResourceManager.GetString("Detail_Volume", resourceCulture);
+            }
+        }
+        
+        internal static string FolderDialog_Title {
+            get {
+                return ResourceManager.GetString("FolderDialog_Title", resourceCulture);
+            }
+        }
+        
+        internal static string Information_Title {
+            get {
+                return ResourceManager.GetString("Information_Title", resourceCulture);
+            }
+        }
+        
         internal static string List_AddList {
             get {
                 return ResourceManager.GetString("List_AddList", resourceCulture);
@@ -83,15 +257,111 @@ namespace DrugAlarm.Resx {
             }
         }
         
+        internal static string List_Setting {
+            get {
+                return ResourceManager.GetString("List_Setting", resourceCulture);
+            }
+        }
+        
         internal static string List_Title {
             get {
                 return ResourceManager.GetString("List_Title", resourceCulture);
             }
         }
         
-        internal static string List_Setting {
+        internal static string Menu_Exit {
             get {
-                return ResourceManager.GetString("List_Setting", resourceCulture);
+                return ResourceManager.GetString("Menu_Exit", resourceCulture);
+            }
+        }
+        
+        internal static string Menu_ShowList {
+            get {
+                return ResourceManager.GetString("Menu_ShowList", resourceCulture);
+            }
+        }
+        
+        internal static string Parameter_Timing_After {
+            get {
+                return ResourceManager.GetString("Parameter_Timing_After", resourceCulture);
+            }
+        }
+        
+        internal static string Parameter_Timing_Always {
+            get {
+                return ResourceManager.GetString("Parameter_Timing_Always", resourceCulture);
+            }
+        }
+        
+        internal static string Parameter_Timing_Appoint {
+            get {
+                return ResourceManager.GetString("Parameter_Timing_Appoint", resourceCulture);
+            }
+        }
+        
+        internal static string Parameter_Timing_Before {
+            get {
+                return ResourceManager.GetString("Parameter_Timing_Before", resourceCulture);
+            }
+        }
+        
+        internal static string Parameter_Timing_Between {
+            get {
+                return ResourceManager.GetString("Parameter_Timing_Between", resourceCulture);
+            }
+        }
+        
+        internal static string Parameter_Timing_Breakfast {
+            get {
+                return ResourceManager.GetString("Parameter_Timing_Breakfast", resourceCulture);
+            }
+        }
+        
+        internal static string Parameter_Timing_Dinner {
+            get {
+                return ResourceManager.GetString("Parameter_Timing_Dinner", resourceCulture);
+            }
+        }
+        
+        internal static string Parameter_Timing_Each {
+            get {
+                return ResourceManager.GetString("Parameter_Timing_Each", resourceCulture);
+            }
+        }
+        
+        internal static string Parameter_Timing_Lunch {
+            get {
+                return ResourceManager.GetString("Parameter_Timing_Lunch", resourceCulture);
+            }
+        }
+        
+        internal static string Parameter_Timing_Sleep {
+            get {
+                return ResourceManager.GetString("Parameter_Timing_Sleep", resourceCulture);
+            }
+        }
+        
+        internal static string Parameter_Timing_ToBeTaken {
+            get {
+                return ResourceManager.GetString("Parameter_Timing_ToBeTaken", resourceCulture);
+            }
+        }
+        
+        internal static string Realarm_Button_OK {
+            get {
+                return ResourceManager.GetString("Realarm_Button_OK", resourceCulture);
+            }
+        }
+        
+        internal static string Realarm_Message {
+            get {
+                return ResourceManager.GetString("Realarm_Message", resourceCulture);
+            }
+        }
+        
+        internal static string Realarm_Title {
+            get {
+                return ResourceManager.GetString("Realarm_Title", resourceCulture);
             }
         }
         
