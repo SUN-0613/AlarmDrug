@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage x:Class="DrugAlarm.Form.View.Information"
+             xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" >
+    <ContentPage.Content>
+        <Grid>
+                        <Grid.RowDefinitions>
+                <RowDefinition Height="40*" />
+                <RowDefinition Height="370*" />
+                <RowDefinition Height="30*" />
+                <RowDefinition Height="10*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="400*" />
+            </Grid.ColumnDefinitions>
+            
+            <Grid Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" >
+                <Grid.RowDefinitions>
+                    <!--40-->
+                    <RowDefinition Height="40*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <!--400-->
+                    <ColumnDefinition Width="340*" />
+                    <ColumnDefinition Width="60*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#FF333333" TextColor="White" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="{Common:Translate Information_Title}" />
+                <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" BackgroundColor="Transparent" TextColor="White" VerticalOptions="Center" HorizontalOptions="Center" BorderColor="Transparent" BorderWidth="0" Text="✓" Command="{Binding OkCommand}" />
+            </Grid>
+            
+            <ListView Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" SelectionMode="Single" ItemsSource="{Binding DrugList}" >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <Label Grid.Column="0" Text="{Binding }" />
+                                </Grid.ColumnDefinitions>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
