@@ -1,12 +1,26 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using DrugAlarm.Class;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace DrugAlarm
 {
+
+    /// <summary>
+    /// Appクラス
+    /// </summary>
     public partial class App : Application
     {
+
+        /// <summary>
+        /// パラメータプロパティ
+        /// </summary>
+        /// <value>The parameter.</value>
+        public Parameter Parameter { get; set; }
+
+        /// <summary>
+        /// new
+        /// </summary>
         public App()
         {
             InitializeComponent();
@@ -19,22 +33,34 @@ namespace DrugAlarm
                 DependencyService.Get<Common.ILocalize>().SetLocal(CultureInfo);
             }
 
+            Parameter = new Parameter();
+
             MainPage = new DrugAlarm.Form.View.List();
         }
 
+        /// <summary>
+        /// Ons the start.
+        /// </summary>
         protected override void OnStart()
         {
             // Handle when your app starts
         }
 
+        /// <summary>
+        /// Ons the sleep.
+        /// </summary>
         protected override void OnSleep()
         {
             // Handle when your app sleeps
         }
 
+        /// <summary>
+        /// Ons the resume.
+        /// </summary>
         protected override void OnResume()
         {
             // Handle when your app resumes
         }
+
     }
 }
