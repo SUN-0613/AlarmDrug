@@ -13,7 +13,28 @@ namespace DrugAlarm.Class
         /// <summary>
         /// パラメータ時間フォーマット
         /// </summary>
-        private const string TimeFormat = "HH:mm";
+        public const string TimeFormat = "HH:mm";
+
+        /// <summary>
+        /// パラメータ保存用指定日時フォーマット
+        /// </summary>
+        public const string DateTimeFormat = "yyyy/MM/dd HH:mm";
+
+        /// <summary>
+        /// ユーザデータ保存場所
+        /// </summary>
+        public const string FullPath = "ParameterFullPath";
+
+        /// <summary>
+        /// パラメータファイル名
+        /// パスなし
+        /// </summary>
+        public const string FileName = "DrugAlarm.Prm";
+
+        /// <summary>
+        /// パラメータファイル拡張子
+        /// </summary>
+        public const string FileExtension = ".Prm";
 
         /// <summary>
         /// 範囲時間

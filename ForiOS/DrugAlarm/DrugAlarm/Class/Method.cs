@@ -63,7 +63,7 @@ namespace DrugAlarm.Class
         /// <returns>The date time.</returns>
         /// <param name="Value">変換文字列</param>
         /// <param name="DefaultValue">デフォルト値</param>
-        public DateTime ConvertDateTime(string Value, DateTime DefaultValue)
+        public DateTime ConvertToDateTime(string Value, DateTime DefaultValue)
         {
             return DateTime.TryParse(Value.Split(':').Length != 2 ? Value + ":00" : Value, out DateTime Return) ? Return : DefaultValue;
         }
@@ -75,7 +75,7 @@ namespace DrugAlarm.Class
         /// </summary>
         /// <returns>変換後文字列</returns>
         /// <param name="Value">対象文字列</param>
-        public string ConvertCRLF(string Value)
+        public string ConvertToCRLF(string Value)
         {
 
             const string CRLF = "\r\n";

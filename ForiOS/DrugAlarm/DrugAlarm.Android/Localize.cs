@@ -43,6 +43,11 @@ namespace DrugAlarm.Droid
             }
             catch (CultureNotFoundException ex1)
             {
+
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine(ex1.Message);
+#endif
+
                 try
                 {
                     string FallBack = ToDotNetFallbackLanguage(new PlatformCulture(NetLang));
@@ -50,6 +55,9 @@ namespace DrugAlarm.Droid
                 }
                 catch (CultureNotFoundException ex2)
                 {
+#if DEBUG
+                    System.Diagnostics.Debug.WriteLine(ex2.Message);
+#endif
                     CInfo = new System.Globalization.CultureInfo("ja");
                 }
             }
