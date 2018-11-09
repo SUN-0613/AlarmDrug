@@ -11,6 +11,11 @@ namespace DrugAlarm.Class
     {
 
         /// <summary>
+        /// 表示ページ
+        /// </summary>
+        private Page _MainPage = (Xamarin.Forms.Application.Current as App).MainPage;
+
+        /// <summary>
         /// パラメータ
         /// </summary>
         private Parameter _Parameter = (Xamarin.Forms.Application.Current as App).Parameter;
@@ -52,6 +57,7 @@ namespace DrugAlarm.Class
                         {
 
                             //アラーム表示
+                            _MainPage.Navigation.PushAsync(new Form.View.Alarm());
 
                         }
 

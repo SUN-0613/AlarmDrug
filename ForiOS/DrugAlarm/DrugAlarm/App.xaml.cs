@@ -19,6 +19,11 @@ namespace DrugAlarm
         public Parameter Parameter { get; set; }
 
         /// <summary>
+        /// タイマ処理
+        /// </summary>
+        private AlarmTimer _Timer;
+
+        /// <summary>
         /// new
         /// </summary>
         public App()
@@ -33,9 +38,15 @@ namespace DrugAlarm
                 DependencyService.Get<Common.ILocalize>().SetLocal(CultureInfo);
             }
 
+            //パラメータ処理
             Parameter = new Parameter();
 
-            MainPage = new DrugAlarm.Form.View.List();
+            //タイマ処理
+            _Timer = new AlarmTimer();
+
+            //画面表示
+            MainPage = new NavigationPage(new DrugAlarm.Form.View.List());
+
         }
 
         /// <summary>
