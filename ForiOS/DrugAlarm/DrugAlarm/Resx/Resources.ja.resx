@@ -120,6 +120,18 @@
     <value>処方量</value>
     <comment>詳細：処方量</comment>
   </data>
+  <data name="DisplayAlert_No" xml:space="preserve">
+    <value>いいえ</value>
+    <comment>メッセージ：No</comment>
+  </data>
+  <data name="DisplayAlert_Yes" xml:space="preserve">
+    <value>はい</value>
+    <comment>メッセージ：Yes</comment>
+  </data>
+  <data name="DisplayAlert_OK" xml:space="preserve">
+    <value>OK</value>
+    <comment>メッセージ：OK</comment>
+  </data>
   <data name="FolderDialog_Title" xml:space="preserve">
     <value>パラメータファイルを保存するフォルダを指定してください</value>
     <comment>フォルダ選択ダイアログ：タイトル</comment>

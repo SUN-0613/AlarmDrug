@@ -7,7 +7,7 @@ namespace DrugAlarm.Form.View
 {
     public partial class Detail : ContentPage
     {
-        public Detail()
+        public Detail(Int32 Index)
         {
             InitializeComponent();
         }

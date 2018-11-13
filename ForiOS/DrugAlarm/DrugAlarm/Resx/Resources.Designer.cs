@@ -209,6 +209,24 @@ namespace DrugAlarm.Resx {
             }
         }
         
+        internal static string DisplayAlert_No {
+            get {
+                return ResourceManager.GetString("DisplayAlert_No", resourceCulture);
+            }
+        }
+        
+        internal static string DisplayAlert_Yes {
+            get {
+                return ResourceManager.GetString("DisplayAlert_Yes", resourceCulture);
+            }
+        }
+        
+        internal static string DisplayAlert_OK {
+            get {
+                return ResourceManager.GetString("DisplayAlert_OK", resourceCulture);
+            }
+        }
+        
         internal static string FolderDialog_Title {
             get {
                 return ResourceManager.GetString("FolderDialog_Title", resourceCulture);

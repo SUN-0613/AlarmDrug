@@ -12,7 +12,7 @@ public class NotificationService : INotificationService
     /// <summary>
     /// 通知ID
     /// </summary>
-    private Int32 _id = 0;
+    //private Int32 _id = 0;
 
     /// <summary>
     /// 登録
