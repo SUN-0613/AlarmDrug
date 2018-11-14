@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace DrugAlarm.Class
 {
@@ -69,6 +71,80 @@ namespace DrugAlarm.Class
         }
 
         /// <summary>
+        /// 数値を日付型に変換
+        /// 変換できない場合はデフォルト値を戻す
+        /// </summary>
+        /// <returns>The date time.</returns>
+        /// <param name="Year">年</param>
+        /// <param name="Month">月</param>
+        /// <param name="Day">日</param>
+        /// <param name="Hour">時</param>
+        /// <param name="Minute">分</param>
+        /// <param name="Second">秒</param>
+        /// <param name="DefaultValue">デフォルト値</param>
+        public DateTime ConvertToDateTime(Int32 Year, Int32 Month, Int32 Day, Int32 Hour, Int32 Minute, Int32 Second, DateTime DefaultValue)
+        {
+
+            StringBuilder Str = new StringBuilder();
+
+            Str.Clear().Append(Year.ToString("0000")).Append("/").Append(Month.ToString()).Append("/").Append(Day.ToString());
+            Str.Append(" ").Append(Hour.ToString("00")).Append(":").Append(Minute.ToString("00")).Append(":").Append(Second.ToString("00"));
+
+            DateTime Return = ConvertToDateTime(Str.ToString(), DefaultValue);
+
+            Str.Clear();
+            Str = null;
+
+            return Return;
+
+        }
+
+        /// <summary>
+        /// 数値を日付型に変換
+        /// 変換できない場合はデフォルト値を戻す
+        /// </summary>
+        /// <returns>The date time.</returns>
+        /// <param name="Year">年</param>
+        /// <param name="Month">月</param>
+        /// <param name="Day">日</param>
+        /// <param name="Hour">時</param>
+        /// <param name="Minute">分</param>
+        /// <param name="DefaultValue">デフォルト値</param>
+        public DateTime ConvertToDateTime(Int32 Year, Int32 Month, Int32 Day, Int32 Hour, Int32 Minute, DateTime DefaultValue)
+        {
+            return ConvertToDateTime(Year, Month, Day, Hour, Minute, 0, DefaultValue);
+        }
+
+        /// <summary>
+        /// 数値を日付型に変換
+        /// 変換できない場合はデフォルト値を戻す
+        /// </summary>
+        /// <returns>The date time.</returns>
+        /// <param name="Year">年</param>
+        /// <param name="Month">月</param>
+        /// <param name="Day">日</param>
+        /// <param name="Hour">時</param>
+        /// <param name="DefaultValue">デフォルト値</param>
+        public DateTime ConvertToDateTime(Int32 Year, Int32 Month, Int32 Day, Int32 Hour, DateTime DefaultValue)
+        {
+            return ConvertToDateTime(Year, Month, Day, Hour, 0, 0, DefaultValue);
+        }
+
+        /// <summary>
+        /// 数値を日付型に変換
+        /// 変換できない場合はデフォルト値を戻す
+        /// </summary>
+        /// <returns>The date time.</returns>
+        /// <param name="Year">年</param>
+        /// <param name="Month">月</param>
+        /// <param name="Day">日</param>
+        /// <param name="DefaultValue">デフォルト値</param>
+        public DateTime ConvertToDateTime(Int32 Year, Int32 Month, Int32 Day, DateTime DefaultValue)
+        {
+            return ConvertToDateTime(Year, Month, Day, 0, 0, 0, DefaultValue);
+        }
+
+        /// <summary>
         /// 改行変換
         /// CRLF → "_CRLF_"
         /// または "_CRLF_" → CRLF
@@ -100,6 +176,39 @@ namespace DrugAlarm.Class
 
             return Time1 + TSpan;
 
+        }
+
+        /// <summary>
+        /// Listよりvalue値となるIndexを取得
+        /// 該当値がListより見つからない場合、Defaultを戻す
+        /// </summary>
+        /// <returns>該当Index</returns>
+        /// <param name="list">検索対象List</param>
+        /// <param name="value">検索対象値</param>
+        /// <param name="defaultValue">デフォルト値</param>
+        public Int32 GetDefaultIndex(List<Int32> list, Int32 value, Int32 defaultValue = 0)
+        {
+
+            Int32 Return = list.IndexOf(value);
+
+            if (Return.Equals(-1))
+            {
+                Return = defaultValue;
+            }
+
+            return Return;
+
+        }
+
+        /// <summary>
+        /// Listが作成されていて、Indexがちゃんと設定されているか
+        /// </summary>
+        /// <returns><c>true</c>OK<c>false</c>NG</returns>
+        /// <param name="list">対象List</param>
+        /// <param name="Index">設定されているIndex</param>
+        public bool IsOkListStatus(List<Int32> list, Int32 Index)
+        {
+            return (list == null) && (-1 < Index && Index < list.Count);
         }
 
     }
