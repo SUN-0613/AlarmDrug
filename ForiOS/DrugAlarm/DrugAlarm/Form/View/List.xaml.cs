@@ -78,7 +78,7 @@ namespace DrugAlarm.Form.View
                     break;
 
                 case "CallDeleteDrug":
-                    if (DisplayAlert(Resx.Resources.List_Menu_Delete, _ViewModel.MakeDeleteDrugMessage(), Resx.Resources.DisplayAlert_Yes, Resx.Resources.DisplayAlert_No).Result)
+                    if (DisplayAlert(Resx.Resources.List_Title, _ViewModel.MakeDeleteDrugMessage(), Resx.Resources.DisplayAlert_Yes, Resx.Resources.DisplayAlert_No).Result)
                     {
                         _ViewModel.DeleteDrug();
                     }
@@ -87,7 +87,7 @@ namespace DrugAlarm.Form.View
                 case "CallDrugMedicine":
                     if (_ViewModel.DrugMedicine())
                     {
-                        DisplayAlert(Resx.Resources.List_Menu_Drug, _ViewModel.MakeDeleteDrugMessage(), Resx.Resources.DisplayAlert_OK);
+                        DisplayAlert(Resx.Resources.List_Title, _ViewModel.MakeDeleteDrugMessage(), Resx.Resources.DisplayAlert_OK);
                     }
                     break;
 

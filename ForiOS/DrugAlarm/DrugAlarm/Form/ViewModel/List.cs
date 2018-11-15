@@ -192,8 +192,11 @@ namespace DrugAlarm.Form.ViewModel
                 get { return _Model.DrugList[_Index].Name; }
                 set
                 {
-                    _Model.DrugList[_Index].Name = value;
-                    CallPropertyChanged();
+                    if (!_Model.DrugList[_Index].Name.Equals(value))
+                    {
+                        _Model.DrugList[_Index].Name = value;
+                        CallPropertyChanged();
+                    }
                 }
             }
 
@@ -206,8 +209,11 @@ namespace DrugAlarm.Form.ViewModel
                 get { return _Model.DrugList[_Index].Colon; }
                 set
                 {
-                    _Model.DrugList[_Index].Colon = value;
-                    CallPropertyChanged();
+                    if (!_Model.DrugList[_Index].Colon.Equals(value))
+                    {
+                        _Model.DrugList[_Index].Colon = value;
+                        CallPropertyChanged();
+                    }
                 }
             }
 
@@ -220,8 +226,11 @@ namespace DrugAlarm.Form.ViewModel
                 get { return _Model.DrugList[_Index].DrugTiming; }
                 set
                 {
-                    _Model.DrugList[_Index].DrugTiming = value;
-                    CallPropertyChanged();
+                    if (!_Model.DrugList[_Index].DrugTiming.Equals(value))
+                    {
+                        _Model.DrugList[_Index].DrugTiming = value;
+                        CallPropertyChanged();
+                    }
                 }
             }
 
@@ -234,8 +243,11 @@ namespace DrugAlarm.Form.ViewModel
                 get { return _Model.DrugList[_Index].Remarks; }
                 set
                 {
-                    _Model.DrugList[_Index].Remarks = value;
-                    CallPropertyChanged();
+                    if (!_Model.DrugList[_Index].Remarks.Equals(value))
+                    {
+                        _Model.DrugList[_Index].Remarks = value;
+                        CallPropertyChanged();
+                    }
                 }
             }
 
@@ -248,8 +260,11 @@ namespace DrugAlarm.Form.ViewModel
                 get { return _Model.DrugList[_Index].IsPrescriptionAlarm; }
                 set
                 {
-                    _Model.DrugList[_Index].IsPrescriptionAlarm = value;
-                    CallPropertyChanged();
+                    if (!_Model.DrugList[_Index].IsPrescriptionAlarm.Equals(value))
+                    {
+                        _Model.DrugList[_Index].IsPrescriptionAlarm = value;
+                        CallPropertyChanged();
+                    }
                 }
             }
 
@@ -262,8 +277,11 @@ namespace DrugAlarm.Form.ViewModel
                 get { return _Model.DrugList[_Index].IsToBeTaken; }
                 set
                 {
-                    _Model.DrugList[_Index].IsToBeTaken = value;
-                    CallPropertyChanged();
+                    if (!_Model.DrugList[_Index].IsToBeTaken.Equals(value))
+                    {
+                        _Model.DrugList[_Index].IsToBeTaken = value;
+                        CallPropertyChanged();
+                    }
                 }
             }
 
