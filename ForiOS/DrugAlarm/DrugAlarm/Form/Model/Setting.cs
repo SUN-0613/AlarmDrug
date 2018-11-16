@@ -458,7 +458,7 @@ namespace DrugAlarm.Form.Model
         /// 時Listの作成
         /// </summary>
         /// <returns>The hour list.</returns>
-        private List<Int32> GetHourList()
+        public List<Int32> GetHourList()
         {
 
             if (_Hour == null)
@@ -482,7 +482,7 @@ namespace DrugAlarm.Form.Model
         /// 分Listの作成
         /// </summary>
         /// <returns>The minute list.</returns>
-        private List<Int32> GetMinuteList()
+        public List<Int32> GetMinuteList()
         {
             if (_Minute == null)
             {
@@ -505,7 +505,7 @@ namespace DrugAlarm.Form.Model
         /// アラーム用分Listの作成
         /// </summary>
         /// <returns>The alarm minute list.</returns>
-        private List<Int32> GetAlarmMinuteList()
+        public List<Int32> GetAlarmMinuteList()
         {
 
             if (_AlarmMinute == null)
