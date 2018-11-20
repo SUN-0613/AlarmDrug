@@ -64,6 +64,36 @@ namespace DrugAlarm.Form.View
 
             switch (e.PropertyName)
             {
+
+                case "CallCancel":
+
+                    if (_ViewModel.IsEdited)
+                    {
+
+                        if (DisplayAlert(Resx.Resources.Setting_Title, Resx.Resources.Setting_CancelMessage, Resx.Resources.DisplayAlert_Yes, Resx.Resources.DisplayAlert_No).Result)
+                        {
+                            _ViewModel.Initialize();
+                            _MainPage.Navigation.PopAsync(true);
+                        }
+
+                    }
+                    else
+                    {
+                        _MainPage.Navigation.PopAsync(true);
+                    }
+
+                    break;
+
+                case "CallSave":
+
+                    if (DisplayAlert(Resx.Resources.Setting_Title, Resx.Resources.Setting_SaveMessage, Resx.Resources.DisplayAlert_Yes, Resx.Resources.DisplayAlert_No).Result)
+                    {
+                        _ViewModel.Save();
+                        _MainPage.Navigation.PopAsync(true);
+                    }
+
+                    break;
+
                 default:
                     break;
             }

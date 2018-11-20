@@ -454,7 +454,30 @@ namespace DrugAlarm.Form.ViewModel
 
             });
 
-            BreakfastStartHourIndex = _Model.GetBre
+            BreakfastStartHourIndex = _Model.GetBreakfastStartHourIndex();
+            BreakfastStartMinuteIndex = _Model.GetBreakfastStartMinuteIndex();
+            BreakfastFinishHourIndex = _Model.GetBreakfastFinishHourIndex();
+            BreakfastFinishMinuteIndex = _Model.GetBreakfastFinishMinuteIndex();
+
+            LunchStartHourIndex = _Model.GetLunchStartHourIndex();
+            LunchStartMinuteIndex = _Model.GetLunchStartMinuteIndex();
+            LunchFinishHourIndex = _Model.GetLunchFinishHourIndex();
+            LunchFinishMinuteIndex = _Model.GetLunchFinishMinuteIndex();
+
+            DinnerStartHourIndex = _Model.GetDinnerStartHourIndex();
+            DinnerStartMinuteIndex = _Model.GetDinnerStartMinuteIndex();
+            DinnerFinishHourIndex = _Model.GetDinnerFinishHourIndex();
+            DinnerFinishMinuteIndex = _Model.GetDinnerFinishMinuteIndex();
+
+            SleepHourIndex = _Model.GetSleepHourIndex();
+            SleepMinuteIndex = _Model.GetSleepMinuteIndex();
+
+            BeforeMealMinuteIndex = _Model.GetBeforeMealMinuteIndex();
+            AfterMealMinuteIndex = _Model.GetAfterMealMinuteIndex();
+            BeforeSleepMinuteIndex = _Model.GetBeforeSleepMinuteIndex();
+            RealarmMinuteIndex = _Model.GetRealarmMinuteIndex();
+
+            IsEdited = false;
 
         }
 
@@ -468,6 +491,52 @@ namespace DrugAlarm.Form.ViewModel
         /// <see cref="T:DrugAlarm.Form.ViewModel.Setting"/> was occupying.</remarks>
         public void Dispose()
         {
+
+            BreakfastStartHour.Clear();
+            BreakfastStartMinute.Clear();
+            BreakfastFinishHour.Clear();
+            BreakfastFinishMinute.Clear();
+
+            LunchStartHour.Clear();
+            LunchStartMinute.Clear();
+            LunchFinishHour.Clear();
+            LunchFinishMinute.Clear();
+
+            DinnerStartHour.Clear();
+            DinnerStartMinute.Clear();
+            DinnerFinishHour.Clear();
+            DinnerFinishMinute.Clear();
+
+            SleepHour.Clear();
+            SleepMinute.Clear();
+
+            BeforeMealMinute.Clear();
+            AfterMealMinute.Clear();
+            BeforeSleepMinute.Clear();
+            RealarmMinute.Clear();
+
+            BreakfastStartHour = null;
+            BreakfastStartMinute = null;
+            BreakfastFinishHour = null;
+            BreakfastFinishMinute = null;
+
+            LunchStartHour = null;
+            LunchStartMinute = null;
+            LunchFinishHour = null;
+            LunchFinishMinute = null;
+
+            DinnerStartHour = null;
+            DinnerStartMinute = null;
+            DinnerFinishHour = null;
+            DinnerFinishMinute = null;
+
+            SleepHour = null;
+            SleepMinute = null;
+
+            BeforeMealMinute = null;
+            AfterMealMinute = null;
+            BeforeSleepMinute = null;
+            RealarmMinute = null;
 
             _Model.Dispose();
             _Model = null;
