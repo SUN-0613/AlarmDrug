@@ -12,11 +12,6 @@ namespace DrugAlarm.Form.View
     {
 
         /// <summary>
-        /// 表示ページ
-        /// </summary>
-        private Page _MainPage = (Xamarin.Forms.Application.Current as App).MainPage;
-
-        /// <summary>
         /// Setting.ViewModel
         /// </summary>
         private ViewModel.Setting _ViewModel;
@@ -73,13 +68,13 @@ namespace DrugAlarm.Form.View
                         if (DisplayAlert(Resx.Resources.Setting_Title, Resx.Resources.Setting_CancelMessage, Resx.Resources.DisplayAlert_Yes, Resx.Resources.DisplayAlert_No).Result)
                         {
                             _ViewModel.Initialize();
-                            _MainPage.Navigation.PopAsync(true);
+                            (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
                         }
 
                     }
                     else
                     {
-                        _MainPage.Navigation.PopAsync(true);
+                        (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
                     }
 
                     break;
@@ -89,7 +84,7 @@ namespace DrugAlarm.Form.View
                     if (DisplayAlert(Resx.Resources.Setting_Title, Resx.Resources.Setting_SaveMessage, Resx.Resources.DisplayAlert_Yes, Resx.Resources.DisplayAlert_No).Result)
                     {
                         _ViewModel.Save();
-                        _MainPage.Navigation.PopAsync(true);
+                        (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
                     }
 
                     break;

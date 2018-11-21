@@ -12,11 +12,6 @@ namespace DrugAlarm.Form.View
     {
 
         /// <summary>
-        /// 表示ページ
-        /// </summary>
-        private Page _MainPage = (Xamarin.Forms.Application.Current as App).MainPage;
-
-        /// <summary>
         /// ViewModel
         /// </summary>
         private ViewModel.List _ViewModel;
@@ -66,15 +61,15 @@ namespace DrugAlarm.Form.View
             {
 
                 case "CallSetting":
-                    _MainPage.Navigation.PushAsync(new Form.View.Setting());
+                    (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Setting());
                     break;
 
                 case "CallAddDrug":
-                    _MainPage.Navigation.PushAsync(new Form.View.Detail(-1));
+                    (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Detail(-1));
                     break;
 
                 case "CallEditDrug":
-                    _MainPage.Navigation.PushAsync(new Form.View.Detail(_ViewModel.SelectedIndex));
+                    (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Detail(_ViewModel.SelectedIndex));
                     break;
 
                 case "CallDeleteDrug":

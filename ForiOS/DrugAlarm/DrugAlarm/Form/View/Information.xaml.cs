@@ -12,11 +12,6 @@ namespace DrugAlarm.Form.View
     {
 
         /// <summary>
-        /// 表示ページ
-        /// </summary>
-        private Page _MainPage = (Xamarin.Forms.Application.Current as App).MainPage;
-
-        /// <summary>
         /// Information.ViewModel
         /// </summary>
         private ViewModel.Information _ViewModel;
@@ -66,11 +61,11 @@ namespace DrugAlarm.Form.View
             {
 
                 case "CallOK":
-                    _MainPage.Navigation.PopAsync(true);
+                    (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
                     break;
 
                 case "CallCancel":
-                    _MainPage.Navigation.PopAsync(true);
+                    (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
                     break;
 
                 default:

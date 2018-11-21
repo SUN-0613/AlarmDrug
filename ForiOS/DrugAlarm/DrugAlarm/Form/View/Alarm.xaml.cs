@@ -13,11 +13,6 @@ namespace DrugAlarm.Form.View
     {
 
         /// <summary>
-        /// 表示ページ
-        /// </summary>
-        private Page _MainPage = (Xamarin.Forms.Application.Current as App).MainPage;
-
-        /// <summary>
         /// Alarm.ViewModel
         /// </summary>
         private ViewModel.Alarm _ViewModel;
@@ -69,14 +64,14 @@ namespace DrugAlarm.Form.View
                     //残り錠の計算、次回アラーム設定
                     if (_ViewModel.TakeMedicine())
                     {
-                        _MainPage.Navigation.PushAsync(new Form.View.Information());
+                        (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Information());
                     }
 
                     break;
 
                 case "CallRealarm":
 
-                    _MainPage.Navigation.PushAsync(new Form.View.Realarm());
+                    (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Realarm());
                     break;
 
                 default:
