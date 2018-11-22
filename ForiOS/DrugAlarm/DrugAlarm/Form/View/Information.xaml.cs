@@ -54,18 +54,18 @@ namespace DrugAlarm.Form.View
         /// </summary>
         /// <param name="sender">Sender.</param>
         /// <param name="e">E.</param>
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private async void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
 
             switch (e.PropertyName)
             {
 
                 case "CallOK":
-                    (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
+                    await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
                     break;
 
                 case "CallCancel":
-                    (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
+                    await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
                     break;
 
                 default:

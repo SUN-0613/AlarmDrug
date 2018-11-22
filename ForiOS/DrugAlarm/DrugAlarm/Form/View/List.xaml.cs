@@ -54,26 +54,31 @@ namespace DrugAlarm.Form.View
         /// </summary>
         /// <param name="sender">Sender.</param>
         /// <param name="e">E.</param>
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private async void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+
+            bool AlertAnswer;
 
             switch (e.PropertyName)
             {
 
                 case "CallSetting":
-                    (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Setting());
+                    await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Setting());
                     break;
 
                 case "CallAddDrug":
-                    (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Detail(-1));
+                    await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Detail(-1));
                     break;
 
                 case "CallEditDrug":
-                    (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Detail(_ViewModel.SelectedIndex));
+                    await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Detail(_ViewModel.SelectedIndex));
                     break;
 
                 case "CallDeleteDrug":
-                    if (DisplayAlert(Resx.Resources.List_Title, _ViewModel.MakeDeleteDrugMessage(), Resx.Resources.DisplayAlert_Yes, Resx.Resources.DisplayAlert_No).Result)
+
+                    AlertAnswer = await DisplayAlert(Resx.Resources.List_Title, _ViewModel.MakeDeleteDrugMessage(), Resx.Resources.DisplayAlert_Yes, Resx.Resources.DisplayAlert_No);
+
+                    if (AlertAnswer)
                     {
                         _ViewModel.DeleteDrug();
                     }
@@ -82,7 +87,7 @@ namespace DrugAlarm.Form.View
                 case "CallDrugMedicine":
                     if (_ViewModel.DrugMedicine())
                     {
-                        DisplayAlert(Resx.Resources.List_Title, _ViewModel.MakeDeleteDrugMessage(), Resx.Resources.DisplayAlert_OK);
+                        await DisplayAlert(Resx.Resources.List_Title, _ViewModel.MakeDeleteDrugMessage(), Resx.Resources.DisplayAlert_OK);
                     }
                     break;
 

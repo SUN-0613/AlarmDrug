@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-
+﻿using System.ComponentModel;
 using Xamarin.Forms;
 
 namespace DrugAlarm.Form.View
@@ -53,7 +51,7 @@ namespace DrugAlarm.Form.View
         /// <summary>
         /// ViewModel変更通知イベント
         /// </summary>
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private async void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
 
             switch (e.PropertyName)
@@ -64,14 +62,13 @@ namespace DrugAlarm.Form.View
                     //残り錠の計算、次回アラーム設定
                     if (_ViewModel.TakeMedicine())
                     {
-                        (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Information());
+                        await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Information());
                     }
 
                     break;
 
                 case "CallRealarm":
-
-                    (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Realarm());
+                    await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Realarm());
                     break;
 
                 default:

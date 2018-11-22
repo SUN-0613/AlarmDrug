@@ -10,6 +10,7 @@ namespace DrugAlarm.Common
     public class DelegateCommand : ICommand
     {
 
+#pragma warning disable 0067
         /// <summary>
         /// CanExecute変更イベント
         /// </summary>

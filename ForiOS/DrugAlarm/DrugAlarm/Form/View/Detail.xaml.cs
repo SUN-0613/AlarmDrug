@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-
 using Xamarin.Forms;
 
 namespace DrugAlarm.Form.View
@@ -54,8 +53,10 @@ namespace DrugAlarm.Form.View
         /// <summary>
         /// ViewModel.プロパティ変更通知イベント
         /// </summary>
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private async void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+
+            bool AlertAnswer;
 
             switch (e.PropertyName)
             {
@@ -65,38 +66,40 @@ namespace DrugAlarm.Form.View
                     if (_ViewModel.IsEdited)
                     {
 
-                        if (DisplayAlert(Resx.Resources.Detail_Title, Resx.Resources.Detail_CancelMessage, Resx.Resources.DisplayAlert_Yes, Resx.Resources.DisplayAlert_No).Result)
+                        AlertAnswer = await DisplayAlert(Resx.Resources.Detail_Title, Resx.Resources.Detail_CancelMessage, Resx.Resources.DisplayAlert_Yes, Resx.Resources.DisplayAlert_No);
+
+                        if (AlertAnswer)
                         {
                             _ViewModel.Initialize();
-                            (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
+                            await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
                         }
 
                     }
                     else
                     {
-                        (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
+                        await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
                     }
 
                     break;
 
-                case "CallSave":    
+                case "CallSave":
 
-                    if (DisplayAlert(Resx.Resources.Detail_Title, _ViewModel.MakeSaveMessage(), Resx.Resources.DisplayAlert_Yes, Resx.Resources.DisplayAlert_No).Result)
+                    AlertAnswer = await DisplayAlert(Resx.Resources.Detail_Title, _ViewModel.MakeSaveMessage(), Resx.Resources.DisplayAlert_Yes, Resx.Resources.DisplayAlert_No);
+
+                    if (AlertAnswer)
                     {
                         _ViewModel.Save();
-                        (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
+                        await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
                     }
 
                     break;
 
                 case "CallTotalVolume":
-
-                    DisplayAlert(Resx.Resources.Detail_Title, _ViewModel.MakeTotalVolumeOverMessage(), Resx.Resources.DisplayAlert_OK);
+                    await DisplayAlert(Resx.Resources.Detail_Title, _ViewModel.MakeTotalVolumeOverMessage(), Resx.Resources.DisplayAlert_OK);
                     break;
 
                 case "CallAlarmVolume":
-
-                    DisplayAlert(Resx.Resources.Detail_Title, _ViewModel.MakeAlarmVolumeOverMessage(), Resx.Resources.DisplayAlert_OK);
+                    await DisplayAlert(Resx.Resources.Detail_Title, _ViewModel.MakeAlarmVolumeOverMessage(), Resx.Resources.DisplayAlert_OK);
                     break;
 
                 default:

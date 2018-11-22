@@ -54,8 +54,10 @@ namespace DrugAlarm.Form.View
         /// </summary>
         /// <param name="sender">Sender.</param>
         /// <param name="e">E.</param>
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private async void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+
+            bool AlertAnswer; 
 
             switch (e.PropertyName)
             {
@@ -65,26 +67,30 @@ namespace DrugAlarm.Form.View
                     if (_ViewModel.IsEdited)
                     {
 
-                        if (DisplayAlert(Resx.Resources.Setting_Title, Resx.Resources.Setting_CancelMessage, Resx.Resources.DisplayAlert_Yes, Resx.Resources.DisplayAlert_No).Result)
+                        AlertAnswer = await DisplayAlert(Resx.Resources.Setting_Title, Resx.Resources.Setting_CancelMessage, Resx.Resources.DisplayAlert_Yes, Resx.Resources.DisplayAlert_No);
+
+                        if (AlertAnswer)
                         {
                             _ViewModel.Initialize();
-                            (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
+                            await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
                         }
 
                     }
                     else
                     {
-                        (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
+                        await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
                     }
 
                     break;
 
                 case "CallSave":
 
-                    if (DisplayAlert(Resx.Resources.Setting_Title, Resx.Resources.Setting_SaveMessage, Resx.Resources.DisplayAlert_Yes, Resx.Resources.DisplayAlert_No).Result)
+                    AlertAnswer = await DisplayAlert(Resx.Resources.Setting_Title, Resx.Resources.Setting_SaveMessage, Resx.Resources.DisplayAlert_Yes, Resx.Resources.DisplayAlert_No);
+
+                    if (AlertAnswer)
                     {
                         _ViewModel.Save();
-                        (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
+                        await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
                     }
 
                     break;
