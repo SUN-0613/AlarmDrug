@@ -613,7 +613,7 @@ namespace DrugAlarm.Form.ViewModel
         private void RemakeDayList()
         {
 
-            if (AppointYearIndex.Equals(-1) && AppointMonthIndex.Equals(-1))
+            if (!AppointYearIndex.Equals(-1) && !AppointMonthIndex.Equals(-1))
             {
 
                 Int32 Tmp = _Model.AppointDayIndex;

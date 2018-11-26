@@ -16,14 +16,13 @@ namespace DrugAlarm.Class
         public AlarmTimer()
         {
 
-            Parameter _Parameter = (Xamarin.Forms.Application.Current as App).Parameter;
-            bool IsRun = true;      //タイマ続行FLG
-            bool IsSkip = false;    //タイマスキップFLG
+            Parameter _Parameter = (Xamarin.Forms.Application.Current as App).Parameter;    //パラメータ
+            DependencyService.Get<Common.INotificationService>().Regist();                  //ローカル通知
 
-            /*
-            Int32 Counter = 0;
-            bool IsAlert = false;
-            */
+            bool IsRun = true;          //タイマ続行FLG
+            bool IsSkip = false;        //タイマスキップFLG
+            bool IsLocalAlarm = false;  //ローカル通知済FLG
+            bool IsShowAlarm = false;   //アラーム画面表示FLG
 
             //タイマ処理
             Device.StartTimer(new TimeSpan(0, 0, 0, 0, 100), 
@@ -38,23 +37,33 @@ namespace DrugAlarm.Class
                     try
                     {
 
-                        /*
-                        if (++Counter == 10)
-                        {
-                            Counter = 0;
-                            IsAlert = true;
-                            (Xamarin.Forms.Application.Current as App).MainPage.DisplayAlert("Title", "Message", "OK").ContinueWith(t => { IsAlert = false; if (IsSkip) IsSkip = false; });
-                            //(Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Alarm());
-                        }
-                        */
-
                         //次回アラーム時刻を超過していればアラーム表示
                         if (_Parameter.NextAlarm.Timer <= DateTime.Now)
                         {
 
                             //アラーム表示
-                            (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Alarm());
+                            if (!(Xamarin.Forms.Application.Current as App).IsBackground)
+                            {
+                                if (!IsShowAlarm)
+                                {
+                                    (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Alarm());
+                                    IsShowAlarm = true;
+                                }
+                            }
+                            else 
+                            {
+                                if (!IsLocalAlarm)
+                                {
+                                    DependencyService.Get<Common.INotificationService>().On("Title", "SubTitle", "Body");
+                                    IsLocalAlarm = true;
+                                }
+                            }
 
+                        }
+                        else if (IsLocalAlarm || IsShowAlarm)    //FLGリセット
+                        {
+                            IsLocalAlarm = false;
+                            IsShowAlarm = false;
                         }
 
                     }
@@ -66,10 +75,6 @@ namespace DrugAlarm.Class
                     }
                     finally
                     {
-                        /*
-                        if (!IsAlert)
-                            IsSkip = false;
-                        */
                         IsSkip = false;
                     }
 

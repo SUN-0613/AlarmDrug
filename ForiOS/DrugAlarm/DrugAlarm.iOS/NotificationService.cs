@@ -3,6 +3,7 @@ using Foundation;
 using UIKit;
 using Xamarin.Forms;
 using DrugAlarm.Common;
+using UserNotifications;
 
 /// <summary>
 /// ローカル通知
@@ -17,7 +18,22 @@ public class NotificationService : INotificationService
     public void Regist()
     {
 
-        return; //後回し
+        UNAuthorizationOptions types = UNAuthorizationOptions.Alert;
+
+        UNUserNotificationCenter.Current.RequestAuthorization(types, (granted, err) => 
+        {
+
+            if (err != null)
+            {
+                System.Diagnostics.Debug.WriteLine(err.LocalizedFailureReason + Environment.NewLine + err.LocalizedDescription);
+            }
+
+            if (granted)
+            {
+
+            }
+
+        });
 
     }
 
@@ -29,7 +45,35 @@ public class NotificationService : INotificationService
     /// <param name="Body">内容</param>
     public void On(string Title, string SubTitle, string Body)
     {
-        return; //後回し
+        UIApplication.SharedApplication.InvokeOnMainThread(delegate
+        {
+
+            var content = new UNMutableNotificationContent();
+            content.Title = Title;
+            content.Subtitle = SubTitle;
+            content.Body = Body;
+            content.Sound = UNNotificationSound.Default;
+
+            var trigger = UNTimeIntervalNotificationTrigger.CreateTrigger(5, false);
+
+            var requestID = "notifyKey";
+            content.UserInfo = NSDictionary.FromObjectAndKey(new NSString("notifyValue"), new NSString("notifyKey"));
+            var request = UNNotificationRequest.FromIdentifier(requestID, content, trigger);
+
+            //UNUserNotificationCenter.Current.Delegate = new UILocalNotificationCenterDelegate();
+
+            UNUserNotificationCenter.Current.AddNotificationRequest(request, (err) => 
+            {
+                if (err != null)
+                {
+                    System.Diagnostics.Debug.WriteLine(err.LocalizedFailureReason + Environment.NewLine + err.LocalizedDescription);
+                }
+            });
+
+            UIApplication.SharedApplication.ApplicationIconBadgeNumber += 1;
+
+        });
+
     }
 
     /// <summary>
@@ -37,7 +81,10 @@ public class NotificationService : INotificationService
     /// </summary>
     public void off()
     {
-        return; //後回し
+        UIApplication.SharedApplication.InvokeOnMainThread(delegate
+        {
+            UNUserNotificationCenter.Current.RemovePendingNotificationRequests(new string[] { "notifyKey" });
+        });
     }
 
 }

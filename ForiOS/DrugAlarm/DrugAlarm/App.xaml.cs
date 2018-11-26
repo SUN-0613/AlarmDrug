@@ -19,6 +19,12 @@ namespace DrugAlarm
         public Parameter Parameter { get; set; }
 
         /// <summary>
+        /// バックグラウンド処理中
+        /// </summary>
+        /// <value><c>true</c> if is background; otherwise, <c>false</c>.</value>
+        public bool IsBackground {get; set;}
+
+        /// <summary>
         /// タイマ処理
         /// </summary>
         private AlarmTimer _Timer;
