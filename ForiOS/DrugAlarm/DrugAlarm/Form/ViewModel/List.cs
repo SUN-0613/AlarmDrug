@@ -184,6 +184,15 @@ namespace DrugAlarm.Form.ViewModel
             private Int32 _Index;
 
             /// <summary>
+            /// Model.DrugList.Indexプロパティ
+            /// </summary>
+            /// <value>The index.</value>
+            public Int32 Index
+            {
+                get { return _Index; }
+            }
+
+            /// <summary>
             /// 名称プロパティ
             /// </summary>
             /// <value>The name.</value>
@@ -312,10 +321,9 @@ namespace DrugAlarm.Form.ViewModel
             get { return DrugList[_Model.SelectedIndex]; }
             set
             {
-                _Model.SelectedIndex = DrugList.IndexOf(value);
+                _Model.SelectedIndex = value.Index;
                 CallPropertyChanged();
             }
-
         }
 
         /// <summary>

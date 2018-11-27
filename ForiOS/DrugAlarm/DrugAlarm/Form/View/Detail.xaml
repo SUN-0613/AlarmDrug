@@ -160,7 +160,7 @@
                 
                 <Label Grid.Row="12" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="3" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Detail_Prescript}" />
                 <Label Grid.Row="12" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Detail_Remaining}" />
-                <Entry Grid.Row="12" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="2" VerticalOptions="Center" HorizontalTextAlignment="Start" Text="{Binding TotalVolume}" />
+                <Entry Grid.Row="12" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="2" VerticalOptions="Center" HorizontalTextAlignment="Start" Text="{Binding AlarmVolume}" />
                 <Label Grid.Row="12" Grid.RowSpan="1" Grid.Column="7" Grid.ColumnSpan="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Detail_Unit}" />
                 
                 <!--Remarks-->

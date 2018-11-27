@@ -17,7 +17,7 @@ namespace DrugAlarm.Class
         {
 
             Parameter _Parameter = (Xamarin.Forms.Application.Current as App).Parameter;    //パラメータ
-            DependencyService.Get<Common.INotificationService>().Regist();                  //ローカル通知
+            DependencyService.Get<Common.INotificationService>().Allow();                   //ローカル通知
 
             bool IsRun = true;          //タイマ続行FLG
             bool IsSkip = false;        //タイマスキップFLG
@@ -44,17 +44,26 @@ namespace DrugAlarm.Class
                             //アラーム表示
                             if (!(Xamarin.Forms.Application.Current as App).IsBackground)
                             {
+
                                 if (!IsShowAlarm)
                                 {
+
                                     (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Alarm());
                                     IsShowAlarm = true;
+
+                                    if (IsLocalAlarm)
+                                    {
+                                        DependencyService.Get<Common.INotificationService>().Release();
+                                    }
+
                                 }
+
                             }
                             else 
                             {
                                 if (!IsLocalAlarm)
                                 {
-                                    DependencyService.Get<Common.INotificationService>().On("Title", "SubTitle", "Body");
+                                    DependencyService.Get<Common.INotificationService>().Show("Title", "SubTitle", "Body");
                                     IsLocalAlarm = true;
                                 }
                             }

@@ -2,75 +2,107 @@
 using Foundation;
 using UIKit;
 using Xamarin.Forms;
-using DrugAlarm.Common;
 using UserNotifications;
+
+[assembly: Dependency(typeof(NotificationService))]
 
 /// <summary>
 /// ローカル通知
 /// </summary>
-[assembly: Dependency(typeof(NotificationService))]
-public class NotificationService : INotificationService
+/// <remarks>
+/// 参考URL
+/// https://itblogdsi.blog.fc2.com/blog-entry-185.html
+/// </remarks>
+public class NotificationService : DrugAlarm.Common.INotificationService
 {
 
     /// <summary>
-    /// iOS用の登録
+    /// The notify key.
     /// </summary>
-    public void Regist()
+    private const string _RequestID = "notifyKey";
+
+    /// <summary>
+    /// The notify value.
+    /// </summary>
+    private const string _RequestValue = "notifyValue";
+
+    /// <summary>
+    /// 通知許可の申請
+    /// </summary>
+    public void Allow()
     {
 
-        UNAuthorizationOptions types = UNAuthorizationOptions.Alert;
-
-        UNUserNotificationCenter.Current.RequestAuthorization(types, (granted, err) => 
+        // iOSのバージョンチェック
+        if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
         {
 
-            if (err != null)
-            {
-                System.Diagnostics.Debug.WriteLine(err.LocalizedFailureReason + Environment.NewLine + err.LocalizedDescription);
-            }
+            // 許可が欲しい通知タイプの選択
+            // 通知タイプは「テキスト」「アイコンバッチ」「サウンド」
+            // 追加するときは"|"で区切る
+            UNAuthorizationOptions Types = UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound;
 
-            if (granted)
-            {
+            // 許可申請
+            UNUserNotificationCenter.Current.RequestAuthorization(Types, (Granted, Err) => 
+            { 
+                // エラー発生チェック
+                if (Err != null)    
+                {
+#if DEBUG
+                    System.Diagnostics.Debug.WriteLine(Err.LocalizedFailureReason + "\n" + Err.LocalizedDescription);
+#endif
+                }
+            });
 
-            }
-
-        });
+        }
 
     }
 
     /// <summary>
-    /// 通知する
+    /// 通知表示
     /// </summary>
-    /// <param name="Title">タイトル</param>
-    /// <param name="SubTitle">サブタイトル</param>
-    /// <param name="Body">内容</param>
-    public void On(string Title, string SubTitle, string Body)
+    /// <param name="Title">主題</param>
+    /// <param name="SubTitle">副題</param>
+    /// <param name="Message">表示内容</param>
+    /// <param name="sec">指定秒数後に通知表示</param>
+    /// <param name="IsRepeat">通知表示を繰り返すか</param>
+    /// <param name="IsUseBadge">バッジの数字更新</param>
+    public void Show(string Title, string SubTitle, string Message, Int32 sec = 0, bool IsRepeat = false, bool IsUseBadge = true)
     {
-        UIApplication.SharedApplication.InvokeOnMainThread(delegate
+
+        // メインスレッドにて処理
+        UIApplication.SharedApplication.InvokeOnMainThread(delegate 
         {
 
-            var content = new UNMutableNotificationContent();
-            content.Title = Title;
-            content.Subtitle = SubTitle;
-            content.Body = Body;
-            content.Sound = UNNotificationSound.Default;
+            var Content = new UNMutableNotificationContent();                               // 表示内容
+            var Trigger = UNTimeIntervalNotificationTrigger.CreateTrigger(sec, IsRepeat);   // 表示条件
 
-            var trigger = UNTimeIntervalNotificationTrigger.CreateTrigger(5, false);
+            // 表示テキスト
+            Content.Title = Title;
+            Content.Subtitle = SubTitle;
+            Content.Body = Message;
 
-            var requestID = "notifyKey";
-            content.UserInfo = NSDictionary.FromObjectAndKey(new NSString("notifyValue"), new NSString("notifyKey"));
-            var request = UNNotificationRequest.FromIdentifier(requestID, content, trigger);
+            // 表示サウンド
+            Content.Sound = UNNotificationSound.Default;
 
-            //UNUserNotificationCenter.Current.Delegate = new UILocalNotificationCenterDelegate();
+            // 解除する際のキー設定
+            Content.UserInfo = NSDictionary.FromObjectAndKey(new NSString(_RequestValue), new NSString(_RequestID));
 
-            UNUserNotificationCenter.Current.AddNotificationRequest(request, (err) => 
+            // ローカル通知の予約
+            var Request = UNNotificationRequest.FromIdentifier(_RequestID, Content, Trigger);
+            UNUserNotificationCenter.Current.AddNotificationRequest(Request, (Err) => 
             {
-                if (err != null)
+                // エラー発生チェック
+                if (Err != null)
                 {
-                    System.Diagnostics.Debug.WriteLine(err.LocalizedFailureReason + Environment.NewLine + err.LocalizedDescription);
+#if DEBUG
+                    System.Diagnostics.Debug.WriteLine(Err.LocalizedFailureReason + "\n" + Err.LocalizedDescription);
+#endif
                 }
             });
 
-            UIApplication.SharedApplication.ApplicationIconBadgeNumber += 1;
+            // アイコン上に表示されるバッジ数値更新
+            if (IsUseBadge)
+                UIApplication.SharedApplication.ApplicationIconBadgeNumber += 1;
 
         });
 
@@ -79,12 +111,10 @@ public class NotificationService : INotificationService
     /// <summary>
     /// 通知解除
     /// </summary>
-    public void off()
+    public void Release()
     {
-        UIApplication.SharedApplication.InvokeOnMainThread(delegate
-        {
-            UNUserNotificationCenter.Current.RemovePendingNotificationRequests(new string[] { "notifyKey" });
-        });
+        UNUserNotificationCenter.Current.RemovePendingNotificationRequests(new string[] { _RequestID });
+        UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0;
     }
 
 }
