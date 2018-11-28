@@ -1,0 +1,299 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+  <data name="Alarm_Button_OK" xml:space="preserve">
+    <value>完了</value>
+    <comment>アラーム：完了ボタン</comment>
+  </data>
+  <data name="Alarm_Button_Realarm" xml:space="preserve">
+    <value>あとで</value>
+    <comment>アラーム：再通知ボタン</comment>
+  </data>
+  <data name="Alarm_Title" xml:space="preserve">
+    <value>お薬の時間です</value>
+    <comment>アラーム：タイトル</comment>
+  </data>
+  <data name="App_MutexMessage" xml:space="preserve">
+    <value>多重起動防止</value>
+    <comment>アプリ：多重起動防止</comment>
+  </data>
+  <data name="Detail_AfterMeals" xml:space="preserve">
+    <value>食後</value>
+    <comment>詳細：食後</comment>
+  </data>
+  <data name="Detail_AlarmVolumeOverMessage" xml:space="preserve">
+    <value>薬残量お知らせは_ALARMVOLUME_錠以下で入力してください</value>
+    <comment>詳細：薬残量お知らせオーバー警告メッセージ</comment>
+  </data>
+  <data name="Detail_BeforeMeals" xml:space="preserve">
+    <value>食前</value>
+    <comment>詳細：食前</comment>
+  </data>
+  <data name="Detail_BetweenMeals" xml:space="preserve">
+    <value>食間</value>
+    <comment>詳細：食間</comment>
+  </data>
+  <data name="Detail_CancelMessage" xml:space="preserve">
+    <value>編集中のデータを破棄しますか？</value>
+    <comment>詳細：キャンセル確認メッセージ</comment>
+  </data>
+  <data name="Detail_DateSpecified" xml:space="preserve">
+    <value>日時指定</value>
+    <comment>詳細：日時指定</comment>
+  </data>
+  <data name="Detail_Dinner" xml:space="preserve">
+    <value>夕</value>
+    <comment>詳細：夕</comment>
+  </data>
+  <data name="Detail_Lunch" xml:space="preserve">
+    <value>昼</value>
+    <comment>詳細：昼</comment>
+  </data>
+  <data name="Detail_Morning" xml:space="preserve">
+    <value>朝</value>
+    <comment>詳細：朝</comment>
+  </data>
+  <data name="Detail_Name" xml:space="preserve">
+    <value>名前</value>
+    <comment>詳細：薬品名</comment>
+  </data>
+  <data name="Detail_Potions" xml:space="preserve">
+    <value>頓服</value>
+    <comment>詳細：頓服</comment>
+  </data>
+  <data name="Detail_Prescript" xml:space="preserve">
+    <value>薬残量お知らせ</value>
+    <comment>詳細：薬残量お知らせ</comment>
+  </data>
+  <data name="Detail_Remaining" xml:space="preserve">
+    <value>残り</value>
+    <comment>設定：残り</comment>
+  </data>
+  <data name="Detail_Remarks" xml:space="preserve">
+    <value>備考</value>
+    <comment>詳細：備考</comment>
+  </data>
+  <data name="Detail_SaveMessage" xml:space="preserve">
+    <value>_DRUG_を保存しますか？</value>
+    <comment>詳細：保存確認メッセージ</comment>
+  </data>
+  <data name="Detail_Sleep" xml:space="preserve">
+    <value>就寝前</value>
+    <comment>詳細：就寝前</comment>
+  </data>
+  <data name="Detail_Time" xml:space="preserve">
+    <value>時間毎</value>
+    <comment>詳細：時間毎</comment>
+  </data>
+  <data name="Detail_TimeSpecified" xml:space="preserve">
+    <value>時間指定</value>
+    <comment>詳細：時間指定</comment>
+  </data>
+  <data name="Detail_Timing" xml:space="preserve">
+    <value>服用時間</value>
+    <comment>詳細：服用時間</comment>
+  </data>
+  <data name="Detail_Title" xml:space="preserve">
+    <value>お薬の内容</value>
+    <comment>詳細：お薬の内容</comment>
+  </data>
+  <data name="Detail_TotalVolumeOverMessage" xml:space="preserve">
+    <value>処方量は_TOTALVOLUME_錠以下で入力してください</value>
+    <comment>詳細：処方量オーバー警告メッセージ</comment>
+  </data>
+  <data name="Detail_Unit" xml:space="preserve">
+    <value>錠</value>
+    <comment>詳細：錠</comment>
+  </data>
+  <data name="Detail_Volume" xml:space="preserve">
+    <value>処方量</value>
+    <comment>詳細：処方量</comment>
+  </data>
+  <data name="DisplayAlert_No" xml:space="preserve">
+    <value>いいえ</value>
+    <comment>メッセージ：No</comment>
+  </data>
+  <data name="DisplayAlert_Yes" xml:space="preserve">
+    <value>はい</value>
+    <comment>メッセージ：Yes</comment>
+  </data>
+  <data name="DisplayAlert_OK" xml:space="preserve">
+    <value>OK</value>
+    <comment>メッセージ：OK</comment>
+  </data>
+  <data name="FolderDialog_Title" xml:space="preserve">
+    <value>パラメータファイルを保存するフォルダを指定してください</value>
+    <comment>フォルダ選択ダイアログ：タイトル</comment>
+  </data>
+  <data name="Information_Title" xml:space="preserve">
+    <value>お薬が切れそうです</value>
+    <comment>お知らせ：タイトル</comment>
+  </data>
+  <data name="List_AddList" xml:space="preserve">
+    <value>+ 新規追加</value>
+    <comment>一覧：新規追加行</comment>
+  </data>
+  <data name="List_DeleteMessage" xml:space="preserve">
+    <value>_DRUG_を削除しますか？</value>
+    <comment>一覧：削除確認メッセージ</comment>
+  </data>
+  <data name="List_DrugMedicineMessage" xml:space="preserve">
+    <value>_DRUG_を服用しました</value>
+    <comment>一覧：服用お知らせメッセージ</comment>
+  </data>
+  <data name="List_Menu_Delete" xml:space="preserve">
+    <value>削除</value>
+    <comment>一覧：メニュー：削除</comment>
+  </data>
+  <data name="List_Menu_Drug" xml:space="preserve">
+    <value>頓服服用</value>
+    <comment>一覧：メニュー：頓服服用</comment>
+  </data>
+  <data name="List_Menu_Edit" xml:space="preserve">
+    <value>編集</value>
+    <comment>一覧：メニュー：編集</comment>
+  </data>
+  <data name="List_Setting" xml:space="preserve">
+    <value>設定</value>
+    <comment>一覧：設定ボタン</comment>
+  </data>
+  <data name="List_Title" xml:space="preserve">
+    <value>お薬一覧</value>
+    <comment>一覧：タイトル</comment>
+  </data>
+  <data name="Menu_Exit" xml:space="preserve">
+    <value>終了</value>
+    <comment>タスクメニュー：終了</comment>
+  </data>
+  <data name="Menu_ShowList" xml:space="preserve">
+    <value>一覧表示</value>
+    <comment>タスクメニュー：一覧表示</comment>
+  </data>
+  <data name="Parameter_Timing_After" xml:space="preserve">
+    <value>食後</value>
+    <comment>パラメータ：一覧表示：後</comment>
+  </data>
+  <data name="Parameter_Timing_Always" xml:space="preserve">
+    <value>毎</value>
+    <comment>パラメータ：一覧表示：毎食</comment>
+  </data>
+  <data name="Parameter_Timing_Appoint" xml:space="preserve">
+    <value>_yyyy/MM/dd HH:mm_</value>
+    <comment>パラメータ：一覧表示：指定日時</comment>
+  </data>
+  <data name="Parameter_Timing_Before" xml:space="preserve">
+    <value>食前</value>
+    <comment>パラメータ：一覧表示：前</comment>
+  </data>
+  <data name="Parameter_Timing_Between" xml:space="preserve">
+    <value>食間</value>
+    <comment>パラメータ：一覧表示：間</comment>
+  </data>
+  <data name="Parameter_Timing_Breakfast" xml:space="preserve">
+    <value>朝</value>
+    <comment>パラメータ：一覧表示：朝食</comment>
+  </data>
+  <data name="Parameter_Timing_Dinner" xml:space="preserve">
+    <value>夕</value>
+    <comment>パラメータ：一覧表示：夕食</comment>
+  </data>
+  <data name="Parameter_Timing_Each" xml:space="preserve">
+    <value>_n_時間毎</value>
+    <comment>パラメータ：一覧表示：毎時</comment>
+  </data>
+  <data name="Parameter_Timing_Lunch" xml:space="preserve">
+    <value>昼</value>
+    <comment>パラメータ：一覧表示：昼食</comment>
+  </data>
+  <data name="Parameter_Timing_Sleep" xml:space="preserve">
+    <value>就寝前</value>
+    <comment>パラメータ：一覧表示：就寝</comment>
+  </data>
+  <data name="Parameter_Timing_ToBeTaken" xml:space="preserve">
+    <value>頓服</value>
+    <comment>パラメータ：一覧表示：頓服</comment>
+  </data>
+  <data name="Realarm_Button_OK" xml:space="preserve">
+    <value>設定</value>
+    <comment>再通知：ボタン</comment>
+  </data>
+  <data name="Realarm_Message" xml:space="preserve">
+    <value>分後に通知</value>
+    <comment>再通知：メッセージ</comment>
+  </data>
+  <data name="Realarm_Title" xml:space="preserve">
+    <value>再通知</value>
+    <comment>再通知：タイトル</comment>
+  </data>
+  <data name="Setting_AfterMeals" xml:space="preserve">
+    <value>食後</value>
+    <comment>設定：食後</comment>
+  </data>
+  <data name="Setting_AfterMinute" xml:space="preserve">
+    <value>分後</value>
+    <comment>設定：分後</comment>
+  </data>
+  <data name="Setting_BeforeMeals" xml:space="preserve">
+    <value>食前</value>
+    <comment>設定：食前</comment>
+  </data>
+  <data name="Setting_BeforeMinute" xml:space="preserve">
+    <value>分前</value>
+    <comment>設定：分前</comment>
+  </data>
+  <data name="Setting_BeforeSleep" xml:space="preserve">
+    <value>就寝前</value>
+    <comment>設定：就寝前</comment>
+  </data>
+  <data name="Setting_Breakfast" xml:space="preserve">
+    <value>朝食時間</value>
+    <comment>設定：朝食時間</comment>
+  </data>
+  <data name="Setting_CancelMessage" xml:space="preserve">
+    <value>編集中のデータを破棄しますか？</value>
+    <comment>設定：キャンセル確認メッセージ</comment>
+  </data>
+  <data name="Setting_Dinner" xml:space="preserve">
+    <value>夕食時間</value>
+    <comment>設定：夕食時間</comment>
+  </data>
+  <data name="Setting_InputAlarm" xml:space="preserve">
+    <value>アラーム設定</value>
+    <comment>設定：アラーム設定</comment>
+  </data>
+  <data name="Setting_Lunch" xml:space="preserve">
+    <value>昼食時間</value>
+    <comment>設定：昼食時間</comment>
+  </data>
+  <data name="Setting_Realarm" xml:space="preserve">
+    <value>再通知</value>
+    <comment>設定：再通知</comment>
+  </data>
+  <data name="Setting_SaveMessage" xml:space="preserve">
+    <value>設定を保存しますか？</value>
+    <comment>設定：保存確認メッセージ</comment>
+  </data>
+  <data name="Setting_Sleep" xml:space="preserve">
+    <value>就寝時間</value>
+    <comment>設定：就寝時間</comment>
+  </data>
+  <data name="Setting_Title" xml:space="preserve">
+    <value>設定</value>
+    <comment>設定：タイトル</comment>
+  </data>
+  <data name="Setting_Unit" xml:space="preserve">
+    <value>錠</value>
+    <comment>設定：錠</comment>
+  </data>
+</root>

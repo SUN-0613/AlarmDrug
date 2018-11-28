@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage x:Class="DrugAlarm.Form.View.List"
+             x:Name="PageList"
+             xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:Common="clr-namespace:DrugAlarm.Common"
+             xmlns:Convert="clr-namespace:DrugAlarm.Converter"
+             NavigationPage.HasNavigationBar="false">
+    <ContentPage.Resources>
+        <Convert:VolumeToForeground x:Key="ForegroundConverter" />
+    </ContentPage.Resources>
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" />
+    </ContentPage.Padding>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40*" />
+                <RowDefinition Height="370*" />
+                <RowDefinition Height="30*" />
+                <RowDefinition Height="10*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="400*" />
+            </Grid.ColumnDefinitions>
+            
+            <Grid Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" >
+                <Grid.RowDefinitions>
+                    <!--40-->
+                    <RowDefinition Height="40*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <!--400-->
+                    <ColumnDefinition Width="340*" />
+                    <ColumnDefinition Width="60*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#FF333333" TextColor="White" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="{Common:Translate List_Title}" />
+                <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" BackgroundColor="Transparent" TextColor="White" VerticalOptions="Center" HorizontalOptions="Center" BorderColor="Transparent" BorderWidth="0" Text="{Common:Translate List_Setting}" Command="{Binding SettingCommand}" />
+            </Grid>
+            
+            <ListView Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" SelectionMode="Single" ItemsSource="{Binding DrugList}" SelectedItem="{Binding SelectedItem}" >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell >
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="8*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="9*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="1" Text="{Binding Name}" TextColor="{Binding IsPrescriptionAlarm, Converter={StaticResource ForegroundConverter}}" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" />
+                                <Label Grid.Column="2" Text="{Binding Colon}" TextColor="{Binding IsPrescriptionAlarm, Converter={StaticResource ForegroundConverter}}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+                                <Label Grid.Column="3" Text="{Binding DrugTiming}" TextColor="{Binding IsPrescriptionAlarm, Converter={StaticResource ForegroundConverter}}" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" />
+                            </Grid>
+                            <ViewCell.ContextActions>
+                                <MenuItem Text="{Common:Translate List_Menu_Edit}" Command="{Binding Path=BindingContext.EditCommand, Source={x:Reference Name=PageList}}" IsDestructive="false" />
+                                <MenuItem Text="{Common:Translate List_Menu_Delete}" Command="{Binding Path=BindingContext.DeleteCommand, Source={x:Reference Name=PageList}}" IsDestructive="true" />
+                                <MenuItem Text="{Common:Translate List_Menu_Drug}" Command="{Binding Path=BindingContext.DrugMedicineCommand, Source={x:Reference Name=PageList}}" IsDestructive="false" />
+                            </ViewCell.ContextActions>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+                
+            <Button Grid.Row="2" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" BackgroundColor="Transparent" TextColor="Gray" VerticalOptions="Center" HorizontalOptions="Center" BorderColor="Transparent" BorderWidth="0" Text="{Common:Translate List_AddList}" Command="{Binding AddDrugCommand}" />
+            
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
