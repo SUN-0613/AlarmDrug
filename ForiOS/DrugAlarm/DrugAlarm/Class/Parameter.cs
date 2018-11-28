@@ -1420,7 +1420,7 @@ namespace DrugAlarm.Class
             DateTime BeforeAlarmTime;   //前回アラーム時間
 
             //アラーム時間の記憶
-            BeforeAlarmTime = NextAlarm.Timer.Equals(DateTime.MaxValue) ? DateTime.Now : NextAlarm.Timer;
+            BeforeAlarmTime = NextAlarm.Timer.Equals(DateTime.MaxValue) ? DateTime.Now : NextAlarm.Timer < DateTime.Now ? NextAlarm.Timer.AddSeconds(1) : DateTime.Now;
 
             //初期値
             NextAlarm.Timer = DateTime.MaxValue;

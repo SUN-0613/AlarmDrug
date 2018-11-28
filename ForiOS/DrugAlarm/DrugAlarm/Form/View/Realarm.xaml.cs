@@ -61,7 +61,7 @@ namespace DrugAlarm.Form.View
             {
 
                 case "CallSave":
-                    await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
+                    await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopToRootAsync();
                     break;
 
                 default:
