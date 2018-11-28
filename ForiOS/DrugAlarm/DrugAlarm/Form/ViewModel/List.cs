@@ -318,10 +318,13 @@ namespace DrugAlarm.Form.ViewModel
         /// <value>The selected item.</value>
         public DrugParameter SelectedItem
         {
-            get { return DrugList[_Model.SelectedIndex]; }
+            get 
+            {
+                return (-1 < _Model.SelectedIndex && _Model.SelectedIndex < DrugList.Count) ? DrugList[_Model.SelectedIndex] : null;
+            }
             set
             {
-                _Model.SelectedIndex = value.Index;
+                _Model.SelectedIndex = value != null ? value.Index : -1;
                 CallPropertyChanged();
             }
         }

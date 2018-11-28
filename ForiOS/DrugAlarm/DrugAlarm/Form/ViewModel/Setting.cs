@@ -24,7 +24,11 @@ namespace DrugAlarm.Form.ViewModel
         public bool IsEdited
         {
             get { return _Model.IsEdited; }
-            set { _Model.IsEdited = value; }
+            set
+            {
+                _Model.IsEdited = value;
+                CallPropertyChanged("IsEdited");
+            }
         }
 
         /// <summary>
@@ -37,8 +41,8 @@ namespace DrugAlarm.Form.ViewModel
 
             base.CallPropertyChanged(PropertyName, StackFrameIndex + 1);
 
-            IsEdited = true;
-            base.CallPropertyChanged("IsEdited");
+            if (!PropertyName.Equals(nameof(IsEdited)) && !(PropertyName.Length > 4 && PropertyName.Substring(0, 4).ToUpper().Equals("CALL")))
+                IsEdited = true;
 
         }
 

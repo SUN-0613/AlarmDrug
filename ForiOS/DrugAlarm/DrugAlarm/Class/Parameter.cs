@@ -823,16 +823,19 @@ namespace DrugAlarm.Class
                 if (DrugList[Index].Breakfast.IsDrug)
                 {
                     Message.Append(Resx.Resources.Parameter_Timing_Breakfast);
+                    IsMeals = true;
                 }
 
                 if (DrugList[Index].Lunch.IsDrug)
                 {
                     Message.Append(Resx.Resources.Parameter_Timing_Lunch);
+                    IsMeals = true;
                 }
 
                 if (DrugList[Index].Dinner.IsDrug)
                 {
                     Message.Append(Resx.Resources.Parameter_Timing_Dinner);
+                    IsMeals = true;
                 }
 
             }
@@ -1414,6 +1417,10 @@ namespace DrugAlarm.Class
 
             Method method = new Method();
             DateTime Time;
+            DateTime BeforeAlarmTime;   //前回アラーム時間
+
+            //アラーム時間の記憶
+            BeforeAlarmTime = NextAlarm.Timer.Equals(DateTime.MaxValue) ? DateTime.Now : NextAlarm.Timer;
 
             //初期値
             NextAlarm.Timer = DateTime.MaxValue;
@@ -1480,21 +1487,21 @@ namespace DrugAlarm.Class
                 //朝食
                 if (DrugList[iLoop].Breakfast.IsDrug)
                 {
-                    Time = CalcMealsTime(Setting.Breakfast.Start, Setting.Breakfast.Finish, DrugList[iLoop].Breakfast.Kind);
+                    Time = CalcMealsTime(BeforeAlarmTime, Setting.Breakfast.Start, Setting.Breakfast.Finish, DrugList[iLoop].Breakfast.Kind);
                     CompareToTime(Time, iLoop, DrugList[iLoop].Breakfast.Volume, false, false);
                 }
 
                 //昼食
                 if (DrugList[iLoop].Lunch.IsDrug)
                 {
-                    Time = CalcMealsTime(Setting.Lunch.Start, Setting.Lunch.Finish, DrugList[iLoop].Lunch.Kind);
+                    Time = CalcMealsTime(BeforeAlarmTime, Setting.Lunch.Start, Setting.Lunch.Finish, DrugList[iLoop].Lunch.Kind);
                     CompareToTime(Time, iLoop, DrugList[iLoop].Lunch.Volume, false, false);
                 }
 
                 //夕食
                 if (DrugList[iLoop].Dinner.IsDrug)
                 {
-                    Time = CalcMealsTime(Setting.Dinner.Start, Setting.Dinner.Finish, DrugList[iLoop].Dinner.Kind);
+                    Time = CalcMealsTime(BeforeAlarmTime, Setting.Dinner.Start, Setting.Dinner.Finish, DrugList[iLoop].Dinner.Kind);
                     CompareToTime(Time, iLoop, DrugList[iLoop].Dinner.Volume, false, false);
                 }
 
@@ -1505,7 +1512,7 @@ namespace DrugAlarm.Class
                     Time = Setting.Sleep.AddMinutes((-1) * Setting.MinuteBeforeSleep);
 
                     //取得した時間を超過している場合は翌日にする
-                    if (Time < DateTime.Now)
+                    if (Time < BeforeAlarmTime)
                     {
                         Time = Time.AddDays(1);
                     }
@@ -1564,10 +1571,11 @@ namespace DrugAlarm.Class
         /// 食事時の服用時間の計算
         /// </summary>
         /// <returns>服用時間</returns>
+        /// <param name="BeforeAlarmTime">前回アラーム時間</param>
         /// <param name="StartTime">開始時間</param>
         /// <param name="FinishTime">終了時間</param>
         /// <param name="Kind">服用タイミング</param>
-        private DateTime CalcMealsTime(DateTime StartTime, DateTime FinishTime, UserControl.KindTiming Kind)
+        private DateTime CalcMealsTime(DateTime BeforeAlarmTime, DateTime StartTime, DateTime FinishTime, UserControl.KindTiming Kind)
         {
 
             DateTime Return = DateTime.MaxValue;
@@ -1593,7 +1601,7 @@ namespace DrugAlarm.Class
             }
 
             //取得した時間を超過している場合は翌日にする
-            if (Return < DateTime.Now)
+            if (Return < BeforeAlarmTime)
             {
                 Return = Return.AddDays(1);
             }

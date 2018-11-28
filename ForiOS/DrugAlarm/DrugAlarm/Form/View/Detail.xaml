@@ -8,6 +8,9 @@
     <ContentPage.Resources>
         <Convert:EnumToBool x:Key="EnumToBool" />
     </ContentPage.Resources>
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" />
+    </ContentPage.Padding>
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
@@ -32,7 +35,7 @@
                 </Grid.ColumnDefinitions>
                 <Label Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="#FF333333" TextColor="White" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="{Common:Translate Detail_Title}" />
                 <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" BackgroundColor="Transparent" TextColor="White" VerticalOptions="Center" HorizontalOptions="Center" BorderColor="Transparent" BorderWidth="0" Text="&lt;" Command="{Binding CancelCommand}" />
-                <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" BackgroundColor="Transparent" TextColor="White" VerticalOptions="Center" HorizontalOptions="Center" BorderColor="Transparent" BorderWidth="0" Text="✓" Command="{Binding SaveCommand}" />
+                <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" BackgroundColor="Transparent" TextColor="White" VerticalOptions="Center" HorizontalOptions="Center" BorderColor="Transparent" BorderWidth="0" Text="✓" Command="{Binding SaveCommand}" IsEnabled="{Binding IsEdited}" />
             </Grid>
             
             <Grid Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" >
@@ -94,7 +97,7 @@
                 <Switch Grid.Row="3" Grid.RowSpan="1" Grid.Column="7" Grid.ColumnSpan="2" HorizontalOptions="End" IsToggled="{Binding IsDinner}" />
                 
                 <!--Timing-->
-                <Picker Grid.Row="4" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="6" ItemsSource="{Binding DrugTiming}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding DrugTimingIndex}" IsEnabled="{Binding IsDrugTiming}" />
+                <Picker Grid.Row="4" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="6" ItemsSource="{Binding MealTiming}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding MealTimingIndex}" IsEnabled="{Binding IsDrugTiming, Mode=OneWay}" />
                 
                 <!--Sleep-->
                 <Label Grid.Row="5" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Detail_Sleep}" />

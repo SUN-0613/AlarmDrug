@@ -13,6 +13,9 @@ namespace DrugAlarm.Form.ViewModel
 
         #region 基底
 
+        /// <summary>
+        /// The model.Detail
+        /// </summary>
         private Model.Detail _Model;
 
         /// <summary>
@@ -22,7 +25,11 @@ namespace DrugAlarm.Form.ViewModel
         public bool IsEdited
         {
             get { return _Model.IsEdited; }
-            set { _Model.IsEdited = value; }
+            set 
+            { 
+                _Model.IsEdited = value;
+                CallPropertyChanged("IsEdited");
+            }
         }
 
         /// <summary>
@@ -35,8 +42,8 @@ namespace DrugAlarm.Form.ViewModel
 
             base.CallPropertyChanged(PropertyName, StackFrameIndex + 1);
 
-            IsEdited = true;
-            base.CallPropertyChanged("IsEdited");
+            if (!PropertyName.Equals(nameof(IsEdited)) && !(PropertyName.Length > 4 && PropertyName.Substring(0, 4).ToUpper().Equals("CALL")))
+                IsEdited = true;
 
         }
 
@@ -156,8 +163,11 @@ namespace DrugAlarm.Form.ViewModel
             get { return _Model.Drug.Name; }
             set
             {
-                _Model.Drug.Name = value;
-                CallPropertyChanged();
+                if (!_Model.Drug.Name.Equals(value))
+                {
+                    _Model.Drug.Name = value;
+                    CallPropertyChanged();
+                }
             }
         }
 
@@ -177,6 +187,7 @@ namespace DrugAlarm.Form.ViewModel
                 {
                     _Model.Drug.Breakfast.IsDrug = value;
                     CallPropertyChanged();
+                    CallPropertyChanged(nameof(IsDrugTiming));
                 }
             }
         }
@@ -224,6 +235,7 @@ namespace DrugAlarm.Form.ViewModel
                 {
                     _Model.Drug.Lunch.IsDrug = value;
                     CallPropertyChanged();
+                    CallPropertyChanged(nameof(IsDrugTiming));
                 }
             }
         }
@@ -271,6 +283,7 @@ namespace DrugAlarm.Form.ViewModel
                 {
                     _Model.Drug.Dinner.IsDrug = value;
                     CallPropertyChanged();
+                    CallPropertyChanged(nameof(IsDrugTiming));
                 }
             }
         }
@@ -306,17 +319,33 @@ namespace DrugAlarm.Form.ViewModel
         /// 食事時の服用タイミングプロパティ
         /// </summary>
         /// <value>The meal timing.</value>
-        public Class.UserControl.KindTiming MealTiming
+        public ObservableCollection<string> MealTiming { get; set; }
+
+        /// <summary>
+        /// 食事時の服用タイミングIndexプロパティ
+        /// </summary>
+        /// <value>The meal timing.</value>
+        public int MealTimingIndex
         {
-            get { return _Model.Drug.Breakfast.Kind; }
+            get { return (int)_Model.Drug.Breakfast.Kind - 1; }
             set 
             {
-                if (!_Model.Drug.Breakfast.Kind.Equals(value))
+                value += 1;
+                if (!((int)_Model.Drug.Breakfast.Kind).Equals(value))
                 {
-                    _Model.Drug.Breakfast.Kind = value;
+                    _Model.Drug.Breakfast.Kind = (Class.UserControl.KindTiming)value;
                     CallPropertyChanged();
                 }
             }
+        }
+
+        /// <summary>
+        /// 服用タイミング選択プロパティ
+        /// </summary>
+        /// <value><c>true</c> if is drug timing; otherwise, <c>false</c>.</value>
+        public bool IsDrugTiming
+        {
+            get { return _Model.Drug.Breakfast.IsDrug || _Model.Drug.Lunch.IsDrug || _Model.Drug.Dinner.IsDrug; }
         }
 
         #region 就寝前
@@ -717,6 +746,9 @@ namespace DrugAlarm.Form.ViewModel
             set
             {
 
+                if (value.Length.Equals(0))
+                    value = "0";
+
                 if (Int32.TryParse(value, out Int32 Number))
                 {
 
@@ -751,6 +783,9 @@ namespace DrugAlarm.Form.ViewModel
             get { return _Model.Drug.PrescriptionAlarmVolume.ToString(); }
             set
             {
+
+                if (value.Length.Equals(0))
+                    value = "0";
 
                 if (Int32.TryParse(value, out Int32 Number))
                 {
@@ -864,6 +899,10 @@ namespace DrugAlarm.Form.ViewModel
             _Model.GetHourEachList().ForEach(Time => { HourEachTime.Add(Time.ToString("00")); });
             HourEachTimeIndex = _Model.GetHourEachIndex();
 
+            MealTiming = new ObservableCollection<string>();
+            _Model.GetMealTimingList().ForEach(Timing => { MealTiming.Add(Timing); });
+            MealTimingIndex = _Model.GetMealTimingIndex();
+
             IsEdited = false;
 
         }
@@ -898,6 +937,12 @@ namespace DrugAlarm.Form.ViewModel
             {
                 DinnerVolume.Clear();
                 DinnerVolume = null;
+            }
+
+            if (MealTiming != null)
+            {
+                MealTiming.Clear();
+                MealTiming = null;
             }
 
             if (SleepVolume != null)

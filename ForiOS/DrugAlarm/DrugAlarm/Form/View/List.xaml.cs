@@ -87,7 +87,7 @@ namespace DrugAlarm.Form.View
                 case "CallDrugMedicine":
                     if (_ViewModel.DrugMedicine())
                     {
-                        await DisplayAlert(Resx.Resources.List_Title, _ViewModel.MakeDeleteDrugMessage(), Resx.Resources.DisplayAlert_OK);
+                        await DisplayAlert(Resx.Resources.List_Title, _ViewModel.MakeDrugMedicineMessage(), Resx.Resources.DisplayAlert_OK);
                     }
                     break;
 

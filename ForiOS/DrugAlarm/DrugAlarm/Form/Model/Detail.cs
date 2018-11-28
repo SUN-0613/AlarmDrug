@@ -184,6 +184,20 @@ namespace DrugAlarm.Form.Model
 
         #endregion
 
+        #region 服用タイミング
+
+        /// <summary>
+        /// 現在設定値より服用タイミングIndexを取得
+        /// </summary>
+        /// <returns>The meal timing index.</returns>
+        public Int32 GetMealTimingIndex()
+        {
+            Int32 Value = (Int32)Drug.Breakfast.Kind - 1;
+            return Value < 0 ? 0 : Value;
+        }
+
+        #endregion
+
         #region 就寝前
 
         /// <summary>
@@ -364,7 +378,20 @@ namespace DrugAlarm.Form.Model
         /// <returns>The appoint minute index.</returns>
         public Int32 GetAppointMinuteIndex()
         {
-            return new Class.Method().GetDefaultIndex(_Minute, Drug.AppointTime.Minute);
+
+            Int32 Return = -1;
+
+            for (Int32 iLoop = 0; iLoop < _Minute.Count; iLoop++)
+            {
+                if (Drug.AppointTime.Minute <= _Minute[iLoop])
+                {
+                    Return = iLoop;
+                    break;
+                }
+            }
+
+            return Return < 0 ? 0 : Return;
+
         }
 
         /// <summary>
@@ -379,7 +406,7 @@ namespace DrugAlarm.Form.Model
                 && method.IsOkListStatus(_Month, AppointMonthIndex)
                 && method.IsOkListStatus(_Day, AppointDayIndex)
                 && method.IsOkListStatus(_Hour, AppointHourIndex)
-                && method.IsOkListStatus(_Month, AppointMonthIndex))
+                && method.IsOkListStatus(_Minute, AppointMinuteIndex))
             {
 
                 Drug.AppointTime = method.ConvertToDateTime(_Year[AppointYearIndex], _Month[AppointMonthIndex], _Day[AppointDayIndex]
@@ -507,6 +534,11 @@ namespace DrugAlarm.Form.Model
         /// 時間毎List
         /// </summary>
         private List<Int32> _HourEach;
+
+        /// <summary>
+        /// 服用タイミングList
+        /// </summary>
+        private List<string> _MealTiming;
 
         /// <summary>
         /// 錠数Listの作成
@@ -672,6 +704,28 @@ namespace DrugAlarm.Form.Model
 
         }
 
+        /// <summary>
+        /// 服用タイミングListの取得
+        /// </summary>
+        /// <returns>The meal timing list.</returns>
+        public List<string> GetMealTimingList()
+        {
+
+            if (_MealTiming == null)
+            {
+
+                _MealTiming = new List<string>();
+
+                _MealTiming.Add(Resx.Resources.Detail_BeforeMeals);
+                _MealTiming.Add(Resx.Resources.Detail_BetweenMeals);
+                _MealTiming.Add(Resx.Resources.Detail_AfterMeals);
+
+            }
+
+            return _MealTiming;
+
+        }
+
         #endregion
 
         /// <summary>
@@ -772,6 +826,12 @@ namespace DrugAlarm.Form.Model
             {
                 _HourEach.Clear();
                 _HourEach = null;
+            }
+
+            if (_MealTiming != null)
+            {
+                _MealTiming.Clear();
+                _MealTiming = null;
             }
 
         }

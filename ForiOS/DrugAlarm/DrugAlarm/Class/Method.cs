@@ -67,7 +67,7 @@ namespace DrugAlarm.Class
         /// <param name="DefaultValue">デフォルト値</param>
         public DateTime ConvertToDateTime(string Value, DateTime DefaultValue)
         {
-            return DateTime.TryParse(Value.Split(':').Length != 2 ? Value + ":00" : Value, out DateTime Return) ? Return : DefaultValue;
+            return DateTime.TryParse(Value, out DateTime Return) ? Return : DefaultValue;
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace DrugAlarm.Class
         /// <param name="Index">設定されているIndex</param>
         public bool IsOkListStatus(List<Int32> list, Int32 Index)
         {
-            return (list == null) && (-1 < Index && Index < list.Count);
+            return (list != null) && (-1 < Index && Index < list.Count);
         }
 
     }

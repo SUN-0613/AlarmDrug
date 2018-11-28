@@ -25,7 +25,7 @@ namespace DrugAlarm.Class
             bool IsShowAlarm = false;   //アラーム画面表示FLG
 
             //タイマ処理
-            Device.StartTimer(new TimeSpan(0, 0, 0, 0, 100), 
+            Device.StartTimer(new TimeSpan(0, 0, 0, 1, 0), 
             () =>
             {
 
