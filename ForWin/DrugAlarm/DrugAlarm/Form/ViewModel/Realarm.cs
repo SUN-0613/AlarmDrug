@@ -79,7 +79,7 @@ namespace DrugAlarm.Form.ViewModel
 
             _Model.GetAlarmMinuteList().ForEach(Minute => 
             {
-                AlarmMinute.Add(Minute.ToString());
+                AlarmMinute.Add(Minute.ToString("00"));
             });
 
             AlarmMinuteIndex = _Model.GetAlarmMinuteIndex();

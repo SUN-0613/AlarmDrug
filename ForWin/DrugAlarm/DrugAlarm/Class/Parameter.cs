@@ -1100,7 +1100,9 @@ namespace DrugAlarm.Class
                     }
                     catch (Exception ex)
                     {
-
+#if DEBUG
+                        System.Diagnostics.Debug.WriteLine(ex.Message);
+#endif
                     }
                     finally
                     {
@@ -1411,7 +1413,9 @@ namespace DrugAlarm.Class
             }
             catch (Exception ex)
             {
-
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+#endif
             }
             finally
             {
@@ -1436,6 +1440,7 @@ namespace DrugAlarm.Class
         private string MakeParameter(string Parameter, string Value, bool IsAllowLine)
         {
 
+            string Return;
             Method method = new Method();
             StringBuilder Str = new StringBuilder(Parameter.Length + Value.Length + 1);
 
@@ -1455,18 +1460,23 @@ namespace DrugAlarm.Class
                     Str.Append(Value);
                 }
 
-                return Str.ToString();
+                Return = Str.ToString();
 
             }
             catch (Exception ex)
             {
-                return "";
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+#endif
+                Return = "";
             }
             finally
             {
                 Str.Clear();
                 Str = null;
             }
+
+            return Return;
 
         }
 
@@ -1479,6 +1489,7 @@ namespace DrugAlarm.Class
         private string MakeParameter(string Parameter, Int32 Value)
         {
 
+            string Return;
             StringBuilder Str = new StringBuilder(Parameter.Length + TimeFormat.Length + 1);
 
             try
@@ -1489,18 +1500,23 @@ namespace DrugAlarm.Class
                 Str.Append("=");
                 Str.Append(Value.ToString());
 
-                return Str.ToString();
+                Return = Str.ToString();
 
             }
             catch (Exception ex)
             {
-                return "";
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+#endif
+                Return = "";
             }
             finally
             {
                 Str.Clear();
                 Str = null;
             }
+
+            return Return;
 
         }
 
@@ -1513,6 +1529,7 @@ namespace DrugAlarm.Class
         private string MakeParameter(string Parameter, DateTime Value)
         {
 
+            string Return;
             StringBuilder Str = new StringBuilder(Parameter.Length + TimeFormat.Length + 1);
 
             try
@@ -1523,18 +1540,23 @@ namespace DrugAlarm.Class
                 Str.Append("=");
                 Str.Append(Value.ToString(TimeFormat));
 
-                return Str.ToString();
+                Return = Str.ToString();
 
             }
             catch (Exception ex)
             {
-                return "";
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+#endif
+                Return = "";
             }
             finally
             {
                 Str.Clear();
                 Str = null;
             }
+
+            return Return;
 
         }
 
@@ -1548,6 +1570,7 @@ namespace DrugAlarm.Class
         private string MakeParameter(string Parameter, DateTime Start, DateTime Finish)
         {
 
+            string Return;
             StringBuilder Str = new StringBuilder(Parameter.Length + TimeFormat.Length * 2 + 2);
 
             try
@@ -1560,18 +1583,23 @@ namespace DrugAlarm.Class
                 Str.Append(",");
                 Str.Append(Finish.ToString(TimeFormat));
 
-                return Str.ToString();
+                Return = Str.ToString();
 
             }
             catch (Exception ex)
             {
-                return "";
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+#endif
+                Return = "";
             }
             finally
             {
                 Str.Clear();
                 Str = null;
             }
+
+            return Return;
 
         }
 
@@ -1587,6 +1615,7 @@ namespace DrugAlarm.Class
 
             const string AppointFormat = "yyyy/MM/dd HH:mm";
 
+            string Return;
             StringBuilder Str = new StringBuilder(Parameter.Length + AppointFormat.Length + Volume.ToString().Length + 2);
 
             try
@@ -1599,18 +1628,23 @@ namespace DrugAlarm.Class
                 Str.Append(",");
                 Str.Append(Volume.ToString());
 
-                return Str.ToString();
+                Return = Str.ToString();
 
             }
             catch (Exception ex)
             {
-                return "";
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+#endif
+                Return = "";
             }
             finally
             {
                 Str.Clear();
                 Str = null;
             }
+
+            return Return;
 
         }
 
@@ -1625,6 +1659,7 @@ namespace DrugAlarm.Class
         private string MakeParameter(string Parameter, Int32 HourEach, Int32 Volume, DateTime NextTime)
         {
 
+            string Return;
             StringBuilder Str = new StringBuilder(Parameter.Length + HourEach.ToString().Length + Volume.ToString().Length + 2);
 
             try
@@ -1636,18 +1671,23 @@ namespace DrugAlarm.Class
                 Str.Append(",").Append(Volume.ToString());
                 Str.Append(",").Append(NextTime.ToString("yyyy/MM/dd HH:mm"));
 
-                return Str.ToString();
+                Return = Str.ToString();
 
             }
             catch (Exception ex)
             {
-                return "";
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+#endif
+                Return = "";
             }
             finally
             {
                 Str.Clear();
                 Str = null;
             }
+
+            return Return;
 
         }
 
@@ -1705,6 +1745,10 @@ namespace DrugAlarm.Class
 
             Method method = new Method();
             DateTime Time;
+            DateTime BeforeAlarmTime;   //前回アラーム時間
+
+            //アラーム時間の記憶
+            BeforeAlarmTime = NextAlarm.Timer.Equals(DateTime.MaxValue) ? DateTime.Now : NextAlarm.Timer;
 
             //初期値
             NextAlarm.Timer = DateTime.MaxValue;
@@ -1738,7 +1782,8 @@ namespace DrugAlarm.Class
                         {
                             Index = ReAlarm.DrugList[iLoop].Index,
                             Volume = ReAlarm.DrugList[iLoop].Volume,
-                            IsAppoint = ReAlarm.DrugList[iLoop].IsAppoint
+                            IsAppoint = ReAlarm.DrugList[iLoop].IsAppoint,
+                            IsHourEach = ReAlarm.DrugList[iLoop].IsHourEach
                         });
 
                     }
@@ -1771,21 +1816,21 @@ namespace DrugAlarm.Class
                 //朝食
                 if (DrugList[iLoop].Breakfast.IsDrug)
                 {
-                    Time = CalcMealsTime(Setting.Breakfast.Start, Setting.Breakfast.Finish, DrugList[iLoop].Breakfast.Kind);
+                    Time = CalcMealsTime(BeforeAlarmTime, Setting.Breakfast.Start, Setting.Breakfast.Finish, DrugList[iLoop].Breakfast.Kind);
                     CompareToTime(Time, iLoop, DrugList[iLoop].Breakfast.Volume, false, false);
                 }
 
                 //昼食
                 if (DrugList[iLoop].Lunch.IsDrug)
                 {
-                    Time = CalcMealsTime(Setting.Lunch.Start, Setting.Lunch.Finish, DrugList[iLoop].Lunch.Kind);
+                    Time = CalcMealsTime(BeforeAlarmTime, Setting.Lunch.Start, Setting.Lunch.Finish, DrugList[iLoop].Lunch.Kind);
                     CompareToTime(Time, iLoop, DrugList[iLoop].Lunch.Volume, false, false);
                 }
 
                 //夕食
                 if (DrugList[iLoop].Dinner.IsDrug)
                 {
-                    Time = CalcMealsTime(Setting.Dinner.Start, Setting.Dinner.Finish, DrugList[iLoop].Dinner.Kind);
+                    Time = CalcMealsTime(BeforeAlarmTime, Setting.Dinner.Start, Setting.Dinner.Finish, DrugList[iLoop].Dinner.Kind);
                     CompareToTime(Time, iLoop, DrugList[iLoop].Dinner.Volume, false, false);
                 }
 
@@ -1796,7 +1841,7 @@ namespace DrugAlarm.Class
                     Time = Setting.Sleep.AddMinutes((-1) * Setting.MinuteBeforeSleep);
 
                     //取得した時間を超過している場合は翌日にする
-                    if (Time < DateTime.Now)
+                    if (Time < BeforeAlarmTime)
                         Time = Time.AddDays(1);
 
                     CompareToTime(Time, iLoop, DrugList[iLoop].Sleep.Volume, false, false);
@@ -1888,11 +1933,12 @@ namespace DrugAlarm.Class
         /// <summary>
         /// 食事時の服用時間の計算
         /// </summary>
+        /// <param name="BeforeAlarmTime">前回アラーム時間</param>
         /// <param name="StartTime">開始時間</param>
         /// <param name="FinishTime">終了時間</param>
         /// <param name="Kind">服用タイミング</param>
         /// <returns>服用時間</returns>
-        private DateTime CalcMealsTime(DateTime StartTime, DateTime FinishTime, DrugParameter.KindTiming Kind)
+        private DateTime CalcMealsTime(DateTime BeforeAlarmTime, DateTime StartTime, DateTime FinishTime, DrugParameter.KindTiming Kind)
         {
 
             DateTime Return = DateTime.MaxValue;
@@ -1920,7 +1966,7 @@ namespace DrugAlarm.Class
             }
 
             //取得した時間を超過している場合は翌日にする
-            if (Return < DateTime.Now)
+            if (Return < BeforeAlarmTime)
                 Return = Return.AddDays(1);
 
             return Return;

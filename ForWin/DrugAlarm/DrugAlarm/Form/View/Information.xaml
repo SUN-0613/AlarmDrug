@@ -8,6 +8,7 @@
         Style="{Binding Mode=OneWay, Source={StaticResource WindowCustomStyle}}"
         Title="{Binding Information_Title, Source={StaticResource resources}}" 
         WindowStartupLocation="CenterOwner"
+        Closing="OnClosing"
         >
     <Grid>
         <Grid.RowDefinitions>

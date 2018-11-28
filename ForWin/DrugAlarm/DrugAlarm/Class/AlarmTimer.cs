@@ -79,7 +79,9 @@ namespace DrugAlarm.Class
             }
             catch (Exception ex)
             {
-
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+#endif
             }
             finally
             {
