@@ -85,7 +85,9 @@ namespace DrugAlarm.Common
 
     /// <summary>
     /// Delegateを受け取るICommandの実装
+    /// パラメータ有
     /// </summary>
+    /// <typeparam name="T">コマンドパラメータ</typeparam>
     public class DelegateCommand<T> : ICommand
     {
 
