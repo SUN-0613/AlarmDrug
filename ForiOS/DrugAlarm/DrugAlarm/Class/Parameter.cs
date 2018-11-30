@@ -1617,6 +1617,15 @@ namespace DrugAlarm.Class
         public void SetRealarm(Int32 AfterMinute)
         {
 
+            //設定済時刻と今回設定時刻のうち、近い方に合わせる
+            //ただし、設定済時刻が現在時刻より以前であれば今回設定時刻を採用する
+            DateTime NextTime = DateTime.Now.AddMinutes(AfterMinute);
+            NextTime = new Class.Method().ConvertToDateTime(NextTime.Year, NextTime.Month, NextTime.Day, NextTime.Hour, NextTime.Minute, NextTime); //秒を0にする
+            if (NextTime < Realarm.Timer || Realarm.Timer <= DateTime.Now)
+            {
+                Realarm.Timer = NextTime;
+            }
+
             //DrugListのIndexを登録
             for (Int32 iLoop = 0; iLoop < NextAlarm.DrugList.Count; iLoop++)
             {
@@ -1636,15 +1645,25 @@ namespace DrugAlarm.Class
 
             }
 
-            //設定済時刻と今回設定時刻のうち、近い方に合わせる
-            //ただし、設定済時刻が現在時刻より以前であれば今回設定時刻を採用する
-            DateTime NextTime = DateTime.Now.AddMinutes(AfterMinute);
-            if (NextTime < Realarm.Timer || Realarm.Timer <= DateTime.Now)
+            //指定時間、時間毎のアラームの時は、元の設定値を更新
+            //上のfor文内では再々通知のときに更新できないためここで再ループ
+            for (Int32 iLoop = 0; iLoop < Realarm.DrugList.Count; iLoop++)
             {
-                Realarm.Timer = NextTime;
+
+                //指定時間
+                if (NextAlarm.DrugList[iLoop].IsAppoint)
+                    DrugList[NextAlarm.DrugList[iLoop].Index].AppointTime = NextTime;
+
+                //時間毎
+                if (NextAlarm.DrugList[iLoop].IsHourEach)
+                    DrugList[NextAlarm.DrugList[iLoop].Index].HourEachNextTime = NextTime;
+
             }
 
             IsSetRealarm = false;
+
+            NextAlarm.Timer = DateTime.MaxValue;
+            NextAlarm.DrugList.Clear();
 
             //次回アラームの設定
             SetNextAlarm();

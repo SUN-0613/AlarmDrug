@@ -66,7 +66,7 @@ namespace DrugAlarm.Form.View
                     }
                     else
                     {
-                        await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopToRootAsync();
+                        await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
                     }
 
                     break;

@@ -61,7 +61,8 @@ namespace DrugAlarm.Form.View
             {
 
                 case "CallOK":
-                    await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopToRootAsync();
+                    await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(false);
+                    await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
                     break;
 
                 default:

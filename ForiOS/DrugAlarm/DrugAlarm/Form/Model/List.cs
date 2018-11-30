@@ -200,35 +200,6 @@ namespace DrugAlarm.Form.Model
 
         #endregion
 
-        #region コマンド
-
-        /// <summary>
-        /// 設定コマンド
-        /// </summary>
-        public Common.DelegateCommand SettingCommand;
-
-        /// <summary>
-        /// 新規追加コマンド
-        /// </summary>
-        public Common.DelegateCommand AddDrugCommand;
-
-        /// <summary>
-        /// 編集コマンド
-        /// </summary>
-        public Common.DelegateCommand EditCommand;
-
-        /// <summary>
-        /// 削除コマンド
-        /// </summary>
-        public Common.DelegateCommand DeleteCommand;
-
-        /// <summary>
-        /// 服用コマンド
-        /// </summary>
-        public Common.DelegateCommand DrugMedicineCommand;
-
-        #endregion
-
         /// <summary>
         /// new
         /// </summary>

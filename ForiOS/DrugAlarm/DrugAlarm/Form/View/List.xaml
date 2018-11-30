@@ -54,9 +54,9 @@
                                 <Label Grid.Column="3" Text="{Binding DrugTiming}" TextColor="{Binding IsPrescriptionAlarm, Converter={StaticResource ForegroundConverter}}" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" />
                             </Grid>
                             <ViewCell.ContextActions>
-                                <MenuItem Text="{Common:Translate List_Menu_Edit}" Command="{Binding Path=BindingContext.EditCommand, Source={x:Reference Name=PageList}}" IsDestructive="false" />
-                                <MenuItem Text="{Common:Translate List_Menu_Delete}" Command="{Binding Path=BindingContext.DeleteCommand, Source={x:Reference Name=PageList}}" IsDestructive="true" />
-                                <MenuItem Text="{Common:Translate List_Menu_Drug}" Command="{Binding Path=BindingContext.DrugMedicineCommand, Source={x:Reference Name=PageList}}" IsDestructive="false" />
+                                <MenuItem Text="{Common:Translate List_Menu_Edit}" Command="{Binding Path=BindingContext.EditCommand, Source={x:Reference Name=PageList}}" CommandParameter="{Binding .}" IsDestructive="false" />
+                                <MenuItem Text="{Common:Translate List_Menu_Delete}" Command="{Binding Path=BindingContext.DeleteCommand, Source={x:Reference Name=PageList}}" CommandParameter="{Binding .}" IsDestructive="true" />
+                                <MenuItem Text="{Common:Translate List_Menu_Drug}" Command="{Binding Path=BindingContext.DrugMedicineCommand, Source={x:Reference Name=PageList}}" CommandParameter="{Binding .}" IsDestructive="false" />
                             </ViewCell.ContextActions>
                         </ViewCell>
                     </DataTemplate>

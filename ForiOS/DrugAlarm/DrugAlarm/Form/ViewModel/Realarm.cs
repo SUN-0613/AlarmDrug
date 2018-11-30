@@ -25,20 +25,20 @@ namespace DrugAlarm.Form.ViewModel
         /// 分Listプロパティ
         /// </summary>
         /// <value>The alarm minute.</value>
-        public ObservableCollection<string> AlarmMinute { get; set; }
+        public ObservableCollection<string> RealarmMinute { get; set; }
 
         /// <summary>
         /// 分Indexプロパティ
         /// </summary>
         /// <value>The index of the alarm minute.</value>
-        public Int32 AlarmMinuteIndex
+        public Int32 RealarmMinuteIndex
         {
-            get { return _Model.AlarmMinuteIndex; }
+            get { return _Model.RealarmMinuteIndex; }
             set
             {
-                if (!_Model.AlarmMinuteIndex.Equals(value))
+                if (!_Model.RealarmMinuteIndex.Equals(value))
                 {
-                    _Model.AlarmMinuteIndex = value;
+                    _Model.RealarmMinuteIndex = value;
                     CallPropertyChanged();
                 }
             }
@@ -47,6 +47,27 @@ namespace DrugAlarm.Form.ViewModel
         #endregion
 
         #region CommandProperty
+
+        /// <summary>
+        /// キャンセルコマンドプロパティ
+        /// </summary>
+        /// <value>The cancel command.</value>
+        public Common.DelegateCommand CancelCommand
+        {
+            get
+            {
+
+                if (_Model.CancelCommand == null)
+                {
+                    _Model.CancelCommand = new Common.DelegateCommand(
+                        () => { CallPropertyChanged("CallCancel"); },
+                        () => true);
+                }
+
+                return _Model.CancelCommand;
+
+            }
+        }
 
         /// <summary>
         /// 保存コマンドプロパティ
@@ -82,14 +103,14 @@ namespace DrugAlarm.Form.ViewModel
 
             _Model = new Model.Realarm();
 
-            AlarmMinute = new ObservableCollection<string>();
+            RealarmMinute = new ObservableCollection<string>();
 
-            _Model.GetAlarmMinuteList().ForEach(Minute => 
+            _Model.GetRealarmMinuteList().ForEach(Minute => 
             {
-                AlarmMinute.Add(Minute.ToString("00"));
+                RealarmMinute.Add(Minute.ToString("00"));
             });
 
-            AlarmMinuteIndex = _Model.GetAlarmMinuteIndex();
+            RealarmMinuteIndex = _Model.GetAlarmMinuteIndex();
 
         }
 
@@ -104,10 +125,10 @@ namespace DrugAlarm.Form.ViewModel
         public void Dispose()
         {
 
-            if (AlarmMinute != null)
+            if (RealarmMinute != null)
             {
-                AlarmMinute.Clear();
-                AlarmMinute = null;
+                RealarmMinute.Clear();
+                RealarmMinute = null;
             }
 
             _Model.Dispose();

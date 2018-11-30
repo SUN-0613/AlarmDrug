@@ -24,29 +24,29 @@ namespace DrugAlarm.Form.Model
         /// <summary>
         /// 分List
         /// </summary>
-        private List<Int32> _AlarmMinute;
+        private List<Int32> _RealarmMinute;
 
         /// <summary>
         /// 分Index
         /// </summary>
-        public Int32 AlarmMinuteIndex = -1;
+        public Int32 RealarmMinuteIndex = -1;
 
         /// <summary>
         /// 分List取得
         /// </summary>
         /// <returns>The alarm minute list.</returns>
-        public List<Int32> GetAlarmMinuteList()
+        public List<Int32> GetRealarmMinuteList()
         {
 
-            if (_AlarmMinute == null)
-                _AlarmMinute = new List<Int32>();
+            if (_RealarmMinute == null)
+                _RealarmMinute = new List<Int32>();
 
-            _AlarmMinute.Clear();
+            _RealarmMinute.Clear();
 
             for (Int32 iLoop = 5; iLoop < 60; iLoop += 5)
-                _AlarmMinute.Add(iLoop);
+                _RealarmMinute.Add(iLoop);
 
-            return _AlarmMinute;
+            return _RealarmMinute;
 
         }
 
@@ -55,13 +55,16 @@ namespace DrugAlarm.Form.Model
         /// </summary>
         /// <returns>指定時間(分)</returns>
         /// <param name="Minute">Minute.</param>
-        public Int32 GetAlarmMinuteIndex(Int32 Minute)
+        public Int32 GetRealarmMinuteIndex(Int32 Minute)
         {
             Int32 Return = -1;
 
-            for (Int32 iLoop = 0; iLoop < _AlarmMinute.Count; iLoop++)
+            if (_RealarmMinute == null)
+                return Return;
+
+            for (Int32 iLoop = 0; iLoop < _RealarmMinute.Count; iLoop++)
             {
-                if (Minute <= _AlarmMinute[iLoop])
+                if (Minute <= _RealarmMinute[iLoop])
                 {
                     Return = iLoop;
                     break;
@@ -81,12 +84,17 @@ namespace DrugAlarm.Form.Model
         /// <returns>The alarm minute index.</returns>
         public Int32 GetAlarmMinuteIndex()
         {
-            return GetAlarmMinuteIndex(_Parameter.Setting.MinuteRealarm);
+            return GetRealarmMinuteIndex(_Parameter.Setting.MinuteRealarm);
         }
 
         #endregion
 
         #region Command
+
+        /// <summary>
+        /// キャンセルコマンド
+        /// </summary>
+        public Common.DelegateCommand CancelCommand;
 
         /// <summary>
         /// 保存コマンド
@@ -98,7 +106,7 @@ namespace DrugAlarm.Form.Model
         /// </summary>
         public void Save()
         {
-            _Parameter.SetRealarm(_AlarmMinute[AlarmMinuteIndex]);
+            _Parameter.SetRealarm(_RealarmMinute[RealarmMinuteIndex]);
         }
 
         #endregion
@@ -121,10 +129,10 @@ namespace DrugAlarm.Form.Model
         /// <see cref="T:DrugAlarm.Form.Model.Realarm"/> was occupying.</remarks>
         public void Dispose()
         {
-            if (_AlarmMinute != null)
+            if (_RealarmMinute != null)
             {
-                _AlarmMinute.Clear();
-                _AlarmMinute = null;
+                _RealarmMinute.Clear();
+                _RealarmMinute = null;
             }
         }
 

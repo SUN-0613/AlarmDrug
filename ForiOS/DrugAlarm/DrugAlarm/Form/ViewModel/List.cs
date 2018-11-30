@@ -14,6 +14,31 @@ namespace DrugAlarm.Form.ViewModel
         #region コマンド
 
         /// <summary>
+        /// 設定コマンド
+        /// </summary>
+        private Common.DelegateCommand _SettingCommand;
+
+        /// <summary>
+        /// 新規追加コマンド
+        /// </summary>
+        private Common.DelegateCommand _AddDrugCommand;
+
+        /// <summary>
+        /// 編集コマンド
+        /// </summary>
+        private Common.DelegateCommand<DrugParameter> _EditCommand;
+
+        /// <summary>
+        /// 削除コマンド
+        /// </summary>
+        private Common.DelegateCommand<DrugParameter> _DeleteCommand;
+
+        /// <summary>
+        /// 服用コマンド
+        /// </summary>
+        private Common.DelegateCommand<DrugParameter> _DrugMedicineCommand;
+
+        /// <summary>
         /// 設定コマンドプロパティ
         /// </summary>
         /// <value>The setting command.</value>
@@ -22,14 +47,14 @@ namespace DrugAlarm.Form.ViewModel
             get
             {
 
-                if (_Model.SettingCommand == null)
+                if (_SettingCommand == null)
                 {
-                    _Model.SettingCommand = new Common.DelegateCommand(
+                    _SettingCommand = new Common.DelegateCommand(
                         () => { CallPropertyChanged("CallSetting"); },
                         () => true);
                 }
 
-                return _Model.SettingCommand;
+                return _SettingCommand;
 
             }
         }
@@ -43,14 +68,14 @@ namespace DrugAlarm.Form.ViewModel
             get
             {
 
-                if (_Model.AddDrugCommand == null)
+                if (_AddDrugCommand == null)
                 {
-                    _Model.AddDrugCommand = new Common.DelegateCommand(
+                    _AddDrugCommand = new Common.DelegateCommand(
                         () => { CallPropertyChanged("CallAddDrug"); },
                         () => true);
                 }
 
-                return _Model.AddDrugCommand;
+                return _AddDrugCommand;
 
             }
         }
@@ -59,23 +84,27 @@ namespace DrugAlarm.Form.ViewModel
         /// 編集コマンドプロパティ
         /// </summary>
         /// <value>The edit command.</value>
-        public Common.DelegateCommand EditCommand
+        public Common.DelegateCommand<DrugParameter> EditCommand
         {
             get
             {
 
-                if (_Model.EditCommand == null)
+                if (_EditCommand == null)
                 {
-                    _Model.EditCommand = new Common.DelegateCommand(
-                        () => 
+                    _EditCommand = new Common.DelegateCommand<DrugParameter>(
+                        (Item) => 
                         {
+
+                            SelectedItem = Item;
+
                             if (_Model.IsOkSelectedIndex())
                                 CallPropertyChanged("CallEditDrug");
+
                         },
                         () => true);
                 }
 
-                return _Model.EditCommand;
+                return _EditCommand;
 
             }
         }
@@ -84,23 +113,27 @@ namespace DrugAlarm.Form.ViewModel
         /// 削除コマンドプロパティ
         /// </summary>
         /// <value>The delete command.</value>
-        public Common.DelegateCommand DeleteCommand
+        public Common.DelegateCommand<DrugParameter> DeleteCommand
         {
             get
             {
 
-                if (_Model.DeleteCommand == null)
+                if (_DeleteCommand == null)
                 {
-                    _Model.DeleteCommand = new Common.DelegateCommand(
-                        () =>
+                    _DeleteCommand = new Common.DelegateCommand<DrugParameter>(
+                        (Item) =>
                         {
+
+                            SelectedItem = Item;
+
                             if (_Model.IsOkSelectedIndex())
                                 CallPropertyChanged("CallDeleteDrug");
+
                         },
                         () => true);
                 }
 
-                return _Model.DeleteCommand;
+                return _DeleteCommand;
 
             }
         }
@@ -109,19 +142,23 @@ namespace DrugAlarm.Form.ViewModel
         /// 服用コマンドプロパティ
         /// </summary>
         /// <value>The drug medicine command.</value>
-        public Common.DelegateCommand DrugMedicineCommand
+        public Common.DelegateCommand<DrugParameter> DrugMedicineCommand
         {
             get
             {
 
-                if (_Model.DrugMedicineCommand == null)
+                if (_DrugMedicineCommand == null)
                 {
-                    _Model.DrugMedicineCommand = new Common.DelegateCommand(
-                        () => { CallPropertyChanged("CallDrugMedicine"); },
+                    _DrugMedicineCommand = new Common.DelegateCommand<DrugParameter>(
+                        (Item) => 
+                        {
+                            SelectedItem = Item;
+                            CallPropertyChanged("CallDrugMedicine"); 
+                        },
                         () => true);
                 }
 
-                return _Model.DrugMedicineCommand;
+                return _DrugMedicineCommand;
 
             }
         }
@@ -179,18 +216,10 @@ namespace DrugAlarm.Form.ViewModel
             private Model.List _Model;
 
             /// <summary>
-            /// Model.DrugList.Index
-            /// </summary>
-            private Int32 _Index;
-
-            /// <summary>
             /// Model.DrugList.Indexプロパティ
             /// </summary>
             /// <value>The index.</value>
-            public Int32 Index
-            {
-                get { return _Index; }
-            }
+            public Int32 Index { get; private set; }
 
             /// <summary>
             /// 名称プロパティ
@@ -198,12 +227,12 @@ namespace DrugAlarm.Form.ViewModel
             /// <value>The name.</value>
             public string Name
             {
-                get { return _Model.DrugList[_Index].Name; }
+                get { return _Model.DrugList[Index].Name; }
                 set
                 {
-                    if (!_Model.DrugList[_Index].Name.Equals(value))
+                    if (!_Model.DrugList[Index].Name.Equals(value))
                     {
-                        _Model.DrugList[_Index].Name = value;
+                        _Model.DrugList[Index].Name = value;
                         CallPropertyChanged();
                     }
                 }
@@ -215,12 +244,12 @@ namespace DrugAlarm.Form.ViewModel
             /// <value>The colon.</value>
             public string Colon
             {
-                get { return _Model.DrugList[_Index].Colon; }
+                get { return _Model.DrugList[Index].Colon; }
                 set
                 {
-                    if (!_Model.DrugList[_Index].Colon.Equals(value))
+                    if (!_Model.DrugList[Index].Colon.Equals(value))
                     {
-                        _Model.DrugList[_Index].Colon = value;
+                        _Model.DrugList[Index].Colon = value;
                         CallPropertyChanged();
                     }
                 }
@@ -232,12 +261,12 @@ namespace DrugAlarm.Form.ViewModel
             /// <value>The drug timing.</value>
             public string DrugTiming
             {
-                get { return _Model.DrugList[_Index].DrugTiming; }
+                get { return _Model.DrugList[Index].DrugTiming; }
                 set
                 {
-                    if (!_Model.DrugList[_Index].DrugTiming.Equals(value))
+                    if (!_Model.DrugList[Index].DrugTiming.Equals(value))
                     {
-                        _Model.DrugList[_Index].DrugTiming = value;
+                        _Model.DrugList[Index].DrugTiming = value;
                         CallPropertyChanged();
                     }
                 }
@@ -249,12 +278,12 @@ namespace DrugAlarm.Form.ViewModel
             /// <value>The remarks.</value>
             public string Remarks
             {
-                get { return _Model.DrugList[_Index].Remarks; }
+                get { return _Model.DrugList[Index].Remarks; }
                 set
                 {
-                    if (!_Model.DrugList[_Index].Remarks.Equals(value))
+                    if (!_Model.DrugList[Index].Remarks.Equals(value))
                     {
-                        _Model.DrugList[_Index].Remarks = value;
+                        _Model.DrugList[Index].Remarks = value;
                         CallPropertyChanged();
                     }
                 }
@@ -266,12 +295,12 @@ namespace DrugAlarm.Form.ViewModel
             /// <value><c>true</c> if is prescription alarm; otherwise, <c>false</c>.</value>
             public bool IsPrescriptionAlarm
             {
-                get { return _Model.DrugList[_Index].IsPrescriptionAlarm; }
+                get { return _Model.DrugList[Index].IsPrescriptionAlarm; }
                 set
                 {
-                    if (!_Model.DrugList[_Index].IsPrescriptionAlarm.Equals(value))
+                    if (!_Model.DrugList[Index].IsPrescriptionAlarm.Equals(value))
                     {
-                        _Model.DrugList[_Index].IsPrescriptionAlarm = value;
+                        _Model.DrugList[Index].IsPrescriptionAlarm = value;
                         CallPropertyChanged();
                     }
                 }
@@ -283,12 +312,12 @@ namespace DrugAlarm.Form.ViewModel
             /// <value><c>true</c> if is to be taken; otherwise, <c>false</c>.</value>
             public bool IsToBeTaken
             {
-                get { return _Model.DrugList[_Index].IsToBeTaken; }
+                get { return _Model.DrugList[Index].IsToBeTaken; }
                 set
                 {
-                    if (!_Model.DrugList[_Index].IsToBeTaken.Equals(value))
+                    if (!_Model.DrugList[Index].IsToBeTaken.Equals(value))
                     {
-                        _Model.DrugList[_Index].IsToBeTaken = value;
+                        _Model.DrugList[Index].IsToBeTaken = value;
                         CallPropertyChanged();
                     }
                 }
@@ -301,7 +330,7 @@ namespace DrugAlarm.Form.ViewModel
             public DrugParameter(Model.List Model)
             {
                 _Model = Model;
-                _Index = _Model.AddDrugList();
+                Index = _Model.AddDrugList();
             }
 
         }
