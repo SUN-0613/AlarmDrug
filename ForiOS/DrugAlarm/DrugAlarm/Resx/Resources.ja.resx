@@ -54,15 +54,15 @@
   </data>
   <data name="Detail_Dinner" xml:space="preserve">
     <value>夕</value>
-    <comment>詳細：夕</comment>
+    <comment>詳細：夕食</comment>
   </data>
   <data name="Detail_Lunch" xml:space="preserve">
     <value>昼</value>
-    <comment>詳細：昼</comment>
+    <comment>詳細：昼食</comment>
   </data>
   <data name="Detail_Morning" xml:space="preserve">
     <value>朝</value>
-    <comment>詳細：朝</comment>
+    <comment>詳細：朝食</comment>
   </data>
   <data name="Detail_Name" xml:space="preserve">
     <value>名前</value>
@@ -73,7 +73,7 @@
     <comment>詳細：頓服</comment>
   </data>
   <data name="Detail_Prescript" xml:space="preserve">
-    <value>薬残量お知らせ</value>
+    <value>お知らせ</value>
     <comment>詳細：薬残量お知らせ</comment>
   </data>
   <data name="Detail_Remaining" xml:space="preserve">

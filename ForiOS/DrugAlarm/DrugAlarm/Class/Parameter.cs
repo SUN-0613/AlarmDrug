@@ -115,12 +115,6 @@ namespace DrugAlarm.Class
                 public const string NAME = "Name";
 
                 /// <summary>
-                /// タイミング
-                /// 食前、食間、食後
-                /// </summary>
-                public const string TIMING = "Timing";
-
-                /// <summary>
                 /// 食前
                 /// </summary>
                 public const string BEFOREMEALS = "BeforeMeals";
@@ -680,52 +674,22 @@ namespace DrugAlarm.Class
                                         DrugList[Index].Name = Strings[1];
                                         break;
 
-                                    case NAME.DRUG.TIMING:
-
-                                        switch (Strings[1])
-                                        {
-
-                                            case NAME.DRUG.BEFOREMEALS:
-                                                DrugList[Index].Breakfast.Kind = UserControl.KindTiming.Before;
-                                                DrugList[Index].Lunch.Kind = UserControl.KindTiming.Before;
-                                                DrugList[Index].Dinner.Kind = UserControl.KindTiming.Before;
-                                                break;
-
-                                            case NAME.DRUG.BETWEENMEALS:
-                                                DrugList[Index].Breakfast.Kind = UserControl.KindTiming.Between;
-                                                DrugList[Index].Lunch.Kind = UserControl.KindTiming.Between;
-                                                DrugList[Index].Dinner.Kind = UserControl.KindTiming.Between;
-                                                break;
-
-                                            case NAME.DRUG.AFTERMEALS:
-                                                DrugList[Index].Breakfast.Kind = UserControl.KindTiming.After;
-                                                DrugList[Index].Lunch.Kind = UserControl.KindTiming.After;
-                                                DrugList[Index].Dinner.Kind = UserControl.KindTiming.After;
-                                                break;
-
-                                            default:
-                                                DrugList[Index].Breakfast.Kind = UserControl.KindTiming.Before;
-                                                DrugList[Index].Lunch.Kind = UserControl.KindTiming.Before;
-                                                DrugList[Index].Dinner.Kind = UserControl.KindTiming.Before;
-                                                break;
-
-                                        }
-
-                                        break;
-
                                     case NAME.DRUG.BREAKFAST:
                                         DrugList[Index].Breakfast.IsDrug = true;
-                                        DrugList[Index].Breakfast.Volume = method.ConvertToInt32(Strings[1], DrugList[Index].Breakfast.Volume);
+                                        DrugList[Index].Breakfast.Volume = method.ConvertToInt32(Values[0], DrugList[Index].Breakfast.Volume);
+                                        DrugList[Index].Breakfast.Kind = GetTiming(Values[1]);
                                         break;
 
                                     case NAME.DRUG.LUNCH:
                                         DrugList[Index].Lunch.IsDrug = true;
-                                        DrugList[Index].Lunch.Volume = method.ConvertToInt32(Strings[1], DrugList[Index].Lunch.Volume);
+                                        DrugList[Index].Lunch.Volume = method.ConvertToInt32(Values[0], DrugList[Index].Lunch.Volume);
+                                        DrugList[Index].Lunch.Kind = GetTiming(Values[1]);
                                         break;
 
                                     case NAME.DRUG.DINNER:
                                         DrugList[Index].Dinner.IsDrug = true;
-                                        DrugList[Index].Dinner.Volume = method.ConvertToInt32(Strings[1], DrugList[Index].Dinner.Volume);
+                                        DrugList[Index].Dinner.Volume = method.ConvertToInt32(Values[0], DrugList[Index].Dinner.Volume);
+                                        DrugList[Index].Dinner.Kind = GetTiming(Values[1]);
                                         break;
 
                                     case NAME.DRUG.SLEEP:
@@ -795,6 +759,22 @@ namespace DrugAlarm.Class
             //次回アラーム取得
             SetNextAlarm();
 
+        }
+
+        /// <summary>
+        /// 服用タイミングの取得
+        /// </summary>
+        /// <returns>The timing.</returns>
+        /// <param name="Value">パラメータ値</param>
+        private UserControl.KindTiming GetTiming(string Value)
+        {
+            switch (Value)
+            {
+                case NAME.DRUG.BEFOREMEALS: return UserControl.KindTiming.Before;
+                case NAME.DRUG.BETWEENMEALS: return UserControl.KindTiming.Between;
+                case NAME.DRUG.AFTERMEALS: return UserControl.KindTiming.After;
+                default: return UserControl.KindTiming.Before;
+            }
         }
 
         /// <summary>
@@ -971,46 +951,19 @@ namespace DrugAlarm.Class
                         FileData.WriteLine(NAME.DRUG.START);
                         FileData.WriteLine(MakeParameter(NAME.DRUG.NAME, DrugList[iLoop].Name, false));
 
-                        if (DrugList[iLoop].Breakfast.IsDrug || DrugList[iLoop].Lunch.IsDrug || DrugList[iLoop].Dinner.IsDrug)
-                        {
-
-                            //朝昼夕ともに同設定のため、朝のみで判断
-                            switch (DrugList[iLoop].Breakfast.Kind)
-                            {
-
-                                case UserControl.KindTiming.Before:
-                                    FileData.WriteLine(MakeParameter(NAME.DRUG.TIMING, NAME.DRUG.BEFOREMEALS, false));
-                                    break;
-
-                                case UserControl.KindTiming.Between:
-                                    FileData.WriteLine(MakeParameter(NAME.DRUG.TIMING, NAME.DRUG.BETWEENMEALS, false));
-                                    break;
-
-                                case UserControl.KindTiming.After:
-                                    FileData.WriteLine(MakeParameter(NAME.DRUG.TIMING, NAME.DRUG.AFTERMEALS, false));
-                                    break;
-
-                                default:
-                                    FileData.WriteLine(MakeParameter(NAME.DRUG.TIMING, NAME.DRUG.BEFOREMEALS, false));
-                                    break;
-
-                            }
-
-                        }
-
                         if (DrugList[iLoop].Breakfast.IsDrug)
                         {
-                            FileData.WriteLine(MakeParameter(NAME.DRUG.BREAKFAST, DrugList[iLoop].Breakfast.Volume));
+                            FileData.WriteLine(MakeParameter(NAME.DRUG.BREAKFAST, DrugList[iLoop].Breakfast.Kind, DrugList[iLoop].Breakfast.Volume));
                         }
 
                         if (DrugList[iLoop].Lunch.IsDrug)
                         {
-                            FileData.WriteLine(MakeParameter(NAME.DRUG.LUNCH, DrugList[iLoop].Lunch.Volume));
+                            FileData.WriteLine(MakeParameter(NAME.DRUG.LUNCH, DrugList[iLoop].Lunch.Kind, DrugList[iLoop].Lunch.Volume));
                         }
 
                         if (DrugList[iLoop].Dinner.IsDrug)
                         {
-                            FileData.WriteLine(MakeParameter(NAME.DRUG.DINNER, DrugList[iLoop].Dinner.Volume));
+                            FileData.WriteLine(MakeParameter(NAME.DRUG.DINNER, DrugList[iLoop].Dinner.Kind, DrugList[iLoop].Dinner.Volume));
                         }
 
                         if (DrugList[iLoop].Sleep.IsDrug)
@@ -1124,11 +1077,77 @@ namespace DrugAlarm.Class
         }
 
         /// <summary>
+        /// パラメータ食事時形式作成
+        /// </summary>
+        /// <returns>パラメータ出力値</returns>
+        /// <param name="Parameter">パラメータ名</param>
+        /// <param name="Kind">服用タイミング</param>
+        /// <param name="Volume">数値</param>
+        private string MakeParameter(string Parameter, UserControl.KindTiming Kind, Int32 Volume)
+        {
+
+            StringBuilder Str = new StringBuilder(Parameter.Length + NAME.DRUG.BETWEENMEALS.Length + Volume.ToString().Length + 2);
+            string Return;
+
+            try
+            {
+
+                Str.Clear();
+                Str.Append(Parameter);
+                Str.Append("=").Append(Volume.ToString());
+
+                switch (Kind)
+                {
+
+                    case UserControl.KindTiming.Before:
+                        Str.Append(",").Append(NAME.DRUG.BEFOREMEALS);
+                        break;
+
+                    case UserControl.KindTiming.Between:
+                        Str.Append(",").Append(NAME.DRUG.BETWEENMEALS);
+                        break;
+
+                    case UserControl.KindTiming.After:
+                        Str.Append(",").Append(NAME.DRUG.AFTERMEALS);
+                        break;
+
+                    default:
+                        Str.Append(",").Append(NAME.DRUG.BEFOREMEALS);
+                        break;
+
+                }
+
+                Return = Str.ToString();
+
+            }
+            catch (Exception ex)
+            {
+
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+#endif
+
+                Return = "";
+
+            }
+            finally
+            {
+
+                Str.Clear();
+                Str = null;
+
+            }
+
+            return Return;
+
+        }
+
+        /// <summary>
         /// パラメータ数値形式作成
         /// </summary>
         /// <returns>パラメータ出力値</returns>
         /// <param name="Parameter">パラメータ名</param>
-        /// <param name="Value">V数値</param>
+        /// <param name="Value">数値</param>
         private string MakeParameter(string Parameter, Int32 Value)
         {
 

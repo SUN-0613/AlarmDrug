@@ -187,7 +187,6 @@ namespace DrugAlarm.Form.ViewModel
                 {
                     _Model.Drug.Breakfast.IsDrug = value;
                     CallPropertyChanged();
-                    CallPropertyChanged(nameof(IsDrugTiming));
                 }
             }
         }
@@ -217,6 +216,32 @@ namespace DrugAlarm.Form.ViewModel
             }
         }
 
+        /// <summary>
+        /// 服用タイミングプロパティ
+        /// 朝食
+        /// </summary>
+        /// <value>The meal timing.</value>
+        public ObservableCollection<string> BreakfastTiming { get; set; }
+
+        /// <summary>
+        /// 服用タイミングIndexプロパティ
+        /// 朝食
+        /// </summary>
+        /// <value>The meal timing.</value>
+        public int BreakfastTimingIndex
+        {
+            get { return (int)_Model.Drug.Breakfast.Kind - 1; }
+            set
+            {
+                value += 1;
+                if (!((int)_Model.Drug.Breakfast.Kind).Equals(value))
+                {
+                    _Model.Drug.Breakfast.Kind = (Class.UserControl.KindTiming)value;
+                    CallPropertyChanged();
+                }
+            }
+        }
+
         #endregion
 
         #region 昼食
@@ -235,7 +260,6 @@ namespace DrugAlarm.Form.ViewModel
                 {
                     _Model.Drug.Lunch.IsDrug = value;
                     CallPropertyChanged();
-                    CallPropertyChanged(nameof(IsDrugTiming));
                 }
             }
         }
@@ -265,6 +289,32 @@ namespace DrugAlarm.Form.ViewModel
             }
         }
 
+        /// <summary>
+        /// 服用タイミングプロパティ
+        /// 昼食
+        /// </summary>
+        /// <value>The meal timing.</value>
+        public ObservableCollection<string> LunchTiming { get; set; }
+
+        /// <summary>
+        /// 服用タイミングIndexプロパティ
+        /// 昼食
+        /// </summary>
+        /// <value>The meal timing.</value>
+        public int LunchTimingIndex
+        {
+            get { return (int)_Model.Drug.Lunch.Kind - 1; }
+            set
+            {
+                value += 1;
+                if (!((int)_Model.Drug.Lunch.Kind).Equals(value))
+                {
+                    _Model.Drug.Lunch.Kind = (Class.UserControl.KindTiming)value;
+                    CallPropertyChanged();
+                }
+            }
+        }
+
         #endregion
 
         #region 夕食
@@ -283,7 +333,6 @@ namespace DrugAlarm.Form.ViewModel
                 {
                     _Model.Drug.Dinner.IsDrug = value;
                     CallPropertyChanged();
-                    CallPropertyChanged(nameof(IsDrugTiming));
                 }
             }
         }
@@ -313,40 +362,33 @@ namespace DrugAlarm.Form.ViewModel
             }
         }
 
-        #endregion
-
         /// <summary>
-        /// 食事時の服用タイミングプロパティ
+        /// 服用タイミングプロパティ
+        /// 夕食
         /// </summary>
         /// <value>The meal timing.</value>
-        public ObservableCollection<string> MealTiming { get; set; }
+        public ObservableCollection<string> DinnerTiming { get; set; }
 
         /// <summary>
-        /// 食事時の服用タイミングIndexプロパティ
+        /// 服用タイミングIndexプロパティ
+        /// 夕食
         /// </summary>
         /// <value>The meal timing.</value>
-        public int MealTimingIndex
+        public int DinnerTimingIndex
         {
-            get { return (int)_Model.Drug.Breakfast.Kind - 1; }
-            set 
+            get { return (int)_Model.Drug.Dinner.Kind - 1; }
+            set
             {
                 value += 1;
-                if (!((int)_Model.Drug.Breakfast.Kind).Equals(value))
+                if (!((int)_Model.Drug.Dinner.Kind).Equals(value))
                 {
-                    _Model.Drug.Breakfast.Kind = (Class.UserControl.KindTiming)value;
+                    _Model.Drug.Dinner.Kind = (Class.UserControl.KindTiming)value;
                     CallPropertyChanged();
                 }
             }
         }
 
-        /// <summary>
-        /// 服用タイミング選択プロパティ
-        /// </summary>
-        /// <value><c>true</c> if is drug timing; otherwise, <c>false</c>.</value>
-        public bool IsDrugTiming
-        {
-            get { return _Model.Drug.Breakfast.IsDrug || _Model.Drug.Lunch.IsDrug || _Model.Drug.Dinner.IsDrug; }
-        }
+        #endregion
 
         #region 就寝前
 
@@ -488,177 +530,86 @@ namespace DrugAlarm.Form.ViewModel
         }
 
         /// <summary>
-        /// 年プロパティ
-        /// 指定時間
+        /// 指定日時：最小日付プロパティ
         /// </summary>
-        /// <value>The appoint year.</value>
-        public ObservableCollection<string> AppointYear { get; set; }
+        /// <value>The appoint minimum date.</value>
+        public DateTime AppointMinDate
+        {
+            get { return DateTime.Now; }
+        }
 
         /// <summary>
-        /// 年Indexプロパティ
-        /// 指定時間
+        /// 指定日時：最大日付プロパティ
         /// </summary>
-        /// <value>The index of the appoint year.</value>
-        public Int32 AppointYearIndex
+        /// <value>The appoint max date.</value>
+        public DateTime AppointMaxDate
         {
-            get { return _Model.AppointYearIndex; }
+            get { return DateTime.Now.AddYears(1); }
+        }
+
+        /// <summary>
+        /// 指定日時：日付プロパティ
+        /// </summary>
+        /// <value>The appoint date.</value>
+        public DateTime AppointDate
+        {
+            get { return _Model.Drug.AppointTime; }
             set
             {
-                if (!_Model.AppointYearIndex.Equals(value))
+                if (!(_Model.Drug.AppointTime.Year.Equals(value.Year)
+                    && _Model.Drug.AppointTime.Month.Equals(value.Month)
+                    && _Model.Drug.AppointTime.Day.Equals(value.Day)))
                 {
-                    _Model.AppointYearIndex = value;
 
-                    //2月が選択中なら、うるう年を考慮して日リストを再取得
-                    if ((_Model.AppointMonthIndex + 1).Equals(2))
-                    {
-                        RemakeDayList();
-                    }
-
+                    _SelectDate = value;
+                    SetAppointTime();
                     CallPropertyChanged();
-                    _Model.SetAppointDateTime();
                 }
             }
         }
 
         /// <summary>
-        /// 月プロパティ
-        /// 指定時間
+        /// 指定日時：時間プロパティ
         /// </summary>
-        /// <value>The appoint month.</value>
-        public ObservableCollection<string> AppointMonth { get; set; }
-
-        /// <summary>
-        /// 月Indexプロパティ
-        /// 指定時間
-        /// </summary>
-        /// <value>The index of the appoint month.</value>
-        public Int32 AppointMonthIndex
+        /// <value>The appoint time.</value>
+        public TimeSpan AppointTime
         {
-            get { return _Model.AppointMonthIndex; }
+            get { return _Model.Drug.AppointTime.TimeOfDay; }
             set
             {
-                if (!_Model.AppointMonthIndex.Equals(value))
+                if (!(_Model.Drug.AppointTime.Hour.Equals(value.Hours)
+                    && _Model.Drug.AppointTime.Minute.Equals(value.Minutes)))
                 {
-
-                    _Model.AppointMonthIndex = value;
-                    RemakeDayList();
-
+                    _SelectTime = value;
+                    SetAppointTime();
                     CallPropertyChanged();
-                    _Model.SetAppointDateTime();
-
                 }
             }
         }
 
         /// <summary>
-        /// 日プロパティ
-        /// 指定時間
+        /// 現在の指定日時：日付
         /// </summary>
-        /// <value>The appoint day.</value>
-        public ObservableCollection<string> AppointDay { get; set; }
+        private DateTime _SelectDate;
 
         /// <summary>
-        /// 日Indexプロパティ
-        /// 指定時間
+        /// 現在の指定日時：時間
         /// </summary>
-        /// <value>The index of the appoint day.</value>
-        public Int32 AppointDayIndex
-        {
-            get { return _Model.AppointDayIndex; }
-            set
-            {
-                if (!_Model.AppointDayIndex.Equals(value))
-                {
-
-                    _Model.AppointDayIndex = value;
-
-                    CallPropertyChanged();
-                    _Model.SetAppointDateTime();
-
-                }
-            }
-        }
+        private TimeSpan _SelectTime;
 
         /// <summary>
-        /// 時プロパティ
-        /// 指定時間
+        /// 指定日時の設定
         /// </summary>
-        /// <value>The appoint hour.</value>
-        public ObservableCollection<string> AppointHour { get; set; }
-
-        /// <summary>
-        /// 時Indexプロパティ
-        /// </summary>
-        /// <value>The index of the appoint hour.</value>
-        public Int32 AppointHourIndex
-        {
-            get { return _Model.AppointHourIndex; }
-            set
-            {
-                if (!_Model.AppointHourIndex.Equals(value))
-                {
-
-                    _Model.AppointHourIndex = value;
-
-                    CallPropertyChanged();
-                    _Model.SetAppointDateTime();
-
-                }
-            }
-        }
-
-        /// <summary>
-        /// 分プロパティ
-        /// 指定時間
-        /// </summary>
-        /// <value>The appoint minute.</value>
-        public ObservableCollection<string> AppointMinute { get; set; }
-
-        /// <summary>
-        /// 分Indexプロパティ
-        /// 指定時間
-        /// </summary>
-        /// <value>The index of the appoint minute.</value>
-        public Int32 AppointMinuteIndex
-        {
-            get { return _Model.AppointMinuteIndex; }
-            set
-            {
-                if (!_Model.AppointMinuteIndex.Equals(value))
-                {
-
-                    _Model.AppointMinuteIndex = value;
-
-                    CallPropertyChanged();
-                    _Model.SetAppointDateTime();
-
-                }
-            }
-        }
-
-        /// <summary>
-        /// 日リスト再作成
-        /// </summary>
-        private void RemakeDayList()
+        private void SetAppointTime()
         {
 
-            if (!AppointYearIndex.Equals(-1) && !AppointMonthIndex.Equals(-1))
-            {
-
-                Int32 Tmp = _Model.AppointDayIndex;
-                _Model.AppointDayIndex = -1;
-
-                AppointDay.Clear();
-                _Model.GetDayList().ForEach(Data => { AppointDay.Add(Data.ToString("00")); });
-
-                if (AppointDay.Count <= Tmp)
-                {
-                    Tmp = AppointDay.Count - 1;
-                }
-
-                AppointDayIndex = Tmp;
-
-            }
+            _Model.Drug.AppointTime = new Class.Method().ConvertToDateTime(
+                                                                _SelectDate.Year
+                                                                , _SelectDate.Month
+                                                                , _SelectDate.Day
+                                                                , _SelectTime.Hours
+                                                                , _SelectTime.Minutes
+                                                                , _Model.Drug.AppointTime);
 
         }
 
@@ -874,34 +825,26 @@ namespace DrugAlarm.Form.ViewModel
             AppointVolumeIndex = _Model.GetVolumeAppointIndex();
             HourEachVolumeIndex = _Model.GetVolumeHourEachIndex();
 
-            AppointYear = new ObservableCollection<string>();
-            AppointMonth = new ObservableCollection<string>();
-            AppointDay = new ObservableCollection<string>();
-            AppointHour = new ObservableCollection<string>();
-            AppointMinute = new ObservableCollection<string>();
             HourEachTime = new ObservableCollection<string>();
 
-            _Model.GetYearList().ForEach(Year => { AppointYear.Add(Year.ToString("0000")); });
-            AppointYearIndex = _Model.GetAppointYearIndex();
-
-            _Model.GetMonthList().ForEach(Month => { AppointMonth.Add(Month.ToString("00")); });
-            AppointMonthIndex = _Model.GetAppointMonthIndex();
-
-            //AppointMonthIndexプロパティ作成時に日リストは作成済み
-            AppointDayIndex = _Model.GetAppointDayIndex();
-
-            _Model.GetHourList().ForEach(Hour => { AppointHour.Add(Hour.ToString("00")); });
-            AppointHourIndex = _Model.GetAppointHourIndex();
-
-            _Model.GetMinuteList().ForEach(Minute => { AppointMinute.Add(Minute.ToString("00")); });
-            AppointMinuteIndex = _Model.GetAppointMinuteIndex();
+            _SelectDate = _Model.Drug.AppointTime;
+            _SelectTime = _Model.Drug.AppointTime.TimeOfDay;
 
             _Model.GetHourEachList().ForEach(Time => { HourEachTime.Add(Time.ToString("00")); });
             HourEachTimeIndex = _Model.GetHourEachIndex();
 
-            MealTiming = new ObservableCollection<string>();
-            _Model.GetMealTimingList().ForEach(Timing => { MealTiming.Add(Timing); });
-            MealTimingIndex = _Model.GetMealTimingIndex();
+            BreakfastTiming = new ObservableCollection<string>();
+            LunchTiming = new ObservableCollection<string>();
+            DinnerTiming = new ObservableCollection<string>();
+            _Model.GetMealTimingList().ForEach(Timing => 
+            { 
+                BreakfastTiming.Add(Timing);
+                LunchTiming.Add(Timing);
+                DinnerTiming.Add(Timing);
+            });
+            BreakfastTimingIndex = _Model.GetBreakfastTimingIndex();
+            LunchTimingIndex = _Model.GetLunchTimingIndex();
+            DinnerTimingIndex = _Model.GetDinnerTimingIndex();
 
             IsEdited = false;
 
@@ -939,10 +882,22 @@ namespace DrugAlarm.Form.ViewModel
                 DinnerVolume = null;
             }
 
-            if (MealTiming != null)
+            if (BreakfastTiming != null)
             {
-                MealTiming.Clear();
-                MealTiming = null;
+                BreakfastTiming.Clear();
+                BreakfastTiming = null;
+            }
+
+            if (LunchTiming != null)
+            {
+                LunchTiming.Clear();
+                LunchTiming = null;
+            }
+
+            if (DinnerTiming != null)
+            {
+                DinnerTiming.Clear();
+                DinnerTiming = null;
             }
 
             if (SleepVolume != null)
@@ -967,36 +922,6 @@ namespace DrugAlarm.Form.ViewModel
             {
                 HourEachVolume.Clear();
                 HourEachVolume = null;
-            }
-
-            if (AppointYear != null)
-            {
-                AppointYear.Clear();
-                AppointYear = null;
-            }
-
-            if (AppointMonth != null)
-            {
-                AppointMonth.Clear();
-                AppointMonth = null;
-            }
-
-            if (AppointDay != null)
-            {
-                AppointDay.Clear();
-                AppointDay = null;
-            }
-
-            if (AppointHour != null)
-            {
-                AppointHour.Clear();
-                AppointHour = null;
-            }
-
-            if (AppointMinute != null)
-            {
-                AppointMinute.Clear();
-                AppointMinute = null;
             }
 
             if (HourEachTime != null)
