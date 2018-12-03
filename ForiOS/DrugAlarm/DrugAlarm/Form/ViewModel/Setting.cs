@@ -115,108 +115,38 @@ namespace DrugAlarm.Form.ViewModel
         #region 朝食
 
         /// <summary>
-        /// 時プロパティ
+        /// 時間プロパティ
         /// 朝食
         /// 開始
         /// </summary>
-        /// <value>The breakfast start hour.</value>
-        public ObservableCollection<string> BreakfastStartHour { get; set; }
-
-        /// <summary>
-        /// 時Indexプロパティ
-        /// 朝食
-        /// 開始
-        /// </summary>
-        /// <value>The index of the breakfast start hour.</value>
-        public Int32 BreakfastStartHourIndex
+        /// <value>The breakfast start.</value>
+        public TimeSpan BreakfastStart
         {
-            get { return _Model.BreakfastStartHourIndex; }
+            get { return _Model.BreakfastStart; }
             set
             {
-                if (!_Model.BreakfastStartHourIndex.Equals(value))
+                if (!_Model.BreakfastStart.Equals(value))
                 {
-                    _Model.BreakfastStartHourIndex = value;
+                    _Model.BreakfastStart = value;
                     CallPropertyChanged();
                 }
             }
         }
 
         /// <summary>
-        /// 分プロパティ
+        /// 時間プロパティ
         /// 朝食
-        /// 開始
+        /// 終了
         /// </summary>
-        /// <value>The breakfast start minute.</value>
-        public ObservableCollection<string> BreakfastStartMinute { get; set; }
-
-        /// <summary>
-        /// 分Indexプロパティ
-        /// 朝食
-        /// 開始
-        /// </summary>
-        /// <value>The index of the breakfast start minute.</value>
-        public Int32 BreakfastStartMinuteIndex
+        /// <value>The breakfast finish.</value>
+        public TimeSpan BreakfastFinish
         {
-            get { return _Model.BreakfastStartMinuteIndex; }
+            get { return _Model.BreakfastFinish; }
             set
             {
-                if (!_Model.BreakfastStartMinuteIndex.Equals(value))
+                if (!_Model.BreakfastStart.Equals(value))
                 {
-                    _Model.BreakfastStartMinuteIndex = value;
-                    CallPropertyChanged();
-                }
-            }
-        }
-
-        /// <summary>
-        /// 時プロパティ
-        /// 朝食
-        /// 終了
-        /// </summary>
-        /// <value>The breakfast finish hour.</value>
-        public ObservableCollection<string> BreakfastFinishHour { get; set; }
-
-        /// <summary>
-        /// 時Indexプロパティ
-        /// 朝食
-        /// 終了
-        /// </summary>
-        /// <value>The index of the breakfast finish hour.</value>
-        public Int32 BreakfastFinishHourIndex
-        {
-            get { return _Model.BreakfastFinishHourIndex; }
-            set
-            {
-                if (!_Model.BreakfastFinishHourIndex.Equals(value))
-                {
-                    _Model.BreakfastFinishHourIndex = value;
-                    CallPropertyChanged();
-                }
-            }
-        }
-
-        /// <summary>
-        /// 分プロパティ
-        /// 朝食
-        /// 終了
-        /// </summary>
-        /// <value>The breakfast finish minute.</value>
-        public ObservableCollection<string> BreakfastFinishMinute { get; set; }
-
-        /// <summary>
-        /// 分Indexプロパティ
-        /// 朝食
-        /// 終了
-        /// </summary>
-        /// <value>The index of the breakfast finish minute.</value>
-        public Int32 BreakfastFinishMinuteIndex
-        {
-            get { return _Model.BreakfastFinishMinuteIndex; }
-            set
-            {
-                if (!_Model.BreakfastFinishMinuteIndex.Equals(value))
-                {
-                    _Model.BreakfastFinishMinuteIndex = value;
+                    _Model.BreakfastStart = value;
                     CallPropertyChanged();
                 }
             }
@@ -226,53 +156,109 @@ namespace DrugAlarm.Form.ViewModel
 
         #region 昼食
 
-        /// <summary>         /// 時プロパティ         /// 昼食         /// 開始         /// </summary>         /// <value>The Lunch start hour.</value>         public ObservableCollection<string> LunchStartHour { get; set; }
+        /// <summary>
+        /// 時間プロパティ
+        /// 昼食
+        /// 開始
+        /// </summary>
+        /// <value>The lunch start.</value>
+        public TimeSpan LunchStart
+        {
+            get { return _Model.LunchStart; }
+            set
+            {
+                if (!_Model.LunchStart.Equals(value))
+                {
+                    _Model.LunchStart = value;
+                    CallPropertyChanged();
+                }
+            }
+        }
 
-        /// <summary>         /// 時Indexプロパティ         /// 昼食         /// 開始         /// </summary>         /// <value>The index of the Lunch start hour.</value>         public Int32 LunchStartHourIndex         {             get { return _Model.LunchStartHourIndex; }             set             {                 if (!_Model.LunchStartHourIndex.Equals(value))                 {                     _Model.LunchStartHourIndex = value;                     CallPropertyChanged();                 }             }         }
-
-        /// <summary>         /// 分プロパティ         /// 昼食         /// 開始         /// </summary>         /// <value>The Lunch start minute.</value>         public ObservableCollection<string> LunchStartMinute { get; set; }
-
-        /// <summary>         /// 分Indexプロパティ         /// 昼食         /// 開始         /// </summary>         /// <value>The index of the Lunch start minute.</value>         public Int32 LunchStartMinuteIndex         {             get { return _Model.LunchStartMinuteIndex; }             set             {                 if (!_Model.LunchStartMinuteIndex.Equals(value))                 {                     _Model.LunchStartMinuteIndex = value;                     CallPropertyChanged();                 }             }         }
-
-        /// <summary>         /// 時プロパティ         /// 昼食         /// 終了         /// </summary>         /// <value>The Lunch finish hour.</value>         public ObservableCollection<string> LunchFinishHour { get; set; }
-
-        /// <summary>         /// 時Indexプロパティ         /// 昼食         /// 終了         /// </summary>         /// <value>The index of the Lunch finish hour.</value>         public Int32 LunchFinishHourIndex         {             get { return _Model.LunchFinishHourIndex; }             set             {                 if (!_Model.LunchFinishHourIndex.Equals(value))                 {                     _Model.LunchFinishHourIndex = value;                     CallPropertyChanged();                 }             }         }
-
-        /// <summary>         /// 分プロパティ         /// 昼食         /// 終了         /// </summary>         /// <value>The Lunch finish minute.</value>         public ObservableCollection<string> LunchFinishMinute { get; set; }
-
-        /// <summary>         /// 分Indexプロパティ         /// 昼食         /// 終了         /// </summary>         /// <value>The index of the Lunch finish minute.</value>         public Int32 LunchFinishMinuteIndex         {             get { return _Model.LunchFinishMinuteIndex; }             set             {                 if (!_Model.LunchFinishMinuteIndex.Equals(value))                 {                     _Model.LunchFinishMinuteIndex = value;                     CallPropertyChanged();                 }             }         }
+        /// <summary>
+        /// 時間プロパティ
+        /// 昼食
+        /// 終了
+        /// </summary>
+        /// <value>The lunch finish.</value>
+        public TimeSpan LunchFinish
+        {
+            get { return _Model.LunchFinish; }
+            set
+            {
+                if (!_Model.LunchFinish.Equals(value))
+                {
+                    _Model.LunchFinish = value;
+                    CallPropertyChanged();
+                }
+            }
+        }
 
         #endregion
 
         #region 夕食
 
-        /// <summary>         /// 時プロパティ         /// 夕食         /// 開始         /// </summary>         /// <value>The Dinner start hour.</value>         public ObservableCollection<string> DinnerStartHour { get; set; }
+        /// <summary>
+        /// 時間プロパティ
+        /// 夕食
+        /// 開始
+        /// </summary>
+        /// <value>The dinner start.</value>
+        public TimeSpan DinnerStart
+        {
+            get { return _Model.DinnerStart; }
+            set
+            {
+                if (!_Model.DinnerStart.Equals(value))
+                {
+                    _Model.DinnerStart = value;
+                    CallPropertyChanged();
+                }
+            }
+        }
 
-        /// <summary>         /// 時Indexプロパティ         /// 夕食         /// 開始         /// </summary>         /// <value>The index of the Dinner start hour.</value>         public Int32 DinnerStartHourIndex         {             get { return _Model.DinnerStartHourIndex; }             set             {                 if (!_Model.DinnerStartHourIndex.Equals(value))                 {                     _Model.DinnerStartHourIndex = value;                     CallPropertyChanged();                 }             }         }
-
-        /// <summary>         /// 分プロパティ         /// 夕食         /// 開始         /// </summary>         /// <value>The Dinner start minute.</value>         public ObservableCollection<string> DinnerStartMinute { get; set; }
-
-        /// <summary>         /// 分Indexプロパティ         /// 夕食         /// 開始         /// </summary>         /// <value>The index of the Dinner start minute.</value>         public Int32 DinnerStartMinuteIndex         {             get { return _Model.DinnerStartMinuteIndex; }             set             {                 if (!_Model.DinnerStartMinuteIndex.Equals(value))                 {                     _Model.DinnerStartMinuteIndex = value;                     CallPropertyChanged();                 }             }         }
-
-        /// <summary>         /// 時プロパティ         /// 夕食         /// 終了         /// </summary>         /// <value>The Dinner finish hour.</value>         public ObservableCollection<string> DinnerFinishHour { get; set; }
-
-        /// <summary>         /// 時Indexプロパティ         /// 夕食         /// 終了         /// </summary>         /// <value>The index of the Dinner finish hour.</value>         public Int32 DinnerFinishHourIndex         {             get { return _Model.DinnerFinishHourIndex; }             set             {                 if (!_Model.DinnerFinishHourIndex.Equals(value))                 {                     _Model.DinnerFinishHourIndex = value;                     CallPropertyChanged();                 }             }         }
-
-        /// <summary>         /// 分プロパティ         /// 夕食         /// 終了         /// </summary>         /// <value>The Dinner finish minute.</value>         public ObservableCollection<string> DinnerFinishMinute { get; set; }
-
-        /// <summary>         /// 分Indexプロパティ         /// 夕食         /// 終了         /// </summary>         /// <value>The index of the Dinner finish minute.</value>         public Int32 DinnerFinishMinuteIndex         {             get { return _Model.DinnerFinishMinuteIndex; }             set             {                 if (!_Model.DinnerFinishMinuteIndex.Equals(value))                 {                     _Model.DinnerFinishMinuteIndex = value;                     CallPropertyChanged();                 }             }         }
+        /// <summary>
+        /// 時間プロパティ
+        /// 夕食
+        /// 終了
+        /// </summary>
+        /// <value>The dinner finish.</value>
+        public TimeSpan DinnerFinish
+        {
+            get { return _Model.DinnerFinish; }
+            set
+            {
+                if (!_Model.DinnerFinish.Equals(value))
+                {
+                    _Model.DinnerFinish = value;
+                    CallPropertyChanged();
+                }
+            }
+        }
 
         #endregion
 
         #region 就寝前
 
-        /// <summary>         /// 時プロパティ         /// 就寝前         /// </summary>         /// <value>The Sleep  hour.</value>         public ObservableCollection<string> SleepHour { get; set; }
+        /// <summary>
+        /// 時間プロパティ
+        /// 就寝
+        /// 開始
+        /// </summary>
+        /// <value>The sleep start.</value>
+        public TimeSpan SleepStart
+        {
+            get { return _Model.SleepStart; }
+            set
+            {
+                if(!_Model.SleepStart.Equals(value))
+                {
+                    _Model.SleepStart = value;
+                    CallPropertyChanged();
+                }
+            }
+        }
 
-        /// <summary>         /// 時Indexプロパティ         /// 就寝前         /// </summary>         /// <value>The index of the Sleep  hour.</value>         public Int32 SleepHourIndex         {             get { return _Model.SleepHourIndex; }             set             {                 if (!_Model.SleepHourIndex.Equals(value))                 {                     _Model.SleepHourIndex = value;                     CallPropertyChanged();                 }             }         }
-
-        /// <summary>         /// 分プロパティ         /// 就寝前         /// </summary>         /// <value>The Sleep  minute.</value>         public ObservableCollection<string> SleepMinute { get; set; }
-
-        /// <summary>         /// 分Indexプロパティ         /// 就寝前         /// </summary>         /// <value>The index of the Sleep  minute.</value>         public Int32 SleepMinuteIndex         {             get { return _Model.SleepMinuteIndex; }             set             {                 if (!_Model.SleepMinuteIndex.Equals(value))                 {                     _Model.SleepMinuteIndex = value;                     CallPropertyChanged();                 }             }         } 
         #endregion
 
         #region アラーム設定
@@ -389,63 +375,10 @@ namespace DrugAlarm.Form.ViewModel
 
             _Model = new Model.Setting();
 
-            BreakfastStartHour = new ObservableCollection<string>();
-            BreakfastStartMinute = new ObservableCollection<string>();
-            BreakfastFinishHour = new ObservableCollection<string>();
-            BreakfastFinishMinute = new ObservableCollection<string>();
-
-            LunchStartHour = new ObservableCollection<string>();
-            LunchStartMinute = new ObservableCollection<string>();
-            LunchFinishHour = new ObservableCollection<string>();
-            LunchFinishMinute = new ObservableCollection<string>();
-
-            DinnerStartHour = new ObservableCollection<string>();
-            DinnerStartMinute = new ObservableCollection<string>();
-            DinnerFinishHour = new ObservableCollection<string>();
-            DinnerFinishMinute = new ObservableCollection<string>();
-
-            SleepHour = new ObservableCollection<string>();
-            SleepMinute = new ObservableCollection<string>();
-
             BeforeMealMinute = new ObservableCollection<string>();
             AfterMealMinute = new ObservableCollection<string>();
             BeforeSleepMinute = new ObservableCollection<string>();
             RealarmMinute = new ObservableCollection<string>();
-
-            _Model.GetHourList().ForEach(Hour => 
-            {
-
-                string Str = Hour.ToString("00");
-
-                BreakfastStartHour.Add(Str);
-                BreakfastFinishHour.Add(Str);
-
-                LunchStartHour.Add(Str);
-                LunchFinishHour.Add(Str);
-
-                DinnerStartHour.Add(Str);
-                DinnerFinishHour.Add(Str);
-
-                SleepHour.Add(Str);
-
-            });
-
-            _Model.GetMinuteList().ForEach(Minute =>
-            {
-                string Str = Minute.ToString("00");
-
-                BreakfastStartMinute.Add(Str);
-                BreakfastFinishMinute.Add(Str);
-
-                LunchStartMinute.Add(Str);
-                LunchFinishMinute.Add(Str);
-
-                DinnerStartMinute.Add(Str);
-                DinnerFinishMinute.Add(Str);
-
-                SleepMinute.Add(Str);
-
-            });
 
             _Model.GetAlarmMinuteList().ForEach(Minute => 
             {
@@ -457,24 +390,6 @@ namespace DrugAlarm.Form.ViewModel
                 RealarmMinute.Add(Str);
 
             });
-
-            BreakfastStartHourIndex = _Model.GetBreakfastStartHourIndex();
-            BreakfastStartMinuteIndex = _Model.GetBreakfastStartMinuteIndex();
-            BreakfastFinishHourIndex = _Model.GetBreakfastFinishHourIndex();
-            BreakfastFinishMinuteIndex = _Model.GetBreakfastFinishMinuteIndex();
-
-            LunchStartHourIndex = _Model.GetLunchStartHourIndex();
-            LunchStartMinuteIndex = _Model.GetLunchStartMinuteIndex();
-            LunchFinishHourIndex = _Model.GetLunchFinishHourIndex();
-            LunchFinishMinuteIndex = _Model.GetLunchFinishMinuteIndex();
-
-            DinnerStartHourIndex = _Model.GetDinnerStartHourIndex();
-            DinnerStartMinuteIndex = _Model.GetDinnerStartMinuteIndex();
-            DinnerFinishHourIndex = _Model.GetDinnerFinishHourIndex();
-            DinnerFinishMinuteIndex = _Model.GetDinnerFinishMinuteIndex();
-
-            SleepHourIndex = _Model.GetSleepHourIndex();
-            SleepMinuteIndex = _Model.GetSleepMinuteIndex();
 
             BeforeMealMinuteIndex = _Model.GetBeforeMealMinuteIndex();
             AfterMealMinuteIndex = _Model.GetAfterMealMinuteIndex();
@@ -496,46 +411,10 @@ namespace DrugAlarm.Form.ViewModel
         public void Dispose()
         {
 
-            BreakfastStartHour.Clear();
-            BreakfastStartMinute.Clear();
-            BreakfastFinishHour.Clear();
-            BreakfastFinishMinute.Clear();
-
-            LunchStartHour.Clear();
-            LunchStartMinute.Clear();
-            LunchFinishHour.Clear();
-            LunchFinishMinute.Clear();
-
-            DinnerStartHour.Clear();
-            DinnerStartMinute.Clear();
-            DinnerFinishHour.Clear();
-            DinnerFinishMinute.Clear();
-
-            SleepHour.Clear();
-            SleepMinute.Clear();
-
             BeforeMealMinute.Clear();
             AfterMealMinute.Clear();
             BeforeSleepMinute.Clear();
             RealarmMinute.Clear();
-
-            BreakfastStartHour = null;
-            BreakfastStartMinute = null;
-            BreakfastFinishHour = null;
-            BreakfastFinishMinute = null;
-
-            LunchStartHour = null;
-            LunchStartMinute = null;
-            LunchFinishHour = null;
-            LunchFinishMinute = null;
-
-            DinnerStartHour = null;
-            DinnerStartMinute = null;
-            DinnerFinishHour = null;
-            DinnerFinishMinute = null;
-
-            SleepHour = null;
-            SleepMinute = null;
 
             BeforeMealMinute = null;
             AfterMealMinute = null;

@@ -27,31 +27,6 @@ namespace DrugAlarm.Form.Model
         /// </summary>
         public Class.Parameter _Parameter;
 
-        /// <summary>
-        /// 食事時間の取得
-        /// </summary>
-        /// <returns>The meet time.</returns>
-        private DateTime GetMeetTime(List<Int32> hour, List<Int32> minute, Int32 hourIndex, Int32 minuteIndex, DateTime defaultValue)
-        {
-
-            if ((hour != null && minute != null)
-                && (-1 < hourIndex && hourIndex < hour.Count)
-                && (-1 < minuteIndex && minuteIndex < minute.Count))
-            {
-
-                Int32 Hour = hour[hourIndex];
-                Int32 Minute = minute[minuteIndex];
-
-                return new Class.Method().GetTodayTime(Hour, Minute);
-
-            }
-            else
-            {
-                return defaultValue;
-            }
-
-        }
-
         #endregion
 
         #region コマンド
@@ -96,294 +71,126 @@ namespace DrugAlarm.Form.Model
         #region 朝食
 
         /// <summary>
-        /// 時Index
+        /// 時間プロパティ
         /// 朝食
         /// 開始
         /// </summary>
-        private Int32 _BreakfastStartHourIndex = -1;
-
-        /// <summary>
-        /// 時Index
-        /// 朝食
-        /// 終了
-        /// </summary>
-        private Int32 _BreakfastFinishHourIndex = -1;
-
-        /// <summary>
-        /// 分Index
-        /// 朝食
-        /// 開始
-        /// </summary>
-        private Int32 _BreakfastStartMinuteIndex = -1;
-
-        /// <summary>
-        /// 分Index
-        /// 朝食
-        /// 終了
-        /// </summary>
-        private Int32 _BreakfastFinishMinuteIndex = -1;
-
-        /// <summary>
-        /// 時間の設定
-        /// 朝食
-        /// 開始
-        /// </summary>
-        private void SetBreakfastStart()
+        /// <value>The breakfast start.</value>
+        public TimeSpan BreakfastStart
         {
-            SetParam.Breakfast.Start = GetMeetTime(_Hour, _Minute, _BreakfastStartHourIndex, _BreakfastStartMinuteIndex, SetParam.Breakfast.Start);
-        }
-
-        /// <summary>
-        /// 時間の設定
-        /// 朝食
-        /// 終了
-        /// </summary>
-        private void SetBreakfastFinish()
-        {
-            SetParam.Breakfast.Finish = GetMeetTime(_Hour, _Minute, _BreakfastFinishHourIndex, _BreakfastFinishMinuteIndex, SetParam.Breakfast.Finish);
-        }
-
-        /// <summary>
-        /// 時Indexプロパティ
-        /// 朝食
-        /// 開始
-        /// </summary>
-        /// <value>The index of the breakfast start hour.</value>
-        public Int32 BreakfastStartHourIndex
-        {
-            get { return _BreakfastStartHourIndex; }
-            set 
-            {
-                if (!_BreakfastStartHourIndex.Equals(value))
-                {
-                    _BreakfastStartHourIndex = value;
-                    SetBreakfastStart();
-                }
-            }
-        }
-
-        /// <summary>
-        /// 時Indexプロパティ
-        /// 朝食
-        /// 終了
-        /// </summary>
-        /// <value>The index of the breakfast finish hour.</value>
-        public Int32 BreakfastFinishHourIndex
-        {
-            get { return _BreakfastFinishHourIndex; }
+            get { return SetParam.Breakfast.Start.TimeOfDay; }
             set
             {
-                if (!_BreakfastFinishHourIndex.Equals(value))
-                {
-                    _BreakfastFinishHourIndex = value;
-                    SetBreakfastFinish();
-                }
+                if (!SetParam.Breakfast.Start.TimeOfDay.Equals(value))
+                    SetParam.Breakfast.Start = new Class.Method().GetTodayTime(value.Hours, value.Minutes);
             }
         }
 
         /// <summary>
-        /// 分Indexプロパティ
+        /// 時間プロパティ
         /// 朝食
-        /// 開始
+        /// 終了
         /// </summary>
-        /// <value>The index of the breakfast start minute.</value>
-        public Int32 BreakfastStartMinuteIndex
+        /// <value>The breakfast finish.</value>
+        public TimeSpan BreakfastFinish
         {
-            get { return _BreakfastStartMinuteIndex; }
+            get { return SetParam.Breakfast.Finish.TimeOfDay; }
             set
             {
-                if (!_BreakfastStartMinuteIndex.Equals(value))
-                {
-                    _BreakfastStartMinuteIndex = value;
-                    SetBreakfastStart();
-                }
+                if (!SetParam.Breakfast.Finish.TimeOfDay.Equals(value))
+                    SetParam.Breakfast.Finish = new Class.Method().GetTodayTime(value.Hours, value.Minutes);
             }
-        }
-
-        /// <summary>
-        /// 分Indexプロパティ
-        /// 朝食
-        /// 終了
-        /// </summary>
-        /// <value>The index of the breakfast finish minute.</value>
-        public Int32 BreakfastFinishMinuteIndex
-        {
-            get { return _BreakfastFinishMinuteIndex; }
-            set
-            {
-                if (!_BreakfastFinishMinuteIndex.Equals(value))
-                {
-                    _BreakfastFinishMinuteIndex = value;
-                    SetBreakfastFinish();
-                }
-            }
-        }
-
-        /// <summary>
-        /// 時Indexの取得
-        /// 朝食
-        /// 開始
-        /// </summary>
-        /// <returns>The breakfast start hour index.</returns>
-        public Int32 GetBreakfastStartHourIndex()
-        {
-            return GetHourIndex(SetParam.Breakfast.Start.Hour);
-        }
-
-        /// <summary>
-        /// 分Indexの取得
-        /// 朝食
-        /// 開始
-        /// </summary>
-        /// <returns>The breakfast start minute index.</returns>
-        public Int32 GetBreakfastStartMinuteIndex()
-        {
-            return GetMinuteIndex(SetParam.Breakfast.Start.Minute);
-        }
-
-        /// <summary>
-        /// 時Indexの取得
-        /// 朝食
-        /// 終了
-        /// </summary>
-        /// <returns>The breakfast finish hour index.</returns>
-        public Int32 GetBreakfastFinishHourIndex()
-        {
-            return GetHourIndex(SetParam.Breakfast.Finish.Hour);
-        }
-
-        /// <summary>
-        /// 分Indexの取得
-        /// 朝食
-        /// 終了
-        /// </summary>
-        /// <returns>The breakfast finish minute index.</returns>
-        public Int32 GetBreakfastFinishMinuteIndex()
-        {
-            return GetMinuteIndex(SetParam.Breakfast.Finish.Minute);
         }
 
         #endregion
 
         #region 昼食
 
-        /// <summary>         /// 時Index         /// 昼食         /// 開始         /// </summary>         private Int32 _LunchStartHourIndex = -1;          /// <summary>         /// 時Index         /// 昼食         /// 終了         /// </summary>         private Int32 _LunchFinishHourIndex = -1;          /// <summary>         /// 分Index         /// 昼食         /// 開始         /// </summary>         private Int32 _LunchStartMinuteIndex = -1;          /// <summary>         /// 分Index         /// 昼食         /// 終了         /// </summary>         private Int32 _LunchFinishMinuteIndex = -1;          /// <summary>         /// 時間の設定         /// 昼食         /// 開始         /// </summary>         private void SetLunchStart()         {             SetParam.Lunch.Start = GetMeetTime(_Hour, _Minute, _LunchStartHourIndex, _LunchStartMinuteIndex, SetParam.Lunch.Start);         }          /// <summary>         /// 時間の設定         /// 昼食         /// 終了         /// </summary>         private void SetLunchFinish()         {             SetParam.Lunch.Finish = GetMeetTime(_Hour, _Minute, _LunchFinishHourIndex, _LunchFinishMinuteIndex, SetParam.Lunch.Finish);         }          /// <summary>         /// 時Indexプロパティ         /// 昼食         /// 開始         /// </summary>         /// <value>The index of the Lunch start hour.</value>         public Int32 LunchStartHourIndex         {             get { return _LunchStartHourIndex; }             set              {                 if (!_LunchStartHourIndex.Equals(value))                 {                     _LunchStartHourIndex = value;                     SetLunchStart();                 }             }         }          /// <summary>         /// 時Indexプロパティ         /// 昼食         /// 終了         /// </summary>         /// <value>The index of the Lunch finish hour.</value>         public Int32 LunchFinishHourIndex         {             get { return _LunchFinishHourIndex; }             set             {                 if (!_LunchFinishHourIndex.Equals(value))                 {                     _LunchFinishHourIndex = value;                     SetLunchFinish();                 }             }         }          /// <summary>         /// 分Indexプロパティ         /// 昼食         /// 開始         /// </summary>         /// <value>The index of the Lunch start minute.</value>         public Int32 LunchStartMinuteIndex         {             get { return _LunchStartMinuteIndex; }             set             {                 if (!_LunchStartMinuteIndex.Equals(value))                 {                     _LunchStartMinuteIndex = value;                     SetLunchStart();                 }             }         }          /// <summary>         /// 分Indexプロパティ         /// 昼食         /// 終了         /// </summary>         /// <value>The index of the Lunch finish minute.</value>         public Int32 LunchFinishMinuteIndex         {             get { return _LunchFinishMinuteIndex; }             set             {                 if (!_LunchFinishMinuteIndex.Equals(value))                 {                     _LunchFinishMinuteIndex = value;                     SetLunchFinish();                 }             }         } 
         /// <summary>
-        /// 時Indexの取得
+        /// 時間プロパティ
         /// 昼食
         /// 開始
         /// </summary>
-        /// <returns>The Lunch start hour index.</returns>
-        public Int32 GetLunchStartHourIndex()
+        /// <value>The lunch start.</value>
+        public TimeSpan LunchStart
         {
-            return GetHourIndex(SetParam.Lunch.Start.Hour);
+            get { return SetParam.Lunch.Start.TimeOfDay; }
+            set
+            {
+                if (!SetParam.Lunch.Start.TimeOfDay.Equals(value))
+                    SetParam.Lunch.Start = new Class.Method().GetTodayTime(value.Hours, value.Minutes);
+            }
         }
 
         /// <summary>
-        /// 分Indexの取得
-        /// 昼食
-        /// 開始
-        /// </summary>
-        /// <returns>The Lunch start minute index.</returns>
-        public Int32 GetLunchStartMinuteIndex()
-        {
-            return GetMinuteIndex(SetParam.Lunch.Start.Minute);
-        }
-
-        /// <summary>
-        /// 時Indexの取得
+        /// 時間プロパティ
         /// 昼食
         /// 終了
         /// </summary>
-        /// <returns>The Lunch finish hour index.</returns>
-        public Int32 GetLunchFinishHourIndex()
+        /// <value>The lunch finish.</value>
+        public TimeSpan LunchFinish
         {
-            return GetHourIndex(SetParam.Lunch.Finish.Hour);
-        }
-
-        /// <summary>
-        /// 分Indexの取得
-        /// 昼食
-        /// 終了
-        /// </summary>
-        /// <returns>The Lunch finish minute index.</returns>
-        public Int32 GetLunchFinishMinuteIndex()
-        {
-            return GetMinuteIndex(SetParam.Lunch.Finish.Minute);
+            get { return SetParam.Lunch.Finish.TimeOfDay; }
+            set
+            {
+                if (!SetParam.Lunch.Finish.TimeOfDay.Equals(value))
+                    SetParam.Lunch.Finish = new Class.Method().GetTodayTime(value.Hours, value.Minutes);
+            }
         }
 
         #endregion
 
         #region 夕食
 
-        /// <summary>         /// 時Index         /// 夕食         /// 開始         /// </summary>         private Int32 _DinnerStartHourIndex = -1;          /// <summary>         /// 時Index         /// 夕食         /// 終了         /// </summary>         private Int32 _DinnerFinishHourIndex = -1;          /// <summary>         /// 分Index         /// 夕食         /// 開始         /// </summary>         private Int32 _DinnerStartMinuteIndex = -1;          /// <summary>         /// 分Index         /// 夕食         /// 終了         /// </summary>         private Int32 _DinnerFinishMinuteIndex = -1;          /// <summary>         /// 時間の設定         /// 夕食         /// 開始         /// </summary>         private void SetDinnerStart()         {             SetParam.Dinner.Start = GetMeetTime(_Hour, _Minute, _DinnerStartHourIndex, _DinnerStartMinuteIndex, SetParam.Dinner.Start);         }          /// <summary>         /// 時間の設定         /// 夕食         /// 終了         /// </summary>         private void SetDinnerFinish()         {             SetParam.Dinner.Finish = GetMeetTime(_Hour, _Minute, _DinnerFinishHourIndex, _DinnerFinishMinuteIndex, SetParam.Dinner.Finish);         }          /// <summary>         /// 時Indexプロパティ         /// 夕食         /// 開始         /// </summary>         /// <value>The index of the Dinner start hour.</value>         public Int32 DinnerStartHourIndex         {             get { return _DinnerStartHourIndex; }             set              {                 if (!_DinnerStartHourIndex.Equals(value))                 {                     _DinnerStartHourIndex = value;                     SetDinnerStart();                 }             }         }          /// <summary>         /// 時Indexプロパティ         /// 夕食         /// 終了         /// </summary>         /// <value>The index of the Dinner finish hour.</value>         public Int32 DinnerFinishHourIndex         {             get { return _DinnerFinishHourIndex; }             set             {                 if (!_DinnerFinishHourIndex.Equals(value))                 {                     _DinnerFinishHourIndex = value;                     SetDinnerFinish();                 }             }         }          /// <summary>         /// 分Indexプロパティ         /// 夕食         /// 開始         /// </summary>         /// <value>The index of the Dinner start minute.</value>         public Int32 DinnerStartMinuteIndex         {             get { return _DinnerStartMinuteIndex; }             set             {                 if (!_DinnerStartMinuteIndex.Equals(value))                 {                     _DinnerStartMinuteIndex = value;                     SetDinnerStart();                 }             }         }          /// <summary>         /// 分Indexプロパティ         /// 夕食         /// 終了         /// </summary>         /// <value>The index of the Dinner finish minute.</value>         public Int32 DinnerFinishMinuteIndex         {             get { return _DinnerFinishMinuteIndex; }             set             {                 if (!_DinnerFinishMinuteIndex.Equals(value))                 {                     _DinnerFinishMinuteIndex = value;                     SetDinnerFinish();                 }             }         } 
         /// <summary>
-        /// 時Indexの取得
+        /// 時間プロパティ
         /// 夕食
         /// 開始
         /// </summary>
-        /// <returns>The Dinner start hour index.</returns>
-        public Int32 GetDinnerStartHourIndex()
+        /// <value>The dinner start.</value>
+        public TimeSpan DinnerStart
         {
-            return GetHourIndex(SetParam.Dinner.Start.Hour);
+            get { return SetParam.Dinner.Start.TimeOfDay; }
+            set
+            {
+                if (!SetParam.Dinner.Start.TimeOfDay.Equals(value))
+                    SetParam.Dinner.Start = new Class.Method().GetTodayTime(value.Hours, value.Minutes);
+            }
         }
 
         /// <summary>
-        /// 分Indexの取得
-        /// 夕食
-        /// 開始
-        /// </summary>
-        /// <returns>The Dinner start minute index.</returns>
-        public Int32 GetDinnerStartMinuteIndex()
-        {
-            return GetMinuteIndex(SetParam.Dinner.Start.Minute);
-        }
-
-        /// <summary>
-        /// 時Indexの取得
+        /// 時間プロパティ
         /// 夕食
         /// 終了
         /// </summary>
-        /// <returns>The Dinner finish hour index.</returns>
-        public Int32 GetDinnerFinishHourIndex()
+        /// <value>The dinner finish.</value>
+        public TimeSpan DinnerFinish
         {
-            return GetHourIndex(SetParam.Dinner.Finish.Hour);
-        }
-
-        /// <summary>
-        /// 分Indexの取得
-        /// 夕食
-        /// 終了
-        /// </summary>
-        /// <returns>The Dinner finish minute index.</returns>
-        public Int32 GetDinnerFinishMinuteIndex()
-        {
-            return GetMinuteIndex(SetParam.Dinner.Finish.Minute);
+            get { return SetParam.Dinner.Finish.TimeOfDay; }
+            set
+            {
+                if (!SetParam.Dinner.Finish.TimeOfDay.Equals(value))
+                    SetParam.Dinner.Finish = new Class.Method().GetTodayTime(value.Hours, value.Minutes);
+            }
         }
 
         #endregion
 
         #region 就寝前
 
-        /// <summary>         /// 時Index         /// 就寝前         /// </summary>         private Int32 _SleepHourIndex = -1;          /// <summary>         /// 分Index         /// 就寝前         /// </summary>         private Int32 _SleepMinuteIndex = -1;          /// <summary>         /// 時間の設定         /// 就寝前         /// </summary>         private void SetSleep()         {             SetParam.Sleep = GetMeetTime(_Hour, _Minute, _SleepHourIndex, _SleepMinuteIndex, SetParam.Sleep);         }          /// <summary>         /// 時Indexプロパティ         /// 就寝前         /// </summary>         /// <value>The index of the Sleep  hour.</value>         public Int32 SleepHourIndex         {             get { return _SleepHourIndex; }             set              {                 if (!_SleepHourIndex.Equals(value))                 {                     _SleepHourIndex = value;                     SetSleep();                 }             }         }          /// <summary>         /// 分Indexプロパティ         /// 就寝前         /// </summary>         /// <value>The index of the Sleep  minute.</value>         public Int32 SleepMinuteIndex         {             get { return _SleepMinuteIndex; }             set             {                 if (!_SleepMinuteIndex.Equals(value))                 {                     _SleepMinuteIndex = value;                     SetSleep();                 }             }         } 
         /// <summary>
-        /// 時Indexの取得
+        /// 時間プロパティ
         /// 就寝前
         /// </summary>
-        /// <returns>The Sleep hour index.</returns>
-        public Int32 GetSleepHourIndex()
+        /// <value>The sleep start.</value>
+        public TimeSpan SleepStart
         {
-            return GetHourIndex(SetParam.Sleep.Hour);
-        }
-
-        /// <summary>
-        /// 分Indexの取得
-        /// 就寝前
-        /// </summary>
-        /// <returns>The Sleep minute index.</returns>
-        public Int32 GetSleepMinuteIndex()
-        {
-            return GetMinuteIndex(SetParam.Sleep.Minute);
+            get { return SetParam.Sleep.TimeOfDay; }
+            set
+            {
+                if (!SetParam.Sleep.TimeOfDay.Equals(value))
+                    SetParam.Sleep = new Class.Method().GetTodayTime(value.Hours, value.Minutes);
+            }
         }
 
         #endregion
@@ -595,66 +402,9 @@ namespace DrugAlarm.Form.Model
         #region List
 
         /// <summary>
-        /// 時List
-        /// </summary>
-        private List<Int32> _Hour;
-
-        /// <summary>
-        /// 分List
-        /// </summary>
-        private List<Int32> _Minute;
-
-        /// <summary>
         /// アラーム用分List
         /// </summary>
         private List<Int32> _AlarmMinute;
-
-        /// <summary>
-        /// 時Listの作成
-        /// </summary>
-        /// <returns>The hour list.</returns>
-        public List<Int32> GetHourList()
-        {
-
-            if (_Hour == null)
-            {
-
-                _Hour = new List<Int32>();
-                _Hour.Clear();
-
-                for (Int32 iLoop = 0; iLoop < 24; iLoop++)
-                {
-                    _Hour.Add(iLoop);
-                }
-
-            }
-
-            return _Hour;
-
-        }
-
-        /// <summary>
-        /// 分Listの作成
-        /// </summary>
-        /// <returns>The minute list.</returns>
-        public List<Int32> GetMinuteList()
-        {
-            if (_Minute == null)
-            {
-
-                _Minute = new List<Int32>();
-                _Minute.Clear();
-
-                for (Int32 iLoop = 0; iLoop < 60; iLoop += 5)
-                {
-                    _Minute.Add(iLoop);
-                }
-
-            }
-
-            return _Minute;
-
-        }
 
         /// <summary>
         /// アラーム用分Listの作成
@@ -678,26 +428,6 @@ namespace DrugAlarm.Form.Model
 
             return _AlarmMinute;
 
-        }
-
-        /// <summary>
-        /// 時Indexの取得
-        /// </summary>
-        /// <returns>The hour index.</returns>
-        /// <param name="Hour">Hour.</param>
-        private Int32 GetHourIndex(Int32 Hour)
-        {
-            return new Class.Method().GetDefaultIndex(_Hour, Hour);
-        }
-
-        /// <summary>
-        /// 分Indexの取得
-        /// </summary>
-        /// <returns>The minute index.</returns>
-        /// <param name="Minute">Minute.</param>
-        private Int32 GetMinuteIndex(Int32 Minute)
-        {
-            return GetMinuteDefaultIndex(_Minute, Minute);
         }
 
         /// <summary>
@@ -774,16 +504,10 @@ namespace DrugAlarm.Form.Model
         public void Dispose()
         {
 
-            if (_Hour != null)
+            if (_AlarmMinute != null)
             {
-                _Hour.Clear();
-                _Hour = null;
-            }
-
-            if (_Minute != null)
-            {
-                _Minute.Clear();
-                _Minute = null;
+                _AlarmMinute.Clear();
+                _AlarmMinute = null;
             }
 
         }

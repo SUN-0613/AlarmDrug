@@ -29,9 +29,9 @@
                     <ColumnDefinition Width="280*" />
                     <ColumnDefinition Width="60*" />
                 </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="#FF333333" TextColor="White" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="{Common:Translate Setting_Title}" />
-                <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" BackgroundColor="Transparent" TextColor="White" VerticalOptions="Center" HorizontalOptions="Center" BorderColor="Transparent" BorderWidth="0" Text="&lt;" Command="{Binding CancelCommand}" />
-                <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" BackgroundColor="Transparent" TextColor="White" VerticalOptions="Center" HorizontalOptions="Center" BorderColor="Transparent" BorderWidth="0" Text="✓" Command="{Binding SaveCommand}" IsEnabled="{Binding IsEdited}" />
+                <Label Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="#FF333333" TextColor="White" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Style="{DynamicResource TitleStyle}" Text="{Common:Translate Setting_Title}" />
+                <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" BackgroundColor="Transparent" TextColor="White" VerticalOptions="Center" HorizontalOptions="Center" BorderColor="Transparent" BorderWidth="0" Style="{DynamicResource SubtitleStyle}" Text="&lt;" Command="{Binding CancelCommand}" />
+                <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" BackgroundColor="Transparent" TextColor="White" VerticalOptions="Center" HorizontalOptions="Center" BorderColor="Transparent" BorderWidth="0" Style="{DynamicResource SubtitleStyle}" Text="✓" Command="{Binding SaveCommand}" IsEnabled="{Binding IsEdited}" />
             </Grid>
             
             <Grid Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" >
@@ -68,54 +68,40 @@
                 </Grid.ColumnDefinitions>
                 
                 <Label Grid.Row="0" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Text="{Common:Translate Setting_Breakfast}" />
-                <Picker Grid.Row="0" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" ItemsSource="{Binding BreakfastStartHour}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding BreakfastStartHourIndex}" />
-                <Label Grid.Row="0" Grid.RowSpan="1" Grid.Column="3" Grid.ColumnSpan="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text=":" />
-                <Picker Grid.Row="0" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" ItemsSource="{Binding BreakfastStartMinute}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding BreakfastStartMinuteIndex}" />
-                <Label Grid.Row="0" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="〜" />
-                <Picker Grid.Row="0" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="1" ItemsSource="{Binding BreakfastFinishHour}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding BreakfastFinishHourIndex}" />
-                <Label Grid.Row="0" Grid.RowSpan="1" Grid.Column="7" Grid.ColumnSpan="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text=":" />
-                <Picker Grid.Row="0" Grid.RowSpan="1" Grid.Column="8" Grid.ColumnSpan="1" ItemsSource="{Binding BreakfastFinishMinute}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding BreakfastFinishMinuteIndex}" />
+                <TimePicker Grid.Row="0" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="3" Format="HH:mm" Time="{Binding BreakfastStart}" Style="{DynamicResource BodyStyle}" />
+                <Label Grid.Row="0" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="〜" Style="{DynamicResource BodyStyle}" />
+                <TimePicker Grid.Row="0" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="3" Format="HH:mm" Time="{Binding BreakfastFinish}" Style="{DynamicResource BodyStyle}" />
 
                 <Label Grid.Row="1" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Text="{Common:Translate Setting_Lunch}" />
-                <Picker Grid.Row="1" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" ItemsSource="{Binding LunchStartHour}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding LunchStartHourIndex}" />
-                <Label Grid.Row="1" Grid.RowSpan="1" Grid.Column="3" Grid.ColumnSpan="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text=":" />
-                <Picker Grid.Row="1" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" ItemsSource="{Binding LunchStartMinute}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding LunchStartMinuteIndex}" />
-                <Label Grid.Row="1" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="〜" />
-                <Picker Grid.Row="1" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="1" ItemsSource="{Binding LunchFinishHour}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding LunchFinishHourIndex}" />
-                <Label Grid.Row="1" Grid.RowSpan="1" Grid.Column="7" Grid.ColumnSpan="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text=":" />
-                <Picker Grid.Row="1" Grid.RowSpan="1" Grid.Column="8" Grid.ColumnSpan="1" ItemsSource="{Binding LunchFinishMinute}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding LunchFinishMinuteIndex}" />
+                <TimePicker Grid.Row="1" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="3" Format="HH:mm" Time="{Binding LunchStart}" Style="{DynamicResource BodyStyle}" />
+                <Label Grid.Row="1" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="〜" Style="{DynamicResource BodyStyle}" />
+                <TimePicker Grid.Row="1" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="3" Format="HH:mm" Time="{Binding LunchFinish}" Style="{DynamicResource BodyStyle}" />
 
                 <Label Grid.Row="2" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Text="{Common:Translate Setting_Dinner}" />
-                <Picker Grid.Row="2" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" ItemsSource="{Binding DinnerStartHour}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding DinnerStartHourIndex}" />
-                <Label Grid.Row="2" Grid.RowSpan="1" Grid.Column="3" Grid.ColumnSpan="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text=":" />
-                <Picker Grid.Row="2" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" ItemsSource="{Binding DinnerStartMinute}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding DinnerStartMinuteIndex}" />
-                <Label Grid.Row="2" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="〜" />
-                <Picker Grid.Row="2" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="1" ItemsSource="{Binding DinnerFinishHour}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding DinnerFinishHourIndex}" />
-                <Label Grid.Row="2" Grid.RowSpan="1" Grid.Column="7" Grid.ColumnSpan="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text=":" />
-                <Picker Grid.Row="2" Grid.RowSpan="1" Grid.Column="8" Grid.ColumnSpan="1" ItemsSource="{Binding DinnerFinishMinute}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding DinnerFinishMinuteIndex}" />
+                <TimePicker Grid.Row="2" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="3" Format="HH:mm" Time="{Binding DinnerStart}" Style="{DynamicResource BodyStyle}" />
+                <Label Grid.Row="2" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="〜" Style="{DynamicResource BodyStyle}" />
+                <TimePicker Grid.Row="2" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="3" Format="HH:mm" Time="{Binding DinnerFinish}" Style="{DynamicResource BodyStyle}" />
 
                 <Label Grid.Row="3" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Text="{Common:Translate Setting_Sleep}" />
-                <Picker Grid.Row="3" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" ItemsSource="{Binding SleepHour}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding SleepHourIndex}" />
-                <Label Grid.Row="3" Grid.RowSpan="1" Grid.Column="3" Grid.ColumnSpan="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text=":" />
-                <Picker Grid.Row="3" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" ItemsSource="{Binding SleepMinute}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding SleepMinuteIndex}" />
+                <TimePicker Grid.Row="3" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="3" Format="HH:mm" Time="{Binding SleepStart}" Style="{DynamicResource BodyStyle}" />
                 
                 <Label Grid.Row="5" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="10" HorizontalTextAlignment="Center" VerticalTextAlignment="End" Text="{Common:Translate Setting_InputAlarm}" />
                 
                 <Label Grid.Row="6" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Text="{Common:Translate Setting_BeforeMeals}" />
-                <Picker Grid.Row="6" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="1" ItemsSource="{Binding BeforeMealMinute}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding BeforeMealMinuteIndex}" />
-                <Label Grid.Row="6" Grid.RowSpan="1" Grid.Column="7" Grid.ColumnSpan="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Text="{Common:Translate Setting_BeforeMinute}" />
+                <Picker Grid.Row="6" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="2" ItemsSource="{Binding BeforeMealMinute}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding BeforeMealMinuteIndex}" />
+                <Label Grid.Row="6" Grid.RowSpan="1" Grid.Column="8" Grid.ColumnSpan="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Text="{Common:Translate Setting_BeforeMinute}" />
 
                 <Label Grid.Row="7" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Text="{Common:Translate Setting_AfterMeals}" />
-                <Picker Grid.Row="7" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="1" ItemsSource="{Binding AfterMealMinute}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding AfterMealMinuteIndex}" />
-                <Label Grid.Row="7" Grid.RowSpan="1" Grid.Column="7" Grid.ColumnSpan="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Text="{Common:Translate Setting_AfterMinute}" />
+                <Picker Grid.Row="7" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="2" ItemsSource="{Binding AfterMealMinute}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding AfterMealMinuteIndex}" />
+                <Label Grid.Row="7" Grid.RowSpan="1" Grid.Column="8" Grid.ColumnSpan="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Text="{Common:Translate Setting_AfterMinute}" />
 
                 <Label Grid.Row="8" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Text="{Common:Translate Setting_BeforeSleep}" />
-                <Picker Grid.Row="8" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="1" ItemsSource="{Binding BeforeSleepMinute}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding BeforeSleepMinuteIndex}" />
-                <Label Grid.Row="8" Grid.RowSpan="1" Grid.Column="7" Grid.ColumnSpan="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Text="{Common:Translate Setting_BeforeMinute}" />
+                <Picker Grid.Row="8" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="2" ItemsSource="{Binding BeforeSleepMinute}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding BeforeSleepMinuteIndex}" />
+                <Label Grid.Row="8" Grid.RowSpan="1" Grid.Column="8" Grid.ColumnSpan="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Text="{Common:Translate Setting_BeforeMinute}" />
                 
                 <Label Grid.Row="9" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Text="{Common:Translate Setting_Realarm}" />
-                <Picker Grid.Row="9" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="1" ItemsSource="{Binding RealarmMinute}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding RealarmMinuteIndex}" />
-                <Label Grid.Row="9" Grid.RowSpan="1" Grid.Column="7" Grid.ColumnSpan="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Text="{Common:Translate Setting_AfterMinute}" />
+                <Picker Grid.Row="9" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="2" ItemsSource="{Binding RealarmMinute}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding RealarmMinuteIndex}" />
+                <Label Grid.Row="9" Grid.RowSpan="1" Grid.Column="8" Grid.ColumnSpan="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Text="{Common:Translate Setting_AfterMinute}" />
                 
             </Grid>
             

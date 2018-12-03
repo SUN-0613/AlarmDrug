@@ -29,9 +29,9 @@
                     <ColumnDefinition Width="280*" />
                     <ColumnDefinition Width="60*" />
                 </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="#FF333333" TextColor="White" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="{Common:Translate Realarm_Title}" />
-                <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" BackgroundColor="Transparent" TextColor="White" VerticalOptions="Center" HorizontalOptions="Center" BorderColor="Transparent" BorderWidth="0" Text="&lt;" Command="{Binding CancelCommand}" />
-                <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" BackgroundColor="Transparent" TextColor="White" VerticalOptions="Center" HorizontalOptions="Center" BorderColor="Transparent" BorderWidth="0" Text="✓" Command="{Binding SaveCommand}" />
+                <Label Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="#FF333333" TextColor="White" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Style="{DynamicResource TitleStyle}" Text="{Common:Translate Realarm_Title}" />
+                <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" BackgroundColor="Transparent" TextColor="White" VerticalOptions="Center" HorizontalOptions="Center" BorderColor="Transparent" BorderWidth="0" Style="{DynamicResource SubtitleStyle}" Text="&lt;" Command="{Binding CancelCommand}" />
+                <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" BackgroundColor="Transparent" TextColor="White" VerticalOptions="Center" HorizontalOptions="Center" BorderColor="Transparent" BorderWidth="0" Style="{DynamicResource SubtitleStyle}" Text="✓" Command="{Binding SaveCommand}" />
             </Grid>
             
             <Grid Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" >
@@ -45,14 +45,14 @@
                     <!--400-->
                     <ColumnDefinition Width="10*" />
                     <ColumnDefinition Width="100*" />
-                    <ColumnDefinition Width="40*" />
+                    <ColumnDefinition Width="50*" />
                     <ColumnDefinition Width="5*" />
-                    <ColumnDefinition Width="235*" />
+                    <ColumnDefinition Width="225*" />
                     <ColumnDefinition Width="10*" />
                 </Grid.ColumnDefinitions>
                 
-                <Picker Grid.Row="1" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" ItemsSource="{Binding RealarmMinute}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding RealarmMinuteIndex}" />
-                <Label Grid.Row="1" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" BackgroundColor="Transparent" TextColor="Black" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Realarm_Message}" />
+                <Picker Grid.Row="1" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" ItemsSource="{Binding RealarmMinute}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding RealarmMinuteIndex}" Style="{DynamicResource BodyStyle}" />
+                <Label Grid.Row="1" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" BackgroundColor="Transparent" TextColor="Black" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Realarm_Message}" Style="{DynamicResource BodyStyle}" />
                 
             </Grid>
             
