@@ -21,8 +21,6 @@
 	</array>
 	<key>MinimumOSVersion</key>
 	<string>12.1</string>
-	<key>CFBundleDisplayName</key>
-	<string>DrugAlarm</string>
 	<key>CFBundleIdentifier</key>
 	<string>AYamamoto.DrugAlarm</string>
 	<key>CFBundleVersion</key>

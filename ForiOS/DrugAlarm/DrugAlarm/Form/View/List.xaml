@@ -10,7 +10,7 @@
         <Convert:VolumeToForeground x:Key="ForegroundConverter" />
     </ContentPage.Resources>
     <ContentPage.Padding>
-        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" />
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 25, 0, 0" />
     </ContentPage.Padding>
     <ContentPage.Content>
         <Grid>
