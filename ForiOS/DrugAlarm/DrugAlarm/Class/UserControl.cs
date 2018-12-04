@@ -158,6 +158,67 @@ namespace DrugAlarm.Class
         }
 
         /// <summary>
+        /// 服用情報
+        /// </summary>
+        public class MedicineInfo : Common.ViewModelBase
+        {
+
+            /// <summary>
+            /// 薬品名
+            /// </summary>
+            private string _Name;
+
+            /// <summary>
+            /// 服用量
+            /// </summary>
+            private Int32 _Volume;
+
+            /// <summary>
+            /// 薬品名プロパティ
+            /// </summary>
+            public string Name 
+            { 
+                get { return _Name; }
+                private set
+                {
+                    if (!_Name.Equals(value))
+                    {
+                        _Name = value;
+                        CallPropertyChanged();
+                    }
+                }
+            }
+
+            /// <summary>
+            /// 服用量プロパティ
+            /// </summary>
+            public Int32 Volume 
+            { 
+                get { return _Volume; }
+                private set
+                {
+                    if (!_Volume.Equals(value))
+                    {
+                        _Volume = value;
+                        CallPropertyChanged();
+                    }
+                }
+            }
+
+            /// <summary>
+            /// new
+            /// </summary>
+            /// <param name="name">Name.</param>
+            /// <param name="volume">Volume.</param>
+            public MedicineInfo(string name, Int32 volume)
+            {
+                _Name = name;
+                _Volume = volume;
+            }
+
+        }
+
+        /// <summary>
         /// 服用時間
         /// </summary>
         /// <value>The kind timing.</value>

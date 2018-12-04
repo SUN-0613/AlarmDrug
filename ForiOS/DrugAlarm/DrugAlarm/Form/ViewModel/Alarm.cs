@@ -79,7 +79,7 @@ namespace DrugAlarm.Form.ViewModel
         /// 表示薬一覧プロパティ
         /// </summary>
         /// <value>The drug list.</value>
-        public ObservableCollection<string> DrugList { get; set; }
+        public ObservableCollection<Class.UserControl.MedicineInfo> DrugList { get; set; }
 
         #endregion
 
@@ -91,11 +91,11 @@ namespace DrugAlarm.Form.ViewModel
 
             _Model = new Model.Alarm();
 
-            DrugList = new ObservableCollection<string>();
+            DrugList = new ObservableCollection<Class.UserControl.MedicineInfo>();
 
-            _Model.GetDrugList().ForEach(Name => 
+            _Model.GetDrugList().ForEach(Drug => 
             {
-                DrugList.Add(Name);
+                DrugList.Add(new Class.UserControl.MedicineInfo(Drug.Name, Drug.Volume));
             });
 
         }

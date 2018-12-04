@@ -24,17 +24,17 @@ namespace DrugAlarm.Form.Model
         /// <summary>
         /// 表示薬名称一覧
         /// </summary>
-        private List<string> _DrugList;
+        private List<Class.UserControl.MedicineInfo> _DrugList;
 
         /// <summary>
         /// 表示薬一覧取得
         /// </summary>
         /// <returns>The drug list.</returns>
-        public List<string> GetDrugList()
+        public List<Class.UserControl.MedicineInfo> GetDrugList()
         {
 
             if (_DrugList == null)
-                _DrugList = new List<string>();
+                _DrugList = new List<Class.UserControl.MedicineInfo>();
 
             _DrugList.Clear();
 
@@ -42,7 +42,7 @@ namespace DrugAlarm.Form.Model
             {
                 if (Drug.IsPrescriptionAlarm)
                 {
-                    _DrugList.Add(Drug.Name);
+                    _DrugList.Add(new Class.UserControl.MedicineInfo(Drug.Name, Drug.TotalVolume));
                 }
             });
 

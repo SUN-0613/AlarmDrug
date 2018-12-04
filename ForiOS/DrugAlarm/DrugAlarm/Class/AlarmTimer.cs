@@ -38,7 +38,7 @@ namespace DrugAlarm.Class
                     {
 
 #if DEBUG
-                        System.Diagnostics.Debug.WriteLine("Run " + DateTime.Now.ToString("HH:mm:ss"));
+                        System.Diagnostics.Debug.WriteLine("Run " + DateTime.Now.ToString("HH:mm:ss") + " :Next " + _Parameter.NextAlarm.Timer.ToString("HH:mm"));
 #endif
 
                                                 //次回アラーム時刻を超過していればアラーム表示
