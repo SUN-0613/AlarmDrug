@@ -787,15 +787,16 @@ namespace DrugAlarm.Class
 
             string Return;
             StringBuilder Message = new StringBuilder();
-            bool IsMeals = false;
 
             Message.Clear();
 
             #region 朝昼夕
-            if (DrugList[Index].Breakfast.IsDrug && DrugList[Index].Lunch.IsDrug && DrugList[Index].Dinner.IsDrug)
+            if (DrugList[Index].Breakfast.IsDrug && DrugList[Index].Lunch.IsDrug && DrugList[Index].Dinner.IsDrug
+                && DrugList[Index].Breakfast.Kind.Equals(DrugList[Index].Lunch.Kind)
+                && DrugList[Index].Breakfast.Kind.Equals(DrugList[Index].Dinner.Kind))
             {
                 Message.Append(Resx.Resources.Parameter_Timing_Always);
-                IsMeals = true;
+                Message.Append(SetTimingMessage(DrugList[Index].Breakfast.Kind));
             }
             else
             {
@@ -803,46 +804,31 @@ namespace DrugAlarm.Class
                 if (DrugList[Index].Breakfast.IsDrug)
                 {
                     Message.Append(Resx.Resources.Parameter_Timing_Breakfast);
-                    IsMeals = true;
+                    Message.Append(SetTimingMessage(DrugList[Index].Breakfast.Kind));
                 }
 
                 if (DrugList[Index].Lunch.IsDrug)
                 {
+
+                    if (Message.Length > 0)
+                    {
+                        Message.Append(",");
+                    }
+
                     Message.Append(Resx.Resources.Parameter_Timing_Lunch);
-                    IsMeals = true;
+                    Message.Append(SetTimingMessage(DrugList[Index].Lunch.Kind));
                 }
 
                 if (DrugList[Index].Dinner.IsDrug)
                 {
+
+                    if (Message.Length > 0)
+                    {
+                        Message.Append(",");
+                    }
+
                     Message.Append(Resx.Resources.Parameter_Timing_Dinner);
-                    IsMeals = true;
-                }
-
-            }
-            #endregion
-
-            #region 食前、食間、食後
-            if (IsMeals)
-            {
-
-                switch (DrugList[Index].Breakfast.Kind)
-                {
-
-                    case UserControl.KindTiming.Before:
-                        Message.Append(Resx.Resources.Parameter_Timing_Before);
-                        break;
-
-                    case UserControl.KindTiming.Between:
-                        Message.Append(Resx.Resources.Parameter_Timing_Between);
-                        break;
-
-                    case UserControl.KindTiming.After:
-                        Message.Append(Resx.Resources.Parameter_Timing_After);
-                        break;
-
-                    default:
-                        break;
-
+                    Message.Append(SetTimingMessage(DrugList[Index].Dinner.Kind));
                 }
 
             }
@@ -912,6 +898,22 @@ namespace DrugAlarm.Class
 
             return Return;
 
+        }
+
+        /// <summary>
+        /// 服用タイミングのメッセージ作成
+        /// </summary>
+        /// <returns>The timing message.</returns>
+        /// <param name="Kind">Kind.朝昼夕それぞれの服用タイミング</param>
+        private string SetTimingMessage(UserControl.KindTiming Kind)
+        {
+            switch (Kind)
+            {
+                case UserControl.KindTiming.Before: return Resx.Resources.Parameter_Timing_Before;
+                case UserControl.KindTiming.Between: return Resx.Resources.Parameter_Timing_Between;
+                case UserControl.KindTiming.After: return Resx.Resources.Parameter_Timing_After;
+                default: return Resx.Resources.Parameter_Timing_Before;
+            }
         }
 
         /// <summary>
