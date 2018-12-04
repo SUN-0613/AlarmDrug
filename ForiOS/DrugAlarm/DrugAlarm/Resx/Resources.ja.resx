@@ -296,4 +296,16 @@
     <value>錠</value>
     <comment>設定：錠</comment>
   </data>
+  <data name="Timer_Title" xml:space="preserve">
+    <value>お薬アラーム</value>
+    <comment>アラーム：タイトル</comment>        
+  </data>
+  <data name="Timer_Subtitle" xml:space="preserve">
+    <value>お薬のお時間です</value>
+    <comment>アラーム：サブタイトル</comment>        
+  </data>
+  <data name="Timer_Body" xml:space="preserve">
+    <value>アプリで飲む薬を確認しましょう！</value>
+    <comment>アラーム：メッセージ</comment>        
+  </data>
 </root>

@@ -66,7 +66,7 @@ public class NotificationService : DrugAlarm.Common.INotificationService
     /// <param name="sec">指定秒数後に通知表示</param>
     /// <param name="IsRepeat">通知表示を繰り返すか</param>
     /// <param name="IsUseBadge">バッジの数字更新</param>
-    public void Show(string Title, string SubTitle, string Message, Int32 sec = 0, bool IsRepeat = false, bool IsUseBadge = true)
+    public void Show(string Title, string SubTitle, string Message, Int32 sec = 1, bool IsRepeat = false, bool IsUseBadge = true)
     {
 
         // メインスレッドにて処理
@@ -102,7 +102,7 @@ public class NotificationService : DrugAlarm.Common.INotificationService
 
             // アイコン上に表示されるバッジ数値更新
             if (IsUseBadge)
-                UIApplication.SharedApplication.ApplicationIconBadgeNumber += 1;
+                UIApplication.SharedApplication.ApplicationIconBadgeNumber = 1;
 
         });
 

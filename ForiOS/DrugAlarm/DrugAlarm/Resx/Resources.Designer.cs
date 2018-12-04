@@ -472,5 +472,23 @@ namespace DrugAlarm.Resx {
                 return ResourceManager.GetString("Setting_Unit", resourceCulture);
             }
         }
+        
+        internal static string Timer_Title {
+            get {
+                return ResourceManager.GetString("Timer_Title", resourceCulture);
+            }
+        }
+        
+        internal static string Timer_Subtitle {
+            get {
+                return ResourceManager.GetString("Timer_Subtitle", resourceCulture);
+            }
+        }
+        
+        internal static string Timer_Body {
+            get {
+                return ResourceManager.GetString("Timer_Body", resourceCulture);
+            }
+        }
     }
 }

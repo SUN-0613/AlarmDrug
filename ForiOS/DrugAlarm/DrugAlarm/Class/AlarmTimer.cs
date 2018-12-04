@@ -37,7 +37,11 @@ namespace DrugAlarm.Class
                     try
                     {
 
-                        //次回アラーム時刻を超過していればアラーム表示
+#if DEBUG
+                        System.Diagnostics.Debug.WriteLine("Run " + DateTime.Now.ToString("HH:mm:ss"));
+#endif
+
+                                                //次回アラーム時刻を超過していればアラーム表示
                         if (_Parameter.NextAlarm.Timer <= DateTime.Now)
                         {
 
@@ -63,7 +67,7 @@ namespace DrugAlarm.Class
                             {
                                 if (!IsLocalAlarm)
                                 {
-                                    DependencyService.Get<Common.INotificationService>().Show("Title", "SubTitle", "Body");
+                                    DependencyService.Get<Common.INotificationService>().Show(Resx.Resources.Timer_Title, Resx.Resources.Timer_Subtitle, Resx.Resources.Timer_Body);
                                     IsLocalAlarm = true;
                                 }
                             }

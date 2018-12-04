@@ -144,9 +144,9 @@ namespace DrugAlarm.Form.ViewModel
             get { return _Model.BreakfastFinish; }
             set
             {
-                if (!_Model.BreakfastStart.Equals(value))
+                if (!_Model.BreakfastFinish.Equals(value))
                 {
-                    _Model.BreakfastStart = value;
+                    _Model.BreakfastFinish = value;
                     CallPropertyChanged();
                 }
             }

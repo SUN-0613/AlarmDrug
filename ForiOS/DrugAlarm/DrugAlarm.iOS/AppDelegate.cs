@@ -28,6 +28,10 @@ namespace DrugAlarm.iOS
 
             base.DidEnterBackground(uiApplication);
 
+#if DEBUG
+            System.Diagnostics.Debug.WriteLine(nameof(DidEnterBackground));
+#endif 
+
             try
             {
 
@@ -48,20 +52,34 @@ namespace DrugAlarm.iOS
         }
 
         /// <summary>
-        /// バックグラウンド処理終了
+        /// フォアグラウンド処理開始
         /// </summary>
         /// <param name="uiApplication">User interface application.</param>
-        public override void OnResignActivation(UIApplication uiApplication)
+        public override void OnActivated(UIApplication uiApplication)
         {
+            base.OnActivated(uiApplication);
 
-            base.OnResignActivation(uiApplication);
+#if DEBUG
+            System.Diagnostics.Debug.WriteLine(nameof(OnActivated));
+#endif 
 
-            if (_TaskId.Equals(0))
-                return;
+            try
+            {
 
-            UIApplication.SharedApplication.EndBackgroundTask(_TaskId);
-            _TaskId = 0;
-            (Xamarin.Forms.Application.Current as App).IsBackground = false;
+                if (_TaskId.Equals(0))
+                    return;
+
+                UIApplication.SharedApplication.EndBackgroundTask(_TaskId);
+                _TaskId = 0;
+                (Xamarin.Forms.Application.Current as App).IsBackground = false;
+
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+#endif 
+            }
 
         }
 
