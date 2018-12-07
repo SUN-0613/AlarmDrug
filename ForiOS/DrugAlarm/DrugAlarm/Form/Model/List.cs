@@ -227,5 +227,14 @@ namespace DrugAlarm.Form.Model
 
         }
 
+        /// <summary>
+        /// 次回アラームの日時取得
+        /// </summary>
+        /// <returns>The alarm.</returns>
+        public string GetNextAlarmMessage()
+        {
+            return Resx.Resources.List_NextAlarmMessage + _Parameter.NextAlarm.Timer.ToString("yyyy/MM/dd HH:mm");
+        }
+
     }
 }

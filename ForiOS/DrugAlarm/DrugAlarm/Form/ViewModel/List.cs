@@ -408,6 +408,8 @@ namespace DrugAlarm.Form.ViewModel
                     try
                     {
 
+                        NextAlarm = _Model.GetNextAlarmMessage();
+
                         if (!DrugList.Count.Equals(_Model.GetDrugCount))
                         {
 
@@ -493,6 +495,28 @@ namespace DrugAlarm.Form.ViewModel
         }
 
         #endregion
+
+        /// <summary>
+        /// 次回アラーム時間
+        /// </summary>
+        private string _NextAlarm = "";
+
+        /// <summary>
+        /// 次回アラーム時間プロパティ
+        /// </summary>
+        /// <value>The next alarm.</value>
+        public string NextAlarm
+        {
+            get { return _NextAlarm; }
+            set
+            {
+                if (!_NextAlarm.Equals(value))
+                {
+                    _NextAlarm = value;
+                    CallPropertyChanged();
+                }
+            }
+        }
 
         /// <summary>
         /// new

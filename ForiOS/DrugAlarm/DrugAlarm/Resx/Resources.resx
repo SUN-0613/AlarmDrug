@@ -164,6 +164,10 @@
     <value>編集</value>
     <comment>一覧：メニュー：編集</comment>
   </data>
+  <data name="List_NextAlarmMessage" xml:space="preserve">
+    <value>次回アラーム:</value>
+    <comment>一覧：次回アラーム欄メッセージ</comment>
+  </data>
   <data name="List_Setting" xml:space="preserve">
     <value>設定</value>
     <comment>一覧：設定ボタン</comment>

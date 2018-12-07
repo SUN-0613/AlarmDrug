@@ -79,5 +79,29 @@ namespace DrugAlarm
             // Handle when your app resumes
         }
 
+        /// <summary>
+        /// タイマー処理開始
+        /// </summary>
+        public void TImerStart()
+        {
+            _Timer.Start();
+        }
+
+        /// <summary>
+        /// タイマー処理中止
+        /// </summary>
+        public void TimerStop()
+        {
+            _Timer.Stop();
+        }
+
+        /// <summary>
+        /// タスク処理でアラームチェック
+        /// </summary>
+        public void TimerCheck()
+        {
+            _Timer.CheckTimer();
+        }
+
     }
 }

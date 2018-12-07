@@ -15,11 +15,6 @@ namespace DrugAlarm.iOS
     {
 
         /// <summary>
-        /// バックグラウンド時のタスクID
-        /// </summary>
-        private nint _TaskId = 0;
-
-        /// <summary>
         /// バックグラウンド処理開始
         /// </summary>
         /// <param name="uiApplication">User interface application.</param>
@@ -35,11 +30,8 @@ namespace DrugAlarm.iOS
             try
             {
 
-                if (!_TaskId.Equals(0))
-                    return;
-
-                _TaskId = UIApplication.SharedApplication.BeginBackgroundTask(() => { });
                 (Xamarin.Forms.Application.Current as App).IsBackground = true;
+                (Xamarin.Forms.Application.Current as App).TimerStop();
 
             }
             catch (Exception ex)
@@ -66,12 +58,8 @@ namespace DrugAlarm.iOS
             try
             {
 
-                if (_TaskId.Equals(0))
-                    return;
-
-                UIApplication.SharedApplication.EndBackgroundTask(_TaskId);
-                _TaskId = 0;
                 (Xamarin.Forms.Application.Current as App).IsBackground = false;
+                (Xamarin.Forms.Application.Current as App).TImerStart();
 
             }
             catch (Exception ex)
@@ -90,12 +78,46 @@ namespace DrugAlarm.iOS
         //
         // You have 17 seconds to return from this method, or iOS will terminate your application.
         //
-        public override bool FinishedLaunching(UIApplication app, NSDictionary options)
+        public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
         {
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
 
-            return base.FinishedLaunching(app, options);
+            UIApplication.SharedApplication.SetMinimumBackgroundFetchInterval(UIApplication.BackgroundFetchIntervalMinimum);
+
+            return base.FinishedLaunching(uiApplication, launchOptions);
         }
+
+        /// <summary>
+        /// バックグラウンドフェッチでの処理
+        /// </summary>
+        /// <param name="application">Application.</param>
+        /// <param name="completionHandler">Completion handler.</param>
+        [Export("application:performFetchWithCompletionHandler:")]
+        public override void PerformFetch(UIApplication application, Action<UIBackgroundFetchResult> completionHandler)
+        {
+
+            try
+            {
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine(nameof(PerformFetch));
+#endif 
+
+                (Xamarin.Forms.Application.Current as App).TimerCheck();
+
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+#endif 
+            }
+            finally
+            {
+                completionHandler(UIBackgroundFetchResult.NewData);
+            }
+
+        }
+
     }
 }
