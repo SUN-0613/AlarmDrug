@@ -36,10 +36,15 @@ namespace DrugAlarm.Form.Model
 
             _DrugList.Clear();
 
-            _Parameter.NextAlarm.DrugList.ForEach(Drug =>
+            for (Int32 iLoop = 0; iLoop <= _Parameter.NextAlarmIndex; iLoop++)
             {
-                _DrugList.Add(new Class.UserControl.MedicineInfo(_Parameter.DrugList[Drug.Index].Name, Drug.Volume));
-            });
+
+                _Parameter.NextAlarm[iLoop].DrugList.ForEach(Drug =>
+                {
+                    _DrugList.Add(new Class.UserControl.MedicineInfo(_Parameter.DrugList[Drug.Index].Name, Drug.Volume));
+                });
+
+            }
 
             return _DrugList;
 

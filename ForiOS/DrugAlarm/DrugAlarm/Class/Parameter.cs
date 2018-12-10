@@ -17,12 +17,17 @@ namespace DrugAlarm.Class
         /// 次回アラームプロパティ
         /// </summary>
         /// <value>The next alarm.</value>
-        public UserControl.AlarmInfo NextAlarm { get; private set; }
+        public List<UserControl.AlarmInfo> NextAlarm { get; private set; }
+
+        /// <summary>
+        /// 次回アラームList.Index
+        /// </summary>
+        public Int32 NextAlarmIndex = -1;
 
         /// <summary>
         /// 再通知
         /// </summary>
-        private UserControl.AlarmInfo Realarm;
+        private List<UserControl.AlarmInfo> Realarm;
 
         /// <summary>
         /// パラメータ名称一覧
@@ -468,23 +473,16 @@ namespace DrugAlarm.Class
         public List<DrugParameter> DrugList;
 
         /// <summary>
-        /// 次回通知が再通知の設定によるものか
-        /// </summary>
-        private bool IsSetRealarm;
-
-        /// <summary>
         /// new
         /// </summary>
         public Parameter()
         {
 
-            IsSetRealarm = false;
-
             Setting = new SettingParameter();
             DrugList = new List<DrugParameter>();
 
-            NextAlarm = new UserControl.AlarmInfo();
-            Realarm = new UserControl.AlarmInfo();
+            NextAlarm = new List<UserControl.AlarmInfo>();
+            Realarm = new List<UserControl.AlarmInfo>();
 
             Load();
 
@@ -510,15 +508,21 @@ namespace DrugAlarm.Class
             DrugList.Clear();
             DrugList = null;
 
-            NextAlarm.Dispose();
-            Realarm.Dispose();
+            NextAlarm.ForEach(Alarm => { Alarm.Dispose(); });
+            NextAlarm.Clear();
+            NextAlarm = null;
+
+            Realarm.ForEach(Alarm => { Alarm.Dispose(); });
+            Realarm.Clear();
+            Realarm = null;
 
         }
 
         /// <summary>
         /// ファイル読み込み
         /// </summary>
-        public void Load()
+        /// <param name="Initialize">次回アラーム初期化</param>
+        public void Load(bool Initialize = true)
         {
 
             string FilePath;
@@ -757,7 +761,7 @@ namespace DrugAlarm.Class
             }
 
             //次回アラーム取得
-            SetNextAlarm();
+            SetNextAlarm(Initialize);
 
         }
 
@@ -919,7 +923,8 @@ namespace DrugAlarm.Class
         /// <summary>
         /// ファイル書き込み
         /// </summary>
-        public void Save()
+        /// <param name="Initialize">次回アラーム初期化</param>
+        public void Save(bool Initialize = true)
         {
 
             //保存パスの取得
@@ -1024,7 +1029,7 @@ namespace DrugAlarm.Class
             {
 
                 //次回アラーム取得
-                SetNextAlarm();
+                SetNextAlarm(Initialize);
 
             }
 
@@ -1384,34 +1389,37 @@ namespace DrugAlarm.Class
             bool Return = false;
 
             //総量から服用錠を減算
-            for (Int32 iLoop = 0; iLoop < NextAlarm.DrugList.Count; iLoop++)
+            for (Int32 iLoop = 0; iLoop <= NextAlarmIndex; iLoop++)
             {
 
-                Int32 Index = NextAlarm.DrugList[iLoop].Index;
-                Int32 Volume = NextAlarm.DrugList[iLoop].Volume;
-
-                DrugList[Index].TotalVolume -= Volume;
-                if (DrugList[Index].TotalVolume < 0)
+                for (Int32 jLoop = 0; jLoop < NextAlarm[iLoop].DrugList.Count; jLoop++)
                 {
-                    DrugList[Index].TotalVolume = 0;
-                }
 
-                //指定時間による服用なら、指定時間の設定を解除する
-                if (NextAlarm.DrugList[iLoop].IsAppoint)
-                {
-                    DrugList[Index].Appoint.IsDrug = false;
-                }
+                    Int32 Index = NextAlarm[iLoop].DrugList[jLoop].Index;
+                    Int32 Volume = NextAlarm[iLoop].DrugList[jLoop].Volume;
 
-                //時間毎による服用なら、次回時刻を設定
-                if (NextAlarm.DrugList[iLoop].IsHourEach)
-                {
-                    DrugList[Index].HourEachNextTime = DateTime.Now.AddHours(DrugList[Index].HourEachTime);
+                    DrugList[Index].TotalVolume -= Volume;
+                    if (DrugList[Index].TotalVolume < 0)
+                        DrugList[Index].TotalVolume = 0;
+
+                    //指定時間による服用なら、指定時間の設定を解除する
+                    if (NextAlarm[iLoop].DrugList[jLoop].IsAppoint)
+                    {
+                        DrugList[Index].Appoint.IsDrug = false;
+                    }
+
+                    //時間毎による服用なら、次回時刻を設定
+                    if (NextAlarm[iLoop].DrugList[jLoop].IsHourEach)
+                    {
+                        DrugList[Index].HourEachNextTime = DateTime.Now.AddHours(DrugList[Index].HourEachTime);
+                    }
+
                 }
 
             }
 
             //パラメータ更新
-            Save();
+            Save(false);
 
             //残量チェック
             for (Int32 iLoop = 0; iLoop < DrugList.Count; iLoop++)
@@ -1433,59 +1441,86 @@ namespace DrugAlarm.Class
         /// <summary>
         /// 次回アラーム情報の設定
         /// </summary>
-        private void SetNextAlarm()
+        /// <param name="Initialize">初期化実行</param>
+        private void SetNextAlarm(bool Initialize)
         {
 
             Method method = new Method();
             DateTime Time;
             DateTime BeforeAlarmTime;   //前回アラーム時間
+            Int32 jLoop;                //再通知のfor文で宣言すると警告が出るのでここで宣言する
 
-            //アラーム時間の記憶
-            BeforeAlarmTime = NextAlarm.Timer.Equals(DateTime.MaxValue) ? DateTime.Now : NextAlarm.Timer < DateTime.Now ? NextAlarm.Timer.AddSeconds(1) : DateTime.Now;
-
-            //初期値
-            NextAlarm.Timer = DateTime.MaxValue;
-            NextAlarm.DrugList.Clear();
-
-            //前回が再通知の設定時刻だった場合は再通知設定を初期化
-            if (IsSetRealarm)
-            {
-                Realarm.Timer = DateTime.MaxValue;
-                Realarm.DrugList.Clear();
-            }
-
-            //再通知
-            if (Realarm.DrugList.Count > 0 && Realarm.Timer <= NextAlarm.Timer)
+            //経過した再通知設定を初期化
+            if (!NextAlarmIndex.Equals(-1))
             {
 
-                //同時刻ならば追加、現在設定値より前時刻なら新規登録
-                if (!NextAlarm.Timer.Equals(Realarm.Timer))
+                for (Int32 iLoop = Realarm.Count - 1; iLoop >= 0; iLoop--)
                 {
-                    NextAlarm.DrugList.Clear();
+                    if (Realarm[iLoop].Timer <= NextAlarm[NextAlarmIndex].Timer)
+                    {
+                        Realarm[iLoop].Dispose();
+                        Realarm.RemoveAt(iLoop);
+                    }
                 }
 
-                //DrugListのIndexを登録
-                for (Int32 iLoop = 0; iLoop < Realarm.DrugList.Count; iLoop++)
+                if (Realarm.Count.Equals(0))
+                    Realarm.Add(new UserControl.AlarmInfo());
+
+            }
+
+            //アラーム時間の記憶
+            BeforeAlarmTime = NextAlarmIndex.Equals(-1) ? DateTime.Now :
+                                NextAlarm[NextAlarmIndex].Timer.Equals(DateTime.MaxValue) ? DateTime.Now :
+                                NextAlarm[NextAlarmIndex].Timer < DateTime.Now ? NextAlarm[NextAlarmIndex].Timer.AddSeconds(1) :
+                                DateTime.Now;
+
+            //初期化
+            if (Initialize)
+            {
+                NextAlarm.ForEach(Alarm => { Alarm.Dispose(); });
+                NextAlarm.Clear();
+            }
+            else
+            {
+                for (Int32 iLoop = NextAlarmIndex; iLoop > -1; iLoop--)
+                {
+                    NextAlarm[iLoop].Dispose();
+                    NextAlarm.RemoveAt(iLoop);
+                }
+            }
+            NextAlarmIndex = -1;
+
+            //再通知
+            for (Int32 iLoop = 0; iLoop < Realarm.Count; iLoop++)
+            {
+
+                if (Realarm[iLoop].DrugList.Count > 0)
                 {
 
-                    if (NextAlarm.DrugList.FindIndex(Drug => { return Drug.Index.Equals(Realarm.DrugList[iLoop].Index); }).Equals(-1))
+                    UserControl.AlarmInfo AddAlarm = new UserControl.AlarmInfo()
+                    { 
+                        Timer = Realarm[iLoop].Timer,
+                        DrugList = new List<UserControl.AlarmInfo.Drug>() 
+                    };
+
+                    //DrugListのIndexを登録
+                    for (jLoop = 0; jLoop < Realarm[iLoop].DrugList.Count; iLoop++)
                     {
 
-                        NextAlarm.DrugList.Add(new UserControl.AlarmInfo.Drug
+
+                        AddAlarm.DrugList.Add(new UserControl.AlarmInfo.Drug
                         {
-                            Index = Realarm.DrugList[iLoop].Index,
-                            Volume = Realarm.DrugList[iLoop].Volume,
-                            IsAppoint = Realarm.DrugList[iLoop].IsAppoint,
-                            IsHourEach = Realarm.DrugList[iLoop].IsHourEach
+                            Index = Realarm[iLoop].DrugList[jLoop].Index,
+                            Volume = Realarm[iLoop].DrugList[jLoop].Volume,
+                            IsAppoint = Realarm[iLoop].DrugList[jLoop].IsAppoint,
+                            IsHourEach = Realarm[iLoop].DrugList[jLoop].IsHourEach
                         });
 
                     }
 
-                }
+                    NextAlarm.Add(AddAlarm);
 
-                //アラーム時刻の更新
-                NextAlarm.Timer = Realarm.Timer;
-                IsSetRealarm = true;
+                }
 
             }
 
@@ -1544,45 +1579,66 @@ namespace DrugAlarm.Class
 
             }
 
+            NextAlarm.Sort((a, b) => DateTime.Compare(a.Timer, b.Timer));
+
         }
 
         /// <summary>
         /// 次回アラームとなるか比較、Indexを登録する
         /// </summary>
-        /// <param name="Time">アラーム候補時刻</param>
-        /// <param name="DrugIndex">薬index</param>
-        /// <param name="DrugVolume">服用錠数</param>
-        /// <param name="DrugIsAppoint">If set to <c>true</c> drug is appoint.</param>
-        /// <param name="DrugIsHourEach">If set to <c>true</c> drug is hour each.</param>
-        private void CompareToTime(DateTime Time, Int32 DrugIndex, Int32 DrugVolume, bool DrugIsAppoint, bool DrugIsHourEach)
+        /// <param name="time">アラーム候補時刻</param>
+        /// <param name="index">薬index</param>
+        /// <param name="volume">服用錠数</param>
+        /// <param name="isAppoint">If set to <c>true</c> drug is appoint.</param>
+        /// <param name="isHourEach">If set to <c>true</c> drug is hour each.</param>
+        private void CompareToTime(DateTime time, Int32 index, Int32 volume, bool isAppoint, bool isHourEach)
         {
 
-            if (Time <= NextAlarm.Timer)
+            Int32 Index = -1;
+
+            for (Int32 iLoop = 0; iLoop < NextAlarm.Count; iLoop++)
+            {
+                if (time.Equals(NextAlarm[iLoop].Timer))
+                {
+                    Index = iLoop;
+                }
+            }
+
+            if (Index.Equals(-1))
             {
 
-                //同時刻ならば追加、現在設定値より前時刻なら新規登録
-                if (!NextAlarm.Timer.Equals(Time))
+                //新規追加
+                UserControl.AlarmInfo AddAlarm = new UserControl.AlarmInfo()
                 {
+                    Timer = time,
+                    DrugList = new List<UserControl.AlarmInfo.Drug>()
+                };
 
-                    NextAlarm.DrugList.Clear();
-                    IsSetRealarm = false;       //再通知は次回持越
-
-                }
-
-                //DrugListのIndexを登録
-                if (NextAlarm.DrugList.FindIndex(Drug => { return Drug.Index.Equals(DrugIndex); }).Equals(-1))
+                AddAlarm.DrugList.Add(new UserControl.AlarmInfo.Drug()
                 {
-                    NextAlarm.DrugList.Add(new UserControl.AlarmInfo.Drug()
+                    Index = index,
+                    Volume = volume,
+                    IsAppoint = isAppoint,
+                    IsHourEach = isHourEach
+                });
+
+                NextAlarm.Add(AddAlarm);
+
+            }
+            else
+            {
+
+                //既存データに未登録薬を追加
+                if (NextAlarm[Index].DrugList.FindIndex(Drug => { return Drug.Index.Equals(Index); }).Equals(-1))
+                {
+                    NextAlarm[Index].DrugList.Add(new UserControl.AlarmInfo.Drug()
                     {
-                        Index = DrugIndex,
-                        Volume = DrugVolume,
-                        IsAppoint = DrugIsAppoint,
-                        IsHourEach = DrugIsHourEach
+                        Index = index,
+                        Volume = volume,
+                        IsAppoint = isAppoint,
+                        IsHourEach = isHourEach
                     });
                 }
-
-                //アラーム時刻の更新
-                NextAlarm.Timer = Time;
 
             }
 
@@ -1641,53 +1697,58 @@ namespace DrugAlarm.Class
             //設定済時刻と今回設定時刻のうち、近い方に合わせる
             //ただし、設定済時刻が現在時刻より以前であれば今回設定時刻を採用する
             DateTime NextTime = DateTime.Now.AddMinutes(AfterMinute);
-            NextTime = new Class.Method().ConvertToDateTime(NextTime.Year, NextTime.Month, NextTime.Day, NextTime.Hour, NextTime.Minute, NextTime); //秒を0にする
-            if (NextTime < Realarm.Timer || Realarm.Timer <= DateTime.Now)
+
+            UserControl.AlarmInfo AddAlarm = new UserControl.AlarmInfo()
             {
-                Realarm.Timer = NextTime;
-            }
+                Timer = new Class.Method().ConvertToDateTime(NextTime.Year, NextTime.Month, NextTime.Day, NextTime.Hour, NextTime.Minute, NextTime),    //秒単位を0にする
+                DrugList = new List<UserControl.AlarmInfo.Drug>()
+            };
 
             //DrugListのIndexを登録
-            for (Int32 iLoop = 0; iLoop < NextAlarm.DrugList.Count; iLoop++)
+            for (Int32 iLoop = 0; iLoop <= NextAlarmIndex; iLoop++)
             {
 
-                if (Realarm.DrugList.FindIndex(Drug => { return Drug.Index.Equals(NextAlarm.DrugList[iLoop].Index); }).Equals(-1))
+                for (Int32 jLoop = 0; jLoop < NextAlarm[iLoop].DrugList.Count; jLoop++)
                 {
 
-                    Realarm.DrugList.Add(new UserControl.AlarmInfo.Drug()
+                    AddAlarm.DrugList.Add(new UserControl.AlarmInfo.Drug()
                     {
-                        Index = NextAlarm.DrugList[iLoop].Index,
-                        Volume = NextAlarm.DrugList[iLoop].Volume,
-                        IsAppoint = NextAlarm.DrugList[iLoop].IsAppoint,
-                        IsHourEach = NextAlarm.DrugList[iLoop].IsHourEach
+                        Index = NextAlarm[iLoop].DrugList[jLoop].Index,
+                        Volume = NextAlarm[iLoop].DrugList[jLoop].Volume,
+                        IsAppoint = NextAlarm[iLoop].DrugList[jLoop].IsAppoint,
+                        IsHourEach = NextAlarm[iLoop].DrugList[jLoop].IsHourEach
                     });
 
                 }
 
             }
 
+            Realarm.Add(AddAlarm);
+
             //指定時間、時間毎のアラームの時は、元の設定値を更新
             //上のfor文内では再々通知のときに更新できないためここで再ループ
-            for (Int32 iLoop = 0; iLoop < Realarm.DrugList.Count; iLoop++)
+            for (Int32 iLoop = 0; iLoop < Realarm.Count - 1; iLoop++)
             {
 
-                //指定時間
-                if (NextAlarm.DrugList[iLoop].IsAppoint)
-                    DrugList[NextAlarm.DrugList[iLoop].Index].AppointTime = NextTime;
+                for (Int32 jLoop = 0; jLoop < Realarm[iLoop].DrugList.Count; jLoop++)
+                {
 
-                //時間毎
-                if (NextAlarm.DrugList[iLoop].IsHourEach)
-                    DrugList[NextAlarm.DrugList[iLoop].Index].HourEachNextTime = NextTime;
+                    //指定時間
+                    if (Realarm[iLoop].DrugList[jLoop].IsAppoint)
+                        DrugList[Realarm[iLoop].DrugList[jLoop].Index].AppointTime = NextTime;
+
+                    //時間毎
+                    if (Realarm[iLoop].DrugList[jLoop].IsHourEach)
+                        DrugList[Realarm[iLoop].DrugList[jLoop].Index].HourEachNextTime = NextTime;
+
+                }
 
             }
 
-            IsSetRealarm = false;
-
-            NextAlarm.Timer = DateTime.MaxValue;
-            NextAlarm.DrugList.Clear();
+            Realarm.Sort((a, b) => DateTime.Compare(a.Timer, b.Timer));
 
             //次回アラームの設定
-            SetNextAlarm();
+            SetNextAlarm(false);
 
         }
 

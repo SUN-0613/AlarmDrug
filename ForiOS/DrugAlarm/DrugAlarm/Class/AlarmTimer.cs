@@ -90,17 +90,28 @@ namespace DrugAlarm.Class
                 try
                 {
 #if DEBUG
-                    System.Diagnostics.Debug.WriteLine("Run " + DateTime.Now.ToString("HH:mm:ss") + " :Next " + _Parameter.NextAlarm.Timer.ToString("HH:mm"));
+                    if (_Parameter.NextAlarm.Count > 0)
+                        System.Diagnostics.Debug.WriteLine("Run " + DateTime.Now.ToString("HH:mm:ss") + " :Next " + _Parameter.NextAlarm[0].Timer.ToString("HH:mm"));
+                    else
+                        System.Diagnostics.Debug.WriteLine("Run " + DateTime.Now.ToString("HH:mm:ss"));
 #endif
 
                     //次回アラーム時刻を超過していればアラーム表示
-                    if (_Parameter.NextAlarm.Timer <= DateTime.Now)
+                    for (Int32 iLoop = 0; iLoop < _Parameter.NextAlarm.Count; iLoop++)
+                    {
+                        if (_Parameter.NextAlarm[iLoop].Timer <= DateTime.Now)
+                            _Parameter.NextAlarmIndex = iLoop;
+                        else
+                            break;
+                    }
+
+                    if (!_Parameter.NextAlarmIndex.Equals(-1))
                     {
 
-                        //アラーム表示
+                        //バックグラウンドで起動していないか
                         if (!(Xamarin.Forms.Application.Current as App).IsBackground)
                         {
-
+                            //アラーム表示
                             if (!IsShowAlarm)
                             {
 
@@ -117,6 +128,7 @@ namespace DrugAlarm.Class
                         }
                         else
                         {
+                            //ローカル通知
                             if (!IsLocalAlarm)
                             {
                                 DependencyService.Get<Common.INotificationService>().Show(Resx.Resources.Timer_Title, Resx.Resources.Timer_Subtitle, Resx.Resources.Timer_Body);
