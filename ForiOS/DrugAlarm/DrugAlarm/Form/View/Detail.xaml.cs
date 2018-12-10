@@ -84,6 +84,10 @@ namespace DrugAlarm.Form.View
 
                 case "CallSave":
 
+                    _ViewModel.Save();
+                    await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
+
+                    /*
                     AlertAnswer = await DisplayAlert(Resx.Resources.Detail_Title, _ViewModel.MakeSaveMessage(), Resx.Resources.DisplayAlert_Yes, Resx.Resources.DisplayAlert_No);
 
                     if (AlertAnswer)
@@ -91,6 +95,7 @@ namespace DrugAlarm.Form.View
                         _ViewModel.Save();
                         await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
                     }
+                    */
 
                     break;
 
