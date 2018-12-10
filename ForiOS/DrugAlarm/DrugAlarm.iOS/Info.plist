@@ -32,7 +32,7 @@
 	<key>CFBundleName</key>
 	<string>お薬アラーム</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.0</string>
+	<string>1.0</string>
 	<key>UIMainStoryboardFile</key>
 	<string>LaunchScreen</string>
 	<key>UIStatusBarStyle</key>
