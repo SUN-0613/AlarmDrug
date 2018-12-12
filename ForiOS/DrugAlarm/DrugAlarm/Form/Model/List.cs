@@ -233,10 +233,7 @@ namespace DrugAlarm.Form.Model
         /// <returns>The alarm.</returns>
         public string GetNextAlarmMessage()
         {
-            if (!_Parameter.NextAlarm.Count.Equals(0))
-                return Resx.Resources.List_NextAlarmMessage + _Parameter.NextAlarm[0].Timer.ToString("yyyy/MM/dd HH:mm");
-            else
-                return "";
+            return Resx.Resources.List_NextAlarmMessage + _Parameter.NextAlarm.Timer.ToString(Class.UserControl.DateTimeFormat);
         }
 
     }

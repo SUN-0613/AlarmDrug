@@ -11,6 +11,11 @@ namespace DrugAlarm.Class
     {
 
         /// <summary>
+        /// 秒付きの時間フォーマット
+        /// </summary>
+        public const string TimeSecFormat = "HH:mm:ss";
+
+        /// <summary>
         /// パラメータ時間フォーマット
         /// </summary>
         public const string TimeFormat = "HH:mm";

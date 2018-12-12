@@ -90,22 +90,14 @@ namespace DrugAlarm.Class
                 try
                 {
 #if DEBUG
-                    if (_Parameter.NextAlarm.Count > 0)
-                        System.Diagnostics.Debug.WriteLine("Run " + DateTime.Now.ToString("HH:mm:ss") + " :Next " + _Parameter.NextAlarm[0].Timer.ToString("HH:mm"));
+                    if (!_Parameter.NextAlarm.Timer.Equals(DateTime.MaxValue))
+                        System.Diagnostics.Debug.WriteLine("Run " + DateTime.Now.ToString(UserControl.TimeSecFormat) 
+                                                            + " :Next " + _Parameter.NextAlarm.Timer.ToString(UserControl.TimeFormat));
                     else
-                        System.Diagnostics.Debug.WriteLine("Run " + DateTime.Now.ToString("HH:mm:ss"));
+                        System.Diagnostics.Debug.WriteLine("Run " + DateTime.Now.ToString(UserControl.TimeSecFormat));
 #endif
 
-                    //次回アラーム時刻を超過していればアラーム表示
-                    for (Int32 iLoop = 0; iLoop < _Parameter.NextAlarm.Count; iLoop++)
-                    {
-                        if (_Parameter.NextAlarm[iLoop].Timer <= DateTime.Now)
-                            _Parameter.NextAlarmIndex = iLoop;
-                        else
-                            break;
-                    }
-
-                    if (!_Parameter.NextAlarmIndex.Equals(-1))
+                    if (_Parameter.NextAlarm.Timer <= DateTime.Now)
                     {
 
                         //バックグラウンドで起動していないか
