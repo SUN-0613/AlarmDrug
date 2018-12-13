@@ -18,22 +18,27 @@ namespace DrugAlarm.Class
         /// <summary>
         /// タイマ続行FLG
         /// </summary>
-        private bool IsRunTimer = true;
+        private bool _IsRunTimer = true;
 
         /// <summary>
         /// タイマスキップFLG
         /// </summary>
-        private bool IsSkipTimer = false;
+        private bool _IsSkipTimer = false;
 
         /// <summary>
         /// ローカル通知済FLG
         /// </summary>
-        private bool IsLocalAlarm = false;
+        private bool _IsLocalAlarm = false;
 
         /// <summary>
         /// アラーム画面表示FLG
         /// </summary>
-        private bool IsShowAlarm = false;
+        private bool _IsShowAlarm = false;
+
+        /// <summary>
+        /// アラーム予定時刻
+        /// </summary>
+        private DateTime _SetTimer = DateTime.MaxValue;
 
         /// <summary>
         /// new
@@ -52,7 +57,7 @@ namespace DrugAlarm.Class
         public void Start()
         {
 
-            IsRunTimer = true;
+            _IsRunTimer = true;
 
             //タイマ処理
             Device.StartTimer(new TimeSpan(0, 0, 0, 1, 0),
@@ -61,7 +66,7 @@ namespace DrugAlarm.Class
 
                 CheckTimer();
 
-                return IsRunTimer;
+                return _IsRunTimer;
 
             });
 
@@ -73,7 +78,7 @@ namespace DrugAlarm.Class
         /// </summary>
         public void Stop()
         {
-            IsRunTimer = false;
+            _IsRunTimer = false;
         }
 
         /// <summary>
@@ -82,10 +87,10 @@ namespace DrugAlarm.Class
         public void CheckTimer()
         {
 
-            if (!IsSkipTimer)
+            if (!_IsSkipTimer)
             {
 
-                IsSkipTimer = true;
+                _IsSkipTimer = true;
 
                 try
                 {
@@ -97,6 +102,20 @@ namespace DrugAlarm.Class
                         System.Diagnostics.Debug.WriteLine("Run " + DateTime.Now.ToString(UserControl.TimeSecFormat));
 #endif
 
+                    //アラーム時間が変更されたらFLGリセット
+                    if (!_SetTimer.Equals(_Parameter.NextAlarm.Timer))
+                    {
+                        _IsLocalAlarm = false;
+                        _IsShowAlarm = false;
+                        _SetTimer = _Parameter.NextAlarm.Timer;
+
+                        //再帰
+                        _IsSkipTimer = false;
+                        CheckTimer();
+                        return;
+
+                    }
+
                     if (_Parameter.NextAlarm.Timer <= DateTime.Now)
                     {
 
@@ -104,13 +123,13 @@ namespace DrugAlarm.Class
                         if (!(Xamarin.Forms.Application.Current as App).IsBackground)
                         {
                             //アラーム表示
-                            if (!IsShowAlarm)
+                            if (!_IsShowAlarm)
                             {
 
                                 (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Alarm());
-                                IsShowAlarm = true;
+                                _IsShowAlarm = true;
 
-                                if (IsLocalAlarm)
+                                if (_IsLocalAlarm)
                                 {
                                     DependencyService.Get<Common.INotificationService>().Release();
                                 }
@@ -121,18 +140,13 @@ namespace DrugAlarm.Class
                         else
                         {
                             //ローカル通知
-                            if (!IsLocalAlarm)
+                            if (!_IsLocalAlarm)
                             {
                                 DependencyService.Get<Common.INotificationService>().Show(Resx.Resources.Timer_Title, Resx.Resources.Timer_Subtitle, Resx.Resources.Timer_Body);
-                                IsLocalAlarm = true;
+                                _IsLocalAlarm = true;
                             }
                         }
 
-                    }
-                    else if (IsLocalAlarm || IsShowAlarm)    //FLGリセット
-                    {
-                        IsLocalAlarm = false;
-                        IsShowAlarm = false;
                     }
 
                 }
@@ -144,7 +158,7 @@ namespace DrugAlarm.Class
                 }
                 finally
                 {
-                    IsSkipTimer = false;
+                    _IsSkipTimer = false;
                 }
 
             }

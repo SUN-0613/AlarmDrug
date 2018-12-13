@@ -476,7 +476,7 @@ namespace DrugAlarm.Class
             Setting = new SettingParameter();
             DrugList = new List<DrugParameter>();
 
-            NextAlarm.DrugList = new List<UserControl.AlarmInfo.Drug>();
+            NextAlarm = new UserControl.AlarmInfo();
             Realarm = new List<UserControl.AlarmInfo>();
 
             Load();
@@ -1441,7 +1441,7 @@ namespace DrugAlarm.Class
                                 DateTime.Now;
 
             //初期化
-            NextAlarm.Timer = BeforeAlarmTime;
+            NextAlarm.Timer = DateTime.MaxValue;
             NextAlarm.DrugList.Clear();
 
             //毎時・指定日時・食事・就寝
