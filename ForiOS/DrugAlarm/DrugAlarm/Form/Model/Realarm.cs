@@ -43,7 +43,7 @@ namespace DrugAlarm.Form.Model
 
             _RealarmMinute.Clear();
 
-            for (Int32 iLoop = 5; iLoop < 60; iLoop += 5)
+            for (Int32 iLoop = 5; iLoop <= 60; iLoop += 5)
                 _RealarmMinute.Add(iLoop);
 
             return _RealarmMinute;

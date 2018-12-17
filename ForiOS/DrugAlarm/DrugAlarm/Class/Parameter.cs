@@ -1437,67 +1437,17 @@ namespace DrugAlarm.Class
 
             //アラーム時間の記憶
             BeforeAlarmTime = NextAlarm.Timer.Equals(DateTime.MaxValue) ? DateTime.Now :
-                                NextAlarm.Timer < DateTime.Now ? NextAlarm.Timer.AddSeconds(1) :
+                                NextAlarm.Timer < DateTime.Now ? NextAlarm.Timer :
                                 DateTime.Now;
+            BeforeAlarmTime = BeforeAlarmTime.AddMinutes(1);
+
+#if DEBUG
+            UserControl.DebugRunTime = BeforeAlarmTime;
+#endif
 
             //初期化
             NextAlarm.Timer = DateTime.MaxValue;
             NextAlarm.DrugList.Clear();
-
-            //毎時・指定日時・食事・就寝
-            for (Int32 iLoop = 0; iLoop < DrugList.Count; iLoop++)
-            {
-
-                //毎時
-                if (DrugList[iLoop].HourEach.IsDrug)
-                {
-                    CompareToTime(DrugList[iLoop].HourEachNextTime, iLoop, DrugList[iLoop].HourEach.Volume, false, true);
-                }
-
-                //指定日時
-                if (DrugList[iLoop].Appoint.IsDrug)
-                {
-                    CompareToTime(DrugList[iLoop].AppointTime, iLoop, DrugList[iLoop].Appoint.Volume, true, false);
-                }
-
-                //朝食
-                if (DrugList[iLoop].Breakfast.IsDrug)
-                {
-                    Time = CalcMealsTime(BeforeAlarmTime, Setting.Breakfast.Start, Setting.Breakfast.Finish, DrugList[iLoop].Breakfast.Kind);
-                    CompareToTime(Time, iLoop, DrugList[iLoop].Breakfast.Volume, false, false);
-                }
-
-                //昼食
-                if (DrugList[iLoop].Lunch.IsDrug)
-                {
-                    Time = CalcMealsTime(BeforeAlarmTime, Setting.Lunch.Start, Setting.Lunch.Finish, DrugList[iLoop].Lunch.Kind);
-                    CompareToTime(Time, iLoop, DrugList[iLoop].Lunch.Volume, false, false);
-                }
-
-                //夕食
-                if (DrugList[iLoop].Dinner.IsDrug)
-                {
-                    Time = CalcMealsTime(BeforeAlarmTime, Setting.Dinner.Start, Setting.Dinner.Finish, DrugList[iLoop].Dinner.Kind);
-                    CompareToTime(Time, iLoop, DrugList[iLoop].Dinner.Volume, false, false);
-                }
-
-                //就寝前
-                if (DrugList[iLoop].Sleep.IsDrug)
-                {
-
-                    Time = Setting.Sleep.AddMinutes((-1) * Setting.MinuteBeforeSleep);
-
-                    //取得した時間を超過している場合は翌日にする
-                    if (Time < BeforeAlarmTime)
-                    {
-                        Time = Time.AddDays(1);
-                    }
-
-                    CompareToTime(Time, iLoop, DrugList[iLoop].Sleep.Volume, false, false);
-
-                }
-
-            }
 
             //再通知
             if (!Realarm.Count.Equals(0))
@@ -1539,6 +1489,97 @@ namespace DrugAlarm.Class
                 }
 
             }
+
+            //毎時・指定日時・食事・就寝
+            for (Int32 iLoop = 0; iLoop < DrugList.Count; iLoop++)
+            {
+
+                //毎時
+                if (DrugList[iLoop].HourEach.IsDrug)
+                {
+                    CompareToTime(DrugList[iLoop].HourEachNextTime, iLoop, DrugList[iLoop].HourEach.Volume, false, true);
+                }
+
+                //指定日時
+                if (DrugList[iLoop].Appoint.IsDrug)
+                {
+                    CompareToTime(DrugList[iLoop].AppointTime, iLoop, DrugList[iLoop].Appoint.Volume, true, false);
+                }
+
+                //朝食
+                if (DrugList[iLoop].Breakfast.IsDrug)
+                {
+
+                    if (Setting.Breakfast.Start < DateTime.Today)
+                    {
+                        Setting.Breakfast.Start = method.GetTodayTime(Setting.Breakfast.Start.Hour, Setting.Breakfast.Start.Minute);
+                        Setting.Breakfast.Finish = method.GetTodayTime(Setting.Breakfast.Finish.Hour, Setting.Breakfast.Finish.Minute);
+                    }
+
+                    Time = CalcMealsTime(BeforeAlarmTime, Setting.Breakfast.Start, Setting.Breakfast.Finish, DrugList[iLoop].Breakfast.Kind);
+                    CompareToTime(Time, iLoop, DrugList[iLoop].Breakfast.Volume, false, false);
+
+                }
+
+                //昼食
+                if (DrugList[iLoop].Lunch.IsDrug)
+                {
+
+                    if (Setting.Lunch.Start < DateTime.Today)
+                    {
+                        Setting.Lunch.Start = method.GetTodayTime(Setting.Lunch.Start.Hour, Setting.Lunch.Start.Minute);
+                        Setting.Lunch.Finish = method.GetTodayTime(Setting.Lunch.Finish.Hour, Setting.Lunch.Finish.Minute);
+                    }
+
+                    Time = CalcMealsTime(BeforeAlarmTime, Setting.Lunch.Start, Setting.Lunch.Finish, DrugList[iLoop].Lunch.Kind);
+                    CompareToTime(Time, iLoop, DrugList[iLoop].Lunch.Volume, false, false);
+
+                }
+
+                //夕食
+                if (DrugList[iLoop].Dinner.IsDrug)
+                {
+
+                    if (Setting.Dinner.Start < DateTime.Today)
+                    {
+                        Setting.Dinner.Start = method.GetTodayTime(Setting.Dinner.Start.Hour, Setting.Dinner.Start.Minute);
+                        Setting.Dinner.Finish = method.GetTodayTime(Setting.Dinner.Finish.Hour, Setting.Dinner.Finish.Minute);
+                    }
+
+                    Time = CalcMealsTime(BeforeAlarmTime, Setting.Dinner.Start, Setting.Dinner.Finish, DrugList[iLoop].Dinner.Kind);
+                    CompareToTime(Time, iLoop, DrugList[iLoop].Dinner.Volume, false, false);
+
+                }
+
+                //就寝前
+                if (DrugList[iLoop].Sleep.IsDrug)
+                {
+
+                    if (Setting.Sleep < DateTime.Today)
+                    {
+                        Setting.Sleep = method.GetTodayTime(Setting.Sleep.Hour, Setting.Sleep.Minute);
+                    }
+
+                    Time = Setting.Sleep.AddMinutes((-1) * Setting.MinuteBeforeSleep);
+
+                    //取得した時間を超過している場合は翌日にする
+                    if (Time < BeforeAlarmTime)
+                    {
+                        Time = Time.AddDays(1);
+                    }
+
+                    CompareToTime(Time, iLoop, DrugList[iLoop].Sleep.Volume, false, false);
+
+                }
+
+            }
+
+#if DEBUG
+            Class.UserControl.DebugCounter += 1;
+            Class.UserControl.DebugTime = DateTime.Now;
+#endif
+
+            Class.UserControl.ResetNextAlarm = true;
 
         }
 
@@ -1652,30 +1693,35 @@ namespace DrugAlarm.Class
 
             }
 
-            Realarm.Add(AddAlarm);
-
-            //指定時間、時間毎のアラームの時は、元の設定値を更新
-            //上のfor文内では再々通知のときに更新できないためここで再ループ
-            for (Int32 iLoop = 0; iLoop < Realarm.Count - 1; iLoop++)
+            if (AddAlarm.DrugList.Count > 0)
             {
 
-                for (Int32 jLoop = 0; jLoop < Realarm[iLoop].DrugList.Count; jLoop++)
+                Realarm.Add(AddAlarm);
+
+                //指定時間、時間毎のアラームの時は、元の設定値を更新
+                //上のfor文内では再々通知のときに更新できないためここで再ループ
+                for (Int32 iLoop = 0; iLoop < Realarm.Count; iLoop++)
                 {
 
-                    //指定時間
-                    if (Realarm[iLoop].DrugList[jLoop].IsAppoint)
-                        DrugList[Realarm[iLoop].DrugList[jLoop].Index].AppointTime = NextTime;
+                    for (Int32 jLoop = 0; jLoop < Realarm[iLoop].DrugList.Count; jLoop++)
+                    {
 
-                    //時間毎
-                    if (Realarm[iLoop].DrugList[jLoop].IsHourEach)
-                        DrugList[Realarm[iLoop].DrugList[jLoop].Index].HourEachNextTime = NextTime;
+                        //指定時間
+                        if (Realarm[iLoop].DrugList[jLoop].IsAppoint)
+                            DrugList[Realarm[iLoop].DrugList[jLoop].Index].AppointTime = NextTime;
+
+                        //時間毎
+                        if (Realarm[iLoop].DrugList[jLoop].IsHourEach)
+                            DrugList[Realarm[iLoop].DrugList[jLoop].Index].HourEachNextTime = NextTime;
+
+                    }
 
                 }
 
-            }
+                //時間の昇順に並び替え
+                Realarm.Sort((a, b) => DateTime.Compare(a.Timer, b.Timer));
 
-            //時間の昇順に並び替え
-            Realarm.Sort((a, b) => DateTime.Compare(a.Timer, b.Timer));
+            }
 
             //次回アラームの設定
             SetNextAlarm();

@@ -36,11 +36,6 @@ namespace DrugAlarm.Class
         private bool _IsShowAlarm = false;
 
         /// <summary>
-        /// アラーム予定時刻
-        /// </summary>
-        private DateTime _SetTimer = DateTime.MaxValue;
-
-        /// <summary>
         /// new
         /// </summary>
         public AlarmTimer()
@@ -103,11 +98,12 @@ namespace DrugAlarm.Class
 #endif
 
                     //アラーム時間が変更されたらFLGリセット
-                    if (!_SetTimer.Equals(_Parameter.NextAlarm.Timer))
+                    if (Class.UserControl.ResetNextAlarm)
                     {
+
+                        Class.UserControl.ResetNextAlarm = false;
                         _IsLocalAlarm = false;
                         _IsShowAlarm = false;
-                        _SetTimer = _Parameter.NextAlarm.Timer;
 
                         //再帰
                         _IsSkipTimer = false;

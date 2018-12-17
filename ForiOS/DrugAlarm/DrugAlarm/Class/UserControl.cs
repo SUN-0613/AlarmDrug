@@ -10,6 +10,17 @@ namespace DrugAlarm.Class
     public class UserControl
     {
 
+#if DEBUG
+        public static int DebugCounter = 0;
+        public static DateTime DebugTime = DateTime.Now;
+        public static DateTime DebugRunTime = DateTime.Now;
+#endif
+
+        /// <summary>
+        /// 次回アラーム再設定
+        /// </summary>
+        public static bool ResetNextAlarm = false;
+
         /// <summary>
         /// 秒付きの時間フォーマット
         /// </summary>
