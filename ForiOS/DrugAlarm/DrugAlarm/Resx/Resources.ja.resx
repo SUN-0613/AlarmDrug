@@ -16,6 +16,14 @@
     <value>完了</value>
     <comment>アラーム：完了ボタン</comment>
   </data>
+  <data name="Alarm_AllCheck" xml:space="preserve">
+    <value>全て服用</value>
+    <comment>アラーム：全て服用ボタン</comment>
+  </data>
+  <data name="Alarm_AllUncheck" xml:space="preserve">
+    <value>全て服用解除</value>
+    <comment>アラーム：全て服用解除ボタン</comment>
+  </data>
   <data name="Alarm_Button_Realarm" xml:space="preserve">
     <value>あとで</value>
     <comment>アラーム：再通知ボタン</comment>

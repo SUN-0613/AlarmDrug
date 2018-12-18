@@ -36,10 +36,15 @@ namespace DrugAlarm.Form.Model
 
             _DrugList.Clear();
 
-            _Parameter.NextAlarm.DrugList.ForEach(Drug =>
+            for (Int32 iLoop = 0; iLoop < _Parameter.NextAlarm.DrugList.Count; iLoop++)
             {
-                _DrugList.Add(new Class.UserControl.MedicineInfo(_Parameter.DrugList[Drug.Index].Name, Drug.Volume));
-            });
+
+                Int32 index = _Parameter.NextAlarm.DrugList[iLoop].Index;
+
+                _DrugList.Add(new Class.UserControl.MedicineInfo(_Parameter.DrugList[index].Name
+                                                                , _Parameter.NextAlarm.DrugList[iLoop].Volume
+                                                                , iLoop));
+            }
 
             return _DrugList;
 
@@ -60,6 +65,13 @@ namespace DrugAlarm.Form.Model
         /// <returns><c>true</c>, 薬切れ有, <c>false</c> 在庫十分</returns>
         public bool TakeMedicine()
         {
+
+            // 服用FLGの更新
+            _DrugList.ForEach(Drug => 
+            {
+                _Parameter.UpdateDrugFlgNextAlarm(Drug.Index, Drug.IsDrug);
+            });
+
             return _Parameter.TakeMedicine();
         }
 
@@ -67,6 +79,38 @@ namespace DrugAlarm.Form.Model
         /// 再通知コマンド
         /// </summary>
         public Common.DelegateCommand RealarmCommand;
+
+        /// <summary>
+        /// 全てチェックコマンド
+        /// </summary>
+        public Common.DelegateCommand AllCheckCommand;
+
+        /// <summary>
+        /// 全てチェック
+        /// </summary>
+        public void AllCheck()
+        {
+            _DrugList.ForEach(Drug => 
+            {
+                Drug.IsDrug = true;
+            });
+        }
+
+        /// <summary>
+        /// 全てチェック解除コマンド
+        /// </summary>
+        public Common.DelegateCommand AllUncheckCommand;
+
+        /// <summary>
+        /// 全てチェック解除
+        /// </summary>
+        public void UnallCheck()
+        {
+            _DrugList.ForEach(Drug => 
+            {
+                Drug.IsDrug = false;
+            });
+        }
 
         #endregion
 

@@ -71,6 +71,68 @@ namespace DrugAlarm.Form.ViewModel
             }
         }
 
+        /// <summary>
+        /// 全てチェックコマンド
+        /// </summary>
+        public Common.DelegateCommand AllCheckCommand
+        {
+            get
+            {
+
+                if (_Model.AllCheckCommand == null)
+                {
+                    _Model.AllCheckCommand = new Common.DelegateCommand(
+                        ()=> 
+                        { 
+                            _Model.AllCheck();
+                            UpdateCheck(true);
+                        }, 
+                        () => true);
+                }
+
+                return _Model.AllCheckCommand;
+
+            }
+        }
+
+        /// <summary>
+        /// 全てチェック解除コマンド
+        /// </summary>
+        public Common.DelegateCommand AllUncheckCommand
+        {
+            get
+            {
+
+                if (_Model.AllUncheckCommand == null)
+                {
+                    _Model.AllUncheckCommand = new Common.DelegateCommand(
+                        () => 
+                        {
+                            _Model.UnallCheck();
+                            UpdateCheck(false);
+                        },
+                        () => true);
+                }
+
+                return _Model.AllUncheckCommand;
+
+            }
+        }
+
+        /// <summary>
+        /// 薬一覧のチェック更新
+        /// </summary>
+        /// <param name="value">If set to <c>true</c> value.</param>
+        private void UpdateCheck(bool value)
+        {
+
+            for (Int32 iLoop = 0; iLoop < DrugList.Count; iLoop++)
+            {
+                DrugList[iLoop].IsDrug = value;
+            }
+
+        }
+
         #endregion
 
         #region BindingProperty
@@ -93,9 +155,11 @@ namespace DrugAlarm.Form.ViewModel
 
             DrugList = new ObservableCollection<Class.UserControl.MedicineInfo>();
 
+            Int32 index = 0;
             _Model.GetDrugList().ForEach(Drug => 
             {
-                DrugList.Add(new Class.UserControl.MedicineInfo(Drug.Name, Drug.Volume));
+                DrugList.Add(new Class.UserControl.MedicineInfo(Drug.Name, Drug.Volume, index));
+                index++;
             });
 
         }

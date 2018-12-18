@@ -42,7 +42,7 @@ namespace DrugAlarm.Form.Model
             {
                 if (Drug.IsPrescriptionAlarm)
                 {
-                    _DrugList.Add(new Class.UserControl.MedicineInfo(Drug.Name, Drug.TotalVolume));
+                    _DrugList.Add(new Class.UserControl.MedicineInfo(Drug.Name, Drug.TotalVolume, -1));
                 }
             });
 

@@ -189,6 +189,16 @@ namespace DrugAlarm.Class
             private Int32 _Volume;
 
             /// <summary>
+            /// Parameter.NextAlarm[Index]
+            /// </summary>
+            private Int32 _Index;
+
+            /// <summary>
+            /// 服用するか
+            /// </summary>
+            private bool _IsDrug;
+
+            /// <summary>
             /// 薬品名プロパティ
             /// </summary>
             public string Name 
@@ -221,14 +231,49 @@ namespace DrugAlarm.Class
             }
 
             /// <summary>
+            /// Parameter.NextAlarm[Index]プロパティ
+            /// </summary>
+            public Int32 Index
+            {
+                get { return _Index; }
+                set
+                {
+                    if (!_Index.Equals(value))
+                    {
+                        _Index = value;
+                        CallPropertyChanged();
+                    }
+                }
+            }
+
+            /// <summary>
+            /// 服用するかプロパティ
+            /// </summary>
+            public bool IsDrug
+            {
+                get { return _IsDrug; }
+                set
+                {
+                    if (!_IsDrug.Equals(value))
+                    {
+                        _IsDrug = value;
+                        CallPropertyChanged();
+                    }
+                }
+            }
+
+            /// <summary>
             /// new
             /// </summary>
             /// <param name="name">Name.</param>
             /// <param name="volume">Volume.</param>
-            public MedicineInfo(string name, Int32 volume)
+            /// <param name="index">Parameter.NextAlarm[Index]</param>
+            public MedicineInfo(string name, Int32 volume, Int32 index)
             {
                 _Name = name;
                 _Volume = volume;
+                _Index = index;
+                _IsDrug = true;
             }
 
         }

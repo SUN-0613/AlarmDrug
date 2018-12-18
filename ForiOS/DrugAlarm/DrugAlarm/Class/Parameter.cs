@@ -1716,5 +1716,16 @@ namespace DrugAlarm.Class
 
         }
 
+        /// <summary>
+        /// NextAlarm一覧より服用する薬を選択
+        /// </summary>
+        /// <param name="index">NextAlarm.DrugList[Index]</param>
+        /// <param name="isDrug">服用するか</param>
+        public void UpdateDrugFlgNextAlarm(Int32 index, bool isDrug)
+        {
+            if (-1 < index && index < NextAlarm.DrugList.Count)
+                NextAlarm.DrugList[index].IsDrug = isDrug;
+        }
+
     }
 }

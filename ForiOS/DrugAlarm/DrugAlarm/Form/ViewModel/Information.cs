@@ -67,7 +67,7 @@ namespace DrugAlarm.Form.ViewModel
 
             _Model.GetDrugList().ForEach(Drug => 
             {
-                DrugList.Add(new Class.UserControl.MedicineInfo(Drug.Name, Drug.Volume));
+                DrugList.Add(new Class.UserControl.MedicineInfo(Drug.Name, Drug.Volume, -1));
             });
 
             if (DrugList.Count.Equals(0))
