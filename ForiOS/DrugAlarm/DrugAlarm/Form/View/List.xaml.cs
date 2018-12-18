@@ -91,6 +91,16 @@ namespace DrugAlarm.Form.View
                     }
                     break;
 
+                case "CallTakeBefore":
+
+                    AlertAnswer = await DisplayAlert(Resx.Resources.List_Title, _ViewModel.MakeTakeBeforeMessage(), Resx.Resources.DisplayAlert_Yes, Resx.Resources.DisplayAlert_No);
+
+                    if (AlertAnswer)
+                    {
+                        _ViewModel.TakeBefore();
+                    }
+                    break;
+
                 default:
                     break;
 

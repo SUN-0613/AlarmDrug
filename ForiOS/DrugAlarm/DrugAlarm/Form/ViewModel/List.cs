@@ -39,6 +39,11 @@ namespace DrugAlarm.Form.ViewModel
         private Common.DelegateCommand<DrugParameter> _DrugMedicineCommand;
 
         /// <summary>
+        /// アラーム時刻よりも先に服用コマンド
+        /// </summary>
+        private Common.DelegateCommand _TakeBeforeCommand;
+
+        /// <summary>
         /// ListView.SelectedItemから呼び出されたか
         /// </summary>
         private bool _CallSelectedItem = true;
@@ -178,6 +183,31 @@ namespace DrugAlarm.Form.ViewModel
         }
 
         /// <summary>
+        /// アラーム時刻よりも先に服用コマンドプロパティ
+        /// </summary>
+        public Common.DelegateCommand TakeBeforeCommand
+        {
+            get
+            {
+
+                if (_TakeBeforeCommand == null)
+                {
+
+                    _TakeBeforeCommand = new Common.DelegateCommand(
+                        () => 
+                        {
+                            CallPropertyChanged("CallTakeBefore");
+                        },
+                        () => true);
+
+                }
+
+                return _TakeBeforeCommand;
+
+            }
+        }
+
+        /// <summary>
         /// 薬削除メッセージ作成
         /// </summary>
         /// <returns>The delete drug message.</returns>
@@ -212,6 +242,25 @@ namespace DrugAlarm.Form.ViewModel
         public bool DrugMedicine()
         {
             return _Model.DrugMedicine();
+        }
+
+        /// <summary>
+        /// 先に服用する時の確認メッセージ作成
+        /// </summary>
+        /// <returns>The take before message.</returns>
+        public string MakeTakeBeforeMessage()
+        {
+            return Resx.Resources.List_TakeBeforeMessage;
+        }
+
+        /// <summary>
+        /// アラームより先に薬を服用
+        /// </summary>
+        public void TakeBefore()
+        {
+
+            // AlarmTimer.csにて処理
+            Class.UserControl.TakeBeforeAlarm = true;
         }
 
         #endregion

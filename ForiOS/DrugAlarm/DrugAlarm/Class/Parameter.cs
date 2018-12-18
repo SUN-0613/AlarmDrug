@@ -1400,7 +1400,7 @@ namespace DrugAlarm.Class
                 //時間毎による服用なら、次回時刻を設定
                 if (NextAlarm.DrugList[iLoop].IsHourEach)
                 {
-                    DrugList[Index].HourEachNextTime = DateTime.Now.AddHours(DrugList[Index].HourEachTime);
+                    DrugList[Index].HourEachNextTime = NextAlarm.Timer.AddHours(DrugList[Index].HourEachTime);
                 }
 
             }
@@ -1436,10 +1436,7 @@ namespace DrugAlarm.Class
             DateTime BeforeAlarmTime;   //前回アラーム時間
 
             //アラーム時間の記憶
-            BeforeAlarmTime = NextAlarm.Timer.Equals(DateTime.MaxValue) ? DateTime.Now :
-                                NextAlarm.Timer < DateTime.Now ? NextAlarm.Timer :
-                                DateTime.Now;
-            BeforeAlarmTime = BeforeAlarmTime.AddMinutes(1);
+            BeforeAlarmTime = NextAlarm.Timer.Equals(DateTime.MaxValue) ? DateTime.Now.AddMinutes(1) : NextAlarm.Timer.AddMinutes(1);
 
 #if DEBUG
             UserControl.DebugRunTime = BeforeAlarmTime;
@@ -1708,11 +1705,11 @@ namespace DrugAlarm.Class
 
                         //指定時間
                         if (Realarm[iLoop].DrugList[jLoop].IsAppoint)
-                            DrugList[Realarm[iLoop].DrugList[jLoop].Index].AppointTime = NextTime;
+                            DrugList[Realarm[iLoop].DrugList[jLoop].Index].AppointTime = AddAlarm.Timer;
 
                         //時間毎
                         if (Realarm[iLoop].DrugList[jLoop].IsHourEach)
-                            DrugList[Realarm[iLoop].DrugList[jLoop].Index].HourEachNextTime = NextTime;
+                            DrugList[Realarm[iLoop].DrugList[jLoop].Index].HourEachNextTime = AddAlarm.Timer;
 
                     }
 

@@ -287,6 +287,12 @@ namespace DrugAlarm.Resx {
             }
         }
         
+        internal static string List_TakeBeforeMessage {
+            get {
+                return ResourceManager.GetString("List_TakeBeforeMessage", resourceCulture);
+            }
+        }
+        
         internal static string List_Title {
             get {
                 return ResourceManager.GetString("List_Title", resourceCulture);

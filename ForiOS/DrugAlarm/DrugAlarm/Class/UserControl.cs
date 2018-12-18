@@ -22,6 +22,11 @@ namespace DrugAlarm.Class
         public static bool ResetNextAlarm = false;
 
         /// <summary>
+        /// アラーム時刻よりも先に服用する
+        /// </summary>
+        public static bool TakeBeforeAlarm = false;
+
+        /// <summary>
         /// 秒付きの時間フォーマット
         /// </summary>
         public const string TimeSecFormat = "HH:mm:ss";

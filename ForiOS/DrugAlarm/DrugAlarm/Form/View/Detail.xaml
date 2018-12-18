@@ -156,7 +156,7 @@
                     <!--Remarks-->
                     <Label Grid.Row="12" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Detail_Remarks}" Style="{DynamicResource BodyStyle}" />
                     <Frame Grid.Row="12" Grid.RowSpan="3" Grid.Column="2" Grid.ColumnSpan="5" HeightRequest="90" OutlineColor="#FFD1D1D1" HasShadow="false" >
-                        <Editor HeightRequest="90" Text="{Binding Remarks}" Style="{DynamicResource BodyStyle}" />
+                        <Editor HeightRequest="90" VerticalOptions="Start" HorizontalOptions="Start" Text="{Binding Remarks}" Style="{DynamicResource BodyStyle}" />
                     </Frame>
                     
                 </Grid>

@@ -112,7 +112,7 @@ namespace DrugAlarm.Class
 
                     }
 
-                    if (_Parameter.NextAlarm.Timer <= DateTime.Now)
+                    if (_Parameter.NextAlarm.Timer <= DateTime.Now || UserControl.TakeBeforeAlarm)
                     {
 
                         //バックグラウンドで起動していないか
@@ -142,6 +142,9 @@ namespace DrugAlarm.Class
                                 _IsLocalAlarm = true;
                             }
                         }
+
+                        // 先に服用FLGのリセット
+                        UserControl.TakeBeforeAlarm = false;
 
                     }
 

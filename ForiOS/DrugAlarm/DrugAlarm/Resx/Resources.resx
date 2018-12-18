@@ -172,6 +172,10 @@
     <value>設定</value>
     <comment>一覧：設定ボタン</comment>
   </data>
+  <data name="List_TakeBeforeMessage" xml:space="preserve">
+    <value>次回アラーム分を先に服用しますか？</value>
+    <comment>一覧：先に服用する場合の確認メッセージ</comment>
+  </data>
   <data name="List_Title" xml:space="preserve">
     <value>お薬一覧</value>
     <comment>一覧：タイトル</comment>
