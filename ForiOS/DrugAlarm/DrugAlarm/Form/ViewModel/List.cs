@@ -39,6 +39,11 @@ namespace DrugAlarm.Form.ViewModel
         private Common.DelegateCommand<DrugParameter> _DrugMedicineCommand;
 
         /// <summary>
+        /// ListView.SelectedItemから呼び出されたか
+        /// </summary>
+        private bool _CallSelectedItem = true;
+
+        /// <summary>
         /// 設定コマンドプロパティ
         /// </summary>
         /// <value>The setting command.</value>
@@ -95,7 +100,9 @@ namespace DrugAlarm.Form.ViewModel
                         (Item) => 
                         {
 
+                            _CallSelectedItem = false;
                             SelectedItem = Item;
+                            _CallSelectedItem = true;
 
                             if (_Model.IsOkSelectedIndex())
                                 CallPropertyChanged("CallEditDrug");
@@ -124,7 +131,9 @@ namespace DrugAlarm.Form.ViewModel
                         (Item) =>
                         {
 
+                            _CallSelectedItem = false;
                             SelectedItem = Item;
+                            _CallSelectedItem = true;
 
                             if (_Model.IsOkSelectedIndex())
                                 CallPropertyChanged("CallDeleteDrug");
@@ -152,8 +161,13 @@ namespace DrugAlarm.Form.ViewModel
                     _DrugMedicineCommand = new Common.DelegateCommand<DrugParameter>(
                         (Item) => 
                         {
+
+                            _CallSelectedItem = false;
                             SelectedItem = Item;
+                            _CallSelectedItem = true;
+
                             CallPropertyChanged("CallDrugMedicine"); 
+
                         },
                         () => true);
                 }
@@ -353,8 +367,13 @@ namespace DrugAlarm.Form.ViewModel
             }
             set
             {
+
                 _Model.SelectedIndex = value != null ? value.Index : -1;
                 CallPropertyChanged();
+
+                if (_CallSelectedItem && _Model.IsOkSelectedIndex())
+                    CallPropertyChanged("CallEditDrug");
+
             }
         }
 
