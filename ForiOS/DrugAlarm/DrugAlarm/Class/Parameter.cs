@@ -1438,10 +1438,6 @@ namespace DrugAlarm.Class
             //アラーム時間の記憶
             BeforeAlarmTime = NextAlarm.Timer.Equals(DateTime.MaxValue) ? DateTime.Now.AddMinutes(1) : NextAlarm.Timer.AddMinutes(1);
 
-#if DEBUG
-            UserControl.DebugRunTime = BeforeAlarmTime;
-#endif
-
             //初期化
             NextAlarm.Timer = DateTime.MaxValue;
             NextAlarm.DrugList.Clear();
@@ -1570,11 +1566,6 @@ namespace DrugAlarm.Class
                 }
 
             }
-
-#if DEBUG
-            Class.UserControl.DebugCounter += 1;
-            Class.UserControl.DebugTime = DateTime.Now;
-#endif
 
             Class.UserControl.ResetNextAlarm = true;
 
