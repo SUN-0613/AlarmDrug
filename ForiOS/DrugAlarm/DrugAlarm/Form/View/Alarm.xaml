@@ -11,8 +11,8 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="40*" />
-                <RowDefinition Height="370*" />
                 <RowDefinition Height="30*" />
+                <RowDefinition Height="370*" />
                 <RowDefinition Height="10*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -35,7 +35,25 @@
                 <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" BackgroundColor="Transparent" TextColor="White" VerticalOptions="Center" HorizontalOptions="Center" BorderColor="Transparent" BorderWidth="0" Style="{DynamicResource SubtitleStyle}" Text="✓" Command="{Binding OkCommand}" IsEnabled="{Binding IsEdited}" />
             </Grid>
             
-            <ListView Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" SelectionMode="Single" ItemsSource="{Binding DrugList}" SelectedItem="{Binding SelectedItem}" SeparatorVisibility="None" >
+            <Grid Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" >
+                <Grid.RowDefinitions>
+                    <!--30-->
+                    <RowDefinition Height="30*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <!--400-->
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="13*" />
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="5" />
+                </Grid.ColumnDefinitions>
+                
+                <Label Grid.Row="0" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" BackgroundColor="Transparent" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Start" Text="{Common:Translate Alarm_AllCheck}" Style="{DynamicResource ListItemDetailTextStyle}" />
+                <Switch Grid.Row="0" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="1" VerticalOptions="Center" HorizontalOptions="End" IsToggled="{Binding AllCheck}"/>
+                
+            </Grid>
+            
+            <ListView Grid.Row="2" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" SelectionMode="Single" ItemsSource="{Binding DrugList}" SelectedItem="{Binding SelectedItem}" SeparatorVisibility="None" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell Height="40">
@@ -46,7 +64,8 @@
                                     <ColumnDefinition Width="1*" />
                                     <ColumnDefinition Width="2*" />
                                     <ColumnDefinition Width="4*" />
-                                    <ColumnDefinition Width="6*" />
+                                    <ColumnDefinition Width="5*" />
+                                    <ColumnDefinition Width="5" />
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.Column="1" Text="{Binding Name}" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Style="{DynamicResource ListItemDetailTextStyle}" />
                                 <Label Grid.Column="3" Text="{Binding Volume}" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Style="{DynamicResource ListItemDetailTextStyle}" />
@@ -57,22 +76,6 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            
-            <Grid Grid.Row="2" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" >
-                <Grid.RowDefinitions>
-                    <!--30-->
-                    <RowDefinition Height="30*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <!--400-->
-                    <ColumnDefinition Width="200*" />
-                    <ColumnDefinition Width="200*" />
-                </Grid.ColumnDefinitions>
-                
-                <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" BackgroundColor="Transparent" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" BorderColor="Transparent" BorderWidth="0" Text="{Common:Translate Alarm_AllCheck}" Command="{Binding AllCheckCommand}" Style="{DynamicResource BodyStyle}" />
-                <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" BackgroundColor="Transparent" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" BorderColor="Transparent" BorderWidth="0" Text="{Common:Translate Alarm_AllUncheck}" Command="{Binding AllUncheckCommand}" Style="{DynamicResource BodyStyle}" />
-                
-            </Grid>
             
         </Grid>
     </ContentPage.Content>

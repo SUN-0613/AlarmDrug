@@ -80,38 +80,6 @@ namespace DrugAlarm.Form.Model
         /// </summary>
         public Common.DelegateCommand RealarmCommand;
 
-        /// <summary>
-        /// 全てチェックコマンド
-        /// </summary>
-        public Common.DelegateCommand AllCheckCommand;
-
-        /// <summary>
-        /// 全てチェック
-        /// </summary>
-        public void AllCheck()
-        {
-            _DrugList.ForEach(Drug => 
-            {
-                Drug.IsDrug = true;
-            });
-        }
-
-        /// <summary>
-        /// 全てチェック解除コマンド
-        /// </summary>
-        public Common.DelegateCommand AllUncheckCommand;
-
-        /// <summary>
-        /// 全てチェック解除
-        /// </summary>
-        public void UnallCheck()
-        {
-            _DrugList.ForEach(Drug => 
-            {
-                Drug.IsDrug = false;
-            });
-        }
-
         #endregion
 
         /// <summary>
@@ -137,6 +105,37 @@ namespace DrugAlarm.Form.Model
                 _DrugList.Clear();
                 _DrugList = null;
             }
+        }
+
+        /// <summary>
+        /// 全てチェック
+        /// </summary>
+        /// <param name="Value">チェック値</param>
+        public void AllCheck(bool Value)
+        {
+            _DrugList.ForEach(Drug =>
+            {
+                Drug.IsDrug = Value;
+            });
+        }
+
+        /// <summary>
+        /// チェック
+        /// </summary>
+        /// <param name="Index">_DrugList[Index]</param>
+        /// <param name="Value">チェック値</param>
+        public void Check(Int32 Index, bool Value)
+        {
+            _DrugList[Index].IsDrug = Value;
+        }
+
+        /// <summary>
+        /// 全てにチェックが入っているか
+        /// </summary>
+        /// <returns><c>true</c>, if all check was ised, <c>false</c> otherwise.</returns>
+        public bool IsAllCheck()
+        {
+            return _DrugList.TrueForAll(Drug => { return Drug.IsDrug; });
         }
 
     }

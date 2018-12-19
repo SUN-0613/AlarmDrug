@@ -59,12 +59,6 @@ namespace DrugAlarm.Resx {
             }
         }
         
-        internal static string Alarm_AllUncheck {
-            get {
-                return ResourceManager.GetString("Alarm_AllUncheck", resourceCulture);
-            }
-        }
-        
         internal static string Alarm_Button_Realarm {
             get {
                 return ResourceManager.GetString("Alarm_Button_Realarm", resourceCulture);

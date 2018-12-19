@@ -59,10 +59,25 @@ namespace DrugAlarm.Form.View
 
                 case "CallOK":
 
+                    // 再通知チェック
+                    if (!_ViewModel.IsAllCheck())
+                    {
+
+                        Class.UserControl.IsWaitToRunRealarm = true;
+                        await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Realarm());
+
+                        while (Class.UserControl.IsWaitToRunRealarm)
+                        {
+                            await System.Threading.Tasks.Task.Delay(100);
+                        }
+
+                    }
+
                     //残り錠の計算、次回アラーム設定
                     if (_ViewModel.TakeMedicine())
                     {
                         await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Information());
+
                     }
                     else
                     {

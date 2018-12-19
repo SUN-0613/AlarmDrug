@@ -32,7 +32,17 @@ namespace DrugAlarm.Form.ViewModel
                 if (_Model.OkCommand == null)
                 {
                     _Model.OkCommand = new Common.DelegateCommand(
-                        () => { CallPropertyChanged("CallOK"); }, 
+                        () => 
+                            {
+
+                                for (Int32 iLoop = 0; iLoop < DrugList.Count; iLoop++)
+                                {
+                                    _Model.Check(iLoop, DrugList[iLoop].IsDrug);
+                                }
+
+                                CallPropertyChanged("CallOK"); 
+
+                            }, 
                         () => true);
                 }
 
@@ -62,75 +72,20 @@ namespace DrugAlarm.Form.ViewModel
                 if (_Model.RealarmCommand == null)
                 {
                     _Model.RealarmCommand = new Common.DelegateCommand(
-                        () => { CallPropertyChanged("CallRealarm"); },
+                        () => 
+                            {
+
+                                AllCheck = false;
+
+                                CallPropertyChanged("CallRealarm"); 
+
+                            },
                         () => true);
                 }
 
                 return _Model.RealarmCommand;
 
             }
-        }
-
-        /// <summary>
-        /// 全てチェックコマンド
-        /// </summary>
-        public Common.DelegateCommand AllCheckCommand
-        {
-            get
-            {
-
-                if (_Model.AllCheckCommand == null)
-                {
-                    _Model.AllCheckCommand = new Common.DelegateCommand(
-                        ()=> 
-                        { 
-                            _Model.AllCheck();
-                            UpdateCheck(true);
-                        }, 
-                        () => true);
-                }
-
-                return _Model.AllCheckCommand;
-
-            }
-        }
-
-        /// <summary>
-        /// 全てチェック解除コマンド
-        /// </summary>
-        public Common.DelegateCommand AllUncheckCommand
-        {
-            get
-            {
-
-                if (_Model.AllUncheckCommand == null)
-                {
-                    _Model.AllUncheckCommand = new Common.DelegateCommand(
-                        () => 
-                        {
-                            _Model.UnallCheck();
-                            UpdateCheck(false);
-                        },
-                        () => true);
-                }
-
-                return _Model.AllUncheckCommand;
-
-            }
-        }
-
-        /// <summary>
-        /// 薬一覧のチェック更新
-        /// </summary>
-        /// <param name="value">If set to <c>true</c> value.</param>
-        private void UpdateCheck(bool value)
-        {
-
-            for (Int32 iLoop = 0; iLoop < DrugList.Count; iLoop++)
-            {
-                DrugList[iLoop].IsDrug = value;
-            }
-
         }
 
         #endregion
@@ -142,6 +97,28 @@ namespace DrugAlarm.Form.ViewModel
         /// </summary>
         /// <value>The drug list.</value>
         public ObservableCollection<Class.UserControl.MedicineInfo> DrugList { get; set; }
+
+        /// <summary>
+        /// 全てチェック
+        /// </summary>
+        private bool _AllCheck = true;
+
+        /// <summary>
+        /// 全てチェックプロパティ
+        /// </summary>
+        public bool AllCheck
+        {
+            get { return _AllCheck; }
+            set
+            {
+
+                _AllCheck = value;
+                CallPropertyChanged();
+
+                UpdateCheck(value);
+
+            }
+        }
 
         #endregion
 
@@ -181,6 +158,31 @@ namespace DrugAlarm.Form.ViewModel
             _Model.Dispose();
             _Model = null;
 
+        }
+
+        /// <summary>
+        /// 薬一覧のチェック更新
+        /// </summary>
+        /// <param name="value">If set to <c>true</c> value.</param>
+        private void UpdateCheck(bool value)
+        {
+
+            _Model.AllCheck(value);
+
+            for (Int32 iLoop = 0; iLoop < DrugList.Count; iLoop++)
+            {
+                DrugList[iLoop].IsDrug = value;
+            }
+
+        }
+
+        /// <summary>
+        /// 全てにチェックが入っているか
+        /// </summary>
+        /// <returns><c>true</c>, if all check was ised, <c>false</c> otherwise.</returns>
+        public bool IsAllCheck()
+        {
+            return _Model.IsAllCheck();
         }
 
     }

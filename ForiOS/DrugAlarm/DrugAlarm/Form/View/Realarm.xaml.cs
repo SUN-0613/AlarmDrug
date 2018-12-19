@@ -65,7 +65,14 @@ namespace DrugAlarm.Form.View
                     break;
 
                 case "CallSave":
-                    await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(false);
+                    if (!Class.UserControl.IsWaitToRunRealarm)
+                    {
+                        await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(false);
+                    }
+                    else
+                    {
+                        Class.UserControl.IsWaitToRunRealarm = false;
+                    }
                     await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
                     break;
 

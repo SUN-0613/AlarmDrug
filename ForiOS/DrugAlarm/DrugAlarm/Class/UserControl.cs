@@ -21,6 +21,11 @@ namespace DrugAlarm.Class
         public static bool TakeBeforeAlarm = false;
 
         /// <summary>
+        /// Realarm.xamlの処理後、Alarm.xamlの処理を続ける
+        /// </summary>
+        public static bool IsWaitToRunRealarm = false;
+
+        /// <summary>
         /// 秒付きの時間フォーマット
         /// </summary>
         public const string TimeSecFormat = "HH:mm:ss";
@@ -124,6 +129,11 @@ namespace DrugAlarm.Class
                 public bool IsHourEach;
 
                 /// <summary>
+                /// 服用FLG
+                /// </summary>
+                public bool IsDrug;
+
+                /// <summary>
                 /// new
                 /// </summary>
                 public Drug()
@@ -132,6 +142,7 @@ namespace DrugAlarm.Class
                     Volume = 0;
                     IsAppoint = false;
                     IsHourEach = false;
+                    IsDrug = true;
                 }
 
             }
