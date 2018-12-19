@@ -507,37 +507,48 @@ namespace DrugAlarm.Form.ViewModel
                         else
                         {
 
+                            bool IsPropertyChanged = false;
+
                             for (Int32 iLoop = 0; iLoop < DrugList.Count; iLoop++)
                             {
 
-                                DrugParameter Drug = DrugList[iLoop];
                                 _Model.DrugIndex = iLoop;
 
-                                if (!Drug.Name.Equals(_Model.DrugName))
+                                if (!DrugList[iLoop].Name.Equals(_Model.DrugName))
                                 {
-                                    Drug.Name = _Model.DrugName;
+                                    DrugList[iLoop].Name = _Model.DrugName;
+                                    IsPropertyChanged = true;
                                 }
 
-                                if (!Drug.DrugTiming.Equals(_Model.DrugTiming))
+                                if (!DrugList[iLoop].DrugTiming.Equals(_Model.DrugTiming))
                                 {
-                                    Drug.DrugTiming = _Model.DrugTiming;
+                                    DrugList[iLoop].DrugTiming = _Model.DrugTiming;
+                                    IsPropertyChanged = true;
                                 }
 
-                                if (!Drug.Remarks.Equals(_Model.DrugRemarks))
+                                if (!DrugList[iLoop].Remarks.Equals(_Model.DrugRemarks))
                                 {
-                                    Drug.Remarks = _Model.DrugRemarks;
+                                    DrugList[iLoop].Remarks = _Model.DrugRemarks;
+                                    IsPropertyChanged = true;
                                 }
 
-                                if (!Drug.IsPrescriptionAlarm.Equals(_Model.DrugIsPrescriptionAlarm))
+                                if (!DrugList[iLoop].IsPrescriptionAlarm.Equals(_Model.DrugIsPrescriptionAlarm))
                                 {
-                                    Drug.IsPrescriptionAlarm = _Model.DrugIsPrescriptionAlarm;
+                                    DrugList[iLoop].IsPrescriptionAlarm = _Model.DrugIsPrescriptionAlarm;
+                                    IsPropertyChanged = true;
                                 }
 
-                                if (!Drug.IsToBeTaken.Equals(_Model.DrugIsToBeTaken))
+                                if (!DrugList[iLoop].IsToBeTaken.Equals(_Model.DrugIsToBeTaken))
                                 {
-                                    Drug.IsToBeTaken = _Model.DrugIsToBeTaken;
+                                    DrugList[iLoop].IsToBeTaken = _Model.DrugIsToBeTaken;
+                                    IsPropertyChanged = true;
                                 }
 
+                            }
+
+                            if (IsPropertyChanged)
+                            {
+                                CallPropertyChanged(nameof(DrugList));
                             }
 
                         }

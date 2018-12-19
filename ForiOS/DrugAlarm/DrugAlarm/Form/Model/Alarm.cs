@@ -116,6 +116,7 @@ namespace DrugAlarm.Form.Model
             _DrugList.ForEach(Drug =>
             {
                 Drug.IsDrug = Value;
+                _Parameter.UpdateDrugFlgNextAlarm(Drug.Index, Drug.IsDrug);
             });
         }
 
@@ -127,6 +128,7 @@ namespace DrugAlarm.Form.Model
         public void Check(Int32 Index, bool Value)
         {
             _DrugList[Index].IsDrug = Value;
+            _Parameter.UpdateDrugFlgNextAlarm(_DrugList[Index].Index, _DrugList[Index].IsDrug);
         }
 
         /// <summary>
