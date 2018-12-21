@@ -17,6 +17,43 @@ namespace DrugAlarm.Form.Model
         /// </summary>
         private Class.Parameter _Parameter;
 
+        /// <summary>
+        /// 表示薬名称一覧
+        /// </summary>
+        private List<Class.UserControl.MedicineInfo> _DrugList;
+
+        /// <summary>
+        /// 表示薬一覧取得
+        /// </summary>
+        /// <returns>The drug list.</returns>
+        public List<Class.UserControl.MedicineInfo> GetDrugList()
+        {
+
+            if (_DrugList == null)
+            {
+                _DrugList = new List<Class.UserControl.MedicineInfo>();
+            }
+
+            _DrugList.Clear();
+
+            for (Int32 iLoop = 0; iLoop < _Parameter.NextAlarm.DrugList.Count; iLoop++)
+            {
+
+                Int32 index = _Parameter.NextAlarm.DrugList[iLoop].Index;
+
+                if (!_Parameter.NextAlarm.DrugList[iLoop].IsDrug)
+                {
+                    _DrugList.Add(new Class.UserControl.MedicineInfo(_Parameter.DrugList[index].Name
+                                                                    , _Parameter.NextAlarm.DrugList[iLoop].Volume
+                                                                    , iLoop));
+                }
+
+            }
+
+            return _DrugList;
+
+        }
+
         #endregion
 
         #region List
@@ -133,6 +170,12 @@ namespace DrugAlarm.Form.Model
             {
                 _RealarmMinute.Clear();
                 _RealarmMinute = null;
+            }
+
+            if (_DrugList != null)
+            {
+                _DrugList.Clear();
+                _DrugList = null;
             }
         }
 

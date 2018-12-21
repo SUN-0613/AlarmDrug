@@ -25,6 +25,16 @@ namespace DrugAlarm.Class
         private List<UserControl.AlarmInfo> Realarm;
 
         /// <summary>
+        /// 履歴情報
+        /// </summary>
+        public List<UserControl.AlarmInfo> AlarmHistory;
+
+        /// <summary>
+        /// 履歴情報最大件数
+        /// </summary>
+        private const Int32 AlarmHistoryMaxCount = 10;
+
+        /// <summary>
         /// パラメータ名称一覧
         /// </summary>
         private class NAME
@@ -33,7 +43,7 @@ namespace DrugAlarm.Class
             /// <summary>
             /// 設定
             /// </summary>
-            public class SETTING
+            public static class SETTING
             {
 
                 /// <summary>
@@ -86,17 +96,19 @@ namespace DrugAlarm.Class
                 /// </summary>
                 public const string BEFORESLEEP = "BeforeSleep";
 
+#pragma warning disable RECS0146 // メンバーは外部クラスから静的メンバーを隠します
                 /// <summary>
                 /// 再通知
                 /// </summary>
                 public const string REALARM = "ReAlarm";
+#pragma warning restore RECS0146 // メンバーは外部クラスから静的メンバーを隠します
 
             }
 
             /// <summary>
             /// 薬
             /// </summary>
-            public class DRUG
+            public static class DRUG
             {
 
                 /// <summary>
@@ -181,6 +193,94 @@ namespace DrugAlarm.Class
 
             }
 
+            #region 保留
+            /*
+            /// <summary>
+            /// アラーム
+            /// </summary>
+            public static class NEXTALARM
+            {
+
+                /// <summary>
+                /// パラメータ名：設定データ開始
+                /// </summary>
+                public const string START = "AlarmStart";
+
+                /// <summary>
+                /// パラメータ名：設定データ終了
+                /// </summary>
+                public const string END = "AlarmEnd";
+
+                /// <summary>
+                /// アラーム時間
+                /// </summary>
+                public const string TIME = "Time";
+
+            }
+
+            /// <summary>
+            /// 再通知
+            /// </summary>
+            public static class REALARM
+            {
+
+                /// <summary>
+                /// パラメータ名：設定データ開始
+                /// </summary>
+                public const string START = "RealarmStart";
+
+                /// <summary>
+                /// パラメータ名：設定データ終了
+                /// </summary>
+                public const string END = "RealarmEnd";
+
+                /// <summary>
+                /// アラーム時間
+                /// </summary>
+                public const string TIME = "Time";
+
+            }
+
+            /// <summary>
+            /// アラームでの薬情報
+            /// </summary>
+            /// <remarks>アラーム、再通知にて使用</remarks>
+            public static class ALARMDRUG
+            {
+
+                /// <summary>
+                /// 薬情報開始
+                /// </summary>
+                public const string DRUGSTART = "AlarmDrugStart";
+
+                /// <summary>
+                /// 薬情報終了
+                /// </summary>
+                public const string DRUGEND = "AlarmDrugEnd";
+
+                /// <summary>
+                /// Index
+                /// </summary>
+                public const string INDEX = "Index";
+
+                /// <summary>
+                /// 錠
+                /// </summary>
+                public const string VOLUME = "Volume";
+
+                /// <summary>
+                /// 指定日時か
+                /// </summary>
+                public const string APPOINT = "Appoint";
+
+                /// <summary>
+                /// 時間毎か
+                /// </summary>
+                public const string HOUREACH = "HourEach";
+
+            }
+            */
+            #endregion
         }
 
         /// <summary>
@@ -479,6 +579,8 @@ namespace DrugAlarm.Class
             NextAlarm = new UserControl.AlarmInfo();
             Realarm = new List<UserControl.AlarmInfo>();
 
+            AlarmHistory = new List<UserControl.AlarmInfo>();
+
             Load();
 
         }
@@ -509,6 +611,10 @@ namespace DrugAlarm.Class
             Realarm.ForEach(Alarm => { Alarm.Dispose(); });
             Realarm.Clear();
             Realarm = null;
+
+            AlarmHistory.ForEach(Alarm => { Alarm.Dispose(); });
+            AlarmHistory.Clear();
+            AlarmHistory = null;
 
         }
 
@@ -1439,6 +1545,65 @@ namespace DrugAlarm.Class
             Method method = new Method();
             DateTime Time;
             DateTime BeforeAlarmTime;   //前回アラーム時間
+
+            //履歴登録
+            if (!NextAlarm.Timer.Equals(DateTime.MaxValue))
+            {
+
+                bool AddHistory = false;
+
+                if (AlarmHistory.Count.Equals(0))
+                {
+                    AddHistory = true;
+                }
+                else if (!AlarmHistory[AlarmHistory.Count - 1].Timer.Equals(NextAlarm.Timer))
+                {
+                    AddHistory = true;
+                }
+
+                if (AddHistory)
+                {
+
+                    UserControl.AlarmInfo History = new UserControl.AlarmInfo() 
+                    {
+                        Timer = NextAlarm.Timer
+                    };
+
+                    NextAlarm.DrugList.ForEach(Drug => 
+                    {
+
+                        if (Drug.IsDrug)
+                        {
+
+                            History.DrugList.Add(new UserControl.AlarmInfo.Drug
+                            {
+                                Index = Drug.Index,
+                                Volume = Drug.Volume,
+                                IsAppoint = Drug.IsAppoint,
+                                IsHourEach = Drug.IsHourEach
+                            });
+                        
+                        }
+
+                    });
+
+                    if (AlarmHistory.Count.Equals(0))
+                    {
+                        AlarmHistory.Add(History);
+                    }
+                    else
+                    {
+                        AlarmHistory.Insert(0, History);
+                    }
+
+                    if (AlarmHistory.Count > AlarmHistoryMaxCount)
+                    {
+                        AlarmHistory.RemoveAt(AlarmHistoryMaxCount);
+                    }
+
+                }
+
+            }
 
             //アラーム時間の記憶
             BeforeAlarmTime = NextAlarm.Timer.Equals(DateTime.MaxValue) ? DateTime.Now.AddMinutes(1) : NextAlarm.Timer.AddMinutes(1);

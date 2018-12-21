@@ -44,6 +44,12 @@ namespace DrugAlarm.Form.ViewModel
             }
         }
 
+        /// <summary>
+        /// 表示薬一覧プロパティ
+        /// </summary>
+        /// <value>The drug list.</value>
+        public ObservableCollection<Class.UserControl.MedicineInfo> DrugList { get; set; }
+
         #endregion
 
         #region CommandProperty
@@ -112,6 +118,15 @@ namespace DrugAlarm.Form.ViewModel
 
             RealarmMinuteIndex = _Model.GetAlarmMinuteIndex();
 
+            DrugList = new ObservableCollection<Class.UserControl.MedicineInfo>();
+
+            Int32 index = 0;
+            _Model.GetDrugList().ForEach(Drug =>
+            {
+                DrugList.Add(new Class.UserControl.MedicineInfo(Drug.Name, Drug.Volume, index));
+                index++;
+            });
+
         }
 
         /// <summary>
@@ -130,6 +145,9 @@ namespace DrugAlarm.Form.ViewModel
                 RealarmMinute.Clear();
                 RealarmMinute = null;
             }
+
+            DrugList.Clear();
+            DrugList = null;
 
             _Model.Dispose();
             _Model = null;
