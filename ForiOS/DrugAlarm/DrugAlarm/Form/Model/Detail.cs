@@ -72,7 +72,7 @@ namespace DrugAlarm.Form.Model
                 _Parameter.DrugList.Insert(_SelectedIndex, Drug);
             }
 
-            _Parameter.Save();
+            _Parameter.Save(false);
             _Parameter.Load();
 
         }

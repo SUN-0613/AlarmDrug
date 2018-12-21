@@ -61,7 +61,7 @@ namespace DrugAlarm.Form.Model
             SetParam.Dinner.CompareTimes();
 
             _Parameter.Setting = SetParam;
-            _Parameter.Save();
+            _Parameter.Save(false);
             _Parameter.Load();
 
         }

@@ -25,6 +25,11 @@ namespace DrugAlarm.Class
         private List<UserControl.AlarmInfo> Realarm;
 
         /// <summary>
+        /// 前回アラーム時間
+        /// </summary>
+        private DateTime BeforeAlarmTime;
+
+        /// <summary>
         /// 履歴情報
         /// </summary>
         public List<UserControl.AlarmInfo> AlarmHistory;
@@ -581,6 +586,8 @@ namespace DrugAlarm.Class
 
             AlarmHistory = new List<UserControl.AlarmInfo>();
 
+            BeforeAlarmTime = DateTime.Now;
+
             Load();
 
         }
@@ -646,7 +653,7 @@ namespace DrugAlarm.Class
 
                 if (!File.Exists(FilePath))
                 {
-                    Save();
+                    Save(false);
                 }
 
             }
@@ -860,7 +867,7 @@ namespace DrugAlarm.Class
             }
 
             //次回アラーム取得
-            SetNextAlarm();
+            SetNextAlarm(false);
 
         }
 
@@ -1022,7 +1029,8 @@ namespace DrugAlarm.Class
         /// <summary>
         /// ファイル書き込み
         /// </summary>
-        public void Save()
+        /// <param name="UpdateBeforeAlarmTime">前回アラーム時間を更新するか</param>
+        public void Save(bool UpdateBeforeAlarmTime)
         {
 
             //保存パスの取得
@@ -1127,7 +1135,7 @@ namespace DrugAlarm.Class
             {
 
                 //次回アラーム取得
-                SetNextAlarm();
+                SetNextAlarm(UpdateBeforeAlarmTime);
 
             }
 
@@ -1517,7 +1525,7 @@ namespace DrugAlarm.Class
             }
 
             //パラメータ更新
-            Save();
+            Save(true);
 
             //残量チェック
             for (Int32 iLoop = 0; iLoop < DrugList.Count; iLoop++)
@@ -1539,12 +1547,12 @@ namespace DrugAlarm.Class
         /// <summary>
         /// 次回アラーム情報の設定
         /// </summary>
-        private void SetNextAlarm()
+        /// <param name="UpdateBeforeAlarmTime">前回アラーム時間を更新するか</param>
+        private void SetNextAlarm(bool UpdateBeforeAlarmTime)
         {
 
             Method method = new Method();
             DateTime Time;
-            DateTime BeforeAlarmTime;   //前回アラーム時間
 
             //履歴登録
             if (!NextAlarm.Timer.Equals(DateTime.MaxValue))
@@ -1606,7 +1614,10 @@ namespace DrugAlarm.Class
             }
 
             //アラーム時間の記憶
-            BeforeAlarmTime = NextAlarm.Timer.Equals(DateTime.MaxValue) ? DateTime.Now.AddMinutes(1) : NextAlarm.Timer.AddMinutes(1);
+            if (UpdateBeforeAlarmTime)
+            {
+                BeforeAlarmTime = NextAlarm.Timer.Equals(DateTime.MaxValue) ? DateTime.Now.AddMinutes(1) : NextAlarm.Timer.AddMinutes(1);
+            }
 
             //初期化
             NextAlarm.Timer = DateTime.MaxValue;
@@ -1679,7 +1690,7 @@ namespace DrugAlarm.Class
                         Setting.Breakfast.Finish = method.GetTodayTime(Setting.Breakfast.Finish.Hour, Setting.Breakfast.Finish.Minute);
                     }
 
-                    Time = CalcMealsTime(BeforeAlarmTime, Setting.Breakfast.Start, Setting.Breakfast.Finish, DrugList[iLoop].Breakfast.Kind);
+                    Time = CalcMealsTime(Setting.Breakfast.Start, Setting.Breakfast.Finish, DrugList[iLoop].Breakfast.Kind);
                     CompareToTime(Time, iLoop, DrugList[iLoop].Breakfast.Volume, false, false);
 
                 }
@@ -1694,7 +1705,7 @@ namespace DrugAlarm.Class
                         Setting.Lunch.Finish = method.GetTodayTime(Setting.Lunch.Finish.Hour, Setting.Lunch.Finish.Minute);
                     }
 
-                    Time = CalcMealsTime(BeforeAlarmTime, Setting.Lunch.Start, Setting.Lunch.Finish, DrugList[iLoop].Lunch.Kind);
+                    Time = CalcMealsTime(Setting.Lunch.Start, Setting.Lunch.Finish, DrugList[iLoop].Lunch.Kind);
                     CompareToTime(Time, iLoop, DrugList[iLoop].Lunch.Volume, false, false);
 
                 }
@@ -1709,7 +1720,7 @@ namespace DrugAlarm.Class
                         Setting.Dinner.Finish = method.GetTodayTime(Setting.Dinner.Finish.Hour, Setting.Dinner.Finish.Minute);
                     }
 
-                    Time = CalcMealsTime(BeforeAlarmTime, Setting.Dinner.Start, Setting.Dinner.Finish, DrugList[iLoop].Dinner.Kind);
+                    Time = CalcMealsTime(Setting.Dinner.Start, Setting.Dinner.Finish, DrugList[iLoop].Dinner.Kind);
                     CompareToTime(Time, iLoop, DrugList[iLoop].Dinner.Volume, false, false);
 
                 }
@@ -1783,11 +1794,10 @@ namespace DrugAlarm.Class
         /// 食事時の服用時間の計算
         /// </summary>
         /// <returns>服用時間</returns>
-        /// <param name="BeforeAlarmTime">前回アラーム時間</param>
         /// <param name="StartTime">開始時間</param>
         /// <param name="FinishTime">終了時間</param>
         /// <param name="Kind">服用タイミング</param>
-        private DateTime CalcMealsTime(DateTime BeforeAlarmTime, DateTime StartTime, DateTime FinishTime, UserControl.KindTiming Kind)
+        private DateTime CalcMealsTime(DateTime StartTime, DateTime FinishTime, UserControl.KindTiming Kind)
         {
 
             DateTime Return = DateTime.MaxValue;
@@ -1920,7 +1930,7 @@ namespace DrugAlarm.Class
 
             // 次回アラームが空の場合、次回アラームの設定
             if (NextAlarm.DrugList.Count.Equals(0))
-                SetNextAlarm();
+                SetNextAlarm(true);
 
         }
 

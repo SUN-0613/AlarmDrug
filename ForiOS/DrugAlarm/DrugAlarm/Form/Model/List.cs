@@ -161,7 +161,7 @@ namespace DrugAlarm.Form.Model
             {
 
                 _Parameter.DrugList.RemoveAt(SelectedIndex);
-                _Parameter.Save();
+                _Parameter.Save(false);
 
                 SelectedIndex = -1;
 
@@ -187,7 +187,7 @@ namespace DrugAlarm.Form.Model
                 {
 
                     Drug.TotalVolume -= Drug.ToBeTaken.Volume;
-                    _Parameter.Save();
+                    _Parameter.Save(false);
 
                     Return = true;
                 }
