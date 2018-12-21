@@ -50,6 +50,17 @@ namespace DrugAlarm.Form.View
         }
 
         /// <summary>
+        /// Page表示イベント
+        /// </summary>
+        private void OnAppearing(object sender, EventArgs e)
+        {
+            if (_ViewModel != null)
+            {
+                _ViewModel.ShowList();
+            }
+        }
+
+        /// <summary>
         /// ViewModelプロパティ変更通知イベント
         /// </summary>
         /// <param name="sender">Sender.</param>

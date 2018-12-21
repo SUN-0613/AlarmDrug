@@ -5,7 +5,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:Common="clr-namespace:DrugAlarm.Common"
              xmlns:Convert="clr-namespace:DrugAlarm.Converter"
-             NavigationPage.HasNavigationBar="false">
+             NavigationPage.HasNavigationBar="false"
+             Appearing="OnAppearing">
     <ContentPage.Resources>
         <Convert:VolumeToForeground x:Key="ForegroundConverter" />
     </ContentPage.Resources>
