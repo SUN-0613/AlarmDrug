@@ -40,6 +40,11 @@ namespace DrugAlarm.Class
         private const Int32 AlarmHistoryMaxCount = 10;
 
         /// <summary>
+        /// 次回アラーム読込済
+        /// </summary>
+        private bool IsLoadNextAlarm = false;
+
+        /// <summary>
         /// パラメータ名称一覧
         /// </summary>
         private class NAME
@@ -198,10 +203,8 @@ namespace DrugAlarm.Class
 
             }
 
-            #region 保留
-            /*
             /// <summary>
-            /// アラーム
+            /// 次回アラーム
             /// </summary>
             public static class NEXTALARM
             {
@@ -209,12 +212,35 @@ namespace DrugAlarm.Class
                 /// <summary>
                 /// パラメータ名：設定データ開始
                 /// </summary>
-                public const string START = "AlarmStart";
+                public const string START = "NextAlarmStart";
 
                 /// <summary>
                 /// パラメータ名：設定データ終了
                 /// </summary>
-                public const string END = "AlarmEnd";
+                public const string END = "NextAlarmEnd";
+
+                /// <summary>
+                /// アラーム時間
+                /// </summary>
+                public const string TIME = "Time";
+
+            }
+
+            /// <summary>
+            /// 前回アラーム
+            /// </summary>
+            public static class BEFOREALARM
+            {
+
+                /// <summary>
+                /// パラメータ名：設定データ開始
+                /// </summary>
+                public const string START = "BeforeAlarmStart";
+
+                /// <summary>
+                /// パラメータ名：設定データ終了
+                /// </summary>
+                public const string END = "BeforeAlarmEnd";
 
                 /// <summary>
                 /// アラーム時間
@@ -256,12 +282,12 @@ namespace DrugAlarm.Class
                 /// <summary>
                 /// 薬情報開始
                 /// </summary>
-                public const string DRUGSTART = "AlarmDrugStart";
+                public const string START = "AlarmDrugStart";
 
                 /// <summary>
                 /// 薬情報終了
                 /// </summary>
-                public const string DRUGEND = "AlarmDrugEnd";
+                public const string END = "AlarmDrugEnd";
 
                 /// <summary>
                 /// Index
@@ -284,8 +310,7 @@ namespace DrugAlarm.Class
                 public const string HOUREACH = "HourEach";
 
             }
-            */
-            #endregion
+        
         }
 
         /// <summary>
@@ -634,9 +659,9 @@ namespace DrugAlarm.Class
             string FilePath;
 
             //前回パスの取得
-            if (Application.Current.Properties.ContainsKey(UserControl.FullPath))
+            if (Application.Current.Properties.ContainsKey(UserControl.ParameterFullPath))
             {
-                FilePath = (string)Application.Current.Properties[UserControl.FullPath];
+                FilePath = (string)Application.Current.Properties[UserControl.ParameterFullPath];
             }
             else
             {
@@ -647,9 +672,9 @@ namespace DrugAlarm.Class
             if (FilePath.Length.Equals(0) || !File.Exists(FilePath))
             {
                 FilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                FilePath = Path.Combine(FilePath, UserControl.FileName);
+                FilePath = Path.Combine(FilePath, UserControl.ParameterFileName);
 
-                Application.Current.Properties[UserControl.FullPath] = FilePath;
+                Application.Current.Properties[UserControl.ParameterFullPath] = FilePath;
 
                 if (!File.Exists(FilePath))
                 {
@@ -866,8 +891,302 @@ namespace DrugAlarm.Class
 
             }
 
+            // 次回アラームをパラメータより読み込み
+            LoadNextAlarmParameter();
+
             //次回アラーム取得
             SetNextAlarm(false);
+
+        }
+
+        /// <summary>
+        /// 次回アラームの読み込み
+        /// </summary>
+        private void LoadNextAlarmParameter()
+        {
+
+            // 前回パスの取得
+            string FilePath = Application.Current.Properties.ContainsKey(UserControl.AlarmFullPath) 
+                                ? (string)Application.Current.Properties[UserControl.AlarmFullPath] 
+                                : "";
+
+            if (!FilePath.Length.Equals(0) && File.Exists(FilePath))
+            {
+
+                // 初期化
+                Realarm.ForEach(Alarm => { Alarm.Dispose(); });
+                Realarm.Clear();
+
+                //ファイル読み込み開始
+                using (StreamReader FileData = new StreamReader(FilePath, Encoding.Unicode))
+                {
+
+                    Method method = new Method();
+                    StringBuilder NewLine = new StringBuilder();
+                    UserControl.AlarmInfo AddAlarm = null;
+                    Int32 Index = -1;
+
+                    bool IsNextAlarm = false;
+                    bool IsBeforeAlarm = false;
+                    bool IsRealarm = false;
+                    bool IsDrugAccess = false;
+
+                    while (!FileData.EndOfStream)
+                    {
+
+                        try
+                        {
+
+                            NewLine.Append(FileData.ReadLine());
+
+                            if (!NewLine.ToString().Contains("="))
+                            {
+
+                                //パラメータ種類の選別
+                                switch (NewLine.ToString())
+                                {
+
+                                    case NAME.BEFOREALARM.START:
+
+                                        // 初期化
+                                        BeforeAlarmTime = DateTime.MaxValue;
+
+                                        IsNextAlarm = false;
+                                        IsRealarm = false;
+                                        IsDrugAccess = false;
+                                        IsBeforeAlarm = true;
+                                        break;
+
+                                    case NAME.BEFOREALARM.END:
+
+                                        IsBeforeAlarm = false;
+                                        break;
+
+                                    case NAME.NEXTALARM.START:
+
+                                        // 初期化
+                                        NextAlarm.Timer = DateTime.MaxValue;
+                                        NextAlarm.DrugList.Clear();
+
+                                        IsNextAlarm = true;
+                                        IsRealarm = false;
+                                        IsDrugAccess = false;
+                                        IsBeforeAlarm = false;
+
+                                        break;
+
+                                    case NAME.NEXTALARM.END:
+
+                                        IsLoadNextAlarm = true;
+                                        IsNextAlarm = false;
+                                        break;
+
+                                    case NAME.REALARM.START:
+
+                                        // 初期化
+                                        AddAlarm = new UserControl.AlarmInfo();
+
+                                        IsBeforeAlarm = false;
+                                        IsRealarm = true;
+                                        break;
+
+                                    case NAME.REALARM.END:
+
+                                        // 追加
+                                        Realarm.Add(AddAlarm);
+
+                                        IsRealarm = false;
+                                        break;
+
+                                    case NAME.ALARMDRUG.START:
+
+                                        // 初期化
+                                        if (IsRealarm)
+                                        {
+
+                                            // 薬追加
+                                            AddAlarm.DrugList.Add(new UserControl.AlarmInfo.Drug());
+                                            Index = AddAlarm.DrugList.Count - 1;
+
+                                        }
+                                        else if (IsNextAlarm)
+                                        {
+
+                                            // 薬追加
+                                            NextAlarm.DrugList.Add(new UserControl.AlarmInfo.Drug());
+                                            Index = NextAlarm.DrugList.Count - 1;
+
+                                        }
+
+                                        IsDrugAccess = true;
+                                        break;
+
+                                    case NAME.ALARMDRUG.END:
+
+                                        // 初期化
+                                        Index = -1;
+
+                                        IsDrugAccess = false;
+                                        break;
+
+                                    default:
+                                        break;
+
+                                }
+                            }
+                            else
+                            {
+
+                                string[] Strings = NewLine.ToString().Split('=');
+                                string[] Values = Strings[1].Split(',');
+
+                                if (IsBeforeAlarm)
+                                {
+
+                                    // 前回アラーム設定
+                                    switch (Strings[0])
+                                    {
+
+                                        case NAME.BEFOREALARM.TIME:
+                                            BeforeAlarmTime = method.ConvertToDateTime(Strings[1], DateTime.Now);
+                                            break;
+
+                                        default:
+                                            break;
+
+                                    }
+
+                                }
+                                else if (IsNextAlarm)
+                                {
+
+                                    // 再通知設定
+                                    switch (Strings[0])
+                                    {
+
+                                        case NAME.NEXTALARM.TIME:
+                                            NextAlarm.Timer = method.ConvertToDateTime(Strings[1], DateTime.Now);
+                                            break;
+
+                                        default:
+                                            break;
+
+                                    }
+
+                                }
+                                else if (IsRealarm && AddAlarm != null)
+                                {
+
+                                    // 再通知設定
+                                    switch (Strings[0])
+                                    {
+
+                                        case NAME.REALARM.TIME:
+                                            AddAlarm.Timer = method.ConvertToDateTime(Strings[1], DateTime.Now);
+                                            break;
+
+                                        default:
+                                            break;
+
+                                    }
+
+                                }
+
+                                else if (IsDrugAccess && !Index.Equals(-1))
+                                {
+
+                                    //薬パラメータ
+                                    switch (Strings[0])
+                                    {
+
+                                        case NAME.ALARMDRUG.INDEX:
+
+                                            if (IsNextAlarm)
+                                            {
+                                                NextAlarm.DrugList[Index].Index = method.ConvertToInt32(Strings[1], -1);
+                                            }
+                                            else if (IsRealarm)
+                                            {
+                                                AddAlarm.DrugList[Index].Index = method.ConvertToInt32(Strings[1], -1);
+                                            }
+                                            break;
+
+                                        case NAME.ALARMDRUG.VOLUME:
+
+                                            if (IsNextAlarm)
+                                            {
+                                                NextAlarm.DrugList[Index].Volume = method.ConvertToInt32(Strings[1], -1);
+                                            }
+                                            else if (IsRealarm)
+                                            {
+                                                AddAlarm.DrugList[Index].Volume = method.ConvertToInt32(Strings[1], -1);
+                                            }
+                                            break;
+
+                                        case NAME.ALARMDRUG.APPOINT:
+
+                                            if (bool.TryParse(Strings[1], out bool AppointResult))
+                                            {
+
+                                                if (IsNextAlarm)
+                                                {
+                                                    NextAlarm.DrugList[Index].IsAppoint = AppointResult;
+                                                }
+                                                else if (IsRealarm)
+                                                {
+                                                    AddAlarm.DrugList[Index].IsAppoint = AppointResult;
+                                                }
+
+                                            }
+                                            break;
+
+                                        case NAME.ALARMDRUG.HOUREACH:
+
+                                            if (bool.TryParse(Strings[1], out bool HourEachResult))
+                                            {
+
+                                                if (IsNextAlarm)
+                                                {
+                                                    NextAlarm.DrugList[Index].IsAppoint = HourEachResult;
+                                                }
+                                                else if (IsRealarm)
+                                                {
+                                                    AddAlarm.DrugList[Index].IsAppoint = HourEachResult;
+                                                }
+
+                                            }
+                                            break;
+
+                                        default:
+                                            break;
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+#if DEBUG
+                            System.Diagnostics.Debug.WriteLine(ex.Message);
+#endif
+                        }
+                        finally
+                        {
+                            NewLine.Clear();
+                        }
+
+                    }
+
+                    //メモリ解放
+                    NewLine.Clear();
+                    NewLine = null;
+
+                }
+
+            }
 
         }
 
@@ -1034,7 +1353,7 @@ namespace DrugAlarm.Class
         {
 
             //保存パスの取得
-            string FilePath = (string)Application.Current.Properties[UserControl.FullPath];
+            string FilePath = (string)Application.Current.Properties[UserControl.ParameterFullPath];
             string TmpPath = FilePath.Replace(UserControl.FileExtension, ".Tmp");
 
             //ファイル書き込み開始
@@ -1054,6 +1373,7 @@ namespace DrugAlarm.Class
                     FileData.WriteLine(MakeParameter(NAME.SETTING.AFTERMEALS, Setting.MinuteAfterMeals));
                     FileData.WriteLine(MakeParameter(NAME.SETTING.BEFORESLEEP, Setting.MinuteBeforeSleep));
                     FileData.WriteLine(MakeParameter(NAME.SETTING.REALARM, Setting.MinuteRealarm));
+                    FileData.WriteLine(NAME.SETTING.END);
                     #endregion
 
                     #region 薬パラメータ
@@ -1344,6 +1664,50 @@ namespace DrugAlarm.Class
         }
 
         /// <summary>
+        /// パラメータ時間形式作成
+        /// </summary>
+        /// <returns>パラメータ出力値</returns>
+        /// <param name="Parameter">パラメータ名</param>
+        /// <param name="Value">bool値</param>
+        private string MakeParameter(string Parameter, bool Value)
+        {
+
+            StringBuilder Str = new StringBuilder(Parameter.Length + UserControl.TimeFormat.Length + 1);
+            string Return;
+
+            try
+            {
+
+                Str.Clear();
+                Str.Append(Parameter);
+                Str.Append("=").Append(Value.ToString());
+
+                Return = Str.ToString();
+
+            }
+            catch (Exception ex)
+            {
+
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+#endif
+
+                Return = "";
+
+            }
+            finally
+            {
+
+                Str.Clear();
+                Str = null;
+
+            }
+
+            return Return;
+
+        }
+
+        /// <summary>
         /// パラメータ時間範囲形式作成
         /// </summary>
         /// <returns>パラメータ出力値</returns>
@@ -1554,201 +1918,323 @@ namespace DrugAlarm.Class
             Method method = new Method();
             DateTime Time;
 
-            //履歴登録
-            if (!NextAlarm.Timer.Equals(DateTime.MaxValue))
+            // 次回アラーム読込済
+            if (!IsLoadNextAlarm)
             {
 
-                bool AddHistory = false;
-
-                if (AlarmHistory.Count.Equals(0))
-                {
-                    AddHistory = true;
-                }
-                else if (!AlarmHistory[AlarmHistory.Count - 1].Timer.Equals(NextAlarm.Timer))
-                {
-                    AddHistory = true;
-                }
-
-                if (AddHistory)
+                #region 履歴登録
+                if (!NextAlarm.Timer.Equals(DateTime.MaxValue))
                 {
 
-                    UserControl.AlarmInfo History = new UserControl.AlarmInfo() 
-                    {
-                        Timer = NextAlarm.Timer
-                    };
-
-                    NextAlarm.DrugList.ForEach(Drug => 
-                    {
-
-                        if (Drug.IsDrug)
-                        {
-
-                            History.DrugList.Add(new UserControl.AlarmInfo.Drug
-                            {
-                                Index = Drug.Index,
-                                Volume = Drug.Volume,
-                                IsAppoint = Drug.IsAppoint,
-                                IsHourEach = Drug.IsHourEach
-                            });
-                        
-                        }
-
-                    });
+                    bool AddHistory = false;
 
                     if (AlarmHistory.Count.Equals(0))
                     {
-                        AlarmHistory.Add(History);
+                        AddHistory = true;
                     }
-                    else
+                    else if (!AlarmHistory[AlarmHistory.Count - 1].Timer.Equals(NextAlarm.Timer))
                     {
-                        AlarmHistory.Insert(0, History);
-                    }
-
-                    if (AlarmHistory.Count > AlarmHistoryMaxCount)
-                    {
-                        AlarmHistory.RemoveAt(AlarmHistoryMaxCount);
+                        AddHistory = true;
                     }
 
-                }
-
-            }
-
-            //アラーム時間の記憶
-            if (UpdateBeforeAlarmTime)
-            {
-                BeforeAlarmTime = NextAlarm.Timer.Equals(DateTime.MaxValue) ? DateTime.Now.AddMinutes(1) : NextAlarm.Timer.AddMinutes(1);
-            }
-
-            //初期化
-            NextAlarm.Timer = DateTime.MaxValue;
-            NextAlarm.DrugList.Clear();
-
-            //再通知
-            if (!Realarm.Count.Equals(0))
-            {
-
-                if (Realarm[0].Timer <= NextAlarm.Timer)
-                {
-
-                    //異なる時刻なら初期化
-                    if (!Realarm[0].Timer.Equals(NextAlarm.Timer))
-                    {
-                        NextAlarm.Timer = Realarm[0].Timer;
-                        NextAlarm.DrugList.Clear();
-                    }
-
-                    //薬登録
-                    for (Int32 iLoop = 0; iLoop < Realarm[0].DrugList.Count; iLoop++)
+                    if (AddHistory)
                     {
 
-                        //指定日時、時間毎の薬については、上の処理で登録されているのでスキップする
-                        if (!Realarm[0].DrugList[iLoop].IsAppoint && !Realarm[0].DrugList[iLoop].IsHourEach)
+                        UserControl.AlarmInfo History = new UserControl.AlarmInfo() 
+                        {
+                            Timer = NextAlarm.Timer
+                        };
+
+                        NextAlarm.DrugList.ForEach(Drug => 
                         {
 
-                            NextAlarm.DrugList.Add(new UserControl.AlarmInfo.Drug
+                            if (Drug.IsDrug)
                             {
-                                Index = Realarm[0].DrugList[iLoop].Index,
-                                Volume = Realarm[0].DrugList[iLoop].Volume,
-                                IsAppoint = Realarm[0].DrugList[iLoop].IsAppoint,
-                                IsHourEach = Realarm[0].DrugList[iLoop].IsHourEach
-                            });
 
+                                History.DrugList.Add(new UserControl.AlarmInfo.Drug
+                                {
+                                    Index = Drug.Index,
+                                    Volume = Drug.Volume,
+                                    IsAppoint = Drug.IsAppoint,
+                                    IsHourEach = Drug.IsHourEach
+                                });
+                            
+                            }
+
+                        });
+
+                        if (AlarmHistory.Count.Equals(0))
+                        {
+                            AlarmHistory.Add(History);
+                        }
+                        else
+                        {
+                            AlarmHistory.Insert(0, History);
+                        }
+
+                        if (AlarmHistory.Count > AlarmHistoryMaxCount)
+                        {
+                            AlarmHistory.RemoveAt(AlarmHistoryMaxCount);
                         }
 
                     }
 
-                    //登録後、再通知リストより削除する
-                    Realarm.RemoveAt(0);    
+                }
+                #endregion
 
+                #region 初期化
+
+                //アラーム時間の記憶
+                if (UpdateBeforeAlarmTime)
+                {
+                    BeforeAlarmTime = NextAlarm.Timer.Equals(DateTime.MaxValue) ? DateTime.Now.AddMinutes(1) : NextAlarm.Timer.AddMinutes(1);
                 }
 
-            }
+                // 初期化
+                NextAlarm.Timer = DateTime.MaxValue;
+                NextAlarm.DrugList.Clear();
 
-            //毎時・指定日時・食事・就寝
-            for (Int32 iLoop = 0; iLoop < DrugList.Count; iLoop++)
+                #endregion
+
+                #region 毎時・指定日時・食事・就寝
+                for (Int32 iLoop = 0; iLoop < DrugList.Count; iLoop++)
+                {
+
+                    //毎時
+                    if (DrugList[iLoop].HourEach.IsDrug)
+                    {
+                        CompareToTime(DrugList[iLoop].HourEachNextTime, iLoop, DrugList[iLoop].HourEach.Volume, false, true);
+                    }
+
+                    //指定日時
+                    if (DrugList[iLoop].Appoint.IsDrug)
+                    {
+                        CompareToTime(DrugList[iLoop].AppointTime, iLoop, DrugList[iLoop].Appoint.Volume, true, false);
+                    }
+
+                    //朝食
+                    if (DrugList[iLoop].Breakfast.IsDrug)
+                    {
+
+                        if (Setting.Breakfast.Start < DateTime.Today)
+                        {
+                            Setting.Breakfast.Start = method.GetTodayTime(Setting.Breakfast.Start.Hour, Setting.Breakfast.Start.Minute);
+                            Setting.Breakfast.Finish = method.GetTodayTime(Setting.Breakfast.Finish.Hour, Setting.Breakfast.Finish.Minute);
+                        }
+
+                        Time = CalcMealsTime(Setting.Breakfast.Start, Setting.Breakfast.Finish, DrugList[iLoop].Breakfast.Kind);
+                        CompareToTime(Time, iLoop, DrugList[iLoop].Breakfast.Volume, false, false);
+
+                    }
+
+                    //昼食
+                    if (DrugList[iLoop].Lunch.IsDrug)
+                    {
+
+                        if (Setting.Lunch.Start < DateTime.Today)
+                        {
+                            Setting.Lunch.Start = method.GetTodayTime(Setting.Lunch.Start.Hour, Setting.Lunch.Start.Minute);
+                            Setting.Lunch.Finish = method.GetTodayTime(Setting.Lunch.Finish.Hour, Setting.Lunch.Finish.Minute);
+                        }
+
+                        Time = CalcMealsTime(Setting.Lunch.Start, Setting.Lunch.Finish, DrugList[iLoop].Lunch.Kind);
+                        CompareToTime(Time, iLoop, DrugList[iLoop].Lunch.Volume, false, false);
+
+                    }
+
+                    //夕食
+                    if (DrugList[iLoop].Dinner.IsDrug)
+                    {
+
+                        if (Setting.Dinner.Start < DateTime.Today)
+                        {
+                            Setting.Dinner.Start = method.GetTodayTime(Setting.Dinner.Start.Hour, Setting.Dinner.Start.Minute);
+                            Setting.Dinner.Finish = method.GetTodayTime(Setting.Dinner.Finish.Hour, Setting.Dinner.Finish.Minute);
+                        }
+
+                        Time = CalcMealsTime(Setting.Dinner.Start, Setting.Dinner.Finish, DrugList[iLoop].Dinner.Kind);
+                        CompareToTime(Time, iLoop, DrugList[iLoop].Dinner.Volume, false, false);
+
+                    }
+
+                    //就寝前
+                    if (DrugList[iLoop].Sleep.IsDrug)
+                    {
+
+                        if (Setting.Sleep < DateTime.Today)
+                        {
+                            Setting.Sleep = method.GetTodayTime(Setting.Sleep.Hour, Setting.Sleep.Minute);
+                        }
+
+                        Time = Setting.Sleep.AddMinutes((-1) * Setting.MinuteBeforeSleep);
+
+                        //取得した時間を超過している場合は翌日にする
+                        if (Time < BeforeAlarmTime)
+                        {
+                            Time = Time.AddDays(1);
+                        }
+
+                        CompareToTime(Time, iLoop, DrugList[iLoop].Sleep.Volume, false, false);
+
+                    }
+
+                }
+                #endregion
+
+                #region 再通知
+                if (!Realarm.Count.Equals(0))
+                {
+
+                    if (Realarm[0].Timer <= NextAlarm.Timer)
+                    {
+
+                        //異なる時刻なら初期化
+                        if (!Realarm[0].Timer.Equals(NextAlarm.Timer))
+                        {
+                            NextAlarm.Timer = Realarm[0].Timer;
+                            NextAlarm.DrugList.Clear();
+                        }
+
+                        //薬登録
+                        for (Int32 iLoop = 0; iLoop < Realarm[0].DrugList.Count; iLoop++)
+                        {
+
+                            //指定日時、時間毎の薬については、上の処理で登録されているのでスキップする
+                            if (!Realarm[0].DrugList[iLoop].IsAppoint && !Realarm[0].DrugList[iLoop].IsHourEach)
+                            {
+
+                                NextAlarm.DrugList.Add(new UserControl.AlarmInfo.Drug
+                                {
+                                    Index = Realarm[0].DrugList[iLoop].Index,
+                                    Volume = Realarm[0].DrugList[iLoop].Volume,
+                                    IsAppoint = Realarm[0].DrugList[iLoop].IsAppoint,
+                                    IsHourEach = Realarm[0].DrugList[iLoop].IsHourEach
+                                });
+
+                            }
+
+                        }
+
+                        //登録後、再通知リストより削除する
+                        Realarm.RemoveAt(0);
+
+                    }
+
+                }
+                #endregion
+
+            }
+            else
             {
 
-                //毎時
-                if (DrugList[iLoop].HourEach.IsDrug)
-                {
-                    CompareToTime(DrugList[iLoop].HourEachNextTime, iLoop, DrugList[iLoop].HourEach.Volume, false, true);
-                }
-
-                //指定日時
-                if (DrugList[iLoop].Appoint.IsDrug)
-                {
-                    CompareToTime(DrugList[iLoop].AppointTime, iLoop, DrugList[iLoop].Appoint.Volume, true, false);
-                }
-
-                //朝食
-                if (DrugList[iLoop].Breakfast.IsDrug)
-                {
-
-                    if (Setting.Breakfast.Start < DateTime.Today)
-                    {
-                        Setting.Breakfast.Start = method.GetTodayTime(Setting.Breakfast.Start.Hour, Setting.Breakfast.Start.Minute);
-                        Setting.Breakfast.Finish = method.GetTodayTime(Setting.Breakfast.Finish.Hour, Setting.Breakfast.Finish.Minute);
-                    }
-
-                    Time = CalcMealsTime(Setting.Breakfast.Start, Setting.Breakfast.Finish, DrugList[iLoop].Breakfast.Kind);
-                    CompareToTime(Time, iLoop, DrugList[iLoop].Breakfast.Volume, false, false);
-
-                }
-
-                //昼食
-                if (DrugList[iLoop].Lunch.IsDrug)
-                {
-
-                    if (Setting.Lunch.Start < DateTime.Today)
-                    {
-                        Setting.Lunch.Start = method.GetTodayTime(Setting.Lunch.Start.Hour, Setting.Lunch.Start.Minute);
-                        Setting.Lunch.Finish = method.GetTodayTime(Setting.Lunch.Finish.Hour, Setting.Lunch.Finish.Minute);
-                    }
-
-                    Time = CalcMealsTime(Setting.Lunch.Start, Setting.Lunch.Finish, DrugList[iLoop].Lunch.Kind);
-                    CompareToTime(Time, iLoop, DrugList[iLoop].Lunch.Volume, false, false);
-
-                }
-
-                //夕食
-                if (DrugList[iLoop].Dinner.IsDrug)
-                {
-
-                    if (Setting.Dinner.Start < DateTime.Today)
-                    {
-                        Setting.Dinner.Start = method.GetTodayTime(Setting.Dinner.Start.Hour, Setting.Dinner.Start.Minute);
-                        Setting.Dinner.Finish = method.GetTodayTime(Setting.Dinner.Finish.Hour, Setting.Dinner.Finish.Minute);
-                    }
-
-                    Time = CalcMealsTime(Setting.Dinner.Start, Setting.Dinner.Finish, DrugList[iLoop].Dinner.Kind);
-                    CompareToTime(Time, iLoop, DrugList[iLoop].Dinner.Volume, false, false);
-
-                }
-
-                //就寝前
-                if (DrugList[iLoop].Sleep.IsDrug)
-                {
-
-                    if (Setting.Sleep < DateTime.Today)
-                    {
-                        Setting.Sleep = method.GetTodayTime(Setting.Sleep.Hour, Setting.Sleep.Minute);
-                    }
-
-                    Time = Setting.Sleep.AddMinutes((-1) * Setting.MinuteBeforeSleep);
-
-                    //取得した時間を超過している場合は翌日にする
-                    if (Time < BeforeAlarmTime)
-                    {
-                        Time = Time.AddDays(1);
-                    }
-
-                    CompareToTime(Time, iLoop, DrugList[iLoop].Sleep.Volume, false, false);
-
-                }
+                // 次回アラーム読込済、FLG初期化
+                IsLoadNextAlarm = false;
 
             }
 
+            // アラーム情報の保存
+            SaveNextAlarmParameter();
+
+            // AlarmTimer.csでFLGリセット
             Class.UserControl.ResetNextAlarm = true;
+
+        }
+
+
+        /// <summary>
+        /// 次回アラームの保存
+        /// </summary>
+        private void SaveNextAlarmParameter()
+        {
+
+            // 前回パスの取得
+            string FilePath = Application.Current.Properties.ContainsKey(UserControl.AlarmFullPath)
+                                ? (string)Application.Current.Properties[UserControl.AlarmFullPath]
+                                : "";
+
+            // 前回パスが未記入、またはファイルがなければ新規宣言
+            if (FilePath.Length.Equals(0) || !File.Exists(FilePath))
+            {
+
+                FilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                FilePath = Path.Combine(FilePath, UserControl.AlarmFileName);
+
+                Application.Current.Properties[UserControl.AlarmFullPath] = FilePath;
+
+            }
+
+            string TmpPath = FilePath.Replace(UserControl.FileExtension, ".Tmp");
+
+            //ファイル書き込み開始
+            try
+            {
+
+                using (StreamWriter FileData = new StreamWriter(TmpPath, false, Encoding.Unicode))
+                {
+
+                    #region 前回アラーム
+                    FileData.WriteLine(NAME.BEFOREALARM.START);
+                    FileData.WriteLine(MakeParameter(NAME.BEFOREALARM.TIME, BeforeAlarmTime));
+                    FileData.WriteLine(NAME.BEFOREALARM.END);
+                    #endregion
+
+                    #region 次回アラーム
+                    FileData.WriteLine("");
+                    FileData.WriteLine(NAME.NEXTALARM.START);
+                    FileData.WriteLine(MakeParameter(NAME.NEXTALARM.TIME, NextAlarm.Timer));
+
+                    for (Int32 jLoop = 0; jLoop < NextAlarm.DrugList.Count; jLoop++)
+                    {
+
+                        FileData.WriteLine(NAME.ALARMDRUG.START);
+                        FileData.WriteLine(MakeParameter(NAME.ALARMDRUG.INDEX, NextAlarm.DrugList[jLoop].Index));
+                        FileData.WriteLine(MakeParameter(NAME.ALARMDRUG.VOLUME, NextAlarm.DrugList[jLoop].Volume));
+                        FileData.WriteLine(MakeParameter(NAME.ALARMDRUG.APPOINT, NextAlarm.DrugList[jLoop].IsAppoint));
+                        FileData.WriteLine(MakeParameter(NAME.ALARMDRUG.HOUREACH, NextAlarm.DrugList[jLoop].IsHourEach));
+                        FileData.WriteLine(NAME.ALARMDRUG.END);
+
+                    }
+
+                    FileData.WriteLine(NAME.NEXTALARM.END);
+                    #endregion
+
+                    #region 再通知
+                    for (Int32 iLoop = 0; iLoop < Realarm.Count; iLoop++)
+                    {
+
+                        FileData.WriteLine("");
+                        FileData.WriteLine(NAME.REALARM.START);
+                        FileData.WriteLine(MakeParameter(NAME.REALARM.TIME, Realarm[iLoop].Timer));
+
+                        for (Int32 jLoop = 0; jLoop < Realarm[iLoop].DrugList.Count; jLoop++)
+                        {
+
+                            FileData.WriteLine(NAME.ALARMDRUG.START);
+                            FileData.WriteLine(MakeParameter(NAME.ALARMDRUG.INDEX, Realarm[iLoop].DrugList[jLoop].Index));
+                            FileData.WriteLine(MakeParameter(NAME.ALARMDRUG.VOLUME, Realarm[iLoop].DrugList[jLoop].Volume));
+                            FileData.WriteLine(MakeParameter(NAME.ALARMDRUG.APPOINT, Realarm[iLoop].DrugList[jLoop].IsAppoint));
+                            FileData.WriteLine(MakeParameter(NAME.ALARMDRUG.HOUREACH, Realarm[iLoop].DrugList[jLoop].IsHourEach));
+                            FileData.WriteLine(NAME.ALARMDRUG.END);
+
+                        }
+
+                        FileData.WriteLine(NAME.REALARM.END);
+
+                    }
+                    #endregion
+
+                }
+
+                File.Copy(TmpPath, FilePath, true);
+                File.Delete(TmpPath);
+
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+#endif
+            }
 
         }
 

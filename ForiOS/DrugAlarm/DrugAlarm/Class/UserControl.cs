@@ -43,13 +43,23 @@ namespace DrugAlarm.Class
         /// <summary>
         /// ユーザデータ保存場所
         /// </summary>
-        public const string FullPath = "ParameterFullPath";
+        public const string ParameterFullPath = "ParameterFullPath";
 
         /// <summary>
         /// パラメータファイル名
         /// パスなし
         /// </summary>
-        public const string FileName = "DrugAlarm.Prm";
+        public const string ParameterFileName = "DrugAlarm.Prm";
+
+        /// <summary>
+        /// アラーム履歴保存場所
+        /// </summary>
+        public const string AlarmFullPath = "AlarmFullPath";
+
+        /// <summary>
+        /// アラーム履歴保持ファイル名 パスなし
+        /// </summary>
+        public const string AlarmFileName = "NextAlarm.Prm";
 
         /// <summary>
         /// パラメータファイル拡張子
