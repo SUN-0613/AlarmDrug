@@ -11,6 +11,11 @@ namespace DrugAlarm.Class
     {
 
         /// <summary>
+        /// Information.xaml呼び出し回数
+        /// </summary>
+        public static Int32 CallInformationCounter = 0;
+
+        /// <summary>
         /// 次回アラーム再設定
         /// </summary>
         public static bool ResetNextAlarm = false;

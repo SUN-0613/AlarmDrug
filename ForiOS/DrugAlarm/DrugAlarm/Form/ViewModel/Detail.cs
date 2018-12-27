@@ -710,6 +710,92 @@ namespace DrugAlarm.Form.ViewModel
             }
         }
 
+
+        /// <summary>
+        /// 時間毎：最小日付プロパティ
+        /// </summary>
+        /// <value>The appoint minimum date.</value>
+        public DateTime HourEachMinDate
+        {
+            get { return DateTime.Now; }
+        }
+
+        /// <summary>
+        /// 時間毎：最大日付プロパティ
+        /// </summary>
+        /// <value>The appoint max date.</value>
+        public DateTime HourEachMaxDate
+        {
+            get { return DateTime.Now.AddYears(1); }
+        }
+
+        /// <summary>
+        /// 時間毎：日付プロパティ
+        /// </summary>
+        /// <value>The appoint date.</value>
+        public DateTime HourEachStartDate
+        {
+            get { return _Model.Drug.HourEachNextTime; }
+            set
+            {
+                if (!(_Model.Drug.HourEachNextTime.Year.Equals(value.Year)
+                    && _Model.Drug.HourEachNextTime.Month.Equals(value.Month)
+                    && _Model.Drug.HourEachNextTime.Day.Equals(value.Day)))
+                {
+
+                    _SelectHourEachDate = value;
+                    SetHourEachNextTime();
+                    CallPropertyChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 時間毎：時間プロパティ
+        /// </summary>
+        /// <value>The appoint time.</value>
+        public TimeSpan HourEachStartTime
+        {
+            get { return _Model.Drug.HourEachNextTime.TimeOfDay; }
+            set
+            {
+                if (!(_Model.Drug.HourEachNextTime.Hour.Equals(value.Hours)
+                    && _Model.Drug.HourEachNextTime.Minute.Equals(value.Minutes)))
+                {
+                    _SelectHourEachTime = value;
+                    SetHourEachNextTime();
+                    CallPropertyChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 現在の指定日時：日付
+        /// </summary>
+        private DateTime _SelectHourEachDate;
+
+        /// <summary>
+        /// 現在の指定日時：時間
+        /// </summary>
+        private TimeSpan _SelectHourEachTime;
+
+        /// <summary>
+        /// 指定日時の設定
+        /// </summary>
+        private void SetHourEachNextTime()
+        {
+
+            _Model.Drug.HourEachNextTime = new Class.Method().ConvertToDateTime(
+                                                                _SelectHourEachDate.Year
+                                                                , _SelectHourEachDate.Month
+                                                                , _SelectHourEachDate.Day
+                                                                , _SelectHourEachTime.Hours
+                                                                , _SelectHourEachTime.Minutes
+                                                                , _Model.Drug.HourEachNextTime);
+
+        }
+
+
         #endregion
 
         /// <summary>
@@ -854,6 +940,9 @@ namespace DrugAlarm.Form.ViewModel
 
             _SelectDate = _Model.Drug.AppointTime;
             _SelectTime = _Model.Drug.AppointTime.TimeOfDay;
+
+            _SelectHourEachDate = _Model.Drug.HourEachNextTime;
+            _SelectHourEachTime = _Model.Drug.HourEachNextTime.TimeOfDay;
 
             AppointDayEach = new ObservableCollection<string>();
             _Model.GetDayEachList().ForEach(Day => 

@@ -580,6 +580,7 @@ namespace DrugAlarm.Form.Model
                     AppointDayEach = _Parameter.DrugList[_SelectedIndex].AppointDayEach,
                     HourEach = _Parameter.DrugList[_SelectedIndex].HourEach,
                     HourEachTime = _Parameter.DrugList[_SelectedIndex].HourEachTime,
+                    HourEachNextTime = _Parameter.DrugList[_SelectedIndex].HourEachNextTime,
                     TotalVolume = _Parameter.DrugList[_SelectedIndex].TotalVolume,
                     PrescriptionAlarmVolume = _Parameter.DrugList[_SelectedIndex].PrescriptionAlarmVolume,
                     Remarks = _Parameter.DrugList[_SelectedIndex].Remarks,

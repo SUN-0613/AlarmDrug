@@ -1163,11 +1163,11 @@ namespace DrugAlarm.Class
 
                                                 if (IsNextAlarm)
                                                 {
-                                                    NextAlarm.DrugList[Index].IsAppoint = HourEachResult;
+                                                    NextAlarm.DrugList[Index].IsHourEach = HourEachResult;
                                                 }
                                                 else if (IsRealarm)
                                                 {
-                                                    AddAlarm.DrugList[Index].IsAppoint = HourEachResult;
+                                                    AddAlarm.DrugList[Index].IsHourEach = HourEachResult;
                                                 }
 
                                             }
