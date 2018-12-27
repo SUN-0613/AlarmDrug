@@ -24,6 +24,8 @@ namespace DrugAlarm.Form.View
 
             InitializeComponent();
 
+            Class.UserControl.CallInformationCounter += 1;
+
             _ViewModel = new ViewModel.Information();
             BindingContext = _ViewModel;
 
@@ -61,8 +63,16 @@ namespace DrugAlarm.Form.View
             {
 
                 case "CallOK":
-                    await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(false);
+
+                    // 複数回Alarm.xamlとInformation.xamlが呼び出された時の対応
+                    for (Int32 iLoop = 0; iLoop < Class.UserControl.CallInformationCounter * 2 - 1; iLoop++)
+                    {
+                        await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(false);
+                    }
+                    Class.UserControl.CallInformationCounter = 0;
+
                     await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
+
                     break;
 
                 default:
