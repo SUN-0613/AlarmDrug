@@ -107,6 +107,12 @@ namespace DrugAlarm.Resx {
             }
         }
         
+        internal static string Detail_Date {
+            get {
+                return ResourceManager.GetString("Detail_Date", resourceCulture);
+            }
+        }
+        
         internal static string Detail_DateSpecified {
             get {
                 return ResourceManager.GetString("Detail_DateSpecified", resourceCulture);

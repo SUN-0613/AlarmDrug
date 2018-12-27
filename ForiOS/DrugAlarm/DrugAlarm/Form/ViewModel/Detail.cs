@@ -613,6 +613,31 @@ namespace DrugAlarm.Form.ViewModel
 
         }
 
+        /// <summary>
+        /// 指定日時プロパティ
+        /// 日毎
+        /// </summary>
+        /// <value>The hour each time.</value>
+        public ObservableCollection<string> AppointDayEach { get; set; }
+
+        /// <summary>
+        /// 指定日時Indexプロパティ
+        /// 日毎
+        /// </summary>
+        /// <value>The index of the hour each time.</value>
+        public Int32 AppointDayEachIndex
+        {
+            get { return _Model.AppointDayEachIndex; }
+            set
+            {
+                if (!_Model.AppointDayEachIndex.Equals(value))
+                {
+                    _Model.AppointDayEachIndex = value;
+                    CallPropertyChanged();
+                }
+            }
+        }
+
         #endregion
 
         #region 時間毎
@@ -830,6 +855,20 @@ namespace DrugAlarm.Form.ViewModel
             _SelectDate = _Model.Drug.AppointTime;
             _SelectTime = _Model.Drug.AppointTime.TimeOfDay;
 
+            AppointDayEach = new ObservableCollection<string>();
+            _Model.GetDayEachList().ForEach(Day => 
+            { 
+                if (Day.Equals(0))
+                {
+                    AppointDayEach.Add("  ");
+                }
+                else
+                {
+                    AppointDayEach.Add(Day.ToString("00"));
+                }
+            });
+            AppointDayEachIndex = _Model.GetAppointDayEachIndex();
+
             _Model.GetHourEachList().ForEach(Time => { HourEachTime.Add(Time.ToString("00")); });
             HourEachTimeIndex = _Model.GetHourEachIndex();
 
@@ -916,6 +955,12 @@ namespace DrugAlarm.Form.ViewModel
             {
                 AppointVolume.Clear();
                 AppointVolume = null;
+            }
+
+            if (AppointDayEach != null)
+            {
+                AppointDayEach.Clear();
+                AppointDayEach = null;
             }
 
             if (HourEachVolume != null)

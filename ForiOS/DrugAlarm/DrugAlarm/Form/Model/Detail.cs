@@ -320,6 +320,37 @@ namespace DrugAlarm.Form.Model
             return new Class.Method().GetDefaultIndex(_Volume, Drug.Appoint.Volume);
         }
 
+        /// <summary>
+        /// 日毎Index
+        /// 指定時間プロパティ
+        /// </summary>
+        /// <value>The index of the Appoint volume.</value>
+        public Int32 AppointDayEachIndex
+        {
+            get { return _AppointDayEachIndex; }
+            set
+            {
+                _AppointDayEachIndex = value;
+                Drug.AppointDayEach = _DayEach[value];
+            }
+        }
+
+        /// <summary>
+        /// 日毎Index
+        /// 指定時間
+        /// </summary>
+        private Int32 _AppointDayEachIndex;
+
+        /// <summary>
+        /// 指定時間
+        /// 現在設定値より日毎Indexを取得
+        /// </summary>
+        /// <returns>The volume ToBeTaken index.</returns>
+        public Int32 GetAppointDayEachIndex()
+        {
+            return new Class.Method().GetDefaultIndex(_DayEach, Drug.AppointDayEach);
+        }
+
         #endregion
 
         #region 時間毎
@@ -410,6 +441,11 @@ namespace DrugAlarm.Form.Model
         private List<Int32> _Volume;
 
         /// <summary>
+        /// 日毎List
+        /// </summary>
+        private List<Int32> _DayEach;
+
+        /// <summary>
         /// 時間毎List
         /// </summary>
         private List<Int32> _HourEach;
@@ -439,6 +475,30 @@ namespace DrugAlarm.Form.Model
             }
 
             return _Volume;
+
+        }
+
+        /// <summary>
+        /// 日毎Listの取得
+        /// </summary>
+        /// <returns>The hour each list.</returns>
+        public List<Int32> GetDayEachList()
+        {
+
+            if (_DayEach == null)
+            {
+
+                _DayEach = new List<Int32>();
+
+                // 28days = 4week
+                for (Int32 iLoop = 0; iLoop <= 28; iLoop++)
+                {
+                    _DayEach.Add(iLoop);
+                }
+
+            }
+
+            return _DayEach;
 
         }
 
@@ -517,6 +577,7 @@ namespace DrugAlarm.Form.Model
                     ToBeTaken = _Parameter.DrugList[_SelectedIndex].ToBeTaken,
                     Appoint = _Parameter.DrugList[_SelectedIndex].Appoint,
                     AppointTime = _Parameter.DrugList[_SelectedIndex].AppointTime,
+                    AppointDayEach = _Parameter.DrugList[_SelectedIndex].AppointDayEach,
                     HourEach = _Parameter.DrugList[_SelectedIndex].HourEach,
                     HourEachTime = _Parameter.DrugList[_SelectedIndex].HourEachTime,
                     TotalVolume = _Parameter.DrugList[_SelectedIndex].TotalVolume,
@@ -551,6 +612,12 @@ namespace DrugAlarm.Form.Model
             {
                 _Volume.Clear();
                 _Volume = null;
+            }
+
+            if (_DayEach != null)
+            {
+                _DayEach.Clear();
+                _DayEach = null;
             }
 
             if (_HourEach != null)

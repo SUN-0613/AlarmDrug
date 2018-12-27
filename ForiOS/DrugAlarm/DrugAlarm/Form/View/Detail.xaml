@@ -15,7 +15,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="40*" />
-                <RowDefinition Height="400*" />
+                <RowDefinition Height="430*" />
                 <RowDefinition Height="10*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -42,6 +42,7 @@
                 <Grid >
                     <Grid.RowDefinitions>
                         <!--400-->
+                        <RowDefinition Height="30" />
                         <RowDefinition Height="30" />
                         <RowDefinition Height="30" />
                         <RowDefinition Height="30" />
@@ -134,28 +135,31 @@
                         
                     </Grid>
                     
+                    <Picker Grid.Row="8" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" ItemsSource="{Binding AppointDayEach}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding AppointDayEachIndex}" IsEnabled="{Binding IsAppoint}" Style="{DynamicResource BodyStyle}" />
+                    <Label Grid.Row="8" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Detail_Date}" Style="{DynamicResource BodyStyle}" />
+                                        
                     <!--Hour Each-->
-                    <Label Grid.Row="8" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Detail_TimeSpecified}" Style="{DynamicResource BodyStyle}" />
-                    <Picker Grid.Row="8" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" ItemsSource="{Binding HourEachVolume}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding HourEachVolumeIndex}" IsEnabled="{Binding IsHourEach}" Style="{DynamicResource BodyStyle}" />
-                    <Label Grid.Row="8" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Detail_Unit}" Style="{DynamicResource BodyStyle}" />
-                    <Switch Grid.Row="8" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="1" HorizontalOptions="End" IsToggled="{Binding IsHourEach}" />
+                    <Label Grid.Row="9" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Detail_TimeSpecified}" Style="{DynamicResource BodyStyle}" />
+                    <Picker Grid.Row="9" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" ItemsSource="{Binding HourEachVolume}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding HourEachVolumeIndex}" IsEnabled="{Binding IsHourEach}" Style="{DynamicResource BodyStyle}" />
+                    <Label Grid.Row="9" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Detail_Unit}" Style="{DynamicResource BodyStyle}" />
+                    <Switch Grid.Row="9" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="1" HorizontalOptions="End" IsToggled="{Binding IsHourEach}" />
 
-                    <Picker Grid.Row="9" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" ItemsSource="{Binding HourEachTime}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding HourEachTimeIndex}" IsEnabled="{Binding IsHourEach}" Style="{DynamicResource BodyStyle}" />
-                    <Label Grid.Row="9" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Detail_Time}" Style="{DynamicResource BodyStyle}" />
+                    <Picker Grid.Row="10" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" ItemsSource="{Binding HourEachTime}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding HourEachTimeIndex}" IsEnabled="{Binding IsHourEach}" Style="{DynamicResource BodyStyle}" />
+                    <Label Grid.Row="10" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Detail_Time}" Style="{DynamicResource BodyStyle}" />
                     
                     <!--Volume-->
-                    <Label Grid.Row="10" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Detail_Volume}" Style="{DynamicResource BodyStyle}" />
-                    <Entry Grid.Row="10" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="2" VerticalOptions="Center" HorizontalTextAlignment="Start" Text="{Binding TotalVolume}" Keyboard="Numeric" Style="{DynamicResource BodyStyle}" />
-                    <Label Grid.Row="10" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Detail_Unit}" Style="{DynamicResource BodyStyle}" />
-                    
-                    <Label Grid.Row="11" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Detail_Prescript}" Style="{DynamicResource BodyStyle}" />
-                    <Label Grid.Row="11" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="2" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Text="{Common:Translate Detail_Remaining}" Style="{DynamicResource BodyStyle}" />
-                    <Entry Grid.Row="11" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="2" VerticalOptions="Center" HorizontalTextAlignment="Start" Text="{Binding AlarmVolume}" Keyboard="Numeric" Style="{DynamicResource BodyStyle}" />
+                    <Label Grid.Row="11" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Detail_Volume}" Style="{DynamicResource BodyStyle}" />
+                    <Entry Grid.Row="11" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="2" VerticalOptions="Center" HorizontalTextAlignment="Start" Text="{Binding TotalVolume}" Keyboard="Numeric" Style="{DynamicResource BodyStyle}" />
                     <Label Grid.Row="11" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Detail_Unit}" Style="{DynamicResource BodyStyle}" />
                     
+                    <Label Grid.Row="12" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Detail_Prescript}" Style="{DynamicResource BodyStyle}" />
+                    <Label Grid.Row="12" Grid.RowSpan="1" Grid.Column="2" Grid.ColumnSpan="2" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Text="{Common:Translate Detail_Remaining}" Style="{DynamicResource BodyStyle}" />
+                    <Entry Grid.Row="12" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="2" VerticalOptions="Center" HorizontalTextAlignment="Start" Text="{Binding AlarmVolume}" Keyboard="Numeric" Style="{DynamicResource BodyStyle}" />
+                    <Label Grid.Row="12" Grid.RowSpan="1" Grid.Column="6" Grid.ColumnSpan="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Detail_Unit}" Style="{DynamicResource BodyStyle}" />
+                    
                     <!--Remarks-->
-                    <Label Grid.Row="12" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Detail_Remarks}" Style="{DynamicResource BodyStyle}" />
-                    <Frame Grid.Row="12" Grid.RowSpan="3" Grid.Column="2" Grid.ColumnSpan="5" MinimumHeightRequest="90" MinimumWidthRequest="300" OutlineColor="#FFD1D1D1" HasShadow="false" Padding="0" >
+                    <Label Grid.Row="13" Grid.RowSpan="1" Grid.Column="1" Grid.ColumnSpan="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Detail_Remarks}" Style="{DynamicResource BodyStyle}" />
+                    <Frame Grid.Row="13" Grid.RowSpan="3" Grid.Column="2" Grid.ColumnSpan="5" MinimumHeightRequest="90" MinimumWidthRequest="300" OutlineColor="#FFD1D1D1" HasShadow="false" Padding="0" >
                         <Editor AutoSize="Disabled" MinimumHeightRequest="90" MinimumWidthRequest="300" Text="{Binding Remarks}" Style="{DynamicResource BodyStyle}" />
                     </Frame>
                     

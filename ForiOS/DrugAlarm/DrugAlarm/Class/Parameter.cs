@@ -450,6 +450,12 @@ namespace DrugAlarm.Class
             public DateTime AppointTime;
 
             /// <summary>
+            /// 指定日時を日毎に繰り返す
+            /// </summary>
+            /// <remarks>0なら1回きり</remarks>
+            public Int32 AppointDayEach;
+
+            /// <summary>
             /// 時間毎
             /// </summary>
             public UserControl.Timing HourEach;
@@ -570,6 +576,7 @@ namespace DrugAlarm.Class
                     Volume = 0
                 };
                 AppointTime = DateTime.Now;
+                AppointDayEach = 0;
                 HourEach = new UserControl.Timing
                 {
                     IsDrug = false,
@@ -841,6 +848,15 @@ namespace DrugAlarm.Class
                                         DrugList[Index].Appoint.IsDrug = true;
                                         DrugList[Index].AppointTime = method.ConvertToDateTime(Values[0], DrugList[Index].AppointTime);
                                         DrugList[Index].Appoint.Volume = method.ConvertToInt32(Values[1], DrugList[Index].Appoint.Volume);
+
+                                        // 追加パラメータ:指定日時の繰り返し
+                                        if (Values.Length > 2)
+                                        {
+                                            // 指定日時を[n]日毎に繰り返す
+                                            // n=0ならば1回きり
+                                            DrugList[Index].AppointDayEach = method.ConvertToInt32(Values[2], 0);
+                                        }
+
                                         break;
 
                                     case NAME.DRUG.HOUREACH:
@@ -1057,7 +1073,7 @@ namespace DrugAlarm.Class
                                     }
 
                                 }
-                                else if (IsNextAlarm)
+                                else if (IsNextAlarm && !IsDrugAccess)
                                 {
 
                                     // 再通知設定
@@ -1074,7 +1090,7 @@ namespace DrugAlarm.Class
                                     }
 
                                 }
-                                else if (IsRealarm && AddAlarm != null)
+                                else if (IsRealarm && !IsDrugAccess && AddAlarm != null)
                                 {
 
                                     // 再通知設定
@@ -1411,7 +1427,7 @@ namespace DrugAlarm.Class
 
                         if (DrugList[iLoop].Appoint.IsDrug && DrugList[iLoop].AppointTime > DateTime.Now)
                         {
-                            FileData.WriteLine(MakeParameter(NAME.DRUG.APPOINTTIME, DrugList[iLoop].AppointTime, DrugList[iLoop].Appoint.Volume));
+                            FileData.WriteLine(MakeParameter(NAME.DRUG.APPOINTTIME, DrugList[iLoop].AppointTime, DrugList[iLoop].Appoint.Volume, DrugList[iLoop].AppointDayEach));
                         }
                         else
                         {
@@ -1760,7 +1776,8 @@ namespace DrugAlarm.Class
         /// <param name="Parameter">パラメータ名</param>
         /// <param name="AppointTime">指定日時</param>
         /// <param name="Volume">服用錠</param>
-        private string MakeParameter(string Parameter, DateTime AppointTime, Int32 Volume)
+        /// <param name="DayEach">繰り返し日</param>
+        private string MakeParameter(string Parameter, DateTime AppointTime, Int32 Volume, Int32 DayEach)
         {
 
             StringBuilder Str = new StringBuilder(Parameter.Length + UserControl.DateTimeFormat.Length + Volume.ToString().Length + 2);
@@ -1773,6 +1790,7 @@ namespace DrugAlarm.Class
                 Str.Append(Parameter);
                 Str.Append("=").Append(AppointTime.ToString(UserControl.DateTimeFormat));
                 Str.Append(",").Append(Volume.ToString());
+                Str.Append(",").Append(DayEach.ToString());
 
                 Return = Str.ToString();
 
@@ -1872,10 +1890,21 @@ namespace DrugAlarm.Class
                     if (DrugList[Index].TotalVolume < 0)
                         DrugList[Index].TotalVolume = 0;
 
-                    //指定時間による服用なら、指定時間の設定を解除する
+                    // 指定時間による服用なら、次回日時の設定を行う
                     if (NextAlarm.DrugList[iLoop].IsAppoint)
                     {
-                        DrugList[Index].Appoint.IsDrug = false;
+
+                        if (DrugList[Index].AppointDayEach < 1)
+                        {
+                            // 日時指定なしの場合、1回きりなのでFLG解除
+                            DrugList[Index].Appoint.IsDrug = false;
+                        }
+                        else
+                        {
+                            // 次回日時を再設定
+                            DrugList[Index].AppointTime = DrugList[Index].AppointTime.AddDays(DrugList[Index].AppointDayEach);
+                        }
+
                     }
 
                     //時間毎による服用なら、次回時刻を設定

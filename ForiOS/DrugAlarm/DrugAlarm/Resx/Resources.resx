@@ -52,6 +52,10 @@
     <value>編集中のデータを破棄しますか？</value>
     <comment>詳細：キャンセル確認メッセージ</comment>
   </data>
+  <data name="Detail_Date" xml:space="preserve">
+    <value>日毎</value>
+    <comment>詳細：指定日時：日毎</comment>
+  </data>
   <data name="Detail_DateSpecified" xml:space="preserve">
     <value>日時指定</value>
     <comment>詳細：日時指定</comment>
