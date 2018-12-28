@@ -245,6 +245,12 @@ namespace DrugAlarm.Resx {
             }
         }
         
+        internal static string History_Title {
+            get {
+                return ResourceManager.GetString("History_Title", resourceCulture);
+            }
+        }
+        
         internal static string Information_Title {
             get {
                 return ResourceManager.GetString("Information_Title", resourceCulture);

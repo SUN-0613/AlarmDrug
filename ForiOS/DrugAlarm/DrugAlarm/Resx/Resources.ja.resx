@@ -144,6 +144,10 @@
     <value>パラメータファイルを保存するフォルダを指定してください</value>
     <comment>フォルダ選択ダイアログ：タイトル</comment>
   </data>
+  <data name="History_Title" xml:space="preserve">
+    <value>服用履歴</value>
+    <comment>履歴：タイトル</comment>
+  </data>
   <data name="Information_Title" xml:space="preserve">
     <value>お薬が切れそうです</value>
     <comment>お知らせ：タイトル</comment>

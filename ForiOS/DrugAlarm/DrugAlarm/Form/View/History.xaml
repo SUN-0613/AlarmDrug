@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage x:Class="DrugAlarm.Form.View.History"
+             x:Name="History"
+             xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             NavigationPage.HasNavigationBar="false"
+             Appearing="OnAppearing">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 25, 0, 0" />
+    </ContentPage.Padding>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40*" />
+                <RowDefinition Height="400*" />
+                <RowDefinition Height="10*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="400*" />
+            </Grid.ColumnDefinitions>
+            
+            <Grid Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" >
+                <Grid.RowDefinitions>
+                    <!--40-->
+                    <RowDefinition Height="40*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <!--400-->
+                    <ColumnDefinition Width="60*" />
+                    <ColumnDefinition Width="280*" />
+                    <ColumnDefinition Width="60*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="#FF333333" TextColor="White" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Style="{DynamicResource TitleStyle}" Text="{Common:Translate History_Title}" />
+                <Button Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" BackgroundColor="Transparent" TextColor="White" VerticalOptions="Center" HorizontalOptions="Center" BorderColor="Transparent" BorderWidth="0" Style="{DynamicResource SubtitleStyle}" Text="&lt;" Command="{Binding ReturnCommand}" />
+            </Grid>
+            
+            <ListView Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" IsGroupingEnabled="true" HasUnevenRows="true" SeparatorVisibility="None" ItemsSource="{Binding HistoryList}" >
+                <ListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Timer}" />
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell BindingContext="{Binding DrugList}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="9*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="3*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="1" Text="{Binding Name}" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Style="{DynamicResource ListItemDetailTextStyle}" />
+                                <Label Grid.Column="3" Text="{Common:Translate Detail_Remaining}" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Style="{DynamicResource ListItemDetailTextStyle}" />
+                                <Label Grid.Column="4" Text="{Binding Volume}" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Style="{DynamicResource ListItemDetailTextStyle}" />
+                                <Label Grid.Column="5" Text="{Common:Translate Detail_Unit}" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Style="{DynamicResource ListItemDetailTextStyle}" />
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
