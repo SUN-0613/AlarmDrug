@@ -120,6 +120,25 @@ namespace DrugAlarm.Form.ViewModel
             }
         }
 
+        /// <summary>
+        /// アラーム時間
+        /// </summary>
+        private string _AlarmTime = "";
+
+        /// <summary>
+        /// アラーム時間プロパティ
+        /// </summary>
+        /// <value>The alarm time.</value>
+        public string AlarmTime
+        {
+            get { return _AlarmTime; }
+            set
+            {
+                _AlarmTime = value;
+                CallPropertyChanged();
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -138,6 +157,8 @@ namespace DrugAlarm.Form.ViewModel
                 DrugList.Add(new Class.UserControl.MedicineInfo(Drug.Name, Drug.Volume, index));
                 index++;
             });
+
+            AlarmTime = Resx.Resources.Alarm_Time + _Model.GetAlarmTime().ToString(Class.UserControl.DateTimeFormat);
 
         }
 

@@ -65,6 +65,12 @@ namespace DrugAlarm.Resx {
             }
         }
         
+        internal static string Alarm_Time {
+            get {
+                return ResourceManager.GetString("Alarm_Time", resourceCulture);
+            }
+        }
+        
         internal static string Alarm_Title {
             get {
                 return ResourceManager.GetString("Alarm_Title", resourceCulture);

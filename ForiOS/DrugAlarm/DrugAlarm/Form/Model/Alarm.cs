@@ -140,5 +140,14 @@ namespace DrugAlarm.Form.Model
             return _DrugList.TrueForAll(Drug => { return Drug.IsDrug; });
         }
 
+        /// <summary>
+        /// アラーム時間の取得
+        /// </summary>
+        /// <returns>The alarm time.</returns>
+        public DateTime GetAlarmTime()
+        {
+            return _Parameter.NextAlarm.Timer;
+        }
+
     }
 }

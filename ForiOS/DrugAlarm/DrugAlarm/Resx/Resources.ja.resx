@@ -24,6 +24,10 @@
     <value>あとで</value>
     <comment>アラーム：再通知ボタン</comment>
   </data>
+  <data name="Alarm_Time" xml:space="preserve">
+    <value>アラーム時間:</value>
+    <comment>アラーム：時間タイトル</comment>
+  </data>
   <data name="Alarm_Title" xml:space="preserve">
     <value>お薬の時間です</value>
     <comment>アラーム：タイトル</comment>
