@@ -92,6 +92,7 @@ namespace DrugAlarm.Form.View
                     if (AlertAnswer)
                     {
                         _ViewModel.DeleteDrug();
+                        _ViewModel.ShowList();
                     }
                     break;
 

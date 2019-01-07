@@ -14,10 +14,20 @@ namespace DrugAlarm.Class
     {
 
         /// <summary>
+        /// 次回アラームは再通知
+        /// </summary>
+        private bool IsNextRealarm = false;
+
+        /// <summary>
         /// 次回アラームプロパティ
         /// </summary>
         /// <value>The next alarm.</value>
         public UserControl.AlarmInfo NextAlarm { get; private set; }
+
+        /// <summary>
+        /// 服用済時間一覧
+        /// </summary>
+        private List<DateTime> SaveTimes;
 
         /// <summary>
         /// 再通知
@@ -310,7 +320,30 @@ namespace DrugAlarm.Class
                 public const string HOUREACH = "HourEach";
 
             }
-        
+
+            /// <summary>
+            /// アラーム済日時情報
+            /// </summary>
+            public static class SAVEALARMTIME
+            {
+
+                /// <summary>
+                /// アラーム済日時情報開始
+                /// </summary>
+                public const string START = "SaveAlarmStart";
+
+                /// <summary>
+                /// アラーム済日時情報終了
+                /// </summary>
+                public const string END = "SaveAlarmEnd";
+
+                /// <summary>
+                /// 保存日時
+                /// </summary>
+                public const string TIME = "SaveTime";
+
+            }
+
         }
 
         /// <summary>
@@ -610,6 +643,8 @@ namespace DrugAlarm.Class
         public Parameter()
         {
 
+            SaveTimes = new List<DateTime>();
+
             Setting = new SettingParameter();
             DrugList = new List<DrugParameter>();
 
@@ -634,6 +669,9 @@ namespace DrugAlarm.Class
         /// <see cref="T:DrugAlarm.Class.Parameter"/> was occupying.</remarks>
         public void Dispose()
         {
+
+            SaveTimes.Clear();
+            SaveTimes = null;
 
             Setting = null;
 
@@ -946,6 +984,7 @@ namespace DrugAlarm.Class
                     bool IsBeforeAlarm = false;
                     bool IsRealarm = false;
                     bool IsDrugAccess = false;
+                    bool IsSaveTime = false;
 
                     while (!FileData.EndOfStream)
                     {
@@ -971,6 +1010,7 @@ namespace DrugAlarm.Class
                                         IsRealarm = false;
                                         IsDrugAccess = false;
                                         IsBeforeAlarm = true;
+                                        IsSaveTime = false;
                                         break;
 
                                     case NAME.BEFOREALARM.END:
@@ -981,6 +1021,7 @@ namespace DrugAlarm.Class
                                     case NAME.NEXTALARM.START:
 
                                         // 初期化
+                                        IsNextRealarm = false;
                                         NextAlarm.Timer = DateTime.MaxValue;
                                         NextAlarm.DrugList.Clear();
 
@@ -988,6 +1029,7 @@ namespace DrugAlarm.Class
                                         IsRealarm = false;
                                         IsDrugAccess = false;
                                         IsBeforeAlarm = false;
+                                        IsSaveTime = false;
 
                                         break;
 
@@ -1004,6 +1046,7 @@ namespace DrugAlarm.Class
 
                                         IsBeforeAlarm = false;
                                         IsRealarm = true;
+                                        IsSaveTime = false;
                                         break;
 
                                     case NAME.REALARM.END:
@@ -1043,6 +1086,23 @@ namespace DrugAlarm.Class
                                         Index = -1;
 
                                         IsDrugAccess = false;
+                                        break;
+
+                                    case NAME.SAVEALARMTIME.START:
+
+                                        // 初期化
+                                        SaveTimes.Clear();
+
+                                        IsNextAlarm = false;
+                                        IsRealarm = false;
+                                        IsDrugAccess = false;
+                                        IsBeforeAlarm = false;
+                                        IsSaveTime = true;
+                                        break;
+
+                                    case NAME.SAVEALARMTIME.END:
+
+                                        IsSaveTime = false;
                                         break;
 
                                     default:
@@ -1170,6 +1230,27 @@ namespace DrugAlarm.Class
                                                     AddAlarm.DrugList[Index].IsHourEach = HourEachResult;
                                                 }
 
+                                            }
+                                            break;
+
+                                        default:
+                                            break;
+
+                                    }
+
+                                }
+                                else if (IsSaveTime)
+                                {
+
+                                    //薬パラメータ
+                                    switch (Strings[0])
+                                    {
+
+                                        case NAME.SAVEALARMTIME.TIME:
+
+                                            if (DateTime.TryParse(Strings[1], out DateTime AddTime))
+                                            {
+                                                SaveTimes.Add(AddTime);
                                             }
                                             break;
 
@@ -1865,7 +1946,72 @@ namespace DrugAlarm.Class
 
         }
 
+        /// <summary>
+        /// パラメータ時間形式作成
+        /// </summary>
+        /// <returns>パラメータ出力値</returns>
+        /// <param name="Parameter">パラメータ名</param>
+        /// <param name="Values">時間一覧</param>
+        private string MakeParameter(string Parameter, List<DateTime> Values)
+        {
+
+            StringBuilder Str = new StringBuilder(Parameter.Length + UserControl.TimeFormat.Length + 1);
+            string Return;
+
+            try
+            {
+
+                Str.Clear();
+                Values.ForEach(Value => 
+                {
+                    Str.Append(Parameter);
+                    Str.Append("=").Append(Value.ToString(UserControl.DateTimeFormat));
+                });
+
+                Return = Str.ToString();
+
+            }
+            catch (Exception ex)
+            {
+
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+#endif
+
+                Return = "";
+
+            }
+            finally
+            {
+
+                Str.Clear();
+                Str = null;
+
+            }
+
+            return Return;
+
+        }
+
         #endregion
+
+        /// <summary>
+        /// アラーム時刻を記憶しておく
+        /// </summary>
+        private void AddSaveAlarmTime()
+        {
+
+            // 未来の時刻のみ一覧に保存
+            if (!IsNextRealarm 
+                && !NextAlarm.Timer.Equals(DateTime.MaxValue) 
+                && NextAlarm.Timer > DateTime.Now 
+                && SaveTimes.IndexOf(NextAlarm.Timer).Equals(-1))
+            {
+                SaveTimes.Add(NextAlarm.Timer);
+                SaveTimes.Sort();
+            }
+
+        }
 
         /// <summary>
         /// 薬服用時の処理
@@ -1875,6 +2021,8 @@ namespace DrugAlarm.Class
         {
 
             bool Return = false;
+
+            AddSaveAlarmTime();
 
             //総量から服用錠を減算
             for (Int32 iLoop = 0; iLoop < NextAlarm.DrugList.Count; iLoop++)
@@ -1947,6 +2095,15 @@ namespace DrugAlarm.Class
             Method method = new Method();
             DateTime Time;
 
+            // 保存したアラーム時間から、過去のものを削除
+            for (Int32 iLoop = SaveTimes.Count - 1; iLoop >= 0; iLoop--)
+            {
+                if (SaveTimes[iLoop] < DateTime.Now)
+                {
+                    SaveTimes.RemoveAt(iLoop);
+                }
+            }
+
             // 次回アラーム読込済
             if (!IsLoadNextAlarm)
             {
@@ -1955,18 +2112,7 @@ namespace DrugAlarm.Class
                 if (!NextAlarm.Timer.Equals(DateTime.MaxValue))
                 {
 
-                    bool AddHistory = false;
-
-                    if (AlarmHistory.Count.Equals(0))
-                    {
-                        AddHistory = true;
-                    }
-                    else if (!AlarmHistory[AlarmHistory.Count - 1].Timer.Equals(NextAlarm.Timer))
-                    {
-                        AddHistory = true;
-                    }
-
-                    if (AddHistory)
+                    if (AlarmHistory.FindIndex(Alarm => { return Alarm.Timer.Equals(NextAlarm.Timer); }).Equals(-1))
                     {
 
                         UserControl.AlarmInfo History = new UserControl.AlarmInfo() 
@@ -2022,6 +2168,8 @@ namespace DrugAlarm.Class
                 // 初期化
                 NextAlarm.Timer = DateTime.MaxValue;
                 NextAlarm.DrugList.Clear();
+
+                IsNextRealarm = false;
 
                 #endregion
 
@@ -2117,14 +2265,14 @@ namespace DrugAlarm.Class
                     if (Realarm[0].Timer <= NextAlarm.Timer)
                     {
 
-                        //異なる時刻なら初期化
+                        // 異なる時刻なら初期化
                         if (!Realarm[0].Timer.Equals(NextAlarm.Timer))
                         {
                             NextAlarm.Timer = Realarm[0].Timer;
                             NextAlarm.DrugList.Clear();
                         }
 
-                        //薬登録
+                        // 薬登録
                         for (Int32 iLoop = 0; iLoop < Realarm[0].DrugList.Count; iLoop++)
                         {
 
@@ -2144,8 +2292,10 @@ namespace DrugAlarm.Class
 
                         }
 
-                        //登録後、再通知リストより削除する
+                        // 登録後、再通知リストより削除する
                         Realarm.RemoveAt(0);
+
+                        IsNextRealarm = true;
 
                     }
 
@@ -2252,6 +2402,16 @@ namespace DrugAlarm.Class
                     }
                     #endregion
 
+                    #region 保存日時一覧
+                    if (SaveTimes.Count > 0)
+                    {
+                        FileData.WriteLine("");
+                        FileData.WriteLine(NAME.SAVEALARMTIME.START);
+                        FileData.WriteLine(MakeParameter(NAME.SAVEALARMTIME.TIME, SaveTimes));
+                        FileData.WriteLine(NAME.SAVEALARMTIME.END);
+                    }
+                    #endregion
+
                 }
 
                 File.Copy(TmpPath, FilePath, true);
@@ -2278,28 +2438,34 @@ namespace DrugAlarm.Class
         private void CompareToTime(DateTime time, Int32 index, Int32 volume, bool isAppoint, bool isHourEach)
         {
 
-            //設定時刻より未来はスキップ
-            if (time <= NextAlarm.Timer)
+            // 保存済の時刻は服用済のためスキップ
+            if (SaveTimes.IndexOf(time).Equals(-1))
             {
 
-                //同時刻でない場合、本データを先に処理するため設定済のデータはクリア
-                if (!time.Equals(NextAlarm.Timer))
+                // 設定時刻より未来はスキップ
+                if (time <= NextAlarm.Timer)
                 {
 
-                    NextAlarm.Timer = time;
-                    NextAlarm.DrugList.Clear();
+                    // 同時刻でない場合、本データを先に処理するため設定済のデータはクリア
+                    if (!time.Equals(NextAlarm.Timer))
+                    {
+
+                        NextAlarm.Timer = time;
+                        NextAlarm.DrugList.Clear();
+
+                    }
+
+                    // 薬追加
+                    NextAlarm.DrugList.Add(new UserControl.AlarmInfo.Drug()
+                    {
+                        Index = index,
+                        Volume = volume,
+                        IsAppoint = isAppoint,
+                        IsHourEach = isHourEach
+                    });
+
 
                 }
-
-                //薬追加
-                NextAlarm.DrugList.Add(new UserControl.AlarmInfo.Drug()
-                {
-                    Index = index,
-                    Volume = volume,
-                    IsAppoint = isAppoint,
-                    IsHourEach = isHourEach
-                });
-
 
             }
 
@@ -2361,6 +2527,9 @@ namespace DrugAlarm.Class
                 Timer = new Class.Method().ConvertToDateTime(NextTime.Year, NextTime.Month, NextTime.Day, NextTime.Hour, NextTime.Minute, NextTime),    //秒単位を0にする
                 DrugList = new List<UserControl.AlarmInfo.Drug>()
             };
+
+            // アラーム時刻の保存
+            AddSaveAlarmTime();
 
             //DrugListのIndexを登録
             for (Int32 iLoop = NextAlarm.DrugList.Count - 1; iLoop > -1; iLoop--)

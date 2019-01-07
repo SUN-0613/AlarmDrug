@@ -98,17 +98,20 @@ namespace DrugAlarm.Class
 #endif
 
                     //アラーム時間が変更されたらFLGリセット
-                    if (Class.UserControl.ResetNextAlarm)
+                    if (Class.UserControl.ResetNextAlarm || UserControl.TakeBeforeAlarm)
                     {
 
                         Class.UserControl.ResetNextAlarm = false;
                         _IsLocalAlarm = false;
                         _IsShowAlarm = false;
 
-                        //再帰
-                        _IsSkipTimer = false;
-                        CheckTimer();
-                        return;
+                        // 再帰
+                        if (!UserControl.TakeBeforeAlarm)
+                        {
+                            _IsSkipTimer = false;
+                            CheckTimer();
+                            return;
+                        }
 
                     }
 
@@ -125,10 +128,8 @@ namespace DrugAlarm.Class
                                 (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Alarm());
                                 _IsShowAlarm = true;
 
-                                if (_IsLocalAlarm)
-                                {
-                                    DependencyService.Get<Common.INotificationService>().Release();
-                                }
+                                // ローカル通知の解除
+                                DependencyService.Get<Common.INotificationService>().Release();
 
                             }
 

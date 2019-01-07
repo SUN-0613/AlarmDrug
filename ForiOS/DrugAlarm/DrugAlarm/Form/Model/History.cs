@@ -55,7 +55,7 @@ namespace DrugAlarm.Form.Model
                 get { return _Volume.ToString(); }
                 set
                 {
-                    if (Int32.TryParse(value, out Int32 intValue)
+                    if (Int32.TryParse(value, out Int32 intValue))
                     {
                         _Volume = intValue;
                         CallPropertyChanged();

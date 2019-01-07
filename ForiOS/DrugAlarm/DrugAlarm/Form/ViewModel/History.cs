@@ -40,7 +40,7 @@ namespace DrugAlarm.Form.ViewModel
         /// <summary>
         /// 履歴一覧
         /// </summary>
-        public ObservableCollection<Model.History.HistoryInfo> HistoryList { get; set; };
+        public ObservableCollection<Model.History.HistoryInfo> HistoryList { get; set; }
 
         #endregion
 
