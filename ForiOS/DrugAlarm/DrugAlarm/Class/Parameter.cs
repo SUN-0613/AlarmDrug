@@ -1042,7 +1042,6 @@ namespace DrugAlarm.Class
                                     case NAME.NEXTALARM.START:
 
                                         // 初期化
-                                        IsNextRealarm = false;
                                         NextAlarm.Timer = DateTime.MaxValue;
                                         NextAlarm.DrugList.Clear();
 
@@ -2168,6 +2167,13 @@ namespace DrugAlarm.Class
                 if (UpdateBeforeAlarmTime)
                 {
                     BeforeAlarmTime = NextAlarm.Timer.Equals(DateTime.MaxValue) ? DateTime.Now.AddMinutes(1) : NextAlarm.Timer.AddMinutes(1);
+
+                    // 前回アラームが再通知である場合はリセット
+                    if (IsNextRealarm && !Realarm.Count.Equals(0))
+                    {
+                        Realarm.RemoveAt(0);    
+                    }
+
                 }
 
                 // 初期化
@@ -2267,18 +2273,18 @@ namespace DrugAlarm.Class
                 if (!Realarm.Count.Equals(0))
                 {
 
-                    if (Realarm[0].Timer <= NextAlarm.Timer)
+                        if (Realarm[0].Timer <= NextAlarm.Timer)
                     {
-
-                        // 異なる時刻なら初期化
-                        if (!Realarm[0].Timer.Equals(NextAlarm.Timer))
+    
+                        // 異なる時刻なら初期化    
+                        if (!Realarm[0].Timer.Equals(NextAlarm.Timer))    
                         {
-                            NextAlarm.Timer = Realarm[0].Timer;
-                            NextAlarm.DrugList.Clear();
+                                NextAlarm.Timer = Realarm[0].Timer;
+                                NextAlarm.DrugList.Clear();    
                         }
-
-                        // 薬登録
-                        for (Int32 iLoop = 0; iLoop < Realarm[0].DrugList.Count; iLoop++)
+    
+                        // 薬登録    
+                        for (Int32 iLoop = 0; iLoop < Realarm[0].DrugList.Count; iLoop++)    
                         {
 
                             //指定日時、時間毎の薬については、上の処理で登録されているのでスキップする
@@ -2296,10 +2302,7 @@ namespace DrugAlarm.Class
                             }
 
                         }
-
-                        // 登録後、再通知リストより削除する
-                        Realarm.RemoveAt(0);
-
+    
                         IsNextRealarm = true;
 
                     }
@@ -2310,7 +2313,7 @@ namespace DrugAlarm.Class
                 // 保存したアラーム時間から、過去のものを削除
                 for (Int32 iLoop = SaveTimes.Count - 1; iLoop >= 0; iLoop--)
                 {
-                    if (SaveTimes[iLoop] < DateTime.Now)
+                    if (SaveTimes[iLoop] < NextAlarm.Timer)
                     {
                         SaveTimes.RemoveAt(iLoop);
                     }
