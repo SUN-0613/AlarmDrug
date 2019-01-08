@@ -21,6 +21,10 @@
     <Folder Include="Common\" />
     <Folder Include="Converter\" />
     <Folder Include="Resx\" />
+    <Folder Include="Icon\" />
+    <Folder Include="Icon\iOS\" />
+    <Folder Include="Icon\iTunesArtWork\" />
+    <Folder Include="Icon\AppleWatch\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Common\EmptyClass.cs" />
