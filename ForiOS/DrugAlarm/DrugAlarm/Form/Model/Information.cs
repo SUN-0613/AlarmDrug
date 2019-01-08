@@ -38,12 +38,9 @@ namespace DrugAlarm.Form.Model
 
             _DrugList.Clear();
 
-            _Parameter.DrugList.ForEach(Drug =>
+            _Parameter.PrescriptionList.ForEach(index =>
             {
-                if (Drug.IsPrescriptionAlarm)
-                {
-                    _DrugList.Add(new Class.UserControl.MedicineInfo(Drug.Name, Drug.TotalVolume, -1));
-                }
+                _DrugList.Add(new Class.UserControl.MedicineInfo(_Parameter.DrugList[index].Name, _Parameter.DrugList[index].TotalVolume, -1));
             });
 
             return _DrugList;

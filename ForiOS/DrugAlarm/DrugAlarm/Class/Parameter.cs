@@ -55,6 +55,11 @@ namespace DrugAlarm.Class
         private bool IsLoadNextAlarm = false;
 
         /// <summary>
+        /// 残数切れ薬Index一覧
+        /// </summary>
+        public List<Int32> PrescriptionList;
+
+        /// <summary>
         /// パラメータ名称一覧
         /// </summary>
         private class NAME
@@ -655,6 +660,8 @@ namespace DrugAlarm.Class
 
             BeforeAlarmTime = DateTime.Now;
 
+            PrescriptionList = new List<Int32>();
+
             Load();
 
         }
@@ -692,6 +699,9 @@ namespace DrugAlarm.Class
             AlarmHistory.ForEach(Alarm => { Alarm.Dispose(); });
             AlarmHistory.Clear();
             AlarmHistory = null;
+
+            PrescriptionList.Clear();
+            PrescriptionList = null;
 
         }
 
@@ -2020,7 +2030,7 @@ namespace DrugAlarm.Class
         public bool TakeMedicine()
         {
 
-            bool Return = false;
+            PrescriptionList.Clear();
 
             AddSaveAlarmTime();
 
@@ -2061,27 +2071,20 @@ namespace DrugAlarm.Class
                         DrugList[Index].HourEachNextTime = NextAlarm.Timer.AddHours(DrugList[Index].HourEachTime);
                     }
 
+                    // 残量チェック
+                    if (DrugList[Index].IsPrescriptionAlarm)
+                    {
+                        PrescriptionList.Add(Index);
+                    }
+
                 }
 
             }
 
-            //パラメータ更新
+            // パラメータ更新
             Save(true);
 
-            //残量チェック
-            for (Int32 iLoop = 0; iLoop < DrugList.Count; iLoop++)
-            {
-
-                Return = DrugList[iLoop].IsPrescriptionAlarm;
-
-                if (Return)
-                {
-                    break;
-                }
-
-            }
-
-            return Return;
+            return !PrescriptionList.Count.Equals(0);
 
         }
 
