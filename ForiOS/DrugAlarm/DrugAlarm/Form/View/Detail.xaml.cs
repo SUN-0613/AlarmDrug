@@ -30,6 +30,8 @@ namespace DrugAlarm.Form.View
 
             _ViewModel.PropertyChanged += OnPropertyChanged;
 
+            _ViewModel.EditStart = true;
+
         }
 
         /// <summary>

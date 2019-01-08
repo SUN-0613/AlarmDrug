@@ -25,7 +25,7 @@
     <comment>アラーム：再通知ボタン</comment>
   </data>
   <data name="Alarm_Time" xml:space="preserve">
-    <value>アラーム時間:</value>
+    <value></value>
     <comment>アラーム：時間タイトル</comment>
   </data>
   <data name="Alarm_Title" xml:space="preserve">
@@ -181,7 +181,7 @@
     <comment>一覧：メニュー：編集</comment>
   </data>
   <data name="List_NextAlarmMessage" xml:space="preserve">
-    <value>次回アラーム:</value>
+    <value>次回:</value>
     <comment>一覧：次回アラーム欄メッセージ</comment>
   </data>
   <data name="List_Setting" xml:space="preserve">
@@ -281,7 +281,7 @@
     <comment>設定：就寝前</comment>
   </data>
   <data name="Setting_Breakfast" xml:space="preserve">
-    <value>朝食時間</value>
+    <value>朝食</value>
     <comment>設定：朝食時間</comment>
   </data>
   <data name="Setting_CancelMessage" xml:space="preserve">
@@ -289,7 +289,7 @@
     <comment>設定：キャンセル確認メッセージ</comment>
   </data>
   <data name="Setting_Dinner" xml:space="preserve">
-    <value>夕食時間</value>
+    <value>夕食</value>
     <comment>設定：夕食時間</comment>
   </data>
   <data name="Setting_InputAlarm" xml:space="preserve">
@@ -297,7 +297,7 @@
     <comment>設定：アラーム設定</comment>
   </data>
   <data name="Setting_Lunch" xml:space="preserve">
-    <value>昼食時間</value>
+    <value>昼食</value>
     <comment>設定：昼食時間</comment>
   </data>
   <data name="Setting_Realarm" xml:space="preserve">
@@ -309,7 +309,7 @@
     <comment>設定：保存確認メッセージ</comment>
   </data>
   <data name="Setting_Sleep" xml:space="preserve">
-    <value>就寝時間</value>
+    <value>就寝</value>
     <comment>設定：就寝時間</comment>
   </data>
   <data name="Setting_Title" xml:space="preserve">

@@ -56,14 +56,14 @@
                 <Grid.ColumnDefinitions>
                     <!--400-->
                     <ColumnDefinition Width="10*" />
-                    <ColumnDefinition Width="160*" />
-                    <ColumnDefinition Width="40*" />
+                    <ColumnDefinition Width="120*" />
+                    <ColumnDefinition Width="50*" />
                     <ColumnDefinition Width="10*" />
+                    <ColumnDefinition Width="50*" />
                     <ColumnDefinition Width="40*" />
-                    <ColumnDefinition Width="40*" />
-                    <ColumnDefinition Width="40*" />
+                    <ColumnDefinition Width="50*" />
                     <ColumnDefinition Width="10*" />
-                    <ColumnDefinition Width="40*" />
+                    <ColumnDefinition Width="50*" />
                     <ColumnDefinition Width="10*" />
                 </Grid.ColumnDefinitions>
                 

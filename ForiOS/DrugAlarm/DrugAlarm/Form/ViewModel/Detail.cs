@@ -14,6 +14,11 @@ namespace DrugAlarm.Form.ViewModel
         #region 基底
 
         /// <summary>
+        /// 編集開始
+        /// </summary>
+        public bool EditStart = false;
+
+        /// <summary>
         /// The model.Detail
         /// </summary>
         private Model.Detail _Model;
@@ -27,8 +32,11 @@ namespace DrugAlarm.Form.ViewModel
             get { return _Model.IsEdited; }
             set 
             { 
-                _Model.IsEdited = value;
-                CallPropertyChanged("IsEdited");
+                if (EditStart)
+                {
+                    _Model.IsEdited = value;
+                    CallPropertyChanged("IsEdited");
+                }
             }
         }
 
@@ -975,7 +983,6 @@ namespace DrugAlarm.Form.ViewModel
             DinnerTimingIndex = _Model.GetDinnerTimingIndex();
 
             IsEdited = false;
-
         }
 
         /// <summary>
