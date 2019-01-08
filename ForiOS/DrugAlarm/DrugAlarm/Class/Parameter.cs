@@ -905,6 +905,11 @@ namespace DrugAlarm.Class
                                             DrugList[Index].AppointDayEach = method.ConvertToInt32(Values[2], 0);
                                         }
 
+                                        if (DrugList[Index].AppointTime < DateTime.Now.AddDays(-3))
+                                        {
+                                            DrugList[Index].AppointTime = DateTime.Now;
+                                        }
+
                                         break;
 
                                     case NAME.DRUG.HOUREACH:
@@ -912,6 +917,12 @@ namespace DrugAlarm.Class
                                         DrugList[Index].HourEachTime = method.ConvertToInt32(Values[0], DrugList[Index].HourEachTime);
                                         DrugList[Index].HourEach.Volume = method.ConvertToInt32(Values[1], DrugList[Index].HourEach.Volume);
                                         DrugList[Index].HourEachNextTime = method.ConvertToDateTime(Values[2], DateTime.Now.AddHours(DrugList[Index].HourEachTime));
+
+                                        if (DrugList[Index].HourEachNextTime < DateTime.Now.AddDays(-3))
+                                        {
+                                            DrugList[Index].HourEachNextTime = DateTime.Now;
+                                        }
+
                                         break;
 
                                     case NAME.DRUG.TOTALVOLUME:
@@ -2098,15 +2109,6 @@ namespace DrugAlarm.Class
             Method method = new Method();
             DateTime Time;
 
-            // 保存したアラーム時間から、過去のものを削除
-            for (Int32 iLoop = SaveTimes.Count - 1; iLoop >= 0; iLoop--)
-            {
-                if (SaveTimes[iLoop] < DateTime.Now)
-                {
-                    SaveTimes.RemoveAt(iLoop);
-                }
-            }
-
             // 次回アラーム読込済
             if (!IsLoadNextAlarm)
             {
@@ -2304,6 +2306,15 @@ namespace DrugAlarm.Class
 
                 }
                 #endregion
+
+                // 保存したアラーム時間から、過去のものを削除
+                for (Int32 iLoop = SaveTimes.Count - 1; iLoop >= 0; iLoop--)
+                {
+                    if (SaveTimes[iLoop] < DateTime.Now)
+                    {
+                        SaveTimes.RemoveAt(iLoop);
+                    }
+                }
 
             }
             else
