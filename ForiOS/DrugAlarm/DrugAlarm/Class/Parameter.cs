@@ -865,35 +865,35 @@ namespace DrugAlarm.Class
                                         break;
 
                                     case NAME.DRUG.BREAKFAST:
-                                        DrugList[Index].Breakfast.IsDrug = true;
+                                        DrugList[Index].Breakfast.IsDrug = Values.Length > 2 ? method.ConvertToBoolean(Values[2], true) : true;
                                         DrugList[Index].Breakfast.Volume = method.ConvertToInt32(Values[0], DrugList[Index].Breakfast.Volume);
                                         DrugList[Index].Breakfast.Kind = GetTiming(Values[1]);
                                         break;
 
                                     case NAME.DRUG.LUNCH:
-                                        DrugList[Index].Lunch.IsDrug = true;
+                                        DrugList[Index].Lunch.IsDrug = Values.Length > 2 ? method.ConvertToBoolean(Values[2], true) : true;
                                         DrugList[Index].Lunch.Volume = method.ConvertToInt32(Values[0], DrugList[Index].Lunch.Volume);
                                         DrugList[Index].Lunch.Kind = GetTiming(Values[1]);
                                         break;
 
                                     case NAME.DRUG.DINNER:
-                                        DrugList[Index].Dinner.IsDrug = true;
+                                        DrugList[Index].Dinner.IsDrug = Values.Length > 2 ? method.ConvertToBoolean(Values[2], true) : true;
                                         DrugList[Index].Dinner.Volume = method.ConvertToInt32(Values[0], DrugList[Index].Dinner.Volume);
                                         DrugList[Index].Dinner.Kind = GetTiming(Values[1]);
                                         break;
 
                                     case NAME.DRUG.SLEEP:
-                                        DrugList[Index].Sleep.IsDrug = true;
-                                        DrugList[Index].Sleep.Volume = method.ConvertToInt32(Strings[1], DrugList[Index].Sleep.Volume);
+                                        DrugList[Index].Sleep.IsDrug = Values.Length > 1 ? method.ConvertToBoolean(Values[1], true) : true;
+                                        DrugList[Index].Sleep.Volume = method.ConvertToInt32(Values[0], DrugList[Index].Sleep.Volume);
                                         break;
 
                                     case NAME.DRUG.TOBETAKEN:
-                                        DrugList[Index].ToBeTaken.IsDrug = true;
-                                        DrugList[Index].ToBeTaken.Volume = method.ConvertToInt32(Strings[1], DrugList[Index].ToBeTaken.Volume);
+                                        DrugList[Index].ToBeTaken.IsDrug = Values.Length > 1 ? method.ConvertToBoolean(Values[1], true) : true;
+                                        DrugList[Index].ToBeTaken.Volume = method.ConvertToInt32(Values[0], DrugList[Index].ToBeTaken.Volume);
                                         break;
 
                                     case NAME.DRUG.APPOINTTIME:
-                                        DrugList[Index].Appoint.IsDrug = true;
+                                        DrugList[Index].Appoint.IsDrug = Values.Length > 3 ? method.ConvertToBoolean(Values[3], true) : true;
                                         DrugList[Index].AppointTime = method.ConvertToDateTime(Values[0], DrugList[Index].AppointTime);
                                         DrugList[Index].Appoint.Volume = method.ConvertToInt32(Values[1], DrugList[Index].Appoint.Volume);
 
@@ -905,6 +905,7 @@ namespace DrugAlarm.Class
                                             DrugList[Index].AppointDayEach = method.ConvertToInt32(Values[2], 0);
                                         }
 
+                                        // 3日以上経過している場合は現在日時とする
                                         if (DrugList[Index].AppointTime < DateTime.Now.AddDays(-3))
                                         {
                                             DrugList[Index].AppointTime = DateTime.Now;
@@ -913,11 +914,12 @@ namespace DrugAlarm.Class
                                         break;
 
                                     case NAME.DRUG.HOUREACH:
-                                        DrugList[Index].HourEach.IsDrug = true;
+                                        DrugList[Index].HourEach.IsDrug = Values.Length > 3 ? method.ConvertToBoolean(Values[3], true) : true;
                                         DrugList[Index].HourEachTime = method.ConvertToInt32(Values[0], DrugList[Index].HourEachTime);
                                         DrugList[Index].HourEach.Volume = method.ConvertToInt32(Values[1], DrugList[Index].HourEach.Volume);
                                         DrugList[Index].HourEachNextTime = method.ConvertToDateTime(Values[2], DateTime.Now.AddHours(DrugList[Index].HourEachTime));
 
+                                        // 3日以上経過している場合は現在日時とする
                                         if (DrugList[Index].HourEachNextTime < DateTime.Now.AddDays(-3))
                                         {
                                             DrugList[Index].HourEachNextTime = DateTime.Now;
@@ -1497,57 +1499,22 @@ namespace DrugAlarm.Class
                     for (Int32 iLoop = 0; iLoop < DrugList.Count; iLoop++)
                     {
 
+                        // 時間毎の次回時間を計算
+                        if (DrugList[iLoop].HourEach.IsDrug && DrugList[iLoop].HourEachNextTime.Equals(DateTime.MaxValue))
+                        {
+                            DrugList[iLoop].HourEachNextTime = DateTime.Now.AddHours(DrugList[iLoop].HourEachTime);
+                        }
+
                         FileData.WriteLine("");
                         FileData.WriteLine(NAME.DRUG.START);
                         FileData.WriteLine(MakeParameter(NAME.DRUG.NAME, DrugList[iLoop].Name, false));
-
-                        if (DrugList[iLoop].Breakfast.IsDrug)
-                        {
-                            FileData.WriteLine(MakeParameter(NAME.DRUG.BREAKFAST, DrugList[iLoop].Breakfast.Kind, DrugList[iLoop].Breakfast.Volume));
-                        }
-
-                        if (DrugList[iLoop].Lunch.IsDrug)
-                        {
-                            FileData.WriteLine(MakeParameter(NAME.DRUG.LUNCH, DrugList[iLoop].Lunch.Kind, DrugList[iLoop].Lunch.Volume));
-                        }
-
-                        if (DrugList[iLoop].Dinner.IsDrug)
-                        {
-                            FileData.WriteLine(MakeParameter(NAME.DRUG.DINNER, DrugList[iLoop].Dinner.Kind, DrugList[iLoop].Dinner.Volume));
-                        }
-
-                        if (DrugList[iLoop].Sleep.IsDrug)
-                        {
-                            FileData.WriteLine(MakeParameter(NAME.DRUG.SLEEP, DrugList[iLoop].Sleep.Volume));
-                        }
-
-                        if (DrugList[iLoop].ToBeTaken.IsDrug)
-                        {
-                            FileData.WriteLine(MakeParameter(NAME.DRUG.TOBETAKEN, DrugList[iLoop].ToBeTaken.Volume));
-                        }
-
-                        if (DrugList[iLoop].Appoint.IsDrug && DrugList[iLoop].AppointTime > DateTime.Now)
-                        {
-                            FileData.WriteLine(MakeParameter(NAME.DRUG.APPOINTTIME, DrugList[iLoop].AppointTime, DrugList[iLoop].Appoint.Volume, DrugList[iLoop].AppointDayEach));
-                        }
-                        else
-                        {
-                            //過去の場合は服用設定を解除
-                            DrugList[iLoop].Appoint.IsDrug = false;
-                        }
-
-                        if (DrugList[iLoop].HourEach.IsDrug)
-                        {
-
-                            if (DrugList[iLoop].HourEachNextTime.Equals(DateTime.MaxValue))
-                            {
-                                DrugList[iLoop].HourEachNextTime = DateTime.Now.AddHours(DrugList[iLoop].HourEachTime);
-                            }
-
-                            FileData.WriteLine(MakeParameter(NAME.DRUG.HOUREACH, DrugList[iLoop].HourEachTime, DrugList[iLoop].HourEach.Volume, DrugList[iLoop].HourEachNextTime));
-
-                        }
-
+                        FileData.WriteLine(MakeParameter(NAME.DRUG.BREAKFAST, DrugList[iLoop].Breakfast.Kind, DrugList[iLoop].Breakfast.Volume, DrugList[iLoop].Breakfast.IsDrug));
+                        FileData.WriteLine(MakeParameter(NAME.DRUG.LUNCH, DrugList[iLoop].Lunch.Kind, DrugList[iLoop].Lunch.Volume, DrugList[iLoop].Lunch.IsDrug));
+                        FileData.WriteLine(MakeParameter(NAME.DRUG.DINNER, DrugList[iLoop].Dinner.Kind, DrugList[iLoop].Dinner.Volume, DrugList[iLoop].Dinner.IsDrug));
+                        FileData.WriteLine(MakeParameter(NAME.DRUG.SLEEP, DrugList[iLoop].Sleep.Volume, DrugList[iLoop].Sleep.IsDrug));
+                        FileData.WriteLine(MakeParameter(NAME.DRUG.TOBETAKEN, DrugList[iLoop].ToBeTaken.Volume, DrugList[iLoop].ToBeTaken.IsDrug));
+                        FileData.WriteLine(MakeParameter(NAME.DRUG.APPOINTTIME, DrugList[iLoop].AppointTime, DrugList[iLoop].Appoint.Volume, DrugList[iLoop].AppointDayEach, DrugList[iLoop].Appoint.IsDrug && DrugList[iLoop].AppointTime > DateTime.Now));
+                        FileData.WriteLine(MakeParameter(NAME.DRUG.HOUREACH, DrugList[iLoop].HourEachTime, DrugList[iLoop].HourEach.Volume, DrugList[iLoop].HourEachNextTime, DrugList[iLoop].HourEach.IsDrug));
                         FileData.WriteLine(MakeParameter(NAME.DRUG.TOTALVOLUME, DrugList[iLoop].TotalVolume));
                         FileData.WriteLine(MakeParameter(NAME.DRUG.PRESCRIPTIOIN, DrugList[iLoop].PrescriptionAlarmVolume));
                         FileData.WriteLine(MakeParameter(NAME.DRUG.REMARKS, DrugList[iLoop].Remarks, true));
@@ -1633,10 +1600,11 @@ namespace DrugAlarm.Class
         /// <param name="Parameter">パラメータ名</param>
         /// <param name="Kind">服用タイミング</param>
         /// <param name="Volume">数値</param>
-        private string MakeParameter(string Parameter, UserControl.KindTiming Kind, Int32 Volume)
+        /// <param name="IsDrug">服用するか</param>
+        private string MakeParameter(string Parameter, UserControl.KindTiming Kind, Int32 Volume, bool IsDrug)
         {
 
-            StringBuilder Str = new StringBuilder(Parameter.Length + NAME.DRUG.BETWEENMEALS.Length + Volume.ToString().Length + 2);
+            StringBuilder Str = new StringBuilder(Parameter.Length + NAME.DRUG.BETWEENMEALS.Length + Volume.ToString().Length + IsDrug.ToString().Length + 3);
             string Return;
 
             try
@@ -1666,6 +1634,8 @@ namespace DrugAlarm.Class
                         break;
 
                 }
+
+                Str.Append(",").Append(IsDrug.ToString());
 
                 Return = Str.ToString();
 
@@ -1737,12 +1707,59 @@ namespace DrugAlarm.Class
         }
 
         /// <summary>
+        /// パラメータ数値形式作成
+        /// </summary>
+        /// <returns>パラメータ出力値</returns>
+        /// <param name="Parameter">パラメータ名</param>
+        /// <param name="Value">数値</param>
+        /// <param name="IsDrug">服用するか</param>
+        private string MakeParameter(string Parameter, Int32 Value, bool IsDrug)
+        {
+
+            StringBuilder Str = new StringBuilder(Parameter.Length + Value.ToString().Length + IsDrug.ToString().Length + 2);
+            string Return;
+
+            try
+            {
+
+                Str.Clear();
+                Str.Append(Parameter);
+                Str.Append("=").Append(Value.ToString());
+                Str.Append(",").Append(IsDrug.ToString());
+
+                Return = Str.ToString();
+
+            }
+            catch (Exception ex)
+            {
+
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+#endif
+
+                Return = "";
+
+            }
+            finally
+            {
+
+                Str.Clear();
+                Str = null;
+
+            }
+
+            return Return;
+
+        }
+
+        /// <summary>
         /// パラメータ時間形式作成
         /// </summary>
         /// <returns>パラメータ出力値</returns>
         /// <param name="Parameter">パラメータ名</param>
         /// <param name="Value">時間</param>
-        private string MakeParameter(string Parameter, DateTime Value)
+        /// <param name="IsDateTimeFormat">日時フォーマットで保存するか</param>
+        private string MakeParameter(string Parameter, DateTime Value, bool IsDateTimeFormat = false)
         {
 
             StringBuilder Str = new StringBuilder(Parameter.Length + UserControl.TimeFormat.Length + 1);
@@ -1753,7 +1770,7 @@ namespace DrugAlarm.Class
 
                 Str.Clear();
                 Str.Append(Parameter);
-                Str.Append("=").Append(Value.ToString(UserControl.TimeFormat));
+                Str.Append("=").Append(Value.ToString(IsDateTimeFormat ? UserControl.DateTimeFormat : UserControl.TimeFormat));
 
                 Return = Str.ToString();
 
@@ -1878,10 +1895,11 @@ namespace DrugAlarm.Class
         /// <param name="AppointTime">指定日時</param>
         /// <param name="Volume">服用錠</param>
         /// <param name="DayEach">繰り返し日</param>
-        private string MakeParameter(string Parameter, DateTime AppointTime, Int32 Volume, Int32 DayEach)
+        /// <param name="IsDrug">服用するか</param>
+        private string MakeParameter(string Parameter, DateTime AppointTime, Int32 Volume, Int32 DayEach, bool IsDrug)
         {
 
-            StringBuilder Str = new StringBuilder(Parameter.Length + UserControl.DateTimeFormat.Length + Volume.ToString().Length + 2);
+            StringBuilder Str = new StringBuilder(Parameter.Length + UserControl.DateTimeFormat.Length + Volume.ToString().Length + IsDrug.ToString().Length + 3);
             string Return;
 
             try
@@ -1892,6 +1910,7 @@ namespace DrugAlarm.Class
                 Str.Append("=").Append(AppointTime.ToString(UserControl.DateTimeFormat));
                 Str.Append(",").Append(Volume.ToString());
                 Str.Append(",").Append(DayEach.ToString());
+                Str.Append(",").Append(IsDrug.ToString());
 
                 Return = Str.ToString();
 
@@ -1926,10 +1945,11 @@ namespace DrugAlarm.Class
         /// <param name="HourEach">時間毎</param>
         /// <param name="Volume">服用錠</param>
         /// <param name="NextTime">次回アラーム時間</param>
-        private string MakeParameter(string Parameter, Int32 HourEach, Int32 Volume, DateTime NextTime)
+        /// <param name="IsDrug">服用するか</param>
+        private string MakeParameter(string Parameter, Int32 HourEach, Int32 Volume, DateTime NextTime, bool IsDrug)
         {
 
-            StringBuilder Str = new StringBuilder(Parameter.Length + HourEach.ToString().Length + Volume.ToString().Length + UserControl.DateTimeFormat.Length + 3);
+            StringBuilder Str = new StringBuilder(Parameter.Length + HourEach.ToString().Length + Volume.ToString().Length + UserControl.DateTimeFormat.Length + IsDrug.ToString().Length + 4);
             string Return;
 
             try
@@ -1940,6 +1960,7 @@ namespace DrugAlarm.Class
                 Str.Append("=").Append(HourEach.ToString());
                 Str.Append(",").Append(Volume.ToString());
                 Str.Append(",").Append(NextTime.ToString(UserControl.DateTimeFormat));
+                Str.Append(",").Append(IsDrug.ToString());
 
                 Return = Str.ToString();
 
@@ -2370,14 +2391,14 @@ namespace DrugAlarm.Class
 
                     #region 前回アラーム
                     FileData.WriteLine(NAME.BEFOREALARM.START);
-                    FileData.WriteLine(MakeParameter(NAME.BEFOREALARM.TIME, BeforeAlarmTime));
+                    FileData.WriteLine(MakeParameter(NAME.BEFOREALARM.TIME, BeforeAlarmTime, true));
                     FileData.WriteLine(NAME.BEFOREALARM.END);
                     #endregion
 
                     #region 次回アラーム
                     FileData.WriteLine("");
                     FileData.WriteLine(NAME.NEXTALARM.START);
-                    FileData.WriteLine(MakeParameter(NAME.NEXTALARM.TIME, NextAlarm.Timer));
+                    FileData.WriteLine(MakeParameter(NAME.NEXTALARM.TIME, NextAlarm.Timer, true));
 
                     for (Int32 jLoop = 0; jLoop < NextAlarm.DrugList.Count; jLoop++)
                     {
@@ -2400,7 +2421,7 @@ namespace DrugAlarm.Class
 
                         FileData.WriteLine("");
                         FileData.WriteLine(NAME.REALARM.START);
-                        FileData.WriteLine(MakeParameter(NAME.REALARM.TIME, Realarm[iLoop].Timer));
+                        FileData.WriteLine(MakeParameter(NAME.REALARM.TIME, Realarm[iLoop].Timer, true));
 
                         for (Int32 jLoop = 0; jLoop < Realarm[iLoop].DrugList.Count; jLoop++)
                         {

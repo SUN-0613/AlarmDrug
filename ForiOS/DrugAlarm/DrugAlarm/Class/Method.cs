@@ -17,9 +17,9 @@ namespace DrugAlarm.Class
         /// <returns>今日日付のDateTime型</returns>
         /// <param name="Hour">時</param>
         /// <param name="Minute">分</param>
-        public DateTime GetTodayTime(Int32 Hour, Int32 Minute)
+        public DateTime GetTodayTime(Int32 hour, Int32 minute)
         {
-            return new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, Hour, Minute, 0);
+            return new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, hour, minute, 0);
         }
 
         /// <summary>
@@ -27,10 +27,10 @@ namespace DrugAlarm.Class
         /// </summary>
         /// <returns>今日日付のDateTime型</returns>
         /// <param name="Time">HH:mm</param>
-        public DateTime GetTodayTime(string Time)
+        public DateTime GetTodayTime(string time)
         {
 
-            string[] Values = Time.Split(':');
+            string[] Values = time.Split(':');
 
             if (!Int32.TryParse(Values[0], out Int32 Hour))
             {
@@ -53,9 +53,9 @@ namespace DrugAlarm.Class
         /// <returns>The to int32.</returns>
         /// <param name="Value">変換文字列</param>
         /// <param name="DefaultValue">デフォルト値</param>
-        public Int32 ConvertToInt32(string Value, Int32 DefaultValue)
+        public Int32 ConvertToInt32(string value, Int32 defaultValue)
         {
-            return Int32.TryParse(Value, out Int32 Return) ? Return : DefaultValue;
+            return Int32.TryParse(value, out Int32 Return) ? Return : defaultValue;
         }
 
         /// <summary>
@@ -65,9 +65,9 @@ namespace DrugAlarm.Class
         /// <returns>The date time.</returns>
         /// <param name="Value">変換文字列</param>
         /// <param name="DefaultValue">デフォルト値</param>
-        public DateTime ConvertToDateTime(string Value, DateTime DefaultValue)
+        public DateTime ConvertToDateTime(string value, DateTime defaultValue)
         {
-            return DateTime.TryParse(Value, out DateTime Return) ? Return : DefaultValue;
+            return DateTime.TryParse(value, out DateTime Return) ? Return : defaultValue;
         }
 
         /// <summary>
@@ -82,15 +82,15 @@ namespace DrugAlarm.Class
         /// <param name="Minute">分</param>
         /// <param name="Second">秒</param>
         /// <param name="DefaultValue">デフォルト値</param>
-        public DateTime ConvertToDateTime(Int32 Year, Int32 Month, Int32 Day, Int32 Hour, Int32 Minute, Int32 Second, DateTime DefaultValue)
+        public DateTime ConvertToDateTime(Int32 year, Int32 month, Int32 day, Int32 hour, Int32 minute, Int32 second, DateTime defaultValue)
         {
 
             StringBuilder Str = new StringBuilder();
 
-            Str.Clear().Append(Year.ToString("0000")).Append("/").Append(Month.ToString()).Append("/").Append(Day.ToString());
-            Str.Append(" ").Append(Hour.ToString("00")).Append(":").Append(Minute.ToString("00")).Append(":").Append(Second.ToString("00"));
+            Str.Clear().Append(year.ToString("0000")).Append("/").Append(month.ToString()).Append("/").Append(day.ToString());
+            Str.Append(" ").Append(hour.ToString("00")).Append(":").Append(minute.ToString("00")).Append(":").Append(second.ToString("00"));
 
-            DateTime Return = ConvertToDateTime(Str.ToString(), DefaultValue);
+            DateTime Return = ConvertToDateTime(Str.ToString(), defaultValue);
 
             Str.Clear();
             Str = null;
@@ -110,9 +110,9 @@ namespace DrugAlarm.Class
         /// <param name="Hour">時</param>
         /// <param name="Minute">分</param>
         /// <param name="DefaultValue">デフォルト値</param>
-        public DateTime ConvertToDateTime(Int32 Year, Int32 Month, Int32 Day, Int32 Hour, Int32 Minute, DateTime DefaultValue)
+        public DateTime ConvertToDateTime(Int32 year, Int32 month, Int32 day, Int32 hour, Int32 minute, DateTime defaultValue)
         {
-            return ConvertToDateTime(Year, Month, Day, Hour, Minute, 0, DefaultValue);
+            return ConvertToDateTime(year, month, day, hour, minute, 0, defaultValue);
         }
 
         /// <summary>
@@ -125,9 +125,9 @@ namespace DrugAlarm.Class
         /// <param name="Day">日</param>
         /// <param name="Hour">時</param>
         /// <param name="DefaultValue">デフォルト値</param>
-        public DateTime ConvertToDateTime(Int32 Year, Int32 Month, Int32 Day, Int32 Hour, DateTime DefaultValue)
+        public DateTime ConvertToDateTime(Int32 year, Int32 month, Int32 day, Int32 hour, DateTime defaultValue)
         {
-            return ConvertToDateTime(Year, Month, Day, Hour, 0, 0, DefaultValue);
+            return ConvertToDateTime(year, month, day, hour, 0, 0, defaultValue);
         }
 
         /// <summary>
@@ -139,9 +139,45 @@ namespace DrugAlarm.Class
         /// <param name="Month">月</param>
         /// <param name="Day">日</param>
         /// <param name="DefaultValue">デフォルト値</param>
-        public DateTime ConvertToDateTime(Int32 Year, Int32 Month, Int32 Day, DateTime DefaultValue)
+        public DateTime ConvertToDateTime(Int32 year, Int32 month, Int32 day, DateTime defaultValue)
         {
-            return ConvertToDateTime(Year, Month, Day, 0, 0, 0, DefaultValue);
+            return ConvertToDateTime(year, month, day, 0, 0, 0, defaultValue);
+        }
+
+        /// <summary>
+        /// 文字列を判定型に変換、変換できない場合はデフォルト値を戻す
+        /// </summary>
+        /// <returns><c>true</c>, if to boolean was converted, <c>false</c> otherwise.</returns>
+        /// <param name="value">Value.</param>
+        /// <param name="defaultValue">If set to <c>true</c> default value.</param>
+        public bool ConvertToBoolean(string value, bool defaultValue)
+        {
+            return bool.TryParse(value, out bool Return) ? Return : defaultValue;
+        }
+
+        /// <summary>
+        /// 数値を判定型に変換、変換できない場合はデフォルト値を戻す
+        /// 0:false
+        /// 1, -1:true
+        /// 他:デフォルト値
+        /// </summary>
+        /// <returns><c>true</c>, if to boolean was converted, <c>false</c> otherwise.</returns>
+        /// <param name="value">Value.</param>
+        /// <param name="defaultValue">If set to <c>true</c> default value.</param>
+        public bool ConvertToBoolean(Int32 value, bool defaultValue)
+        {
+            if (value.Equals(0))
+            {
+                return false;
+            }
+            else if (value.Equals(1) || value.Equals(-1))
+            {
+                return true;
+            }
+            else
+            {
+                return defaultValue;
+            }
         }
 
         /// <summary>
@@ -151,13 +187,13 @@ namespace DrugAlarm.Class
         /// </summary>
         /// <returns>変換後文字列</returns>
         /// <param name="Value">対象文字列</param>
-        public string ConvertToCRLF(string Value)
+        public string ConvertToCRLF(string value)
         {
 
             const string CRLF = "\r\n";
             const string _CRLF_ = "_CRLF_";
 
-            return Value.Contains(CRLF) ? Value.Replace(CRLF, _CRLF_) : Value.Replace(_CRLF_, CRLF);
+            return value.Contains(CRLF) ? value.Replace(CRLF, _CRLF_) : value.Replace(_CRLF_, CRLF);
 
         }
 
@@ -167,14 +203,14 @@ namespace DrugAlarm.Class
         /// <returns>The average time.</returns>
         /// <param name="Time1">Time1.</param>
         /// <param name="Time2">Time2.</param>
-        public DateTime GetAverageTime(DateTime Time1, DateTime Time2)
+        public DateTime GetAverageTime(DateTime time1, DateTime time2)
         {
 
-            TimeSpan TSpan = Time2 - Time1;
+            TimeSpan TSpan = time2 - time1;
 
             TSpan = TimeSpan.FromMilliseconds(TSpan.TotalMilliseconds / 2.0);
 
-            return Time1 + TSpan;
+            return time1 + TSpan;
 
         }
 
