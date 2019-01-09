@@ -2294,7 +2294,7 @@ namespace DrugAlarm.Class
                 if (!Realarm.Count.Equals(0))
                 {
 
-                        if (Realarm[0].Timer <= NextAlarm.Timer)
+                    if (Realarm[0].Timer <= NextAlarm.Timer)
                     {
     
                         // 異なる時刻なら初期化    
@@ -2349,11 +2349,23 @@ namespace DrugAlarm.Class
 
             }
 
-            // アラーム情報の保存
-            SaveNextAlarmParameter();
+            if (NextAlarm.DrugList.Count > 0)
+            {
 
-            // AlarmTimer.csでFLGリセット
-            Class.UserControl.ResetNextAlarm = true;
+                // アラーム情報の保存
+                SaveNextAlarmParameter();
+
+                // AlarmTimer.csでFLGリセット
+                Class.UserControl.ResetNextAlarm = true;
+
+            }
+            else
+            {
+
+                // 仮に、対象がないのに次回アラームとなってしまった場合は、再帰
+                SetNextAlarm(true);
+
+            }
 
         }
 
@@ -2665,6 +2677,91 @@ namespace DrugAlarm.Class
         {
             if (-1 < index && index < NextAlarm.DrugList.Count)
                 NextAlarm.DrugList[index].IsDrug = isDrug;
+        }
+
+        /// <summary>
+        /// 対象Indexの薬削除
+        /// </summary>
+        /// <param name="index">DrugList[Index]</param>
+        public void DeleteDrug(Int32 index)
+        {
+
+            if (-1 < index && index < DrugList.Count)
+            {
+
+                // 再通知
+                for (Int32 iLoop = Realarm.Count - 1; iLoop >= 0; iLoop--)
+                {
+
+                    for (Int32 jLoop = Realarm[iLoop].DrugList.Count - 1; jLoop >= 0; jLoop--)
+                    {
+
+                        if (Realarm[iLoop].DrugList[jLoop].Index.Equals(index))
+                        {
+                            Realarm[iLoop].DrugList.RemoveAt(jLoop);
+                        }
+                        else if(Realarm[iLoop].DrugList[jLoop].Index > index)
+                        {
+                            Realarm[iLoop].DrugList[jLoop].Index -= 1;
+                        }
+
+                    }
+
+                    if (Realarm[iLoop].DrugList.Count.Equals(0))
+                    {
+                        Realarm.RemoveAt(iLoop);
+                    }
+
+                }
+
+                // 履歴
+                for (Int32 iLoop = AlarmHistory.Count - 1; iLoop >= 0; iLoop--)
+                {
+
+                    for (Int32 jLoop = AlarmHistory[iLoop].DrugList.Count - 1; jLoop >= 0; jLoop--)
+                    {
+
+                        if (AlarmHistory[iLoop].DrugList[jLoop].Index.Equals(index))
+                        {
+                            AlarmHistory[iLoop].DrugList.RemoveAt(jLoop);
+                        }
+                        else if (AlarmHistory[iLoop].DrugList[jLoop].Index > index)
+                        {
+                            AlarmHistory[iLoop].DrugList[jLoop].Index -= 1;
+                        }
+
+                    }
+
+                    if (AlarmHistory[iLoop].DrugList.Count.Equals(0))
+                    {
+                        AlarmHistory.RemoveAt(iLoop);
+                    }
+
+                }
+
+                // 薬切れ
+                for (Int32 iLoop = PrescriptionList.Count - 1; iLoop >= 0; iLoop--)
+                {
+
+                    if (PrescriptionList[iLoop].Equals(index))
+                    {
+                        PrescriptionList.RemoveAt(iLoop);
+                    }
+                    else if (PrescriptionList[iLoop] > index)
+                    {
+                        PrescriptionList[iLoop] -= 1;
+                    }
+
+                }
+
+                // 薬一覧
+                DrugList.RemoveAt(index);
+
+                // データ保存
+                Save(false);
+
+            }
+
         }
 
     }

@@ -131,6 +131,12 @@ namespace DrugAlarm.Resx {
             }
         }
         
+        internal static string Detail_HourEachStart {
+            get {
+                return ResourceManager.GetString("Detail_HourEachStart", resourceCulture);
+            }
+        }
+        
         internal static string Detail_Lunch {
             get {
                 return ResourceManager.GetString("Detail_Lunch", resourceCulture);

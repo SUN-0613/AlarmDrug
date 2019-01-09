@@ -160,9 +160,7 @@ namespace DrugAlarm.Form.Model
             if (IsOkSelectedIndex())
             {
 
-                _Parameter.DrugList.RemoveAt(SelectedIndex);
-                _Parameter.Save(false);
-
+                _Parameter.DeleteDrug(SelectedIndex);
                 SelectedIndex = -1;
 
             }

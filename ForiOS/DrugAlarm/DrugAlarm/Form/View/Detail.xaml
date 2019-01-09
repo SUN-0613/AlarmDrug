@@ -163,6 +163,7 @@
                         
                     </Grid>
                     
+                    <Label Grid.Row="11" Grid.RowSpan="1" Grid.Column="3" Grid.ColumnSpan="1" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Text="{Common:Translate Detail_HourEachStart}" Style="{DynamicResource BodyStyle}" />
                     <Picker Grid.Row="11" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="1" ItemsSource="{Binding HourEachTime}" ItemDisplayBinding="{Binding}" SelectedIndex="{Binding HourEachTimeIndex}" IsEnabled="{Binding IsHourEach}" Style="{DynamicResource BodyStyle}" />
                     <Label Grid.Row="11" Grid.RowSpan="1" Grid.Column="5" Grid.ColumnSpan="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Common:Translate Detail_Time}" Style="{DynamicResource BodyStyle}" />
                     

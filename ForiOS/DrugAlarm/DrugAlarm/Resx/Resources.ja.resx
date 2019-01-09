@@ -68,6 +68,10 @@
     <value>夕</value>
     <comment>詳細：夕食</comment>
   </data>
+  <data name="Detail_HourEachStart" xml:space="preserve">
+    <value>から</value>
+    <comment>詳細：時間指定</comment>
+  </data>
   <data name="Detail_Lunch" xml:space="preserve">
     <value>昼</value>
     <comment>詳細：昼食</comment>
