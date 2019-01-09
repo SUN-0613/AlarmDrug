@@ -90,6 +90,11 @@ namespace DrugAlarm.Form.View
                     await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Realarm());
                     break;
 
+                case "CallReverse":
+                    _ViewModel.Reverse();
+                    await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
+                    break;
+
                 default:
                     break;
 

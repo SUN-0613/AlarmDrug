@@ -1513,7 +1513,7 @@ namespace DrugAlarm.Class
                         FileData.WriteLine(MakeParameter(NAME.DRUG.DINNER, DrugList[iLoop].Dinner.Kind, DrugList[iLoop].Dinner.Volume, DrugList[iLoop].Dinner.IsDrug));
                         FileData.WriteLine(MakeParameter(NAME.DRUG.SLEEP, DrugList[iLoop].Sleep.Volume, DrugList[iLoop].Sleep.IsDrug));
                         FileData.WriteLine(MakeParameter(NAME.DRUG.TOBETAKEN, DrugList[iLoop].ToBeTaken.Volume, DrugList[iLoop].ToBeTaken.IsDrug));
-                        FileData.WriteLine(MakeParameter(NAME.DRUG.APPOINTTIME, DrugList[iLoop].AppointTime, DrugList[iLoop].Appoint.Volume, DrugList[iLoop].AppointDayEach, DrugList[iLoop].Appoint.IsDrug && DrugList[iLoop].AppointTime > DateTime.Now));
+                        FileData.WriteLine(MakeParameter(NAME.DRUG.APPOINTTIME, DrugList[iLoop].AppointTime, DrugList[iLoop].Appoint.Volume, DrugList[iLoop].AppointDayEach, DrugList[iLoop].Appoint.IsDrug));
                         FileData.WriteLine(MakeParameter(NAME.DRUG.HOUREACH, DrugList[iLoop].HourEachTime, DrugList[iLoop].HourEach.Volume, DrugList[iLoop].HourEachNextTime, DrugList[iLoop].HourEach.IsDrug));
                         FileData.WriteLine(MakeParameter(NAME.DRUG.TOTALVOLUME, DrugList[iLoop].TotalVolume));
                         FileData.WriteLine(MakeParameter(NAME.DRUG.PRESCRIPTIOIN, DrugList[iLoop].PrescriptionAlarmVolume));

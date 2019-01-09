@@ -77,7 +77,14 @@ namespace DrugAlarm.Form.ViewModel
 
                                 AllCheck = false;
 
-                                CallPropertyChanged("CallRealarm"); 
+                                if (_Model.GetAlarmTime() <= DateTime.Now)
+                                {
+                                    CallPropertyChanged("CallRealarm");
+                                }
+                                else
+                                {
+                                    CallPropertyChanged("CallReverse");
+                                }
 
                             },
                         () => true);
@@ -86,6 +93,15 @@ namespace DrugAlarm.Form.ViewModel
                 return _Model.RealarmCommand;
 
             }
+        }
+
+        /// <summary>
+        /// 元の画面に戻る
+        /// </summary>
+        public void Reverse()
+        {
+            // AlarmTimer.csにて処理
+            Class.UserControl.ResetNextAlarm = true;
         }
 
         #endregion
