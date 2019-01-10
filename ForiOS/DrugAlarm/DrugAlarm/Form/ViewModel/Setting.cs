@@ -127,8 +127,12 @@ namespace DrugAlarm.Form.ViewModel
             {
                 if (!_Model.BreakfastStart.Equals(value))
                 {
+
                     _Model.BreakfastStart = value;
                     CallPropertyChanged();
+
+                    BreakfastFinish = CompareToStartTime(BreakfastStart, BreakfastFinish);
+
                 }
             }
         }
@@ -146,8 +150,12 @@ namespace DrugAlarm.Form.ViewModel
             {
                 if (!_Model.BreakfastFinish.Equals(value))
                 {
+
                     _Model.BreakfastFinish = value;
                     CallPropertyChanged();
+
+                    BreakfastStart = CompareToFinishTime(BreakfastStart, BreakfastFinish);
+
                 }
             }
         }
@@ -169,8 +177,12 @@ namespace DrugAlarm.Form.ViewModel
             {
                 if (!_Model.LunchStart.Equals(value))
                 {
+
                     _Model.LunchStart = value;
                     CallPropertyChanged();
+
+                    LunchFinish = CompareToStartTime(LunchStart, LunchFinish);
+
                 }
             }
         }
@@ -188,8 +200,12 @@ namespace DrugAlarm.Form.ViewModel
             {
                 if (!_Model.LunchFinish.Equals(value))
                 {
+
                     _Model.LunchFinish = value;
                     CallPropertyChanged();
+
+                    LunchStart = CompareToFinishTime(LunchStart, LunchFinish);
+
                 }
             }
         }
@@ -211,8 +227,12 @@ namespace DrugAlarm.Form.ViewModel
             {
                 if (!_Model.DinnerStart.Equals(value))
                 {
+
                     _Model.DinnerStart = value;
                     CallPropertyChanged();
+
+                    DinnerFinish = CompareToStartTime(DinnerStart, DinnerFinish);
+
                 }
             }
         }
@@ -230,8 +250,12 @@ namespace DrugAlarm.Form.ViewModel
             {
                 if (!_Model.DinnerFinish.Equals(value))
                 {
+
                     _Model.DinnerFinish = value;
                     CallPropertyChanged();
+
+                    DinnerStart = CompareToFinishTime(DinnerStart, DinnerFinish);
+
                 }
             }
         }
@@ -423,6 +447,64 @@ namespace DrugAlarm.Form.ViewModel
 
             _Model.Dispose();
             _Model = null;
+
+        }
+
+        /// <summary>
+        /// 開始時間変更による終了時間の調整
+        /// </summary>
+        /// <returns>調整後の終了時間</returns>
+        /// <param name="startTime">開始時間</param>
+        /// <param name="finishTime">終了時間</param>
+        private TimeSpan CompareToStartTime(TimeSpan startTime, TimeSpan finishTime)
+        {
+
+            if (startTime >= finishTime)
+            {
+
+                if (startTime >= new TimeSpan(23, 55, 0))
+                {
+                    return new TimeSpan(23, 59, 0);
+                }
+                else
+                {
+                    return startTime + new TimeSpan(0, 5, 0);
+                }
+
+            }
+            else
+            {
+                return finishTime;
+            }
+
+        }
+
+        /// <summary>
+        /// 終了時間変更による開始時間の調整
+        /// </summary>
+        /// <returns>調整後の開始時間</returns>
+        /// <param name="startTime">開始時間</param>
+        /// <param name="finishTime">終了時間</param>
+        private TimeSpan CompareToFinishTime(TimeSpan startTime, TimeSpan finishTime)
+        {
+
+            if (startTime >= finishTime)
+            {
+
+                if (finishTime <= new TimeSpan(0, 5, 0))
+                {
+                    return new TimeSpan(0, 0, 0);
+                }
+                else
+                {
+                    return finishTime - new TimeSpan(0, 5, 0);
+                }
+
+            }
+            else
+            {
+                return startTime;
+            }
 
         }
 
