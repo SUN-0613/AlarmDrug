@@ -506,8 +506,16 @@ namespace DrugAlarm.Form.ViewModel
             {
                 if (!_Model.Drug.Appoint.IsDrug.Equals(value))
                 {
+
                     _Model.Drug.Appoint.IsDrug = value;
                     CallPropertyChanged();
+
+                    if (value)
+                    {
+                        AppointDate = DateTime.Now;
+                        AppointTime = DateTime.Now.TimeOfDay;
+                    }
+
                 }
             }
         }
@@ -662,8 +670,16 @@ namespace DrugAlarm.Form.ViewModel
             {
                 if (!_Model.Drug.HourEach.IsDrug.Equals(value))
                 {
+
                     _Model.Drug.HourEach.IsDrug = value;
                     CallPropertyChanged();
+
+                    if (value)
+                    {
+                        HourEachStartDate = DateTime.Now;
+                        HourEachStartTime = DateTime.Now.TimeOfDay;
+                    }
+
                 }
             }
         }
