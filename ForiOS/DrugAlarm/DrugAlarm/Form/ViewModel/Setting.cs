@@ -387,6 +387,71 @@ namespace DrugAlarm.Form.ViewModel
             }
         }
 
+        /// <summary>
+        /// 前回アラーム日付
+        /// </summary>
+        private DateTime _SelectBeforeAlarmDate;
+
+        /// <summary>
+        /// 前回アラーム時間
+        /// </summary>
+        private TimeSpan _SelectBeforeAlarmTime;
+
+        /// <summary>
+        /// 前回アラーム日付プロパティ
+        /// </summary>
+        /// <value>The before alarm date.</value>
+        public DateTime BeforeAlarmDate
+        {
+            get { return _Model.BeforeAlarm; }
+            set
+            {
+                if (!(_Model.BeforeAlarm.Year.Equals(value.Year)
+                    && _Model.BeforeAlarm.Month.Equals(value.Month)
+                    && _Model.BeforeAlarm.Day.Equals(value.Day)))
+                {
+                    _SelectBeforeAlarmDate = value;
+                    SetBeforeAlarm();
+                    CallPropertyChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 前回アラーム時間プロパティ
+        /// </summary>
+        /// <value>The before alarm time.</value>
+        public TimeSpan BeforeAlarmTime
+        {
+            get { return _Model.BeforeAlarm.TimeOfDay; }
+            set
+            {
+                if (!(_Model.BeforeAlarm.Hour.Equals(value.Hours)
+                    && _Model.BeforeAlarm.Minute.Equals(value.Minutes)))
+                {
+                    _SelectBeforeAlarmTime = value;
+                    SetBeforeAlarm();
+                    CallPropertyChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 前回アラームの設定
+        /// </summary>
+        private void SetBeforeAlarm()
+        {
+
+            _Model.BeforeAlarm = new Class.Method().ConvertToDateTime(
+                                                    _SelectBeforeAlarmDate.Year
+                                                    , _SelectBeforeAlarmDate.Month
+                                                    , _SelectBeforeAlarmDate.Day
+                                                    , _SelectBeforeAlarmTime.Hours
+                                                    , _SelectBeforeAlarmTime.Minutes
+                                                    , _Model.BeforeAlarm);
+
+        }
+
         #endregion
 
         #endregion
@@ -419,6 +484,9 @@ namespace DrugAlarm.Form.ViewModel
             AfterMealMinuteIndex = _Model.GetAfterMealMinuteIndex();
             BeforeSleepMinuteIndex = _Model.GetBeforeSleepMinuteIndex();
             RealarmMinuteIndex = _Model.GetRealarmMinuteIndex();
+
+            _SelectBeforeAlarmDate = _Model.BeforeAlarm;
+            _SelectBeforeAlarmTime = _Model.BeforeAlarm.TimeOfDay;
 
             IsEdited = false;
 

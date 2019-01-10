@@ -397,6 +397,19 @@ namespace DrugAlarm.Form.Model
             }
         }
 
+        /// <summary>
+        /// 前回アラーム日時
+        /// </summary>
+        /// <value>The before alarm.</value>
+        public DateTime BeforeAlarm
+        {
+            get { return SetParam.BeforeAlarmTime; }
+            set
+            {
+                SetParam.BeforeAlarmTime = value;
+            }
+        }
+
         #endregion
 
         #region List
@@ -488,7 +501,8 @@ namespace DrugAlarm.Form.Model
                 MinuteBeforeMeals = _Parameter.Setting.MinuteBeforeMeals,
                 MinuteAfterMeals = _Parameter.Setting.MinuteAfterMeals,
                 MinuteBeforeSleep = _Parameter.Setting.MinuteBeforeSleep,
-                MinuteRealarm = _Parameter.Setting.MinuteRealarm
+                MinuteRealarm = _Parameter.Setting.MinuteRealarm,
+                BeforeAlarmTime = _Parameter.Setting.BeforeAlarmTime
             };
 
         }

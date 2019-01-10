@@ -272,6 +272,10 @@
     <value>分後</value>
     <comment>設定：分後</comment>
   </data>
+  <data name="Setting_BeforeAlarm" xml:space="preserve">
+    <value>開始日</value>
+    <comment>設定：アラーム開始</comment>
+  </data>
   <data name="Setting_BeforeMeals" xml:space="preserve">
     <value>食前</value>
     <comment>設定：食前</comment>

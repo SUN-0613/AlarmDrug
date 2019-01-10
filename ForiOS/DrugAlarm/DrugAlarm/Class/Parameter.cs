@@ -35,11 +35,6 @@ namespace DrugAlarm.Class
         private List<UserControl.AlarmInfo> Realarm;
 
         /// <summary>
-        /// 前回アラーム時間
-        /// </summary>
-        private DateTime BeforeAlarmTime;
-
-        /// <summary>
         /// 履歴情報
         /// </summary>
         public List<UserControl.AlarmInfo> AlarmHistory;
@@ -127,6 +122,11 @@ namespace DrugAlarm.Class
                 /// </summary>
                 public const string REALARM = "ReAlarm";
 #pragma warning restore RECS0146 // メンバーは外部クラスから静的メンバーを隠します
+
+                /// <summary>
+                /// 前回アラーム日時
+                /// </summary>
+                public const string BEFOREALARM = "BeforeAlarm";
 
             }
 
@@ -233,29 +233,6 @@ namespace DrugAlarm.Class
                 /// パラメータ名：設定データ終了
                 /// </summary>
                 public const string END = "NextAlarmEnd";
-
-                /// <summary>
-                /// アラーム時間
-                /// </summary>
-                public const string TIME = "Time";
-
-            }
-
-            /// <summary>
-            /// 前回アラーム
-            /// </summary>
-            public static class BEFOREALARM
-            {
-
-                /// <summary>
-                /// パラメータ名：設定データ開始
-                /// </summary>
-                public const string START = "BeforeAlarmStart";
-
-                /// <summary>
-                /// パラメータ名：設定データ終了
-                /// </summary>
-                public const string END = "BeforeAlarmEnd";
 
                 /// <summary>
                 /// アラーム時間
@@ -403,6 +380,11 @@ namespace DrugAlarm.Class
             public Int32 MinuteRealarm;
 
             /// <summary>
+            /// 前回アラーム日時
+            /// </summary>
+            public DateTime BeforeAlarmTime;
+
+            /// <summary>
             /// new
             /// </summary>
             public SettingParameter()
@@ -431,6 +413,8 @@ namespace DrugAlarm.Class
                 MinuteAfterMeals = 30;
                 MinuteBeforeSleep = 30;
                 MinuteRealarm = 30;
+
+                BeforeAlarmTime = DateTime.Now;
 
             }
 
@@ -658,8 +642,6 @@ namespace DrugAlarm.Class
 
             AlarmHistory = new List<UserControl.AlarmInfo>();
 
-            BeforeAlarmTime = DateTime.Now;
-
             PrescriptionList = new List<Int32>();
 
             Load();
@@ -848,6 +830,10 @@ namespace DrugAlarm.Class
                                         Setting.MinuteRealarm = method.ConvertToInt32(Strings[1], Setting.MinuteRealarm);
                                         break;
 
+                                    case NAME.SETTING.BEFOREALARM:
+                                        Setting.BeforeAlarmTime = method.ConvertToDateTime(Strings[1], Setting.BeforeAlarmTime);
+                                        break;
+
                                     default:
                                         break;
                                 }
@@ -972,7 +958,7 @@ namespace DrugAlarm.Class
             LoadNextAlarmParameter();
 
             //次回アラーム取得
-            SetNextAlarm(false);
+            SetNextAlarm();
 
         }
 
@@ -1004,7 +990,6 @@ namespace DrugAlarm.Class
                     Int32 Index = -1;
 
                     bool IsNextAlarm = false;
-                    bool IsBeforeAlarm = false;
                     bool IsRealarm = false;
                     bool IsDrugAccess = false;
                     bool IsSaveTime = false;
@@ -1024,23 +1009,6 @@ namespace DrugAlarm.Class
                                 switch (NewLine.ToString())
                                 {
 
-                                    case NAME.BEFOREALARM.START:
-
-                                        // 初期化
-                                        BeforeAlarmTime = DateTime.MaxValue;
-
-                                        IsNextAlarm = false;
-                                        IsRealarm = false;
-                                        IsDrugAccess = false;
-                                        IsBeforeAlarm = true;
-                                        IsSaveTime = false;
-                                        break;
-
-                                    case NAME.BEFOREALARM.END:
-
-                                        IsBeforeAlarm = false;
-                                        break;
-
                                     case NAME.NEXTALARM.START:
 
                                         // 初期化
@@ -1050,7 +1018,6 @@ namespace DrugAlarm.Class
                                         IsNextAlarm = true;
                                         IsRealarm = false;
                                         IsDrugAccess = false;
-                                        IsBeforeAlarm = false;
                                         IsSaveTime = false;
 
                                         break;
@@ -1066,7 +1033,6 @@ namespace DrugAlarm.Class
                                         // 初期化
                                         AddAlarm = new UserControl.AlarmInfo();
 
-                                        IsBeforeAlarm = false;
                                         IsRealarm = true;
                                         IsSaveTime = false;
                                         break;
@@ -1118,7 +1084,6 @@ namespace DrugAlarm.Class
                                         IsNextAlarm = false;
                                         IsRealarm = false;
                                         IsDrugAccess = false;
-                                        IsBeforeAlarm = false;
                                         IsSaveTime = true;
                                         break;
 
@@ -1138,24 +1103,7 @@ namespace DrugAlarm.Class
                                 string[] Strings = NewLine.ToString().Split('=');
                                 string[] Values = Strings[1].Split(',');
 
-                                if (IsBeforeAlarm)
-                                {
-
-                                    // 前回アラーム設定
-                                    switch (Strings[0])
-                                    {
-
-                                        case NAME.BEFOREALARM.TIME:
-                                            BeforeAlarmTime = method.ConvertToDateTime(Strings[1], DateTime.Now);
-                                            break;
-
-                                        default:
-                                            break;
-
-                                    }
-
-                                }
-                                else if (IsNextAlarm && !IsDrugAccess)
+                                if (IsNextAlarm && !IsDrugAccess)
                                 {
 
                                     // 再通知設定
@@ -1479,6 +1427,12 @@ namespace DrugAlarm.Class
             try
             {
 
+                //アラーム時間の記憶
+                if (UpdateBeforeAlarmTime)
+                {
+                    Setting.BeforeAlarmTime = NextAlarm.Timer.Equals(DateTime.MaxValue) ? DateTime.Now : NextAlarm.Timer;
+                }
+
                 using (StreamWriter FileData = new StreamWriter(TmpPath, false, Encoding.Unicode))
                 {
 
@@ -1492,6 +1446,7 @@ namespace DrugAlarm.Class
                     FileData.WriteLine(MakeParameter(NAME.SETTING.AFTERMEALS, Setting.MinuteAfterMeals));
                     FileData.WriteLine(MakeParameter(NAME.SETTING.BEFORESLEEP, Setting.MinuteBeforeSleep));
                     FileData.WriteLine(MakeParameter(NAME.SETTING.REALARM, Setting.MinuteRealarm));
+                    FileData.WriteLine(MakeParameter(NAME.SETTING.BEFOREALARM, Setting.BeforeAlarmTime, true));
                     FileData.WriteLine(NAME.SETTING.END);
                     #endregion
 
@@ -1539,7 +1494,7 @@ namespace DrugAlarm.Class
             {
 
                 //次回アラーム取得
-                SetNextAlarm(UpdateBeforeAlarmTime);
+                SetNextAlarm();
 
             }
 
@@ -2122,8 +2077,7 @@ namespace DrugAlarm.Class
         /// <summary>
         /// 次回アラーム情報の設定
         /// </summary>
-        /// <param name="UpdateBeforeAlarmTime">前回アラーム時間を更新するか</param>
-        private void SetNextAlarm(bool UpdateBeforeAlarmTime)
+        private void SetNextAlarm()
         {
 
             Method method = new Method();
@@ -2184,22 +2138,15 @@ namespace DrugAlarm.Class
 
                 #region 初期化
 
-                //アラーム時間の記憶
-                if (UpdateBeforeAlarmTime)
-                {
-                    BeforeAlarmTime = NextAlarm.Timer.Equals(DateTime.MaxValue) ? DateTime.Now.AddMinutes(1) : NextAlarm.Timer.AddMinutes(1);
-
-                    // 前回アラームが再通知である場合はリセット
-                    if (IsNextRealarm && !Realarm.Count.Equals(0))
-                    {
-                        Realarm.RemoveAt(0);    
-                    }
-
-                }
-
                 // 初期化
                 NextAlarm.Timer = DateTime.MaxValue;
                 NextAlarm.DrugList.Clear();
+
+                // 前回アラームが再通知である場合はリセット
+                if (IsNextRealarm && !Realarm.Count.Equals(0))
+                {
+                    Realarm.RemoveAt(0);
+                }
 
                 IsNextRealarm = false;
 
@@ -2225,13 +2172,12 @@ namespace DrugAlarm.Class
                     if (DrugList[iLoop].Breakfast.IsDrug)
                     {
 
-                        if (Setting.Breakfast.Start < DateTime.Today)
-                        {
-                            Setting.Breakfast.Start = method.GetTodayTime(Setting.Breakfast.Start.Hour, Setting.Breakfast.Start.Minute);
-                            Setting.Breakfast.Finish = method.GetTodayTime(Setting.Breakfast.Finish.Hour, Setting.Breakfast.Finish.Minute);
-                        }
+                        Setting.Breakfast.Start = GetNextDateTime(Setting.BeforeAlarmTime, Setting.Breakfast.Start, method);
+                        Setting.Breakfast.Finish = GetNextDateTime(Setting.BeforeAlarmTime, Setting.Breakfast.Finish, method);
 
                         Time = CalcMealsTime(Setting.Breakfast.Start, Setting.Breakfast.Finish, DrugList[iLoop].Breakfast.Kind);
+                        Time = GetNextDateTime(Setting.BeforeAlarmTime, Time, method);
+
                         CompareToTime(Time, iLoop, DrugList[iLoop].Breakfast.Volume, false, false);
 
                     }
@@ -2240,13 +2186,12 @@ namespace DrugAlarm.Class
                     if (DrugList[iLoop].Lunch.IsDrug)
                     {
 
-                        if (Setting.Lunch.Start < DateTime.Today)
-                        {
-                            Setting.Lunch.Start = method.GetTodayTime(Setting.Lunch.Start.Hour, Setting.Lunch.Start.Minute);
-                            Setting.Lunch.Finish = method.GetTodayTime(Setting.Lunch.Finish.Hour, Setting.Lunch.Finish.Minute);
-                        }
+                        Setting.Lunch.Start = GetNextDateTime(Setting.BeforeAlarmTime, Setting.Lunch.Start, method);
+                        Setting.Lunch.Finish = GetNextDateTime(Setting.BeforeAlarmTime, Setting.Lunch.Finish, method);
 
                         Time = CalcMealsTime(Setting.Lunch.Start, Setting.Lunch.Finish, DrugList[iLoop].Lunch.Kind);
+                        Time = GetNextDateTime(Setting.BeforeAlarmTime, Time, method);
+
                         CompareToTime(Time, iLoop, DrugList[iLoop].Lunch.Volume, false, false);
 
                     }
@@ -2255,13 +2200,12 @@ namespace DrugAlarm.Class
                     if (DrugList[iLoop].Dinner.IsDrug)
                     {
 
-                        if (Setting.Dinner.Start < DateTime.Today)
-                        {
-                            Setting.Dinner.Start = method.GetTodayTime(Setting.Dinner.Start.Hour, Setting.Dinner.Start.Minute);
-                            Setting.Dinner.Finish = method.GetTodayTime(Setting.Dinner.Finish.Hour, Setting.Dinner.Finish.Minute);
-                        }
+                        Setting.Dinner.Start = GetNextDateTime(Setting.BeforeAlarmTime, Setting.Dinner.Start, method);
+                        Setting.Dinner.Finish = GetNextDateTime(Setting.BeforeAlarmTime, Setting.Dinner.Finish, method);
 
                         Time = CalcMealsTime(Setting.Dinner.Start, Setting.Dinner.Finish, DrugList[iLoop].Dinner.Kind);
+                        Time = GetNextDateTime(Setting.BeforeAlarmTime, Time, method);
+
                         CompareToTime(Time, iLoop, DrugList[iLoop].Dinner.Volume, false, false);
 
                     }
@@ -2270,18 +2214,10 @@ namespace DrugAlarm.Class
                     if (DrugList[iLoop].Sleep.IsDrug)
                     {
 
-                        if (Setting.Sleep < DateTime.Today)
-                        {
-                            Setting.Sleep = method.GetTodayTime(Setting.Sleep.Hour, Setting.Sleep.Minute);
-                        }
+                        Setting.Sleep = GetNextDateTime(Setting.BeforeAlarmTime, Setting.Sleep, method);
 
                         Time = Setting.Sleep.AddMinutes((-1) * Setting.MinuteBeforeSleep);
-
-                        //取得した時間を超過している場合は翌日にする
-                        if (Time < BeforeAlarmTime)
-                        {
-                            Time = Time.AddDays(1);
-                        }
+                        Time = GetNextDateTime(Setting.BeforeAlarmTime, Time, method);
 
                         CompareToTime(Time, iLoop, DrugList[iLoop].Sleep.Volume, false, false);
 
@@ -2363,7 +2299,7 @@ namespace DrugAlarm.Class
             {
 
                 // 仮に、対象がないのに次回アラームとなってしまった場合は、再帰
-                SetNextAlarm(true);
+                Save(true);
 
             }
 
@@ -2400,12 +2336,6 @@ namespace DrugAlarm.Class
 
                 using (StreamWriter FileData = new StreamWriter(TmpPath, false, Encoding.Unicode))
                 {
-
-                    #region 前回アラーム
-                    FileData.WriteLine(NAME.BEFOREALARM.START);
-                    FileData.WriteLine(MakeParameter(NAME.BEFOREALARM.TIME, BeforeAlarmTime, true));
-                    FileData.WriteLine(NAME.BEFOREALARM.END);
-                    #endregion
 
                     #region 次回アラーム
                     FileData.WriteLine("");
@@ -2473,6 +2403,32 @@ namespace DrugAlarm.Class
 #if DEBUG
                 System.Diagnostics.Debug.WriteLine(ex.Message);
 #endif
+            }
+
+        }
+
+        /// <summary>
+        /// 次回時間の計算
+        /// </summary>
+        /// <returns>The next date time.</returns>
+        /// <param name="date">Date.</param>
+        /// <param name="time">Time.</param>
+        /// <param name="method">共通メソッド</param>
+        private DateTime GetNextDateTime(DateTime date, DateTime time, Method method = null)
+        {
+
+            if (method == null)
+            {
+                method = new Method();
+            }
+
+            if (time <= date)
+            {
+                return method.ConvertToDateTime(date.Year, date.Month, date.AddDays(1).Day, time.Hour, time.Minute, time);
+            }
+            else
+            {
+                return time;
             }
 
         }
@@ -2551,12 +2507,6 @@ namespace DrugAlarm.Class
                 default:
                     Return = StartTime;
                     break;
-            }
-
-            //取得した時間を超過している場合は翌日にする
-            if (Return < BeforeAlarmTime)
-            {
-                Return = Return.AddDays(1);
             }
 
             return Return;
@@ -2664,7 +2614,7 @@ namespace DrugAlarm.Class
 
             // 次回アラームが空の場合、次回アラームの設定
             if (NextAlarm.DrugList.Count.Equals(0))
-                SetNextAlarm(true);
+                Save(true);
 
         }
 

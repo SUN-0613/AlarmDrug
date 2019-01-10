@@ -437,6 +437,12 @@ namespace DrugAlarm.Resx {
             }
         }
         
+        internal static string Setting_BeforeAlarm {
+            get {
+                return ResourceManager.GetString("Setting_BeforeAlarm", resourceCulture);
+            }
+        }
+        
         internal static string Setting_BeforeMeals {
             get {
                 return ResourceManager.GetString("Setting_BeforeMeals", resourceCulture);
