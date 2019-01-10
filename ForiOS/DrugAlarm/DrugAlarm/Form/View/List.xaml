@@ -42,7 +42,7 @@
             
             <Button Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" BackgroundColor="Transparent" TextColor="Blue" VerticalOptions="Center" HorizontalOptions="Center" BorderColor="Transparent" BorderWidth="0" Text="{Binding NextAlarm}" Command="{Binding TakeBeforeCommand}" Style="{DynamicResource BodyStyle}" />
             
-            <ListView Grid.Row="2" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" SelectionMode="Single" ItemsSource="{Binding DrugList}" SelectedItem="{Binding SelectedItem}" SeparatorVisibility="None" >
+            <ListView x:Name="ListViewName" Grid.Row="2" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" SelectionMode="Single" ItemsSource="{Binding DrugList}" SelectedItem="{Binding SelectedItem}" SeparatorVisibility="None" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

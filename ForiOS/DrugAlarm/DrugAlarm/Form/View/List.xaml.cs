@@ -58,6 +58,9 @@ namespace DrugAlarm.Form.View
             {
                 _ViewModel.ShowList();
             }
+
+            ListViewName.SelectedItem = null;
+
         }
 
         /// <summary>
