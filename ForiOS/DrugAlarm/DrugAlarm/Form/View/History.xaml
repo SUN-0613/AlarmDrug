@@ -42,22 +42,24 @@
                 </ListView.GroupHeaderTemplate>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell BindingContext="{Binding DrugList}">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="9*" />
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="3*" />
-                                    <ColumnDefinition Width="3*" />
-                                    <ColumnDefinition Width="3*" />
-                                </Grid.ColumnDefinitions>
-                                <Label Grid.Column="1" Text="{Binding Name}" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Style="{DynamicResource ListItemDetailTextStyle}" />
-                                <Label Grid.Column="3" Text="{Common:Translate Detail_Remaining}" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Style="{DynamicResource ListItemDetailTextStyle}" />
-                                <Label Grid.Column="4" Text="{Binding Volume}" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Style="{DynamicResource ListItemDetailTextStyle}" />
-                                <Label Grid.Column="5" Text="{Common:Translate Detail_Unit}" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Style="{DynamicResource ListItemDetailTextStyle}" />
-                            </Grid>
-                        </ViewCell>
+                        <Common:ViewCellCustom Height="40" SelectedBackgroundColor="Transparent" BindingContext="{Binding DrugList}">
+                            <ContentView>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="9*" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="3*" />
+                                        <ColumnDefinition Width="3*" />
+                                        <ColumnDefinition Width="3*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="1" Text="{Binding Name}" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Style="{DynamicResource ListItemDetailTextStyle}" />
+                                    <Label Grid.Column="3" Text="{Common:Translate Detail_Remaining}" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Style="{DynamicResource ListItemDetailTextStyle}" />
+                                    <Label Grid.Column="4" Text="{Binding Volume}" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Style="{DynamicResource ListItemDetailTextStyle}" />
+                                    <Label Grid.Column="5" Text="{Common:Translate Detail_Unit}" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Style="{DynamicResource ListItemDetailTextStyle}" />
+                                </Grid>
+                            </ContentView>
+                        </Common:ViewCellCustom>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
