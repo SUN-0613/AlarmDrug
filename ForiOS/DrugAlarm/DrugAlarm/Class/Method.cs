@@ -198,6 +198,21 @@ namespace DrugAlarm.Class
         }
 
         /// <summary>
+        /// 文章に日付を埋め、改行変換
+        /// </summary>
+        /// <returns>The to message.</returns>
+        /// <param name="message">Message.</param>
+        /// <param name="dateTime">Date time.</param>
+        public string ConvertToMessage(string message, DateTime dateTime)
+        {
+
+            const string TIME = "_TIME_";
+
+            return ConvertToCRLF(message.Replace(TIME, dateTime.ToString(UserControl.DateTimeFormat)));
+
+        }
+
+        /// <summary>
         /// 2つの時間の平均値を取得
         /// </summary>
         /// <returns>The average time.</returns>

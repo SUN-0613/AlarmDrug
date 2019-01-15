@@ -521,12 +521,6 @@ namespace DrugAlarm.Resx {
             }
         }
         
-        internal static string Timer_AtTime {
-            get {
-                return ResourceManager.GetString("Timer_AtTime", resourceCulture);
-            }
-        }
-        
         internal static string Timer_Title {
             get {
                 return ResourceManager.GetString("Timer_Title", resourceCulture);

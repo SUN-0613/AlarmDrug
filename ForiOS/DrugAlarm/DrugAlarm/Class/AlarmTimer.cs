@@ -147,13 +147,11 @@ namespace DrugAlarm.Class
                             if (((TimeSpan)(DateTime.Now - _LocalAlarmDateTime)).TotalMinutes > _LocalAlarmDiffTime)
                             {
 
-                                string subTitle = _Parameter.NextAlarm.Timer.ToString(UserControl.DateTimeFormat) 
-                                                    + Resx.Resources.Timer_AtTime
-                                                    + Environment.NewLine 
-                                                    + Resx.Resources.Timer_Subtitle;
-
-                                DependencyService.Get<Common.INotificationService>().Show(Resx.Resources.Timer_Title, subTitle, Resx.Resources.Timer_Body);
                                 _LocalAlarmDateTime = DateTime.Now;
+
+                                DependencyService.Get<Common.INotificationService>().Show(Resx.Resources.Timer_Title
+                                                                                        , new Method().ConvertToMessage(Resx.Resources.Timer_Subtitle, _Parameter.NextAlarm.Timer)
+                                                                                        , Resx.Resources.Timer_Body);
 
                             }
                         }
