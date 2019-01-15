@@ -576,5 +576,24 @@ namespace DrugAlarm.Form.ViewModel
 
         }
 
+        /// <summary>
+        /// 前回アラーム日時の更新
+        /// </summary>
+        public void UpdateBeforeAlarmDateTime()
+        {
+
+            DateTime beforeAlarm = _Model.GetBeforeAlarm();
+
+            if (!_SelectBeforeAlarmDate.Equals(beforeAlarm)
+                || !_SelectBeforeAlarmTime.Equals(beforeAlarm.TimeOfDay))
+            {
+
+                BeforeAlarmDate = beforeAlarm;
+                BeforeAlarmTime = beforeAlarm.TimeOfDay;
+
+            }
+
+        }
+
     }
 }

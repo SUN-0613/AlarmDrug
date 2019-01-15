@@ -231,14 +231,16 @@ namespace DrugAlarm.Form.Model
         /// <returns>The alarm.</returns>
         public string GetNextAlarmMessage()
         {
+
             if (!_Parameter.NextAlarm.Timer.Equals(DateTime.MaxValue))
             {
-                return Resx.Resources.List_NextAlarmMessage + _Parameter.NextAlarm.Timer.ToString(Class.UserControl.DateTimeFormat);
+                return new Class.Method().ConvertToMessage(Resx.Resources.List_NextAlarmMessage, _Parameter.NextAlarm.Timer);
             }
             else
             {
                 return "";
             }
+
         }
 
     }

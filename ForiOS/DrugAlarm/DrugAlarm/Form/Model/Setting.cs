@@ -508,6 +508,15 @@ namespace DrugAlarm.Form.Model
         }
 
         /// <summary>
+        /// 前回アラームの取得
+        /// </summary>
+        /// <returns>The before alarm.</returns>
+        public DateTime GetBeforeAlarm()
+        {
+            return _Parameter.Setting.BeforeAlarmTime;
+        }
+
+        /// <summary>
         /// 終了処理
         /// </summary>
         /// <remarks>Call <see cref="Dispose"/> when you are finished using the <see cref="T:DrugAlarm.Form.Model.Setting"/>. The

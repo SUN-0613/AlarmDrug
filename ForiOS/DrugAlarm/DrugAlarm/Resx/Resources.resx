@@ -185,7 +185,7 @@
     <comment>一覧：メニュー：編集</comment>
   </data>
   <data name="List_NextAlarmMessage" xml:space="preserve">
-    <value>次回:</value>
+    <value>次回:_TIME_服用</value>
     <comment>一覧：次回アラーム欄メッセージ</comment>
   </data>
   <data name="List_Setting" xml:space="preserve">
