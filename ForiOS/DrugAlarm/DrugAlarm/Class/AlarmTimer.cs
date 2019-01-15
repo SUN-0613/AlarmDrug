@@ -11,6 +11,11 @@ namespace DrugAlarm.Class
     {
 
         /// <summary>
+        /// ローカル通知発生時間
+        /// </summary>
+        private const double _LocalAlarmDiffTime = 30.0;
+
+        /// <summary>
         /// パラメータ
         /// </summary>
         private Parameter _Parameter = (Xamarin.Forms.Application.Current as App).Parameter;
@@ -26,20 +31,22 @@ namespace DrugAlarm.Class
         private bool _IsSkipTimer = false;
 
         /// <summary>
-        /// ローカル通知済FLG
-        /// </summary>
-        private bool _IsLocalAlarm = false;
-
-        /// <summary>
         /// アラーム画面表示FLG
         /// </summary>
         private bool _IsShowAlarm = false;
+
+        /// <summary>
+        /// ローカル通知実行日時
+        /// </summary>
+        private DateTime _LocalAlarmDateTime;
 
         /// <summary>
         /// new
         /// </summary>
         public AlarmTimer()
         {
+
+            _LocalAlarmDateTime = DateTime.MinValue;
 
             //ローカル通知許可
             DependencyService.Get<Common.INotificationService>().Allow();
@@ -102,7 +109,7 @@ namespace DrugAlarm.Class
                     {
 
                         Class.UserControl.ResetNextAlarm = false;
-                        _IsLocalAlarm = false;
+                        _LocalAlarmDateTime = DateTime.MinValue;
                         _IsShowAlarm = false;
 
                         // 再帰
@@ -137,10 +144,17 @@ namespace DrugAlarm.Class
                         else
                         {
                             //ローカル通知
-                            if (!_IsLocalAlarm)
+                            if (((TimeSpan)(DateTime.Now - _LocalAlarmDateTime)).TotalMinutes > _LocalAlarmDiffTime)
                             {
-                                DependencyService.Get<Common.INotificationService>().Show(Resx.Resources.Timer_Title, Resx.Resources.Timer_Subtitle, Resx.Resources.Timer_Body);
-                                _IsLocalAlarm = true;
+
+                                string subTitle = _Parameter.NextAlarm.Timer.ToString(UserControl.DateTimeFormat) 
+                                                    + Resx.Resources.Timer_AtTime
+                                                    + Environment.NewLine 
+                                                    + Resx.Resources.Timer_Subtitle;
+
+                                DependencyService.Get<Common.INotificationService>().Show(Resx.Resources.Timer_Title, subTitle, Resx.Resources.Timer_Body);
+                                _LocalAlarmDateTime = DateTime.Now;
+
                             }
                         }
 

@@ -328,6 +328,10 @@
     <value>錠</value>
     <comment>設定：錠</comment>
   </data>
+  <data name="Timer_AtTime" xml:space="preserve">
+    <value>_Time_分の</value>
+    <comment>アラーム：サブタイトル補足</comment>        
+  </data>
   <data name="Timer_Title" xml:space="preserve">
     <value>お薬アラーム</value>
     <comment>アラーム：タイトル</comment>        
