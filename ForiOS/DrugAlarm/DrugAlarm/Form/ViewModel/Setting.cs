@@ -582,6 +582,7 @@ namespace DrugAlarm.Form.ViewModel
         public void UpdateBeforeAlarmDateTime()
         {
 
+            bool isEdited = IsEdited;
             DateTime beforeAlarm = _Model.GetBeforeAlarm();
 
             if (!_SelectBeforeAlarmDate.Equals(beforeAlarm)
@@ -590,6 +591,11 @@ namespace DrugAlarm.Form.ViewModel
 
                 BeforeAlarmDate = beforeAlarm;
                 BeforeAlarmTime = beforeAlarm.TimeOfDay;
+
+                if (!isEdited)
+                {
+                    IsEdited = isEdited;
+                }
 
             }
 
