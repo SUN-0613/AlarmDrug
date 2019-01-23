@@ -24,7 +24,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>AYamamoto.DrugAlarm</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>1.0.0</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>XSAppIconAssets</key>
@@ -32,7 +32,7 @@
 	<key>CFBundleName</key>
 	<string>お薬服用</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.0.0</string>
 	<key>UIMainStoryboardFile</key>
 	<string>LaunchScreen</string>
 	<key>UIStatusBarStyle</key>
