@@ -3,6 +3,7 @@
              xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:Common="clr-namespace:DrugAlarm.Common" 
+             xmlns:AdMob="clr-namespace:DrugAlarm.AdMob"
              NavigationPage.HasNavigationBar="false">
     <ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness" iOS="0, 25, 0, 0" />
@@ -13,8 +14,8 @@
                 <RowDefinition Height="40*" />
                 <RowDefinition Height="30*" />
                 <RowDefinition Height="30*" />
-                <RowDefinition Height="340*" />
-                <RowDefinition Height="10*" />
+                <RowDefinition Height="320*" />
+                <RowDefinition Height="30*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="400*" />
@@ -81,6 +82,8 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            
+            <AdMob:Banner Grid.Row="4" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="1" />
             
         </Grid>
     </ContentPage.Content>

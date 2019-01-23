@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
 using Foundation;
 using UIKit;
+
+using Google.MobileAds;
 
 namespace DrugAlarm.iOS
 {
@@ -80,12 +80,17 @@ namespace DrugAlarm.iOS
         //
         public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
         {
+
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
 
             UIApplication.SharedApplication.SetMinimumBackgroundFetchInterval(UIApplication.BackgroundFetchIntervalMinimum);
 
+            // adMob:アプリID設定
+            Google.MobileAds.MobileAds.Configure("ca-app-pub-5716768910200232~8167818180");
+
             return base.FinishedLaunching(uiApplication, launchOptions);
+
         }
 
         /// <summary>

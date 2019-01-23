@@ -25,6 +25,7 @@
     <Folder Include="Icon\iOS\" />
     <Folder Include="Icon\iTunesArtWork\" />
     <Folder Include="Icon\AppleWatch\" />
+    <Folder Include="AdMob\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Common\EmptyClass.cs" />
