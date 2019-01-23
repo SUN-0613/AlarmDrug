@@ -146,6 +146,19 @@ namespace DrugAlarm.Form.Model
             _Parameter.SetRealarm(_RealarmMinute[RealarmMinuteIndex]);
         }
 
+        /// <summary>
+        /// スキップコマンド
+        /// </summary>
+        public Common.DelegateCommand SkipCommand;
+
+        /// <summary>
+        /// スキップ
+        /// </summary>
+        public void Skip()
+        {
+            _Parameter.Skip();
+        }
+
         #endregion
 
         /// <summary>

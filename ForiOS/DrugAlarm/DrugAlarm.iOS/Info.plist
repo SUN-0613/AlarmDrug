@@ -30,7 +30,7 @@
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>CFBundleName</key>
-	<string>お薬アラーム</string>
+	<string>お薬服用</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>UIMainStoryboardFile</key>

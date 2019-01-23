@@ -419,6 +419,18 @@ namespace DrugAlarm.Resx {
             }
         }
         
+        internal static string Realarm_Skip {
+            get {
+                return ResourceManager.GetString("Realarm_Skip", resourceCulture);
+            }
+        }
+        
+        internal static string Realarm_SkipMessage {
+            get {
+                return ResourceManager.GetString("Realarm_SkipMessage", resourceCulture);
+            }
+        }
+        
         internal static string Realarm_Title {
             get {
                 return ResourceManager.GetString("Realarm_Title", resourceCulture);

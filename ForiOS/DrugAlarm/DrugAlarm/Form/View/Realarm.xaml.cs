@@ -57,6 +57,8 @@ namespace DrugAlarm.Form.View
         private async void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
 
+            bool AlertAnswer;
+
             switch (e.PropertyName)
             {
 
@@ -65,21 +67,42 @@ namespace DrugAlarm.Form.View
                     break;
 
                 case "CallSave":
-                    if (!Class.UserControl.IsWaitToRunRealarm)
+                    PagePop();
+                    break;
+
+                case "CallSkip":
+
+                    AlertAnswer = await DisplayAlert(Resx.Resources.Detail_Title, _ViewModel.MakeSkipMessage(), Resx.Resources.DisplayAlert_Yes, Resx.Resources.DisplayAlert_No);
+
+                    if (AlertAnswer)
                     {
-                        await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(false);
+                        PagePop();
                     }
-                    else
-                    {
-                        Class.UserControl.IsWaitToRunRealarm = false;
-                    }
-                    await (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
+
                     break;
 
                 default:
                     break;
 
             }
+
+        }
+
+        /// <summary>
+        /// 表示ページを戻す
+        /// </summary>
+        private async void PagePop()
+        {
+
+            if (!Class.UserControl.IsWaitToRunRealarm)
+            {
+                await(Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(false);
+            }
+            else
+            {
+                Class.UserControl.IsWaitToRunRealarm = false;
+            }
+            await(Xamarin.Forms.Application.Current as App).MainPage.Navigation.PopAsync(true);
 
         }
 

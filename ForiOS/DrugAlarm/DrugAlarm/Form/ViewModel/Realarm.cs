@@ -99,6 +99,39 @@ namespace DrugAlarm.Form.ViewModel
             }
         }
 
+        /// <summary>
+        /// スキップコマンドプロパティ
+        /// </summary>
+        /// <value>The skip command.</value>
+        public Common.DelegateCommand SkipCommand
+        {
+            get
+            {
+                if (_Model.SkipCommand == null)
+                {
+                    _Model.SkipCommand = new Common.DelegateCommand(
+                        () =>
+                        {
+                            _Model.Skip();
+                            CallPropertyChanged("CallSkip");
+                        },
+                        () => true);
+                }
+
+                return _Model.SkipCommand;
+
+            }
+        }
+
+        /// <summary>
+        /// スキップ確認メッセージ作成
+        /// </summary>
+        /// <returns>The skip message.</returns>
+        public string MakeSkipMessage()
+        {
+            return Resx.Resources.Realarm_SkipMessage;
+        }
+
         #endregion
 
         /// <summary>

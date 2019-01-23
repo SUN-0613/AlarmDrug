@@ -260,6 +260,14 @@
     <value>分後に通知</value>
     <comment>再通知：メッセージ</comment>
   </data>
+  <data name="Realarm_Skip" xml:space="preserve">
+    <value>今回は服用しない</value>
+    <comment>再通知：服用スキップ</comment>
+  </data>
+  <data name="Realarm_SkipMessage" xml:space="preserve">
+    <value>服用しなくていいですか？</value>
+    <comment>再通知：服用メッセージ</comment>
+  </data>
   <data name="Realarm_Title" xml:space="preserve">
     <value>再通知</value>
     <comment>再通知：タイトル</comment>

@@ -2543,6 +2543,58 @@ namespace DrugAlarm.Class
         }
 
         /// <summary>
+        /// 対象薬の服用をスキップ
+        /// </summary>
+        public void Skip()
+        {
+
+            //DrugListのIndexを登録
+            for (Int32 iLoop = NextAlarm.DrugList.Count - 1; iLoop > -1; iLoop--)
+            {
+
+                // Alarm.xamlにて服用対象となった薬か
+                if (!NextAlarm.DrugList[iLoop].IsDrug)
+                {
+
+                    Int32 Index = NextAlarm.DrugList[iLoop].Index;
+
+                    // 指定時間による服用なら、次回日時の設定を行う
+                    if (NextAlarm.DrugList[iLoop].IsAppoint)
+                    {
+
+                        if (DrugList[Index].AppointDayEach < 1)
+                        {
+                            // 日時指定なしの場合、1回きりなのでFLG解除
+                            DrugList[Index].Appoint.IsDrug = false;
+                        }
+                        else
+                        {
+                            // 次回日時を再設定
+                            DrugList[Index].AppointTime = DrugList[Index].AppointTime.AddDays(DrugList[Index].AppointDayEach);
+                        }
+
+                    }
+
+                    //時間毎による服用なら、次回時刻を設定
+                    if (NextAlarm.DrugList[iLoop].IsHourEach)
+                    {
+                        DrugList[Index].HourEachNextTime = NextAlarm.Timer.AddHours(DrugList[Index].HourEachTime);
+                    }
+
+                    // 次回アラームより削除
+                    NextAlarm.DrugList.RemoveAt(iLoop);
+
+                }
+
+            }
+
+            // 次回アラームが空の場合、次回アラームの設定
+            if (NextAlarm.DrugList.Count.Equals(0))
+                Save(true);
+
+        }
+
+        /// <summary>
         /// 再通知設定
         /// </summary>
         /// <param name="AfterMinute">再通知設定時間(分)</param>
