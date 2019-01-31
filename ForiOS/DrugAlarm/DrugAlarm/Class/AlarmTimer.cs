@@ -112,6 +112,9 @@ namespace DrugAlarm.Class
                         _LocalAlarmDateTime = DateTime.MinValue;
                         _IsShowAlarm = false;
 
+                        // ローカル通知の解除
+                        DependencyService.Get<Common.INotificationService>().Release();
+
                         // 再帰
                         if (!UserControl.TakeBeforeAlarm)
                         {
@@ -125,6 +128,18 @@ namespace DrugAlarm.Class
                     if (_Parameter.NextAlarm.Timer <= DateTime.Now || UserControl.TakeBeforeAlarm)
                     {
 
+                        //ローカル通知
+                        if (((TimeSpan)(DateTime.Now - _LocalAlarmDateTime)).TotalMinutes > _LocalAlarmDiffTime)
+                        {
+
+                            _LocalAlarmDateTime = DateTime.Now;
+
+                            DependencyService.Get<Common.INotificationService>().Show(Resx.Resources.Timer_Title
+                                                                                    , new Method().ConvertToMessage(Resx.Resources.Timer_Subtitle, _Parameter.NextAlarm.Timer)
+                                                                                    , Resx.Resources.Timer_Body);
+
+                        }
+
                         //バックグラウンドで起動していないか
                         if (!(Xamarin.Forms.Application.Current as App).IsBackground)
                         {
@@ -135,25 +150,8 @@ namespace DrugAlarm.Class
                                 (Xamarin.Forms.Application.Current as App).MainPage.Navigation.PushAsync(new Form.View.Alarm());
                                 _IsShowAlarm = true;
 
-                                // ローカル通知の解除
-                                DependencyService.Get<Common.INotificationService>().Release();
-
                             }
 
-                        }
-                        else
-                        {
-                            //ローカル通知
-                            if (((TimeSpan)(DateTime.Now - _LocalAlarmDateTime)).TotalMinutes > _LocalAlarmDiffTime)
-                            {
-
-                                _LocalAlarmDateTime = DateTime.Now;
-
-                                DependencyService.Get<Common.INotificationService>().Show(Resx.Resources.Timer_Title
-                                                                                        , new Method().ConvertToMessage(Resx.Resources.Timer_Subtitle, _Parameter.NextAlarm.Timer)
-                                                                                        , Resx.Resources.Timer_Body);
-
-                            }
                         }
 
                         // 先に服用FLGのリセット

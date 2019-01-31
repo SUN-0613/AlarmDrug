@@ -2453,7 +2453,8 @@ namespace DrugAlarm.Class
 
             if (time <= date)
             {
-                return method.ConvertToDateTime(date.Year, date.Month, date.AddDays(1).Day, time.Hour, time.Minute, time);
+                date = date.AddDays(1);
+                return method.ConvertToDateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, time);
             }
             else
             {
