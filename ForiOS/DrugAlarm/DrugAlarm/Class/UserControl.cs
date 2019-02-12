@@ -41,6 +41,11 @@ namespace DrugAlarm.Class
         public const string TimeFormat = "HH:mm";
 
         /// <summary>
+        /// TimeSpan用パラメータ時間フォーマット
+        /// </summary>
+        public const string TimeSpanFormat = @"hh\:mm";
+
+        /// <summary>
         /// パラメータ保存用指定日時フォーマット
         /// </summary>
         public const string DateTimeFormat = "yyyy/MM/dd HH:mm";
@@ -80,20 +85,20 @@ namespace DrugAlarm.Class
             /// <summary>
             /// 開始時間
             /// </summary>
-            public DateTime Start;
+            public TimeSpan Start;
 
             /// <summary>
             /// 終了時間
             /// </summary>
-            public DateTime Finish;
+            public TimeSpan Finish;
 
             /// <summary>
             /// new
             /// </summary>
             public BetweenTime()
             {
-                Start = DateTime.MaxValue;
-                Finish = DateTime.MaxValue;
+                Start = TimeSpan.Parse("00:00");
+                Finish = TimeSpan.Parse("1.00:00");
             }
 
             /// <summary>
@@ -103,7 +108,7 @@ namespace DrugAlarm.Class
             {
                 if (Start.CompareTo(Finish).Equals(1))
                 {
-                    DateTime Tmp = Start;
+                    TimeSpan Tmp = Start;
                     Start = Finish;
                     Finish = Tmp;
                 }

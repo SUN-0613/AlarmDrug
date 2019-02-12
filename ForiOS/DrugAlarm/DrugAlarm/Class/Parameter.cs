@@ -367,7 +367,7 @@ namespace DrugAlarm.Class
             /// <summary>
             /// 就寝時間
             /// </summary>
-            public DateTime Sleep;
+            public TimeSpan Sleep;
 
             /// <summary>
             /// 食前時間（分）
@@ -405,20 +405,20 @@ namespace DrugAlarm.Class
                 IsAccess = false;
                 Breakfast = new UserControl.BetweenTime
                 {
-                    Start = method.GetTodayTime(6, 0),
-                    Finish = method.GetTodayTime(6, 30)
+                    Start = TimeSpan.Parse("06:00"),
+                    Finish = TimeSpan.Parse("06:30")
                 };
                 Lunch = new UserControl.BetweenTime
                 {
-                    Start = method.GetTodayTime(12, 0),
-                    Finish = method.GetTodayTime(12, 30)
+                    Start = TimeSpan.Parse("12:00"),
+                    Finish = TimeSpan.Parse("12:30")
                 };
                 Dinner = new UserControl.BetweenTime
                 {
-                    Start = method.GetTodayTime(18, 0),
-                    Finish = method.GetTodayTime(18, 30)
+                    Start = TimeSpan.Parse("18:00"),
+                    Finish = TimeSpan.Parse("18:30")
                 };
-                Sleep = method.GetTodayTime(23, 0);
+                Sleep = TimeSpan.Parse("23:00");
                 MinuteBeforeMeals = 30;
                 MinuteAfterMeals = 30;
                 MinuteBeforeSleep = 30;
@@ -809,22 +809,22 @@ namespace DrugAlarm.Class
                                     {
 
                                         case NAME.SETTING.BREAKFAST:
-                                            Setting.Breakfast.Start = method.GetTodayTime(Values[0]);
-                                            Setting.Breakfast.Finish = method.GetTodayTime(Values[1]);
+                                            Setting.Breakfast.Start = TimeSpan.Parse(Values[0]);
+                                            Setting.Breakfast.Finish = TimeSpan.Parse(Values[1]);
                                             break;
 
                                         case NAME.SETTING.LUNCH:
-                                            Setting.Lunch.Start = method.GetTodayTime(Values[0]);
-                                            Setting.Lunch.Finish = method.GetTodayTime(Values[1]);
+                                            Setting.Lunch.Start = TimeSpan.Parse(Values[0]);
+                                            Setting.Lunch.Finish = TimeSpan.Parse(Values[1]);
                                             break;
 
                                         case NAME.SETTING.DINNER:
-                                            Setting.Dinner.Start = method.GetTodayTime(Values[0]);
-                                            Setting.Dinner.Finish = method.GetTodayTime(Values[1]);
+                                            Setting.Dinner.Start = TimeSpan.Parse(Values[0]);
+                                            Setting.Dinner.Finish = TimeSpan.Parse(Values[1]);
                                             break;
 
                                         case NAME.SETTING.SLEEP:
-                                            Setting.Sleep = method.GetTodayTime(Strings[1]);
+                                            Setting.Sleep = TimeSpan.Parse(Strings[1]);
                                             break;
 
                                         case NAME.SETTING.BEFOREMEALS:
@@ -1782,6 +1782,50 @@ namespace DrugAlarm.Class
         /// </summary>
         /// <returns>パラメータ出力値</returns>
         /// <param name="Parameter">パラメータ名</param>
+        /// <param name="Value">時間</param>
+        private string MakeParameter(string Parameter, TimeSpan Value)
+        {
+
+            StringBuilder Str = new StringBuilder(Parameter.Length + UserControl.TimeSpanFormat.Length + 1);
+            string Return;
+
+            try
+            {
+
+                Str.Clear();
+                Str.Append(Parameter);
+                Str.Append("=").Append(Value.ToString(UserControl.TimeSpanFormat));
+
+                Return = Str.ToString();
+
+            }
+            catch (Exception ex)
+            {
+
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+#endif
+
+                Return = "";
+
+            }
+            finally
+            {
+
+                Str.Clear();
+                Str = null;
+
+            }
+
+            return Return;
+
+        }
+
+        /// <summary>
+        /// パラメータ時間形式作成
+        /// </summary>
+        /// <returns>パラメータ出力値</returns>
+        /// <param name="Parameter">パラメータ名</param>
         /// <param name="Value">bool値</param>
         private string MakeParameter(string Parameter, bool Value)
         {
@@ -1828,10 +1872,10 @@ namespace DrugAlarm.Class
         /// <param name="Parameter">パラメータ名</param>
         /// <param name="Start">開始時間</param>
         /// <param name="Finish">終了時間</param>
-        private string MakeParameter(string Parameter, DateTime Start, DateTime Finish)
+        private string MakeParameter(string Parameter, TimeSpan Start, TimeSpan Finish)
         {
 
-            StringBuilder Str = new StringBuilder(Parameter.Length + UserControl.TimeFormat.Length * 2 + 2);
+            StringBuilder Str = new StringBuilder(Parameter.Length + UserControl.TimeSpanFormat.Length * 2 + 2);
             string Return;
 
             try
@@ -1839,8 +1883,8 @@ namespace DrugAlarm.Class
 
                 Str.Clear();
                 Str.Append(Parameter);
-                Str.Append("=").Append(Start.ToString(UserControl.TimeFormat));
-                Str.Append(",").Append(Finish.ToString(UserControl.TimeFormat));
+                Str.Append("=").Append(Start.ToString(UserControl.TimeSpanFormat));
+                Str.Append(",").Append(Finish.ToString(UserControl.TimeSpanFormat));
 
                 Return = Str.ToString();
 
@@ -2197,12 +2241,7 @@ namespace DrugAlarm.Class
                     if (DrugList[iLoop].Breakfast.IsDrug)
                     {
 
-                        Setting.Breakfast.Start = GetNextDateTime(Setting.BeforeAlarmTime, Setting.Breakfast.Start, method);
-                        Setting.Breakfast.Finish = GetNextDateTime(Setting.BeforeAlarmTime, Setting.Breakfast.Finish, method);
-
-                        Time = CalcMealsTime(Setting.Breakfast.Start, Setting.Breakfast.Finish, DrugList[iLoop].Breakfast.Kind);
-                        Time = GetNextDateTime(Setting.BeforeAlarmTime, Time, method);
-
+                        Time = CalcMealsTime(Setting.BeforeAlarmTime, Setting.Breakfast.Start, Setting.Breakfast.Finish, DrugList[iLoop].Breakfast.Kind, method);
                         CompareToTime(Time, iLoop, DrugList[iLoop].Breakfast.Volume, false, false);
 
                     }
@@ -2211,12 +2250,7 @@ namespace DrugAlarm.Class
                     if (DrugList[iLoop].Lunch.IsDrug)
                     {
 
-                        Setting.Lunch.Start = GetNextDateTime(Setting.BeforeAlarmTime, Setting.Lunch.Start, method);
-                        Setting.Lunch.Finish = GetNextDateTime(Setting.BeforeAlarmTime, Setting.Lunch.Finish, method);
-
-                        Time = CalcMealsTime(Setting.Lunch.Start, Setting.Lunch.Finish, DrugList[iLoop].Lunch.Kind);
-                        Time = GetNextDateTime(Setting.BeforeAlarmTime, Time, method);
-
+                        Time = CalcMealsTime(Setting.BeforeAlarmTime, Setting.Lunch.Start, Setting.Lunch.Finish, DrugList[iLoop].Lunch.Kind, method);
                         CompareToTime(Time, iLoop, DrugList[iLoop].Lunch.Volume, false, false);
 
                     }
@@ -2225,12 +2259,7 @@ namespace DrugAlarm.Class
                     if (DrugList[iLoop].Dinner.IsDrug)
                     {
 
-                        Setting.Dinner.Start = GetNextDateTime(Setting.BeforeAlarmTime, Setting.Dinner.Start, method);
-                        Setting.Dinner.Finish = GetNextDateTime(Setting.BeforeAlarmTime, Setting.Dinner.Finish, method);
-
-                        Time = CalcMealsTime(Setting.Dinner.Start, Setting.Dinner.Finish, DrugList[iLoop].Dinner.Kind);
-                        Time = GetNextDateTime(Setting.BeforeAlarmTime, Time, method);
-
+                        Time = CalcMealsTime(Setting.BeforeAlarmTime, Setting.Dinner.Start, Setting.Dinner.Finish, DrugList[iLoop].Dinner.Kind, method);
                         CompareToTime(Time, iLoop, DrugList[iLoop].Dinner.Volume, false, false);
 
                     }
@@ -2239,12 +2268,18 @@ namespace DrugAlarm.Class
                     if (DrugList[iLoop].Sleep.IsDrug)
                     {
 
-                        Setting.Sleep = GetNextDateTime(Setting.BeforeAlarmTime, Setting.Sleep, method);
+                        DateTime beforeDate = Setting.BeforeAlarmTime;
+                        double minutes = Setting.Sleep.TotalMinutes - (double)Setting.MinuteBeforeSleep;
 
-                        Time = Setting.Sleep.AddMinutes((-1) * Setting.MinuteBeforeSleep);
-                        Time = GetNextDateTime(Setting.BeforeAlarmTime, Time, method);
+                        if (minutes < 0)
+                        {
+                            minutes = 1440 - minutes;
+                            beforeDate = beforeDate.AddDays(-1);
+                        }
 
-                        CompareToTime(Time, iLoop, DrugList[iLoop].Sleep.Volume, false, false);
+                        TimeSpan time = TimeSpan.FromMinutes(minutes);
+
+                        CompareToTime(GetNextDateTime(beforeDate, method.ConvertToDateTime(beforeDate.Year, beforeDate.Month, beforeDate.Day, time.Hours, time.Minutes, beforeDate), method), iLoop, DrugList[iLoop].Sleep.Volume, false, false);
 
                     }
 
@@ -2440,8 +2475,8 @@ namespace DrugAlarm.Class
         /// 次回時間の計算
         /// </summary>
         /// <returns>The next date time.</returns>
-        /// <param name="date">Date.</param>
-        /// <param name="time">Time.</param>
+        /// <param name="date">前回実行時間</param>
+        /// <param name="time">次回予定時間</param>
         /// <param name="method">共通メソッド</param>
         private DateTime GetNextDateTime(DateTime date, DateTime time, Method method = null)
         {
@@ -2511,35 +2546,66 @@ namespace DrugAlarm.Class
         /// 食事時の服用時間の計算
         /// </summary>
         /// <returns>服用時間</returns>
-        /// <param name="StartTime">開始時間</param>
-        /// <param name="FinishTime">終了時間</param>
-        /// <param name="Kind">服用タイミング</param>
-        private DateTime CalcMealsTime(DateTime StartTime, DateTime FinishTime, UserControl.KindTiming Kind)
+        /// <param name="beforeDate">前回服用日</param>
+        /// <param name="startTime">開始時間</param>
+        /// <param name="finishTime">終了時間</param>
+        /// <param name="kind">服用タイミング</param>
+        /// <param name="method">共通メソッド</param>
+        private DateTime CalcMealsTime(DateTime beforeDate, TimeSpan startTime, TimeSpan finishTime, UserControl.KindTiming kind, Method method = null)
         {
 
-            DateTime Return = DateTime.MaxValue;
+            double minutes = 0.0;
+            TimeSpan time = startTime;
+            DateTime date = beforeDate;
 
-            switch (Kind)
+            if (method == null)
+            {
+                method = new Method();
+            }
+
+            switch (kind)
             {
 
                 case UserControl.KindTiming.Before:
-                    Return = StartTime.AddMinutes((-1) * Setting.MinuteBeforeMeals);
+
+                    minutes = startTime.TotalMinutes - (double)Setting.MinuteBeforeMeals;
+
+                    if (minutes < 0)
+                    {
+                        minutes = 1440 - minutes;
+                        beforeDate = beforeDate.AddDays(-1);
+                    }
+
+                    time = TimeSpan.FromMinutes(minutes);
+
                     break;
 
                 case UserControl.KindTiming.Between:
-                    Return = new Method().GetAverageTime(StartTime, FinishTime);
+
+                    minutes = (finishTime.TotalMinutes - startTime.TotalMinutes) / 2.0;
+                    time = startTime + TimeSpan.FromMinutes(minutes);
+
                     break;
 
                 case UserControl.KindTiming.After:
-                    Return = FinishTime.AddMinutes(Setting.MinuteAfterMeals);
+
+                    minutes = finishTime.TotalMinutes + (double)Setting.MinuteAfterMeals;
+
+                    if (minutes >= TimeSpan.Parse("1.00:00:00").TotalMinutes)
+                    {
+                        minutes -= TimeSpan.Parse("1.00:00:00").TotalMinutes;
+                        beforeDate = beforeDate.AddDays(1);
+                    }
+
+                    time = TimeSpan.FromMinutes(minutes);
+
                     break;
 
                 default:
-                    Return = StartTime;
                     break;
             }
 
-            return Return;
+            return GetNextDateTime(beforeDate, method.ConvertToDateTime(beforeDate.Year, beforeDate.Month, beforeDate.Day, time.Hours, time.Minutes, date), method);
 
         }
 

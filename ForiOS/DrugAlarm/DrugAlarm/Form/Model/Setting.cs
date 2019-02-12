@@ -78,11 +78,11 @@ namespace DrugAlarm.Form.Model
         /// <value>The breakfast start.</value>
         public TimeSpan BreakfastStart
         {
-            get { return SetParam.Breakfast.Start.TimeOfDay; }
+            get { return SetParam.Breakfast.Start; }
             set
             {
-                if (!SetParam.Breakfast.Start.TimeOfDay.Equals(value))
-                    SetParam.Breakfast.Start = new Class.Method().GetTodayTime(value.Hours, value.Minutes);
+                if (!SetParam.Breakfast.Start.Equals(value))
+                    SetParam.Breakfast.Start = value;
             }
         }
 
@@ -94,11 +94,11 @@ namespace DrugAlarm.Form.Model
         /// <value>The breakfast finish.</value>
         public TimeSpan BreakfastFinish
         {
-            get { return SetParam.Breakfast.Finish.TimeOfDay; }
+            get { return SetParam.Breakfast.Finish; }
             set
             {
-                if (!SetParam.Breakfast.Finish.TimeOfDay.Equals(value))
-                    SetParam.Breakfast.Finish = new Class.Method().GetTodayTime(value.Hours, value.Minutes);
+                if (!SetParam.Breakfast.Finish.Equals(value))
+                    SetParam.Breakfast.Finish = value;
             }
         }
 
@@ -114,11 +114,11 @@ namespace DrugAlarm.Form.Model
         /// <value>The lunch start.</value>
         public TimeSpan LunchStart
         {
-            get { return SetParam.Lunch.Start.TimeOfDay; }
+            get { return SetParam.Lunch.Start; }
             set
             {
-                if (!SetParam.Lunch.Start.TimeOfDay.Equals(value))
-                    SetParam.Lunch.Start = new Class.Method().GetTodayTime(value.Hours, value.Minutes);
+                if (!SetParam.Lunch.Start.Equals(value))
+                    SetParam.Lunch.Start = value;
             }
         }
 
@@ -130,11 +130,11 @@ namespace DrugAlarm.Form.Model
         /// <value>The lunch finish.</value>
         public TimeSpan LunchFinish
         {
-            get { return SetParam.Lunch.Finish.TimeOfDay; }
+            get { return SetParam.Lunch.Finish; }
             set
             {
-                if (!SetParam.Lunch.Finish.TimeOfDay.Equals(value))
-                    SetParam.Lunch.Finish = new Class.Method().GetTodayTime(value.Hours, value.Minutes);
+                if (!SetParam.Lunch.Finish.Equals(value))
+                    SetParam.Lunch.Finish = value;
             }
         }
 
@@ -150,11 +150,11 @@ namespace DrugAlarm.Form.Model
         /// <value>The dinner start.</value>
         public TimeSpan DinnerStart
         {
-            get { return SetParam.Dinner.Start.TimeOfDay; }
+            get { return SetParam.Dinner.Start; }
             set
             {
-                if (!SetParam.Dinner.Start.TimeOfDay.Equals(value))
-                    SetParam.Dinner.Start = new Class.Method().GetTodayTime(value.Hours, value.Minutes);
+                if (!SetParam.Dinner.Start.Equals(value))
+                    SetParam.Dinner.Start = value;
             }
         }
 
@@ -166,11 +166,11 @@ namespace DrugAlarm.Form.Model
         /// <value>The dinner finish.</value>
         public TimeSpan DinnerFinish
         {
-            get { return SetParam.Dinner.Finish.TimeOfDay; }
+            get { return SetParam.Dinner.Finish; }
             set
             {
-                if (!SetParam.Dinner.Finish.TimeOfDay.Equals(value))
-                    SetParam.Dinner.Finish = new Class.Method().GetTodayTime(value.Hours, value.Minutes);
+                if (!SetParam.Dinner.Finish.Equals(value))
+                    SetParam.Dinner.Finish = value;
             }
         }
 
@@ -185,11 +185,11 @@ namespace DrugAlarm.Form.Model
         /// <value>The sleep start.</value>
         public TimeSpan SleepStart
         {
-            get { return SetParam.Sleep.TimeOfDay; }
+            get { return SetParam.Sleep; }
             set
             {
-                if (!SetParam.Sleep.TimeOfDay.Equals(value))
-                    SetParam.Sleep = new Class.Method().GetTodayTime(value.Hours, value.Minutes);
+                if (!SetParam.Sleep.Equals(value))
+                    SetParam.Sleep = value;
             }
         }
 
