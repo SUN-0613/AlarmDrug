@@ -2359,7 +2359,10 @@ namespace DrugAlarm.Class
             {
 
                 // 仮に、対象がないのに次回アラームとなってしまった場合は、再帰
-                Save(true);
+                if (!NextAlarm.Timer.Equals(DateTime.MaxValue))
+                {
+                    Save(true);
+                }
 
             }
 
